@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v313</title>
+    <title>Mack's Sounds v314</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -345,6 +345,10 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 #message-area { position: fixed; right: 1rem; bottom: 1rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.5rem; max-width: min(420px, calc(100vw - 2rem)); }
 .app-message { background: var(--secondary-color); color: var(--text-color); padding: 0.7rem 1rem; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); white-space: pre-line; cursor: pointer; transition: opacity 0.3s; }
 .app-message.closing { opacity: 0; }
+.undo-message { display: flex; align-items: center; gap: 0.75rem; }
+.undo-message-text { flex: 1; }
+.undo-message-btn { flex: none; font-weight: bold; }
+.delete-selected-btn:disabled, #undo-delete-btn:disabled { opacity: 0.45; cursor: default; }
 .confirm-overlay { position: fixed; inset: 0; z-index: 3100; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; padding: 1rem; }
 .confirm-box { background: var(--secondary-color); color: var(--text-color); border-radius: 10px; padding: 1.25rem; max-width: 420px; width: 100%; box-shadow: 0 8px 32px rgba(0,0,0,0.6); }
 /* MS-106: on touch screens, a long press on the controls doesn't select text or open the browser's menu.
@@ -364,7 +368,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v313</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v314</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -396,6 +400,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                     <input type="file" id="import-mix-input" accept=".zip" style="display:none;">
                     <button id="paste-mix-btn" class="small-btn" disabled>Paste Mix</button>
                     <input type="number" id="paste-mix-count" value="1" min="1" max="99" style="width: 60px;" title="Number of mix copies to paste">
+                    <button id="undo-delete-btn" class="small-btn" disabled title="Nothing to undo">↶ Undo</button>
                 </div>
             </div>
         </header>
@@ -655,7 +660,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v313';
+const APP_VERSION = 'v314';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -754,6 +759,24 @@ function showMessage(text) {
     msg.addEventListener('click', close);
     area.appendChild(msg);
     if (text.length < 120) setTimeout(close, 3500);
+}
+
+// After a deletion (v314, MS-200): the message offers Undo for 10 seconds. Only the latest one is shown, so its
+// Undo always undoes the last deletion.
+function showUndoMessage(text, onUndo) {
+    document.querySelectorAll('.undo-message').forEach(m => m.remove());
+    let area = document.getElementById('message-area');
+    if (!area) { area = document.createElement('div'); area.id = 'message-area'; document.body.appendChild(area); }
+    const msg = document.createElement('div');
+    msg.className = 'app-message undo-message';
+    msg.setAttribute('role', 'status');
+    msg.innerHTML = '<span class="undo-message-text"></span><button class="undo-message-btn small-btn">↶ Undo</button>';
+    msg.querySelector('.undo-message-text').textContent = text;
+    const close = () => { msg.classList.add('closing'); setTimeout(() => msg.remove(), 300); };
+    msg.addEventListener('click', close);
+    msg.querySelector('.undo-message-btn').addEventListener('click', e => { e.stopPropagation(); msg.remove(); onUndo(); });
+    area.appendChild(msg);
+    setTimeout(close, 10000);
 }
 
 // A question box with several answers. choices: [{ value, label, danger? }] in display order, Cancel included.
@@ -943,6 +966,7 @@ function createMixUI(mix) {
                 </div>
                 <button class="copy-mix-btn small-btn">Copy Mix</button>
                 <button class="copy-selected-btn small-btn">Copy Selected</button>
+                <button class="delete-selected-btn small-btn" disabled title="Delete the ticked tracks and Sync Groups">Delete Selected</button>
                 <input type="number" class="paste-count-input" value="1" min="1" max="99" style="width: 60px;" title="Number of copies to paste">
                 <button class="paste-items-btn small-btn" disabled>Paste Selected</button>
                 <label for="file-input-${mix.id}" class="button-like small-btn">➕ Add Local</label><input type="file" id="file-input-${mix.id}" accept="audio/*" multiple style="display:none;">
@@ -983,7 +1007,7 @@ function createMixUI(mix) {
     });
     mixContainer.querySelector('.stop-mix').addEventListener('click', () => stopMix(mix.id));
     mixContainer.querySelector(`#enable-all-${mix.id}`).addEventListener('change', e => toggleAllTracksEnabled(mix.id, e.target.checked));
-    mixContainer.querySelector('.delete-mix-btn').addEventListener('click', async () => { if (await askConfirm('Permanently delete this mix? This cannot be undone.')) { deleteMix(mix.id); }});
+    mixContainer.querySelector('.delete-mix-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the mix "${mix.name}"?`)) { deleteMixWithUndo(mix.id); }});
     mixContainer.querySelector('.export-mix-btn').addEventListener('click', () => exportMix(mix.id));
     mixContainer.querySelector('.add-sync-group-btn').addEventListener('click', () => createSyncGroup(mix.id));
     sortSelect.addEventListener('change', e => { sortTracks(mix.id, e.target.value); e.target.selectedIndex = 0; });
@@ -997,6 +1021,8 @@ function createMixUI(mix) {
     mixContainer.querySelector('.copy-mix-btn').addEventListener('click', () => copyMix(mix.id));
     mixContainer.querySelector('.copy-selected-btn').addEventListener('click', () => copySelectedItems(mix.id));
     mixContainer.querySelector('.paste-items-btn').addEventListener('click', () => pasteSelectedItems(mix.id));
+    mixContainer.querySelector('.delete-selected-btn').addEventListener('click', () => deleteSelectedItems(mix.id));
+    mixContainer.addEventListener('change', e => { if (e.target.classList.contains('select-checkbox')) updateDeleteSelectedButton(mix.id); });
 
     mixContainer.querySelector('.more-controls-btn').addEventListener('click', (e) => {
         e.target.closest('.mix-header').querySelector('.mix-header-row-secondary').classList.toggle('is-expanded');
@@ -1234,7 +1260,7 @@ function addTrackToMixUI(mix, trackData) {
     trackElement.querySelector('.track-mute-toggle').addEventListener('click', () => toggleTrackMute(mix.id, trackData.id));
     trackElement.querySelector('.track-solo-toggle').addEventListener('click', () => toggleTrackSolo(mix.id, trackData.id));
     trackElement.querySelector('.track-chevron').addEventListener('click', () => { trackElement.classList.toggle('expanded'); });
-    trackElement.querySelector('.remove-track-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the track "${trackData.name}"?`)) removeTrack(mix, trackData.id); });
+    trackElement.querySelector('.remove-track-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the track "${trackData.name}"?`)) deleteItems(mix, { trackIds: [trackData.id] }); });
     trackElement.querySelector('.copy-settings-btn').addEventListener('click', () => { copiedTrackSettings = JSON.parse(JSON.stringify(trackData.settings)); showMessage('Settings copied!'); });
     trackElement.querySelector('.paste-settings-btn').addEventListener('click', () => pasteTrackSettings(track.data.id));
     trackElement.querySelector('.track-name-display').addEventListener('click', (e) => { const span = e.target; if (span.isContentEditable) return; const input = document.createElement('input'); input.type = 'text'; input.value = trackData.name; input.className = 'track-name-display'; input.style.width = '100%'; span.replaceWith(input); input.focus(); input.addEventListener('blur', () => { trackData.name = input.value; span.textContent = input.value; input.replaceWith(span); }); input.addEventListener('keydown', (ev) => { if(ev.key === 'Enter') ev.target.blur(); }); });
@@ -1494,26 +1520,24 @@ async function deleteSyncGroup(mixId, groupId) {
         { value: null, label: 'Cancel' }
     ]);
     if (!choice) return;
-    stopSyncGroup(mixId, groupId);
-    const groupTracks = mix.tracks.filter(t => t.syncInfo.groupId === groupId);
-    if (choice === 'delete') {
-        groupTracks.forEach(trackData => removeTrack(mix, trackData.id));
-    } else {
-        const tracksContainer = document.querySelector(`#${CSS.escape(mixId)} .tracks-container`);
-        groupTracks.forEach(trackData => {
-            trackData.syncInfo.groupId = null;
-            const trackEl = document.getElementById(trackData.id);
-            if (trackEl) {
-                tracksContainer.appendChild(trackEl);
-                updateTrackUIVisibility(trackEl, false);
-            }
-        });
-    }
+    deleteItems(mix, { groupIds: [groupId], groupTracks: choice }); // v314: can be undone (js/undo.js)
+}
+
+// Removes a Sync Group; any tracks still in it move to the end of the main mix.
+function removeSyncGroup(mix, groupId) {
+    stopSyncGroup(mix.id, groupId);
+    const tracksContainer = document.querySelector(`#${CSS.escape(mix.id)} .tracks-container`);
+    mix.tracks.filter(t => t.syncInfo.groupId === groupId).forEach(trackData => {
+        trackData.syncInfo.groupId = null;
+        const trackEl = document.getElementById(trackData.id);
+        if (trackEl) {
+            tracksContainer.appendChild(trackEl);
+            updateTrackUIVisibility(trackEl, false);
+        }
+    });
     mix.syncGroups = mix.syncGroups.filter(g => g.id !== groupId);
     groupRuntime.delete(groupId);
     document.getElementById(groupId)?.remove();
-    updateMixMuteStates(mix); // a soloed group may have gone
-    settleMixState(mix);
 }
     </script>
     <script>
@@ -3541,8 +3565,8 @@ async function handleMixImport(event) {
             || zip.file(new RegExp('(^|/)' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i'))[0];
         const manifest = JSON.parse(await manifestFile.async('string'));
         
-        // Tracks keep the order they were exported in (use the Sort menu to reorder).
-        // Fresh IDs let the same mix be imported more than once without clashing.
+        // Fresh IDs let the same mix be imported more than once without clashing. The list is put back in its exported
+        // screen order afterwards (manifest.layout, v314 / MS-207); older files keep the order of their track list.
         const groupIdMap = {};
         const syncGroups = (manifest.syncGroups || []).map(sg => {
             const newGroup = { ...cloneGroupData(sg), id: uniqueId('syncgroup') };
@@ -3561,6 +3585,7 @@ async function handleMixImport(event) {
         const newMix = createNewMix(mixData, true);
 
         const missing = [];
+        const trackIdMap = {};
         for (const trackData of manifest.tracks) {
             const audioFile = findAudioFile(trackData.fileNameInZip);
             if (!audioFile) {
@@ -3569,8 +3594,10 @@ async function handleMixImport(event) {
             }
             const audioBuffer = await audioFile.async('arraybuffer');
             const syncInfo = { ...trackData.syncInfo, groupId: groupIdMap[trackData.syncInfo?.groupId] || null };
-            await processNewTrack(newMix, audioBuffer, trackData.name, { ...trackData, id: null, syncInfo });
+            const newTrack = await processNewTrack(newMix, audioBuffer, trackData.name, { ...trackData, id: null, syncInfo });
+            if (trackData.id) trackIdMap[trackData.id] = newTrack.id;
         }
+        if (manifest.layout) applyLayout(newMix, remapLayout(manifest.layout, { ...groupIdMap, ...trackIdMap }));
         updateMixMuteStates(newMix);
 
         mixes.push(newMix);
@@ -3586,18 +3613,23 @@ async function exportMix(mixId) {
     const mix = mixes.find(m => m.id === mixId); if (!mix || !window.JSZip) { showMessage('Export failed.'); return; }
     const exportButton = document.querySelector(`#${CSS.escape(mixId)} .export-mix-btn`); exportButton.textContent = 'Packaging...';
     try {
-        const zip = new JSZip(); 
-        const manifest = { 
+        const zip = new JSZip();
+        // MS-207: everything is written in screen order, and layout records where each Sync Group sits among the
+        // ungrouped tracks, so an import rebuilds the list exactly (Sort and drag-and-drop change only the screen).
+        const layout = mixLayout(mix);
+        syncGroupOrderToScreen(mix);
+        const manifest = {
             mixName: mix.name,
             version: APP_VERSION,
             mixVolume: parseFloat(mix.volume),
             mixMuted: mix.isMuted,
             tracks: [],
-            syncGroups: mix.syncGroups.map(cloneGroupData)
-        }; 
+            syncGroups: mix.syncGroups.map(cloneGroupData),
+            layout
+        };
         const usedFilenames = new Set(); 
         const sanitizeFilename = (name) => { let sanitized = name.replace(/\.[^/.]+$/, "").replace(/[\\/:*?"<>|]/g, '_'); let finalName = sanitized, counter = 2; while (usedFilenames.has(finalName.toLowerCase())) { finalName = `${sanitized} (${counter++})`; } usedFilenames.add(finalName.toLowerCase()); return `${finalName}.wav`; };
-        for (const trackData of mix.tracks) { 
+        for (const trackData of tracksInScreenOrder(mix, layout)) {
             const engineTrack = mix.audioEngine[trackData.id]; 
             if (!engineTrack || !engineTrack.audio.buffer) continue; 
             const fileNameInZip = sanitizeFilename(trackData.name); 
@@ -3990,7 +4022,7 @@ function copySelectedItems(mixId) {
         const groupElement = checkbox.closest('.sync-group');
         lastSelectedId = groupElement.id;
         const groupData = mix.syncGroups.find(g => g.id === groupElement.id);
-        return { group: cloneGroupData(groupData), tracks: mix.tracks.filter(t => t.syncInfo.groupId === groupData.id).map(snapshotTrack) };
+        return { group: cloneGroupData(groupData), tracks: tracksInScreenOrder(mix).filter(t => t.syncInfo.groupId === groupData.id).map(snapshotTrack) };
     });
     if (selectedGroups.length > 0) {
         copiedItems = { type: 'group', data: selectedGroups, lastSelectedId };
@@ -4034,14 +4066,16 @@ async function pasteMix() {
         mixes.splice(mixes.indexOf(mixes.find(m => m.id === lastPastedElement?.id)) + 1, 0, newMix);
         lastPastedElement = newMixElement;
 
+        const trackIdMap = {};
         for (const trackData of sourceMix.tracks) {
             const buffer = sourceMix.audioEngine[trackData.id]?.audio.buffer;
             if (!buffer) continue;
             const newTrackData = JSON.parse(JSON.stringify(trackData));
             newTrackData.id = null;
             newTrackData.syncInfo.groupId = groupIdMap[trackData.syncInfo.groupId] || null;
-            await processNewTrack(newMix, buffer, trackData.name, newTrackData);
+            trackIdMap[trackData.id] = (await processNewTrack(newMix, buffer, trackData.name, newTrackData)).id;
         }
+        applyLayout(newMix, remapLayout(mixLayout(sourceMix), { ...groupIdMap, ...trackIdMap })); // the copy keeps the screen order (MS-207)
         updateMixMuteStates(newMix);
     }
 }
@@ -4086,6 +4120,7 @@ async function pasteSelectedItems(mixId) {
     });
     updateMixMuteStates(mix);
     document.querySelectorAll(`#${CSS.escape(mixId)} .select-checkbox:checked`).forEach(cb => cb.checked = false);
+    updateDeleteSelectedButton(mixId);
 }
 
 function audioBufferToWav(buffer) {
@@ -4113,6 +4148,252 @@ function audioBufferToWav(buffer) {
         }
     }
     return new Blob([view.buffer], { type: 'audio/wav' });
+}
+    </script>
+    <script>
+// --- js/undo.js ---
+// --- SCREEN ORDER, DELETING AND UNDO (v314: MS-207, MS-200) ---
+
+// The mix's list as it is on screen: Sync Groups and ungrouped tracks share one list (MS-192), and each group has its
+// own track order. Sort and drag-and-drop change only the screen, so export, Paste Mix and Undo read the order here.
+// { top: [group and ungrouped-track ids, top to bottom], groups: { groupId: [its track ids, top to bottom] } }
+function mixLayout(mix) {
+    const container = document.querySelector(`#${CSS.escape(mix.id)} .tracks-container`);
+    const top = container ? Array.from(container.querySelectorAll(':scope > .track, :scope > .sync-group')).map(el => el.id) : [];
+    const groups = {};
+    mix.syncGroups.forEach(g => { groups[g.id] = Array.from(document.querySelectorAll(`#${CSS.escape(g.id)} .sync-group-tracks > .track`)).map(el => el.id); });
+    return { top, groups };
+}
+
+// The mix's tracks in screen order (a group's tracks where the group sits), then any that are not on screen.
+function tracksInScreenOrder(mix, layout = mixLayout(mix)) {
+    const byId = new Map(mix.tracks.map(t => [t.id, t]));
+    const ordered = layout.top.flatMap(id => layout.groups[id] || [id]).map(id => byId.get(id)).filter(Boolean);
+    return [...ordered, ...mix.tracks.filter(t => !ordered.includes(t))];
+}
+
+// A layout with its ids swapped through idMap (old id → new id), for a copy of the mix. Unknown ids are dropped.
+function remapLayout(layout, idMap) {
+    const groups = {};
+    Object.entries(layout.groups || {}).forEach(([gid, ids]) => { if (idMap[gid]) groups[idMap[gid]] = ids.map(id => idMap[id]).filter(Boolean); });
+    return { top: (layout.top || []).map(id => idMap[id]).filter(Boolean), groups };
+}
+
+// Puts a list's items in the order `order` gives. Only the ids in moveIds move (all of them when it is null): each goes
+// after the nearest item listed before it that is in this list, or else before the nearest one listed after it.
+// Items added since the order was taken keep their places.
+function placeInOrder(container, order, moveIds = null) {
+    if (!container) return;
+    const inList = id => { const el = document.getElementById(id); return el && el.parentElement === container ? el : null; };
+    order.forEach((id, i) => {
+        if (moveIds && !moveIds.has(id)) return;
+        const el = inList(id);
+        if (!el) return;
+        const prev = order.slice(0, i).reverse().map(inList).find(Boolean);
+        if (prev) { prev.after(el); return; }
+        const next = order.slice(i + 1).map(inList).find(Boolean);
+        if (next) next.before(el); else container.appendChild(el);
+    });
+}
+
+function syncGroupOrderToScreen(mix) {
+    const top = mixLayout(mix).top;
+    mix.syncGroups.sort((a, b) => top.indexOf(a.id) - top.indexOf(b.id));
+}
+
+function applyLayout(mix, layout, moveIds = null) {
+    placeInOrder(document.querySelector(`#${CSS.escape(mix.id)} .tracks-container`), layout.top || [], moveIds);
+    Object.entries(layout.groups || {}).forEach(([gid, ids]) => placeInOrder(document.querySelector(`#${CSS.escape(gid)} .sync-group-tracks`), ids, moveIds));
+    syncGroupOrderToScreen(mix);
+}
+
+// --- Deleting ---
+// What Undo needs to bring a track back: its saved data and its decoded sound (kept in memory until the page closes
+// or the deletion drops off the Undo list).
+function trackSnapshot(mix, trackData) {
+    return { data: { ...JSON.parse(JSON.stringify(trackData)), isSoloed: false }, buffer: mix.audioEngine[trackData.id]?.audio.buffer || null };
+}
+
+function describeItems(groups, tracks) {
+    const parts = [];
+    if (groups.length === 1) parts.push(`the Sync Group "${groups[0].name}"`);
+    else if (groups.length) parts.push(`${groups.length} Sync Groups`);
+    if (tracks.length === 1) parts.push(`the track "${tracks[0].name}"`);
+    else if (tracks.length) parts.push(`${tracks.length} tracks`);
+    return parts.join(' and ');
+}
+
+// Deletes tracks and Sync Groups of one mix, keeping what Undo needs. groupTracks: 'move' puts the groups' own tracks
+// into the main mix, 'delete' deletes them too. Tracks in trackIds are deleted directly, even inside a group whose
+// tracks are moved.
+function deleteItems(mix, { trackIds = [], groupIds = [], groupTracks = 'move' } = {}) {
+    const trackSet = new Set(trackIds), groupSet = new Set(groupIds);
+    const groups = mix.syncGroups.filter(g => groupSet.has(g.id));
+    const members = mix.tracks.filter(t => groupSet.has(t.syncInfo.groupId) && !trackSet.has(t.id));
+    const deleted = mix.tracks.filter(t => trackSet.has(t.id) || (groupTracks === 'delete' && members.includes(t)));
+    if (!groups.length && !deleted.length) return;
+    const entry = {
+        kind: 'items', mixId: mix.id, layout: mixLayout(mix),
+        groups: groups.map(cloneGroupData),
+        tracks: deleted.map(t => trackSnapshot(mix, t)),
+        moved: groupTracks === 'move' ? members.map(t => ({ id: t.id, groupId: t.syncInfo.groupId })) : [],
+        what: describeItems(groups, deleted)
+    };
+    groups.forEach(g => stopSyncGroup(mix.id, g.id));
+    deleted.forEach(t => removeTrack(mix, t.id));
+    groups.forEach(g => removeSyncGroup(mix, g.id));
+    updateMixMuteStates(mix); // a soloed track or group may have gone
+    settleMixState(mix);
+    updateDeleteSelectedButton(mix.id);
+    pushUndo(entry);
+}
+
+// The mix's Delete Selected button: one confirmation for everything ticked.
+async function deleteSelectedItems(mixId) {
+    const mix = mixes.find(m => m.id === mixId);
+    if (!mix) return;
+    const ticked = cls => Array.from(document.querySelectorAll(`#${CSS.escape(mixId)} .${cls}:checked`));
+    const groups = ticked('sync-group-select-checkbox').map(cb => mix.syncGroups.find(g => g.id === cb.closest('.sync-group')?.id)).filter(Boolean);
+    const tracks = ticked('track-select-checkbox').map(cb => mix.tracks.find(t => t.id === cb.closest('.track')?.id)).filter(Boolean);
+    if (!groups.length && !tracks.length) { showMessage('Nothing is ticked.'); return; }
+    const names = items => items.slice(0, 8).map(i => `"${i.name}"`).join(', ') + (items.length > 8 ? ` …and ${items.length - 8} more` : '');
+    const list = [
+        groups.length && `${groups.length} Sync Group${groups.length > 1 ? 's' : ''}: ${names(groups)}`,
+        tracks.length && `${tracks.length} track${tracks.length > 1 ? 's' : ''}: ${names(tracks)}`
+    ].filter(Boolean).join('\n');
+    let groupTracks = 'move';
+    if (groups.length) {
+        groupTracks = await askChoice(`${list}\n\nWhen deleting Groups: move their tracks into the main mix, or delete them too.${tracks.length ? ' Tracks you ticked individually are deleted directly.' : ''}`, [
+            { value: 'move', label: 'Move Tracks' },
+            { value: 'delete', label: 'Delete Tracks', danger: true },
+            { value: null, label: 'Cancel' }
+        ], { title: 'Delete Selected' });
+        if (!groupTracks) return;
+    } else {
+        const n = tracks.length;
+        if (!(await askConfirm(`${list}\n\nDelete ${n === 1 ? 'this track' : `these ${n} tracks`}? ${n === 1 ? 'It' : 'They'} will be deleted directly.`))) return;
+    }
+    deleteItems(mix, { trackIds: tracks.map(t => t.id), groupIds: groups.map(g => g.id), groupTracks });
+}
+
+// Greyed out until something in the mix is ticked.
+function updateDeleteSelectedButton(mixId) {
+    const btn = document.querySelector(`#${CSS.escape(mixId)} .delete-selected-btn`);
+    if (btn) btn.disabled = !document.querySelector(`#${CSS.escape(mixId)} .select-checkbox:checked`);
+}
+
+function deleteMixWithUndo(mixId) {
+    const mix = mixes.find(m => m.id === mixId);
+    if (!mix) return;
+    const layout = mixLayout(mix);
+    const entry = {
+        kind: 'mix', what: `the mix "${mix.name}"`, mixOrder: mixes.map(m => m.id), layout,
+        mix: { id: mix.id, name: mix.name, volume: mix.volume, isMuted: mix.isMuted, isExpanded: mix.isExpanded },
+        groups: mix.syncGroups.map(cloneGroupData),
+        tracks: tracksInScreenOrder(mix, layout).map(t => trackSnapshot(mix, t))
+    };
+    deleteMix(mixId);
+    pushUndo(entry);
+}
+
+// --- Undo ---
+// The last UNDO_LIMIT deletions (JM: 5), kept until the page is closed. Restored items come back with their settings,
+// sound, place in the list and Sync Group, unticked and unsoloed. They play only if their mix is playing and they are
+// switched on, like a track that is added or pasted while the mix plays; a restored mix comes back stopped.
+const UNDO_LIMIT = 5;
+let undoStack = [];
+let undoBusy = false;
+
+function pushUndo(entry) {
+    undoStack.push(entry);
+    if (undoStack.length > UNDO_LIMIT) undoStack.shift();
+    updateUndoButton();
+    showUndoMessage(`Deleted ${entry.what}.`, undoLastDelete);
+}
+
+function updateUndoButton() {
+    const btn = document.getElementById('undo-delete-btn');
+    if (!btn) return;
+    const last = undoStack[undoStack.length - 1];
+    btn.disabled = !last;
+    btn.textContent = last ? `↶ Undo (${undoStack.length})` : '↶ Undo';
+    btn.title = last ? `Undo: delete of ${last.what} (Ctrl+Z). ${undoStack.length} of the last ${UNDO_LIMIT} deletions can be undone.` : 'Nothing to undo';
+}
+
+async function undoLastDelete() {
+    if (undoBusy) return;
+    const entry = undoStack.pop();
+    updateUndoButton();
+    document.querySelectorAll('.undo-message').forEach(m => m.remove());
+    if (!entry) { showMessage('Nothing to undo.'); return; }
+    undoBusy = true;
+    try {
+        if (entry.kind === 'mix') await restoreMix(entry); else await restoreItems(entry);
+        showMessage(`Restored ${entry.what}.`);
+    } catch (err) {
+        console.error(err);
+        showMessage(`Could not restore ${entry.what}: ${err.message}`);
+    } finally { undoBusy = false; }
+}
+
+async function restoreItems(entry) {
+    const mix = mixes.find(m => m.id === entry.mixId);
+    if (!mix) throw new Error('the mix it was in has been deleted.');
+    initializeAudioContext();
+    entry.groups.forEach(g => { const groupData = cloneGroupData(g); mix.syncGroups.push(groupData); createSyncGroupUI(mix, groupData); });
+    for (const t of entry.tracks) {
+        if (!t.buffer) continue;
+        const data = JSON.parse(JSON.stringify(t.data));
+        if (!mix.syncGroups.some(g => g.id === data.syncInfo.groupId)) data.syncInfo.groupId = null;
+        await processNewTrack(mix, t.buffer, data.name, data);
+    }
+    // Tracks that Move Tracks put into the main mix go back into their group.
+    entry.moved.forEach(({ id, groupId }) => {
+        const track = mix.audioEngine[id];
+        const groupTracksEl = document.querySelector(`#${CSS.escape(groupId)} .sync-group-tracks`);
+        if (!track || !groupTracksEl) return;
+        const oldGroupId = track.data.syncInfo.groupId;
+        track.data.syncInfo.groupId = groupId;
+        const el = document.getElementById(id);
+        groupTracksEl.appendChild(el);
+        updateTrackUIVisibility(el, true);
+        if (oldGroupId !== groupId) onTrackGroupChanged(mix, track, oldGroupId);
+    });
+    applyLayout(mix, entry.layout, new Set([...entry.groups.map(g => g.id), ...entry.tracks.map(t => t.data.id), ...entry.moved.map(m => m.id)]));
+    entry.groups.forEach(g => {
+        const group = mix.syncGroups.find(x => x.id === g.id);
+        if (group && mix.isPlaying && group.isEnabled) startGroup(mix, group);
+    });
+    updateMixMuteStates(mix);
+    updateDeleteSelectedButton(mix.id);
+}
+
+async function restoreMix(entry) {
+    initializeAudioContext();
+    const mix = createNewMix({ ...entry.mix, syncGroups: entry.groups.map(cloneGroupData), tracks: [] }, true);
+    // Back between the same mixes as before (or at the end).
+    const nextId = entry.mixOrder.slice(entry.mixOrder.indexOf(entry.mix.id) + 1).find(id => mixes.some(m => m.id === id));
+    if (nextId) { document.getElementById(nextId).before(document.getElementById(mix.id)); mixes.splice(mixes.findIndex(m => m.id === nextId), 0, mix); }
+    else mixes.push(mix);
+    for (const t of entry.tracks) {
+        if (t.buffer) await processNewTrack(mix, t.buffer, t.data.name, JSON.parse(JSON.stringify(t.data)));
+    }
+    applyLayout(mix, entry.layout);
+    updateMixMuteStates(mix);
+}
+
+function setupUndo() {
+    document.getElementById('undo-delete-btn')?.addEventListener('click', undoLastDelete);
+    // Ctrl+Z (Cmd+Z on a Mac) undoes the last deletion, except while typing (the text box's own undo works there)
+    // or while a question box is open.
+    document.addEventListener('keydown', e => {
+        if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey || e.key.toLowerCase() !== 'z') return;
+        if (e.target.closest?.('input:not([type="range"]):not([type="checkbox"]), textarea, select, [contenteditable="true"]')) return;
+        if (document.querySelector('.confirm-overlay')) return;
+        e.preventDefault();
+        undoLastDelete();
+    });
+    updateUndoButton();
 }
     </script>
     <script>
@@ -4207,6 +4488,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSettingsModal();
     setupFontManagement();
     setupCompactHeaderObserver();
+    setupUndo();
 });
 
 function initializeAudioContext() {
