@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v314</title>
+    <title>Mack's Sounds v315</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@ body::after { /* Color Overlay Layer */
 }
 
 .app-container { max-width: 1200px; margin: 0 auto; transition: opacity 0.5s; }
-#scroll-observer-trigger { position: absolute; top: 0; height: 1px; width: 100%; pointer-events: none; }
+#scroll-observer-trigger { position: absolute; top: 0; left: 0; height: 1px; width: 100%; pointer-events: none; } /* left: 0 so it never pokes past the right edge (MS-104) */
 body.sleep-mode-active .app-container { opacity: 0; pointer-events: none; }
 .glass-container {
     background: var(--glass-bg); backdrop-filter: blur(10px);
@@ -192,8 +192,16 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .track-loop-delay-counter { font-style: italic; color: yellow; font-weight: normal; font-size: calc(1.1em - 2px); margin-right: 2ch; }
 .track-play-counter { font-size: 1.1em; font-weight: bold; color: var(--accent-color); }
 .track.expanded .track-chevron { transform: rotate(90deg); }
-.track-details { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; background: rgba(0,0,0,0.2); padding: 0 1.5rem; }
-.track.expanded .track-details { max-height: 900px; padding: 1.5rem; }
+/* MS-104: on a wide screen the name and timer sit straight in the header row; on a phone they stack (see below). */
+.track-title-block { display: contents; }
+/* Opening and closing slide by animating the row height (0fr to 1fr), so a track with every box open is never cut
+   off (the earlier 900 px height cap could clip it). The same trick slides the Timing / Volume / Speed / Fades boxes. */
+.track-details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out; background: rgba(0,0,0,0.2); }
+.track.expanded .track-details { grid-template-rows: 1fr; }
+.track-details-inner { min-height: 0; overflow: hidden; }
+.track-details-inner > .track-controls-grid { padding: 1.5rem; }
+/* Phone only: the select box, grab handle and delete button move here from the header (placeTrackHeaderItems). */
+.track-actions-row { display: none; }
 .track-controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; align-items: center; }
 .control-group { display: flex; flex-direction: column; }
 .control-group label { font-size: 0.9em; margin-bottom: 0.3rem; opacity: 0.8; user-select: none; }
@@ -201,7 +209,20 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .volume-display, .glow-display, .opacity-display, .speed-display, .zoom-display, .rotate-display, .pan-display { font-size: 0.9em; opacity: 0.8; min-width: 4ch; text-align: right; }
 .config-clone-buttons { display: flex; gap: 0.5rem; grid-column: 1 / -1; }
 /* Timing / Volume / Pitch: each mode's controls sit together in their own bordered box, a full row of the grid. */
-.mode-box { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1rem; border: 1px solid rgba(128, 128, 128, 0.45); border-radius: 8px; padding: 0.6rem 0.8rem; }
+.mode-box { grid-column: 1 / -1; border: 1px solid rgba(128, 128, 128, 0.45); border-radius: 8px; padding: 0.3rem 0.8rem; }
+/* MS-104: each box opens and closes from its title bar (closed by default; each track remembers its open boxes). */
+.section-toggle { display: flex; align-items: center; gap: 0.5rem; width: 100%; padding: 0.3rem 0; background: none; box-shadow: none; border-radius: 4px; color: var(--main-font-color); text-align: left; font-size: 0.9em; }
+.section-toggle:hover { background: none; color: var(--accent-color); }
+.section-chevron { display: inline-flex; width: 1em; height: 1em; flex-shrink: 0; transition: transform 0.3s ease; }
+.section-chevron svg { width: 100%; height: 100%; }
+.mode-box.is-open .section-chevron { transform: rotate(90deg); }
+.section-title { text-transform: uppercase; font-weight: bold; letter-spacing: 0.05em; }
+.section-summary { opacity: 0.8; }
+.section-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out; }
+.mode-box.is-open .section-body { grid-template-rows: 1fr; }
+.section-body-inner { min-height: 0; overflow: hidden; }
+.section-content { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem 1rem; padding: 0.4rem 0 0.5rem; }
+@media (prefers-reduced-motion: reduce) { .track-details, .section-body, .section-chevron { transition: none; } }
 .mode-box .control-group { min-width: 140px; }
 /* Fades: a tick box to switch each fade on, and its length in seconds (dimmed while off). */
 .fades-box .fade-label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
@@ -219,6 +240,7 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .sync-group .track .crossfade-control { display: none; }
 
 .sync-track-controls, .track-transposed-controls { display: flex; }
+.mode-box.track-transposed-controls { display: block; } /* the Timing box: title bar above its controls */
 .sync-group .track .sync-track-controls { display: flex; }
 .sync-group .track .track-transposed-controls { display: none; }
 .sync-group .mode-specific-controls, .track .mode-specific-controls { display: none; }
@@ -359,6 +381,63 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 .confirm-text { margin: 0 0 1rem; white-space: pre-line; }
 .confirm-buttons { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; }
 .confirm-ok-btn { background: #c0392b; color: #fff; }
+
+/* --- MS-104: phone layout, below 600 px wide (the same width as phoneLayout in js/tracks.js) --- */
+@media (max-width: 600px) {
+    body { padding: 0.5rem; }
+    .glass-container { padding: 0.75rem; margin-bottom: 1rem; }
+    /* (a) Header: a smaller title with the version and ⚙️ beside it; Master Vol on its own full-width row. */
+    h1 { font-size: calc(1.8rem * var(--font-size-title-multiplier, 1)); }
+    .app-header { padding: 0.75rem; gap: 0.75rem; }
+    .app-header-main-row { flex-wrap: wrap; row-gap: 0.25rem; }
+    .app-title-group { min-width: 0; }
+    .app-header-controls { display: contents; }
+    .app-header-main-actions { gap: 0.25rem; }
+    #master-volume-wrapper { order: 3; flex-basis: 100%; }
+    #master-volume { width: 100%; }
+    #master-volume-label, #master-volume-display { font-size: 1.1em; }
+    #settings-btn { margin-left: 0; }
+    .app-header-secondary-row { gap: 0.75rem; }
+    .mix-creation-controls { flex-wrap: wrap; margin-left: 0; gap: 0.5rem; }
+
+    /* (e) Everything you tap is at least 44 px high (and buttons 44 px wide). */
+    button, .button-like, select, input[type="text"], input[type="number"] { min-height: 44px; }
+    button, .button-like { min-width: 44px; }
+    .button-like { display: inline-flex; align-items: center; justify-content: center; }
+    input[type=range] { height: 44px; }
+    .check-label, label:not(.switch):has(> input[type="checkbox"]) { min-height: 44px; }
+    .switch { width: 56px; height: 44px; flex-shrink: 0; }
+    .slider { top: 6px; bottom: 6px; }
+    .slider:before { width: 24px; height: 24px; }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* (c) A track's header on one line: switch, name and timer (stacked), Solo, Mute, chevron. */
+    .track-header { gap: 0.35rem; padding: 0.15rem 0.4rem; }
+    .track-header .switch { order: 1; }
+    .track-title-block { order: 2; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; line-height: 1.15; }
+    .track-name-display { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.85em; }
+    .track-header-counters { white-space: normal; flex-wrap: wrap; gap: 0 0.4em; font-size: 0.7em; }
+    .track-play-counter, .track-loop-delay-counter { font-size: 1em; margin-right: 0; }
+    .track-solo-toggle { order: 3; } .track-mute-toggle { order: 4; } .track-chevron { order: 5; }
+    .track-solo-toggle, .track-mute-toggle { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
+    .track-chevron, .mix-chevron, .sync-group-chevron { width: 44px; height: 44px; padding: 11px; }
+    .mix-drag-handle, .sync-group-drag-handle { width: 44px; height: 44px; justify-content: center; padding: 0; }
+    .sync-group-drag-handle { display: flex; align-items: center; }
+    .sync-group-header .select-checkbox { width: 32px; height: 32px; margin: 6px; }
+    .mix-header-row-secondary .check-label { min-height: 44px; }
+    /* The track's settings open full width underneath, with the moved select box, grab handle and delete button on top. */
+    .track-details-inner > .track-controls-grid { padding: 0.5rem; gap: 0.75rem; }
+    .track-actions-row { display: flex; align-items: center; gap: 0.5rem; grid-column: 1 / -1; }
+    .track-actions-spacer { flex: 1; }
+    .track .track-actions-row label.track-select-label { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding-right: 0.5rem; font-size: 0.9em; cursor: pointer; }
+    .track-actions-row .select-checkbox { width: 28px; height: 28px; transform: none; }
+    .track-actions-row .track-drag-handle { width: 44px; height: 44px; justify-content: center; margin-right: 0; }
+    .mode-box { padding: 0 0.6rem; }
+    .section-toggle { min-height: 44px; }
+    .sync-group { padding: 0.5rem; }
+    .sync-group-tracks { padding: 0.25rem; }
+    .tracks-container { padding-top: 1rem; }
+}
     </style>
 </head>
 <body>
@@ -368,7 +447,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v314</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v315</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -660,7 +739,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v314';
+const APP_VERSION = 'v315';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1062,7 +1141,9 @@ async function processNewTrack(mix, audioSource, trackName, existingTrackData = 
         name: trackName, 
         isEnabled: existingTrackData?.isEnabled ?? true, isMuted: existingTrackData?.isMuted ?? false, isSoloed: false,
         settings: normalizeTrackSettings(existingTrackData?.settings),
-        syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: existingTrackData?.syncInfo?.startTime || 0 }
+        syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: existingTrackData?.syncInfo?.startTime || 0 },
+        openSections: { ...existingTrackData?.openSections }, // MS-104: which of Timing / Volume / Speed / Fades are open (closed by default)
+        isExpanded: !!existingTrackData?.isExpanded // MS-104: the track's settings open (saved with the mix, like Sync Groups)
     };
     if (!mix.tracks) mix.tracks = [];
     mix.tracks.push(trackData); 
@@ -1082,6 +1163,41 @@ async function processNewTrack(mix, audioSource, trackName, existingTrackData = 
         showMessage(`Could not process audio for: ${trackName}`); 
     }
     return trackData;
+}
+
+// MS-104: the title bar of a track's Timing / Volume / Speed / Fades box. A tap opens or closes the box; while closed,
+// the bar still shows the box's current choice (e.g. "VOLUME · Varying"), filled in by updateSectionSummaries.
+function sectionToggle(title, tip) {
+    return `<button type="button" class="section-toggle" title="${escapeHtml(tip)}" aria-expanded="false"><span class="section-chevron">${ICONS.CHEVRON}</span><span class="section-title">${title}</span><span class="section-summary"></span></button>`;
+}
+
+// MS-104: on a phone the track header keeps only the switch, name, timer, Solo, Mute and chevron; the grab handle,
+// the select box and the delete button move to a row at the top of the track's settings, and back on a wider screen.
+const phoneLayout = window.matchMedia('(max-width: 600px)');
+function placeTrackHeaderItems(trackElement) {
+    const header = trackElement.querySelector('.track-header'), row = trackElement.querySelector('.track-actions-row');
+    const handle = trackElement.querySelector('.track-drag-handle'), select = trackElement.querySelector('.track-select-checkbox'), remove = trackElement.querySelector('.remove-track-btn');
+    if (!header || !row) return;
+    if (phoneLayout.matches) {
+        row.querySelector('.track-select-label').prepend(select);
+        row.querySelector('.track-actions-spacer').before(handle);
+        row.append(remove);
+    } else {
+        header.prepend(handle, select);
+        header.append(remove);
+    }
+}
+// Also checked on resize: not every browser (or a test viewport) reports the width change as a 'change' event.
+let phoneLayoutPlaced = phoneLayout.matches;
+const replaceTrackHeaderItems = () => { if (phoneLayout.matches === phoneLayoutPlaced) return; phoneLayoutPlaced = phoneLayout.matches; document.querySelectorAll('.track').forEach(placeTrackHeaderItems); };
+phoneLayout.addEventListener('change', replaceTrackHeaderItems);
+window.addEventListener('resize', replaceTrackHeaderItems);
+
+// Opens or closes a track's settings and remembers it in the track's data, so Export / Import keeps it (MS-104).
+function setTrackExpanded(trackElement, open) {
+    trackElement.classList.toggle('expanded', open);
+    const data = mixes.flatMap(m => m.tracks || []).find(t => t.id === trackElement.id);
+    if (data) data.isExpanded = open;
 }
 
 function addTrackToMixUI(mix, trackData) {
@@ -1115,14 +1231,17 @@ function addTrackToMixUI(mix, trackData) {
             <button class="track-mute-toggle small-btn" title="Mute"></button>
             <button class="track-solo-toggle small-btn" title="Solo">S</button>
             <svg class="track-chevron" viewBox="0 0 100 100"><path d="M 30,15 L 70,50 L 30,85 Z" fill="currentColor"/></svg>
-            <span class="track-name-display">${escapeHtml(trackData.name)}</span>
-            <div class="track-header-counters">
-                <span class="track-loop-delay-counter"></span>
-                <code class="track-play-counter">--m--s | --m--s</code>
+            <div class="track-title-block">
+                <span class="track-name-display">${escapeHtml(trackData.name)}</span>
+                <div class="track-header-counters">
+                    <span class="track-loop-delay-counter"></span>
+                    <code class="track-play-counter">--m--s | --m--s</code>
+                </div>
             </div>
-             <button class="remove-track-btn small-btn">❌</button>
+             <button class="remove-track-btn small-btn" title="Delete this track">❌</button>
         </div>
-        <div class="track-details"><div class="track-controls-grid">
+        <div class="track-details"><div class="track-details-inner"><div class="track-controls-grid">
+            <div class="track-actions-row"><label class="track-select-label"><span>Select</span></label><span class="track-actions-spacer"></span></div>
             <div class="control-group">
                 <div class="control-group-row"><label class="volume-label">Volume</label><span class="volume-display"></span></div>
                 <input type="range" class="volume-slider" min="0" max="2" step="0.01">
@@ -1137,8 +1256,10 @@ function addTrackToMixUI(mix, trackData) {
                 <div class="control-group-row"><label class="playChance-label" title="How often this track plays in the group's cycles: 100% = every cycle, 70% = about 7 cycles in 10 (chosen at random). When it sits a cycle out, the cycle keeps its length. Double-click to reset.">Play Chance</label><span class="playChance-display"></span></div>
                 <input type="range" class="playChance-slider" min="0" max="1" step="0.01">
             </div>
-            <div class="mode-box timing-box track-transposed-controls">
-                <div class="control-group timing-controls"><label title="Regular: the same gap between plays. Random: a random gap between Min and Max. Applies while Loop is on.">Timing</label><select class="timingMode-select"></select></div>
+            <div class="mode-box timing-box track-transposed-controls" data-section="timing">
+                ${sectionToggle('Timing', 'Regular: the same gap between plays. Random: a random gap between Min and Max. Applies while Loop is on.')}
+                <div class="section-body"><div class="section-body-inner"><div class="section-content">
+                <div class="control-group timing-controls"><select class="timingMode-select" aria-label="Timing"></select></div>
                 <div class="control-group loop-controls-group">
                     <div class="control-group-row"><label class="check-label"><input type="checkbox" class="loop-toggle"> Loop</label></div>
                 </div>
@@ -1154,9 +1275,12 @@ function addTrackToMixUI(mix, trackData) {
                         </div>
                     </div>
                 </div>
+                </div></div></div>
             </div>
-            <div class="mode-box volume-box">
-                <div class="control-group"><label>Volume</label><select class="volumeMode-select"></select></div>
+            <div class="mode-box volume-box" data-section="volume">
+                ${sectionToggle('Volume', 'Steady: the Volume slider. Varying: the volume rises and falls in a slow wave between Min and Max Vol.')}
+                <div class="section-body"><div class="section-body-inner"><div class="section-content">
+                <div class="control-group"><select class="volumeMode-select" aria-label="Volume"></select></div>
                 <div class="control-group mode-specific-controls volume-range-controls">
                     <div class="control-group-row"><label class="minVolume-label" title="The quietest point of the wave, as a share of the Volume slider. Double-click to reset.">Min Vol</label><span class="minVolume-display"></span></div>
                     <input type="range" class="minVolume-slider" min="0" max="1" step="0.01">
@@ -1184,9 +1308,12 @@ function addTrackToMixUI(mix, trackData) {
                 <div class="control-group mode-specific-controls volume-range-controls volume-note">
                     <span class="fade-note">Min / Max Vol are shares of the Volume slider. A wave pause levels the volume off for a while; the sound keeps playing.</span>
                 </div>
+                </div></div></div>
             </div>
-            <div class="mode-box speed-box">
-                <div class="control-group"><label title="Steady: the Speed slider's speed. Random: a new speed for each play, between Min and Max Speed. Varying: the speed glides between them during the play. Pitch changes with speed.">Speed</label><select class="speedMode-select"></select></div>
+            <div class="mode-box speed-box" data-section="speed">
+                ${sectionToggle('Speed', "Steady: the Speed slider's speed. Random: a new speed for each play, between Min and Max Speed. Varying: the speed glides between them during the play. Pitch changes with speed.")}
+                <div class="section-body"><div class="section-body-inner"><div class="section-content">
+                <div class="control-group"><select class="speedMode-select" aria-label="Speed"></select></div>
                 <div class="control-group mode-specific-controls speed-range-controls">
                     <div class="control-group-row"><label class="minSpeed-label" title="The slowest speed, as a share of the Speed slider. Double-click to reset.">Min Speed</label><span class="minSpeed-display"></span></div>
                     <input type="range" class="minSpeed-slider" min="0" max="1" step="0.01">
@@ -1214,8 +1341,11 @@ function addTrackToMixUI(mix, trackData) {
                 <div class="control-group mode-specific-controls speed-range-controls speed-note">
                     <span class="fade-note">Min / Max Speed are shares of the Speed slider (the slider is the fastest). Random: a new speed for each play. Varying: the speed glides between them during the play. Pitch changes with speed.</span>
                 </div>
+                </div></div></div>
             </div>
-            <div class="mode-box fades-box">
+            <div class="mode-box fades-box" data-section="fades">
+                ${sectionToggle('Fades', 'Fade In, Fade Out and Crossfade, each with its own length in seconds.')}
+                <div class="section-body"><div class="section-body-inner"><div class="section-content">
                 <div class="control-group fade-control fade-in-control">
                     <label class="fade-label" title="Each play starts silent and rises to full volume over this many seconds."><input type="checkbox" class="fadeIn-toggle"> Fade In</label>
                     <div class="control-group-row"><input type="number" class="fadeInLength-input fade-length" min="0.1" step="0.1"><span>s</span></div>
@@ -1228,9 +1358,10 @@ function addTrackToMixUI(mix, trackData) {
                     <label class="fade-label" title="At each loop join the next play starts early, overlapping the end of this one: one fades out while the other fades in, over this many seconds."><input type="checkbox" class="crossfade-toggle"> Crossfade</label>
                     <div class="control-group-row"><input type="number" class="crossfadeLength-input fade-length" min="0.1" step="0.1"><span>s</span><span class="fade-note crossfade-note">Needs Loop on, Regular timing and a Gap of 0</span></div>
                 </div>
+                </div></div></div>
             </div>
             <div class="config-clone-buttons"><button class="copy-settings-btn small-btn">COPY CONFIG</button><button class="paste-settings-btn small-btn">PASTE CONFIG</button></div>
-        </div></div>`;
+        </div></div></div>`;
     
     const parentContainer = trackData.syncInfo.groupId
         ? document.querySelector(`#${CSS.escape(trackData.syncInfo.groupId)} .sync-group-tracks`)
@@ -1259,7 +1390,15 @@ function addTrackToMixUI(mix, trackData) {
     trackElement.querySelector('.track-enable-toggle').addEventListener('change', e => toggleTrackEnabled(mix, trackData.id, e.target.checked));
     trackElement.querySelector('.track-mute-toggle').addEventListener('click', () => toggleTrackMute(mix.id, trackData.id));
     trackElement.querySelector('.track-solo-toggle').addEventListener('click', () => toggleTrackSolo(mix.id, trackData.id));
-    trackElement.querySelector('.track-chevron').addEventListener('click', () => { trackElement.classList.toggle('expanded'); });
+    trackElement.classList.toggle('expanded', !!trackData.isExpanded);
+    trackElement.querySelector('.track-chevron').addEventListener('click', () => setTrackExpanded(trackElement, !trackElement.classList.contains('expanded')));
+    trackElement.querySelectorAll('.mode-box[data-section]').forEach(box => {
+        const key = box.dataset.section, button = box.querySelector('.section-toggle');
+        const show = open => { box.classList.toggle('is-open', open); button.setAttribute('aria-expanded', String(open)); };
+        show(!!trackData.openSections?.[key]);
+        button.addEventListener('click', () => { const open = !box.classList.contains('is-open'); trackData.openSections = { ...trackData.openSections, [key]: open }; show(open); });
+    });
+    placeTrackHeaderItems(trackElement);
     trackElement.querySelector('.remove-track-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the track "${trackData.name}"?`)) deleteItems(mix, { trackIds: [trackData.id] }); });
     trackElement.querySelector('.copy-settings-btn').addEventListener('click', () => { copiedTrackSettings = JSON.parse(JSON.stringify(trackData.settings)); showMessage('Settings copied!'); });
     trackElement.querySelector('.paste-settings-btn').addEventListener('click', () => pasteTrackSettings(track.data.id));
@@ -2664,7 +2803,7 @@ function setupGlobalDragDropListeners() {
             draggedElement = trackHandle.closest('.track');
             draggedElementType = 'track';
             // Show the whole header under the pointer while dragging, not just the small handle.
-            const header = trackHandle.closest('.track-header'), rect = header.getBoundingClientRect();
+            const header = draggedElement.querySelector('.track-header'), rect = header.getBoundingClientRect(); // on a phone the handle sits below the header (MS-104)
             e.dataTransfer.setDragImage(header, e.clientX - rect.left, e.clientY - rect.top);
         } else if (mixEl) {
             draggedElement = mixEl.closest('.mix-container');
@@ -3966,12 +4105,24 @@ function updateSettingDisplay(trackElement, key, value) { const display = trackE
 function updateSpeedRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.speed-range-readout'); if (!el) return; const v = Number(settings.speed) || 0, lo = Math.max(0.1, Number(settings.minSpeed) || 0), hi = Math.max(lo, Number(settings.maxSpeed) || 0); el.textContent = `= ${Math.round(v * lo * 100)}%–${Math.round(v * hi * 100)}%`; }
 // Varying volume: what Min / Max Vol (shares of the Volume slider) come to, e.g. Volume 150%, Min 40%, Max 100% -> "= 60%–150%".
 function updateVolumeRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.volume-range-readout'); if (!el) return; const v = Number(settings.volume) || 0, lo = Number(settings.minVolume) || 0, hi = Math.max(lo, Number(settings.maxVolume) || 0); el.textContent = `= ${Math.round(v * lo * 100)}%–${Math.round(v * hi * 100)}%`; }
+// MS-104: a closed Timing / Volume / Speed / Fades box still shows its current choice beside its title.
+function updateSectionSummaries(trackElement, settings) {
+    const secs = v => `${Number(Number(v).toFixed(1))} s`;
+    const label = (selector, value) => trackElement.querySelector(selector)?.querySelector(`option[value="${value}"]`)?.textContent || '';
+    const summaries = {
+        timing: !settings.loop ? 'Loop off' : settings.timingMode === 'random' ? `Loop · Random ${secs(settings.minDelay)}–${secs(settings.maxDelay)}` : `Loop · Regular${Number(settings.loopDelay) > 0 ? `, gap ${secs(settings.loopDelay)}` : ''}`,
+        volume: label('.volumeMode-select', settings.volumeMode),
+        speed: label('.speedMode-select', settings.speedMode),
+        fades: [settings.fadeIn && `In ${secs(settings.fadeInLength)}`, settings.fadeOut && `Out ${secs(settings.fadeOutLength)}`, settings.crossfade && !trackElement.closest('.sync-group') && `Crossfade ${secs(settings.crossfadeLength)}`].filter(Boolean).join(', ') || 'Off'
+    };
+    trackElement.querySelectorAll('.mode-box[data-section]').forEach(box => { const el = box.querySelector('.section-summary'); if (el) el.textContent = summaries[box.dataset.section] ? `· ${summaries[box.dataset.section]}` : ''; });
+}
 // Show only the controls that the track's Timing, Volume and Speed choices use. Timing only matters while Loop is on.
-function updateModeUI(trackElement, settings) { updateVolumeRangeReadout(trackElement, settings); updateSpeedRangeReadout(trackElement, settings); trackElement.classList.toggle('mode-looping', !!settings.loop); trackElement.classList.toggle('mode-volume-range', settings.volumeMode === 'varying'); trackElement.classList.toggle('mode-speed-range', settings.speedMode === 'random' || settings.speedMode === 'varying'); trackElement.classList.toggle('mode-speed-wave', settings.speedMode === 'varying'); trackElement.classList.toggle('mode-random-play', settings.loop && settings.timingMode === 'random'); trackElement.classList.toggle('mode-loop-delay', settings.loop && settings.timingMode !== 'random'); trackElement.classList.toggle('fade-in-on', !!settings.fadeIn); trackElement.classList.toggle('fade-out-on', !!settings.fadeOut); trackElement.classList.toggle('crossfade-on', !!settings.crossfade); trackElement.classList.toggle('crossfade-unavailable', !settings.loop || settings.timingMode === 'random' || Number(settings.loopDelay) > 0); }
+function updateModeUI(trackElement, settings) { updateSectionSummaries(trackElement, settings); updateVolumeRangeReadout(trackElement, settings); updateSpeedRangeReadout(trackElement, settings); trackElement.classList.toggle('mode-looping', !!settings.loop); trackElement.classList.toggle('mode-volume-range', settings.volumeMode === 'varying'); trackElement.classList.toggle('mode-speed-range', settings.speedMode === 'random' || settings.speedMode === 'varying'); trackElement.classList.toggle('mode-speed-wave', settings.speedMode === 'varying'); trackElement.classList.toggle('mode-random-play', settings.loop && settings.timingMode === 'random'); trackElement.classList.toggle('mode-loop-delay', settings.loop && settings.timingMode !== 'random'); trackElement.classList.toggle('fade-in-on', !!settings.fadeIn); trackElement.classList.toggle('fade-out-on', !!settings.fadeOut); trackElement.classList.toggle('crossfade-on', !!settings.crossfade); trackElement.classList.toggle('crossfade-unavailable', !settings.loop || settings.timingMode === 'random' || Number(settings.loopDelay) > 0); }
 function pasteTrackSettings(trackId) { if (!copiedTrackSettings) { showMessage('No settings copied.'); return; } const mix = mixes.find(m => m.tracks.some(t => t.id === trackId)); if (!mix) return; const trackData = mix.tracks.find(t => t.id === trackId); trackData.settings = normalizeTrackSettings(JSON.parse(JSON.stringify(copiedTrackSettings))); syncTrackUI(document.getElementById(trackId), trackData); convertLegacyFadeOut(mix.audioEngine[trackId]); updateFadeReadout(mix.audioEngine[trackId]); onTrackSettingChanged(mix.audioEngine[trackId], 'all'); }
 function resetAllTracksToDefaults(mixId) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; mix.tracks.forEach(t => { t.settings = { ...DEFAULT_TRACK_SETTINGS }; syncTrackUI(document.getElementById(t.id), t); onTrackSettingChanged(mix.audioEngine[t.id], 'all'); }); }
-function toggleAllTracksExpanded(mixId, button) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; const shouldExpand = button.textContent.includes('Expand'); const tracks = document.getElementById(mixId).querySelectorAll('.track'); tracks.forEach(t => t.classList.toggle('expanded', shouldExpand)); const syncGroups = document.getElementById(mixId).querySelectorAll('.sync-group'); syncGroups.forEach(sg => { sg.classList.toggle('expanded', shouldExpand); const groupData = mix.syncGroups.find(g => g.id === sg.id); if (groupData) groupData.isExpanded = shouldExpand; }); button.textContent = shouldExpand ? 'Collapse All' : 'Expand All'; }
-function toggleAllGroupTracksExpanded(groupId, button) { const groupEl = document.getElementById(groupId); if (!groupEl) return; const tracks = groupEl.querySelectorAll('.track'); const shouldExpand = button.textContent.includes('Expand'); tracks.forEach(t => t.classList.toggle('expanded', shouldExpand)); button.textContent = shouldExpand ? 'Collapse SG' : 'Expand SG';}
+function toggleAllTracksExpanded(mixId, button) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; const shouldExpand = button.textContent.includes('Expand'); const tracks = document.getElementById(mixId).querySelectorAll('.track'); tracks.forEach(t => setTrackExpanded(t, shouldExpand)); const syncGroups = document.getElementById(mixId).querySelectorAll('.sync-group'); syncGroups.forEach(sg => { sg.classList.toggle('expanded', shouldExpand); const groupData = mix.syncGroups.find(g => g.id === sg.id); if (groupData) groupData.isExpanded = shouldExpand; }); button.textContent = shouldExpand ? 'Collapse All' : 'Expand All'; }
+function toggleAllGroupTracksExpanded(groupId, button) { const groupEl = document.getElementById(groupId); if (!groupEl) return; const tracks = groupEl.querySelectorAll('.track'); const shouldExpand = button.textContent.includes('Expand'); tracks.forEach(t => setTrackExpanded(t, shouldExpand)); button.textContent = shouldExpand ? 'Collapse SG' : 'Expand SG';}
 function updateTrackUIVisibility(trackElement, isInGroup) { trackElement.querySelectorAll('.track-transposed-controls').forEach(el => el.style.display = isInGroup ? 'none' : ''); trackElement.querySelectorAll('.sync-track-controls').forEach(el => el.style.display = isInGroup ? '' : 'none'); }
 
 function sortTracks(mixId, sortType) {
