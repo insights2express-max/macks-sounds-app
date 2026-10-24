@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v318</title>
+    <title>Mack's Sounds v319</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -145,6 +145,7 @@ html[data-theme='light'] #settings-btn { color: #333; }
 .track.is-disabled { opacity: 0.6; }
 .track.dragging { opacity: 0.4; }
 .drag-over-indicator-track { height: 8px; background: rgba(228, 63, 90, 0.5); border-radius: 4px; margin: -4px 0;}
+.drag-block-label { position: fixed; top: -100px; left: 0; padding: 0.4em 0.8em; border-radius: 6px; background: rgb(228, 63, 90); color: #fff; font-weight: bold; white-space: nowrap; } /* MS-210: shown under the pointer while ticked items move together */
 .track-header { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 1rem; }
 /* MS-190: only the handle drags a track, so taps elsewhere on the header never start a drag. */
 .track-drag-handle { cursor: grab; flex-shrink: 0; display: flex; align-items: center; margin-right: -0.5rem; }
@@ -508,7 +509,8 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .sync-group-controls { grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr)); }
     .sync-group-controls .control-group, .mode-box .control-group { min-width: 0; }
     .sync-group-sort-select { min-width: 0; max-width: 100%; }
-    .sync-group-controls { order: 20; flex-basis: 100%; }
+    /* MS-219: one control per row needs about 350 px, so the 300 px cap (there for the open / close slide) cut off the Delay boxes. */
+    .sync-group-controls { order: 20; flex-basis: 100%; max-height: 800px; }
 
     /* (d) Settings: a full-screen sheet; its title bar (with ✕) stays at the top while the settings scroll. */
     #settings-modal-content { top: 0 !important; left: 0 !important; transform: none; width: 100%; max-width: none; height: 100%; max-height: none; border-radius: 0; margin: 0; }
@@ -534,7 +536,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v318</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v319</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -839,7 +841,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v318';
+const APP_VERSION = 'v319';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1170,6 +1172,7 @@ function createMixUI(mix) {
     const toggleMixExpand = (expand) => { 
         mix.isExpanded = (expand !== undefined) ? expand : !mix.isExpanded; 
         mixContainer.classList.toggle('expanded', mix.isExpanded);
+        refreshLevelControls(mixContainer); // MS-216: − / + stay usable while the mix is closed
     };
     // Opening a mix that came back from storage unpacks its sounds (MS-130.03).
     const openByHand = () => { toggleMixExpand(); if (mix.isExpanded) ensureMixSounds(mix); };
@@ -1211,7 +1214,8 @@ function createMixUI(mix) {
     });
     setupLevelControl(mixContainer.querySelector('.mix-header .level-control'),
         () => viewLevel([...mixContainer.querySelectorAll('.sync-group')], [...mixContainer.querySelectorAll('.track')]),
-        level => { mixContainer.querySelectorAll('.sync-group').forEach(g => setGroupLevel(g, level)); mixContainer.querySelectorAll('.tracks-container > .track').forEach(t => setTrackLevel(t, level)); });
+        level => { mixContainer.querySelectorAll('.sync-group').forEach(g => setGroupLevel(g, level)); mixContainer.querySelectorAll('.tracks-container > .track').forEach(t => setTrackLevel(t, level)); },
+        { hidden: () => !mix.isExpanded, reveal: () => { toggleMixExpand(true); ensureMixSounds(mix); } }); // MS-216
     // Any arrow or title bar clicked by hand changes the level shown, so every level display in the mix is refreshed after a click.
     mixContainer.addEventListener('click', () => setTimeout(() => refreshLevelControls(mixContainer), 0));
     mixContainer.querySelector('.mix-header .move-up-btn').addEventListener('click', () => moveItem(mixContainer, -1));
@@ -2963,9 +2967,61 @@ function setupTheme() {
     <script>
 // --- js/drag-drop.js ---
 // --- DRAG AND DROP ---
+// MS-210: grabbing the handle of a ticked track moves every ticked track of its mix as one block, in screen order,
+// into or out of a Sync Group; grabbing a ticked Sync Group's handle moves every ticked Sync Group of the mix (never
+// into another group). Grabbing an unticked handle moves only that item. The moved items' ticks clear afterwards.
+function tickedForMove(el, type) {
+    // Like Delete Selected, every ticked item counts, also one hidden by the filter or in a closed Sync Group.
+    if (!el.querySelector(type === 'track' ? '.track-select-checkbox' : '.sync-group-select-checkbox')?.checked) return [el];
+    const mixEl = el.closest('.mix-container');
+    const items = type === 'track'
+        ? [...mixEl.querySelectorAll('.track')].filter(t => t.querySelector('.track-select-checkbox')?.checked)
+        : [...mixEl.querySelectorAll('.tracks-container > .sync-group')].filter(g => g.querySelector('.sync-group-select-checkbox')?.checked);
+    return items.length ? items : [el];
+}
+
+// A small "⠿ 3 tracks" label under the pointer while a block is dragged.
+function setBlockDragImage(e, count, type) {
+    const label = document.createElement('div');
+    label.className = 'drag-block-label';
+    label.textContent = `⠿ ${count} ${type === 'track' ? 'tracks' : 'Sync Groups'}`;
+    document.body.appendChild(label);
+    e.dataTransfer.setDragImage(label, 12, 12);
+    setTimeout(() => label.remove(), 0);
+}
+
+// Undo for a block move (MS-210): the screen order and each track's Sync Group from before the move.
+function groupOfTracks(mix) { return Object.fromEntries(mix.tracks.map(t => [t.id, t.syncInfo.groupId])); }
+function pushMoveUndo(mix, layout, groupOf, movedEls, type) {
+    pushUndo({
+        kind: 'move', mixId: mix.id, layout, groupOf,
+        ids: movedEls.map(el => el.id),
+        what: `${movedEls.length} ${type === 'track' ? 'tracks' : 'Sync Groups'}`
+    }, 'Moved');
+}
+
+function undoMove(entry) {
+    const mix = mixes.find(m => m.id === entry.mixId);
+    if (!mix) throw new Error('the mix it was in has been deleted.');
+    entry.ids.forEach(id => {
+        const track = mix.audioEngine[id];
+        if (!track || !(id in entry.groupOf)) return;
+        const oldGroupId = track.data.syncInfo.groupId, groupId = entry.groupOf[id];
+        if (oldGroupId === groupId || (groupId && !mix.syncGroups.some(g => g.id === groupId))) return;
+        track.data.syncInfo.groupId = groupId;
+        const el = document.getElementById(id);
+        (groupId ? document.querySelector(`#${CSS.escape(groupId)} .sync-group-tracks`) : document.querySelector(`#${CSS.escape(mix.id)} .tracks-container`)).appendChild(el);
+        updateTrackUIVisibility(el, !!groupId);
+        onTrackGroupChanged(mix, track, oldGroupId);
+    });
+    applyLayout(mix, entry.layout, new Set(entry.ids));
+    refreshLevelControls(document.getElementById(mix.id));
+}
+
 function setupGlobalDragDropListeners() {
     let draggedElement = null;
     let draggedElementType = null; // 'track', 'mix', or 'group'
+    let movingEls = []; // the grabbed item, or every ticked one moving with it (MS-210)
 
     document.addEventListener('dragstart', e => {
         // MS-190: tracks, like Sync Groups and mixes, are dragged by their ⠿ handle only.
@@ -2988,17 +3044,18 @@ function setupGlobalDragDropListeners() {
         } else {
             return;
         }
-        
+
+        movingEls = draggedElementType === 'mix' ? [draggedElement] : tickedForMove(draggedElement, draggedElementType);
+        if (movingEls.length > 1) setBlockDragImage(e, movingEls.length, draggedElementType);
         e.dataTransfer.setData('text/plain', draggedElement.id);
-        const elementBeingDragged = draggedElement;
-        setTimeout(() => { if (draggedElement === elementBeingDragged) elementBeingDragged.classList.add('dragging'); }, 0);
+        const elementBeingDragged = draggedElement, els = movingEls;
+        setTimeout(() => { if (draggedElement === elementBeingDragged) els.forEach(el => el.classList.add('dragging')); }, 0);
         e.dataTransfer.effectAllowed = 'move';
     });
 
     document.addEventListener('dragend', () => {
-        if (draggedElement) {
-            draggedElement.classList.remove('dragging');
-        }
+        movingEls.forEach(el => el.classList.remove('dragging'));
+        movingEls = [];
         draggedElement = null;
         draggedElementType = null;
         document.querySelectorAll('.drag-over-indicator-track, .drag-over-indicator-mix, .drag-over-indicator-group').forEach(i => i.remove());
@@ -3016,7 +3073,7 @@ function setupGlobalDragDropListeners() {
             const targetSyncGroup = e.target.closest('.sync-group');
             let dropZone = e.target.closest('.tracks-container, .sync-group-tracks');
             
-            if (targetTrack && targetTrack !== draggedElement) {
+            if (targetTrack && !movingEls.includes(targetTrack)) {
                 const rect = targetTrack.getBoundingClientRect();
                 const next = (e.clientY - rect.top) / rect.height > 0.5;
                 const indicator = document.createElement('div');
@@ -3052,7 +3109,7 @@ function setupGlobalDragDropListeners() {
              const targetGroup = e.target.closest('.sync-group');
              const targetTrack = e.target.closest('.track');
              const target = targetGroup || (targetTrack?.parentElement?.classList.contains('tracks-container') ? targetTrack : null);
-             if (target && target !== draggedElement && target.closest('.mix-container') === draggedElement.closest('.mix-container')) {
+             if (target && !movingEls.includes(target) && target.closest('.mix-container') === draggedElement.closest('.mix-container')) {
                 const rect = target.getBoundingClientRect();
                 const next = (e.clientY - rect.top) / rect.height > 0.5;
                 const indicator = document.createElement('div');
@@ -3070,21 +3127,33 @@ function setupGlobalDragDropListeners() {
         const mix = mixes.find(m => m.id === mixContainer.id);
         if (!mix) return;
 
-        if (draggedElementType === 'track') {
-            const trackData = mix.tracks.find(t => t.id === draggedElement.id);
-            if (!trackData) return;
+        const isBlock = movingEls.length > 1;
+        const layoutBefore = isBlock ? mixLayout(mix) : null;
+        const finishBlockMove = groupOf => {
+            pushMoveUndo(mix, layoutBefore, groupOf, movingEls, draggedElementType);
+            movingEls.forEach(el => { const tick = el.querySelector(draggedElementType === 'track' ? '.track-select-checkbox' : '.sync-group-select-checkbox'); if (tick) tick.checked = false; });
+            updateDeleteSelectedButton(mix.id);
+            refreshLevelControls(mixContainer);
+        };
 
+        if (draggedElementType === 'track') {
             const indicator = document.querySelector('.drag-over-indicator-track');
             const dropContainer = indicator?.parentElement;
 
             // Tracks can only move within their own mix (their audio lives in that mix).
             if (dropContainer && dropContainer.closest('.mix-container') === mixContainer) {
                 const newGroupId = dropContainer.closest('.sync-group')?.dataset.groupId || null;
-                const oldGroupId = trackData.syncInfo.groupId;
-                trackData.syncInfo.groupId = newGroupId;
-                dropContainer.insertBefore(draggedElement, indicator);
-                updateTrackUIVisibility(draggedElement, !!newGroupId);
-                if (oldGroupId !== newGroupId) onTrackGroupChanged(mix, mix.audioEngine[trackData.id], oldGroupId);
+                const groupOfBefore = groupOfTracks(mix);
+                movingEls.forEach(el => {
+                    const trackData = mix.tracks.find(t => t.id === el.id);
+                    if (!trackData) return;
+                    const oldGroupId = trackData.syncInfo.groupId;
+                    trackData.syncInfo.groupId = newGroupId;
+                    dropContainer.insertBefore(el, indicator);
+                    updateTrackUIVisibility(el, !!newGroupId);
+                    if (oldGroupId !== newGroupId) onTrackGroupChanged(mix, mix.audioEngine[trackData.id], oldGroupId);
+                });
+                if (isBlock) finishBlockMove(groupOfBefore);
             }
         } else if (draggedElementType === 'mix') {
             const indicator = document.querySelector('.drag-over-indicator-mix');
@@ -3097,7 +3166,8 @@ function setupGlobalDragDropListeners() {
             const indicator = document.querySelector('.drag-over-indicator-group');
             if (indicator && indicator.closest('.mix-container') === mixContainer) {
                 const list = indicator.parentElement;
-                list.insertBefore(draggedElement, indicator);
+                movingEls.forEach(el => list.insertBefore(el, indicator));
+                if (isBlock) finishBlockMove(groupOfTracks(mix));
                 const newGroupOrder = Array.from(list.querySelectorAll(':scope > .sync-group')).map(el => el.id);
                 mix.syncGroups.sort((a, b) => newGroupOrder.indexOf(a.id) - newGroupOrder.indexOf(b.id));
             }
@@ -4338,12 +4408,16 @@ function viewLevel(groupEls, trackEls) {
     return trackEls.every(boxesOpen) ? 3 : 2;
 }
 // Wires a level control: − and + step one level, skipping levels that would change nothing (e.g. level 1 with no Sync Groups).
-function setupLevelControl(control, getLevel, setLevel) {
+// MS-216: `hidden` / `reveal` are for a mix closed by its chevron: − or + opens it as well, so the new level can be seen
+// (at level 0 or 3, where the step itself changes nothing, the press just opens it).
+function setupLevelControl(control, getLevel, setLevel, { hidden = () => false, reveal = () => {} } = {}) {
     const down = control.querySelector('.level-down'), up = control.querySelector('.level-up');
-    control.refresh = () => { const level = getLevel(); control.querySelector('.level-num').textContent = level; down.disabled = level <= 0; up.disabled = level >= 3; };
+    control.refresh = () => { const level = getLevel(); control.querySelector('.level-num').textContent = level; down.disabled = level <= 0 && !hidden(); up.disabled = level >= 3 && !hidden(); };
     const step = dir => {
+        if (hidden()) reveal();
         const before = getLevel();
         let target = before;
+        if (target + dir < 0 || target + dir > 3) { refreshLevelControls(control.closest('.mix-container')); return; }
         do { target += dir; setLevel(target); } while (getLevel() === before && target > 0 && target < 3);
         refreshLevelControls(control.closest('.mix-container'));
     };
@@ -4697,18 +4771,19 @@ function deleteMixWithUndo(mixId) {
 }
 
 // --- Undo ---
-// The last UNDO_LIMIT deletions (JM: 5), kept until the page is closed. Restored items come back with their settings,
+// The last UNDO_LIMIT deletions or block moves (JM: 5; moves since MS-210), kept until the page is closed. Restored items come back with their settings,
 // sound, place in the list and Sync Group, unticked and unsoloed. They play only if their mix is playing and they are
 // switched on, like a track that is added or pasted while the mix plays; a restored mix comes back stopped.
 const UNDO_LIMIT = 5;
 let undoStack = [];
 let undoBusy = false;
 
-function pushUndo(entry) {
+function pushUndo(entry, verb = 'Deleted') {
+    entry.verb = verb; // MS-210: a block move can be undone too ('Moved')
     undoStack.push(entry);
     if (undoStack.length > UNDO_LIMIT) undoStack.shift();
     updateUndoButton();
-    showUndoMessage(`Deleted ${entry.what}.`, undoLastDelete);
+    showUndoMessage(`${verb} ${entry.what}.`, undoLastDelete);
 }
 
 function updateUndoButton() {
@@ -4717,7 +4792,7 @@ function updateUndoButton() {
     const last = undoStack[undoStack.length - 1];
     btn.disabled = !last;
     btn.textContent = last ? `↶ Undo (${undoStack.length})` : '↶ Undo';
-    btn.title = last ? `Undo: delete of ${last.what} (Ctrl+Z). ${undoStack.length} of the last ${UNDO_LIMIT} deletions can be undone.` : 'Nothing to undo';
+    btn.title = last ? `Undo: ${last.verb === 'Moved' ? 'move' : 'delete'} of ${last.what} (Ctrl+Z). ${undoStack.length} of the last ${UNDO_LIMIT} deletions or block moves can be undone.` : 'Nothing to undo';
 }
 
 async function undoLastDelete() {
@@ -4728,8 +4803,8 @@ async function undoLastDelete() {
     if (!entry) { showMessage('Nothing to undo.'); return; }
     undoBusy = true;
     try {
-        if (entry.kind === 'mix') await restoreMix(entry); else await restoreItems(entry);
-        showMessage(`Restored ${entry.what}.`);
+        if (entry.kind === 'move') undoMove(entry); else if (entry.kind === 'mix') await restoreMix(entry); else await restoreItems(entry);
+        showMessage(entry.kind === 'move' ? `Moved ${entry.what} back.` : `Restored ${entry.what}.`);
     } catch (err) {
         console.error(err);
         showMessage(`Could not restore ${entry.what}: ${err.message}`);

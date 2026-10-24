@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v317</title>
+    <title>Mack's Sounds v318</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -368,6 +368,13 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 .bg-image-delete-btn { background-color: #d90429; color: white; border-radius: 50%; width: 24px; height: 24px; line-height: 24px; text-align: center; padding: 0; font-weight: bold; }
 #bg-image-url-input { flex-grow: 1; }
 .bg-storage-note { font-size: 0.8em; opacity: 0.7; margin-top: 0.5rem; }
+/* v318 (MS-130): Settings > Saved in this browser, and a mix's "Loading sounds…" note while its saved sounds are unpacked */
+.saved-heading { margin: 1rem 0 0.4rem; }
+.saved-mix-list, .saved-sound-list { display: flex; flex-direction: column; gap: 0.3rem; max-height: 14rem; overflow-y: auto; }
+.saved-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.35rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.05); font-size: 0.85em; overflow-wrap: anywhere; }
+.saved-row.is-unused { opacity: 0.75; }
+.saved-actions { margin-top: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+.mix-sounds-status { flex-shrink: 0; font-size: 0.8rem; opacity: 0.8; white-space: nowrap; }
 
 /* BG Slideshow Styles */
 #bg-slideshow-playlist { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem; border: 1px solid var(--input-border-color); border-radius: 4px; }
@@ -527,7 +534,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v317</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v318</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -691,7 +698,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                         <input type="text" id="bg-image-url-input" placeholder="Paste image URL here...">
                         <button id="bg-image-url-load-btn" class="small-btn">Load from URL</button>
                     </div>
-                    <p class="bg-storage-note">Note: Local images are stored in your browser, which has a limited capacity (approx. 5MB). For large files, consider using a URL or an online image compressor.</p>
+                    <p class="bg-storage-note">Images loaded from the device are saved in this browser with your mixes (see Saved in this browser, below).</p>
                     <div class="control-group-row" style="margin-top: 1rem;">
                         <button id="bg-sort-az" class="small-btn">Sort A-Z</button>
                         <button id="bg-sort-za" class="small-btn">Sort Z-A</button>
@@ -780,6 +787,19 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                     </div>
                     <button id="toggle-slideshow-btn" class="small-btn" style="margin-top: 1rem;">Start Slideshow</button>
                 </fieldset>
+
+                <fieldset id="saved-panel">
+                    <legend>Saved in this browser</legend>
+                    <div class="saved-summary"></div>
+                    <h4 class="saved-heading">Mixes</h4>
+                    <div class="saved-mix-list"></div>
+                    <h4 class="saved-heading">Sounds</h4>
+                    <div class="saved-sound-list"></div>
+                    <div class="control-group-row saved-actions">
+                        <button id="delete-unused-sounds-btn" class="small-btn" hidden>Delete all unused sounds</button>
+                        <button id="clear-saved-btn" class="small-btn">Clear everything saved…</button>
+                    </div>
+                </fieldset>
             </div>
         </div>
     </div>
@@ -819,7 +839,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v317';
+const APP_VERSION = 'v318';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1059,8 +1079,9 @@ function normalizeMixData(mixData) {
     const defaults = { 
         id: uniqueId('mix'), name: `My Custom Mix ${mixes.length + 1}`, 
         tracks: [], syncGroups: [], isPlaying: false, isPaused: false, 
-        isMuted: false, audioEngine: {}, isExpanded: true, volume: 1, soloedTrackIds: []
-    }; 
+        isMuted: false, audioEngine: {}, isExpanded: true, volume: 1, soloedTrackIds: [],
+        soundsState: 'loaded' // 'pending' for a mix restored from storage until its sounds are unpacked (js/storage.js)
+    };
     if (!mixData) return defaults; 
     const normalized = { ...defaults, ...mixData }; 
     normalized.audioEngine = {}; 
@@ -1101,6 +1122,7 @@ function createMixUI(mix) {
                 <svg class="mix-chevron" viewBox="0 0 100 100"><path d="M 30,15 L 70,50 L 30,85 Z" fill="currentColor"/></svg>
                 <div class="mix-title-group">
                     <input type="text" class="mix-title" value="${escapeHtml(mix.name)}">
+                    <span class="mix-sounds-status" hidden></span>
                 </div>
                 <div class="control-group-row mix-header-volume-control">
                     <label for="mix-vol-${mix.id}">Volume</label>
@@ -1149,8 +1171,10 @@ function createMixUI(mix) {
         mix.isExpanded = (expand !== undefined) ? expand : !mix.isExpanded; 
         mixContainer.classList.toggle('expanded', mix.isExpanded);
     };
-    chevron.addEventListener('click', e => { e.stopPropagation(); toggleMixExpand(); });
-    mixContainer.querySelector('.mix-title-group').addEventListener('click', e => { if (!e.target.closest('input, label, button, svg, select, .select-checkbox')) { toggleMixExpand(); } });
+    // Opening a mix that came back from storage unpacks its sounds (MS-130.03).
+    const openByHand = () => { toggleMixExpand(); if (mix.isExpanded) ensureMixSounds(mix); };
+    chevron.addEventListener('click', e => { e.stopPropagation(); openByHand(); });
+    mixContainer.querySelector('.mix-title-group').addEventListener('click', e => { if (!e.target.closest('input, label, button, svg, select, .select-checkbox')) { openByHand(); } });
     
     mixContainer.querySelector('.mix-mute-toggle').addEventListener('click', () => toggleMuteAll(mix.id));
     
@@ -1161,8 +1185,15 @@ function createMixUI(mix) {
     const mixVolLabel = mixContainer.querySelector(`label[for="mix-vol-${mix.id}"]`);
     mixVolLabel.addEventListener('dblclick', () => { mixVolSlider.value = 1; mixVolSlider.dispatchEvent(new Event('input')); });
 
-    mixContainer.querySelector('.play-pause-mix').addEventListener('click', () => {
+    mixContainer.querySelector('.play-pause-mix').addEventListener('click', async () => {
         const starting = !mix.isPlaying;
+        if (starting && mix.soundsState !== 'loaded') {
+            // A mix restored from storage: unpack its sounds first (the audio is unlocked now, during the tap).
+            initializeAudioContext();
+            if (audioContext.state === 'suspended') audioContext.resume();
+            await ensureMixSounds(mix);
+            if (mix.isPlaying || !mixes.includes(mix)) return;
+        }
         toggleMixPlayback(mix.id);
         if (starting) warnIfSilentSolo(mix);
     });
@@ -1171,7 +1202,13 @@ function createMixUI(mix) {
     mixContainer.querySelector('.delete-mix-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the mix "${mix.name}"?`)) { deleteMixWithUndo(mix.id); }});
     mixContainer.querySelector('.export-mix-btn').addEventListener('click', () => exportMix(mix.id));
     mixContainer.querySelector('.add-sync-group-btn').addEventListener('click', () => createSyncGroup(mix.id));
-    sortSelect.addEventListener('change', e => { sortTracks(mix.id, e.target.value); e.target.selectedIndex = 0; });
+    sortSelect.addEventListener('change', async e => {
+        const type = e.target.value;
+        e.target.selectedIndex = 0;
+        if (type.startsWith('duration')) await ensureMixSounds(mix); // lengths are known once the sounds are unpacked
+        sortTracks(mix.id, type);
+        scheduleSave();
+    });
     setupLevelControl(mixContainer.querySelector('.mix-header .level-control'),
         () => viewLevel([...mixContainer.querySelectorAll('.sync-group')], [...mixContainer.querySelectorAll('.track')]),
         level => { mixContainer.querySelectorAll('.sync-group').forEach(g => setGroupLevel(g, level)); mixContainer.querySelectorAll('.tracks-container > .track').forEach(t => setTrackLevel(t, level)); });
@@ -1216,7 +1253,8 @@ async function handleFileAdd(mix, files) {
     for (const file of files) {
         try {
             const arrayBuffer = await file.arrayBuffer();
-            await processNewTrack(mix, arrayBuffer, file.name);
+            const soundId = await storeSound(arrayBuffer, file.name, file.type); // kept once, as the original file (MS-130)
+            await processNewTrack(mix, arrayBuffer, file.name, { soundId });
         } catch (error) {
             showMessage(`Failed to load ${file.name}. It might be a corrupted file.`);
             console.error(`Error processing file ${file.name}:`, error);
@@ -1232,26 +1270,36 @@ async function processNewTrack(mix, audioSource, trackName, existingTrackData = 
         settings: normalizeTrackSettings(existingTrackData?.settings),
         syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: existingTrackData?.syncInfo?.startTime || 0 },
         openSections: { ...existingTrackData?.openSections }, // MS-104: which of Timing / Volume / Speed / Fades are open (closed by default)
-        isExpanded: !!existingTrackData?.isExpanded // MS-104: the track's settings open (saved with the mix, like Sync Groups)
+        isExpanded: !!existingTrackData?.isExpanded, // MS-104: the track's settings open (saved with the mix, like Sync Groups)
+        soundId: existingTrackData?.soundId || null // MS-130: the saved sound it plays (js/storage.js); several tracks may share one
     };
     if (!mix.tracks) mix.tracks = [];
-    mix.tracks.push(trackData); 
+    mix.tracks.push(trackData);
     const track = addTrackToMixUI(mix, trackData);
-    try { 
-        let buffer;
-        if (audioSource instanceof AudioBuffer) { buffer = audioSource; } 
-        else { buffer = await audioContext.decodeAudioData(audioSource.slice(0)); }
-        track.audio.buffer = buffer;
-        convertLegacyFadeOut(track);
-        updateFadeReadout(track);
-        setTimeout(() => updatePlayCounterDisplay(track), 0);
-        // Added or pasted while the mix plays: start straight away (grouped tracks join the group's next cycle).
-        if (mix.isPlaying && trackData.isEnabled && !trackData.syncInfo.groupId) startTrackChain(track);
-    } catch (error) { 
-        console.error(`Error processing audio for ${trackName}: ${error}`); 
-        showMessage(`Could not process audio for: ${trackName}`); 
+    try {
+        // audioSource: a decoded sound, the file's bytes, or nothing (the saved sound is unpacked from storage).
+        let buffer = null;
+        if (audioSource instanceof AudioBuffer) { buffer = audioSource; }
+        else if (audioSource) { buffer = await decodeSound(trackData.soundId, audioSource); }
+        else if (trackData.soundId && mix.soundsState === 'loaded') { buffer = await decodeSound(trackData.soundId); }
+        if (buffer) attachTrackBuffer(mix, track, buffer);
+    } catch (error) {
+        console.error(`Error processing audio for ${trackName}: ${error}`);
+        showMessage(`Could not process audio for: ${trackName}`);
     }
+    scheduleSave();
     return trackData;
+}
+
+// Gives a track its decoded sound (added, pasted, or unpacked from storage when its mix is first played or opened).
+function attachTrackBuffer(mix, track, buffer) {
+    if (!mix.audioEngine[track.data.id]) return; // deleted meanwhile
+    track.audio.buffer = buffer;
+    convertLegacyFadeOut(track);
+    updateFadeReadout(track);
+    setTimeout(() => updatePlayCounterDisplay(track), 0);
+    // Added or pasted while the mix plays: start straight away (grouped tracks join the group's next cycle).
+    if (mix.isPlaying && track.data.isEnabled && !track.data.syncInfo.groupId && track.audio.state !== 'PLAYING') startTrackChain(track);
 }
 
 // MS-104: the title bar of a track's Timing / Volume / Speed / Fades box. A tap opens or closes the box; while closed,
@@ -1476,6 +1524,7 @@ function addTrackToMixUI(mix, trackData) {
     addOptions('.speedMode-select', { fixed: 'Steady', random: 'Random', varying: 'Varying' });
     setupSecondsInputs(trackElement);
     syncTrackUI(trackElement, trackData);
+    trackElement.classList.toggle('is-disabled', !trackData.isEnabled); // a track restored or imported switched off looks off
     updateTrackUIVisibility(trackElement, !!trackData.syncInfo.groupId);
 
     trackElement.querySelector('.volume-label').addEventListener('dblclick', () => { track.data.settings.volume = DEFAULT_TRACK_SETTINGS.volume; syncTrackUI(trackElement, track.data); onTrackSettingChanged(track, 'volume'); });
@@ -1664,7 +1713,13 @@ function createSyncGroupUI(mix, groupData) {
     const groupSortSelect = groupContainer.querySelector('.sync-group-sort-select');
     const groupSortOptions = {'': 'Sort By...', 'name_asc': 'Name (A-Z)', 'name_desc': 'Name (Z-A)', 'duration_asc': 'Duration (Short-Long)', 'duration_desc': 'Duration (Long-Short)'};
     for(const [val, text] of Object.entries(groupSortOptions)) { groupSortSelect.options.add(new Option(text, val)); }
-    groupSortSelect.addEventListener('change', e => { sortGroupTracks(mix.id, groupData.id, e.target.value); e.target.selectedIndex = 0; });
+    groupSortSelect.addEventListener('change', async e => {
+        const type = e.target.value;
+        e.target.selectedIndex = 0;
+        if (type.startsWith('duration')) await ensureMixSounds(mix);
+        sortGroupTracks(mix.id, groupData.id, type);
+        scheduleSave();
+    });
 
     const titleGroup = groupContainer.querySelector('.sync-group-title-group');
     titleGroup.addEventListener('click', (e) => { 
@@ -1692,7 +1747,16 @@ function createSyncGroupUI(mix, groupData) {
     loopToggle.checked = groupData.isLooped;
     loopToggle.addEventListener('change', e => { groupData.isLooped = e.target.checked; onGroupSettingChanged(mix, groupData, 'loop'); });
     
-    groupContainer.querySelector('.play-stop-sync-group-btn').addEventListener('click', () => toggleSyncGroupPlayback(mix, groupData, groupContainer));
+    groupContainer.querySelector('.play-stop-sync-group-btn').addEventListener('click', async () => {
+        if (mix.soundsState !== 'loaded') {
+            // In a mix restored from storage: unpack its sounds first (MS-130.03).
+            initializeAudioContext();
+            if (audioContext.state === 'suspended') audioContext.resume();
+            await ensureMixSounds(mix);
+            if (groupData.isPlaying || !mix.syncGroups.includes(groupData)) return;
+        }
+        toggleSyncGroupPlayback(mix, groupData, groupContainer);
+    });
 
     groupContainer.querySelector('.delete-sync-group-btn').addEventListener('click', () => deleteSyncGroup(mix.id, groupData.id));
     setupSecondsInputs(groupContainer.querySelector('.sync-group-controls') || groupContainer);
@@ -3367,7 +3431,7 @@ function setupSettingsModal() {
     const gradientDirections = { 'To Bottom': 'to bottom', 'To Top': 'to top', 'To Right': 'to right', 'To Left': 'to left', 'To Bottom Right': 'to bottom right', 'To Bottom Left': 'to bottom left', 'To Top Right': 'to top right', 'To Top Left': 'to top left' };
     for (const [text, value] of Object.entries(gradientDirections)) { bgOverlayGradientDir.add(new Option(text, value)); uiGradientDir.add(new Option(text, value)); }
     
-    settingsBtn.addEventListener('click', () => { updateAudioDiagnostics(); settingsModalOverlay.classList.remove('hidden'); });
+    settingsBtn.addEventListener('click', () => { updateAudioDiagnostics(); renderSavedPanel(); settingsModalOverlay.classList.remove('hidden'); });
     settingsCloseBtn.addEventListener('click', () => settingsModalOverlay.classList.add('hidden'));
     settingsModalOverlay.addEventListener('click', (e) => { if (e.target === settingsModalOverlay) settingsModalOverlay.classList.add('hidden'); });
     
@@ -3575,41 +3639,31 @@ function setupSettingsModal() {
         });
     }
 
-    function saveBgImages() { localStorage.setItem('bgImages', JSON.stringify(bgImages)); }
-    
-    function deleteBgImage(id) { 
-        const wasActive = (id === activeBgImageId); 
-        bgImages = bgImages.filter(img => img.id !== id); 
+    // v318 (MS-130.02): kept in IndexedDB (js/storage.js), which lifts localStorage's ~5 MB limit.
+    function saveBgImages() { saveStoredBgImages(bgImages); }
+
+    function deleteBgImage(id) {
+        const wasActive = (id === activeBgImageId);
+        const gone = bgImages.find(img => img.id === id);
+        if (gone?.blob) URL.revokeObjectURL(gone.dataUrl);
+        bgImages = bgImages.filter(img => img.id !== id);
         if (wasActive) { setActiveBgImage('default'); } 
         saveBgImages(); 
         renderBgPlaylist(); 
     }
-    async function processNewImageData(dataUrl, fileName) {
-         const newImage = { id: uniqueId('bgimg'), name: fileName.replace(/\.[^/.]+$/, ""), dataUrl };
+    // blob: the image file itself, shown through an object URL; none for an image loaded from a web address.
+    async function processNewImageData(dataUrl, fileName, blob = null) {
+         const newImage = { id: uniqueId('bgimg'), name: fileName.replace(/\.[^/.]+$/, ""), dataUrl, blob };
          bgImages.unshift(newImage);
          setActiveBgImage(newImage.id);
          saveBgImages();
          renderBgPlaylist();
     }
     async function handleBgImageUpload(event) {
-        const files = Array.from(event.target.files); 
+        const files = Array.from(event.target.files);
         if (!files.length) return;
-        
-        const LOCAL_STORAGE_LIMIT = 4.5 * 1024 * 1024;
-        let currentStorageSize = (localStorage.getItem('bgImages') || '').length;
-        const totalUploadSize = files.reduce((sum, file) => sum + file.size, 0) * 1.37; // Base64 encoding adds ~37%
-
-        if (totalUploadSize + currentStorageSize > LOCAL_STORAGE_LIMIT) {
-            showMessage(`Cannot add selected image(s). This would exceed the browser's storage limit. Please remove other images or use smaller files.`);
-            event.target.value = '';
-            return;
-        }
-
-        for (const file of files) {
-            const reader = new FileReader();
-            reader.onload = (e) => processNewImageData(e.target.result, file.name);
-            reader.readAsDataURL(file);
-        }
+        // v318: no ~5 MB limit any more; the image files are kept as they are (no conversion to text).
+        for (const file of files) processNewImageData(URL.createObjectURL(file), file.name, file);
         event.target.value = '';
     }
     async function handleBgImageUrlLoad() {
@@ -3683,12 +3737,22 @@ function setupSettingsModal() {
             uiContainerOpacityDisplay.textContent = `${Math.round(uiContainerOpacitySlider.value * 100)}%`;
         }
         
-        const savedBgImages = localStorage.getItem('bgImages'); if (savedBgImages) { bgImages = JSON.parse(savedBgImages); }
         activeBgImageId = localStorage.getItem('activeBgImageId') || 'default';
-        setActiveBgImage(activeBgImageId);
         renderBgPlaylist();
+        loadStoredBgImages().then(images => {
+            bgImages = images;
+            setActiveBgImage(localStorage.getItem('activeBgImageId') || 'default');
+            renderBgPlaylist();
+        });
     }
     loadCustomizations();
+    // Settings > Saved in this browser > Clear everything also removes the background images.
+    document.addEventListener('saved-data-cleared', () => {
+        bgImages.forEach(img => { if (img.blob) URL.revokeObjectURL(img.dataUrl); });
+        bgImages = [];
+        setActiveBgImage('default');
+        renderBgPlaylist();
+    });
 }
     </script>
     <script>
@@ -3835,22 +3899,29 @@ async function handleMixImport(event) {
 
         const missing = [];
         const trackIdMap = {};
+        const soundIdOfFile = new Map(); // a file shared by several tracks is read and saved once (MS-130)
         for (const trackData of manifest.tracks) {
             const audioFile = findAudioFile(trackData.fileNameInZip);
             if (!audioFile) {
                 missing.push(trackData.fileNameInZip);
                 continue;
             }
-            const audioBuffer = await audioFile.async('arraybuffer');
+            let soundId = soundIdOfFile.get(audioFile.name), audioBuffer = null;
+            if (!soundId) {
+                audioBuffer = await audioFile.async('arraybuffer');
+                try { soundId = await storeSound(audioBuffer, audioFile.name.split('/').pop()); }
+                catch (err) { console.error(err); missing.push(`${trackData.fileNameInZip} (not a playable sound)`); continue; }
+                soundIdOfFile.set(audioFile.name, soundId);
+            }
             const syncInfo = { ...trackData.syncInfo, groupId: groupIdMap[trackData.syncInfo?.groupId] || null };
-            const newTrack = await processNewTrack(newMix, audioBuffer, trackData.name, { ...trackData, id: null, syncInfo });
+            const newTrack = await processNewTrack(newMix, audioBuffer, trackData.name, { ...trackData, id: null, syncInfo, soundId });
             if (trackData.id) trackIdMap[trackData.id] = newTrack.id;
         }
         if (manifest.layout) applyLayout(newMix, remapLayout(manifest.layout, { ...groupIdMap, ...trackIdMap }));
         updateMixMuteStates(newMix);
 
         mixes.unshift(newMix);
-        if (missing.length) showMessage(`The mix was imported, but ${missing.length} audio file(s) were missing from the ZIP and those tracks were skipped:\n\n${missing.join('\n')}`);
+        if (missing.length) showMessage(`The mix was imported, but ${missing.length} audio file(s) were missing from the ZIP or could not be played, and those tracks were skipped:\n\n${missing.join('\n')}`);
 
     } catch (err) {
         showMessage('Failed to import mix: ' + err.message);
@@ -3877,14 +3948,27 @@ async function exportMix(mixId) {
             layout
         };
         const usedFilenames = new Set(); 
-        const sanitizeFilename = (name) => { let sanitized = name.replace(/\.[^/.]+$/, "").replace(/[\\/:*?"<>|]/g, '_'); let finalName = sanitized, counter = 2; while (usedFilenames.has(finalName.toLowerCase())) { finalName = `${sanitized} (${counter++})`; } usedFilenames.add(finalName.toLowerCase()); return `${finalName}.wav`; };
+        const sanitizeFilename = (name, ext = 'wav') => { let sanitized = name.replace(/\.[^/.]+$/, "").replace(/[\\/:*?"<>|]/g, '_'); let finalName = sanitized, counter = 2; while (usedFilenames.has(`${finalName}.${ext}`.toLowerCase())) { finalName = `${sanitized} (${counter++})`; } usedFilenames.add(`${finalName}.${ext}`.toLowerCase()); return `${finalName}.${ext}`; };
+        // v318 (MS-130.02): each saved sound goes in once, as its original file (an MP3 stays an MP3), and every track
+        // that uses it points to that file. A sound that isn't saved in this browser is written as WAV, as before.
+        const fileOfSound = new Map();
         for (const trackData of tracksInScreenOrder(mix, layout)) {
-            const engineTrack = mix.audioEngine[trackData.id]; 
-            if (!engineTrack || !engineTrack.audio.buffer) continue; 
-            const fileNameInZip = sanitizeFilename(trackData.name); 
-            zip.file(fileNameInZip, audioBufferToWav(engineTrack.audio.buffer)); 
+            const engineTrack = mix.audioEngine[trackData.id];
+            let fileNameInZip = trackData.soundId ? fileOfSound.get(trackData.soundId) : null;
+            if (!fileNameInZip) {
+                const stored = trackData.soundId ? await getStoredSound(trackData.soundId) : null;
+                if (stored) {
+                    fileNameInZip = sanitizeFilename(stored.name || trackData.name, fileExtension(stored.name) || 'wav');
+                    zip.file(fileNameInZip, stored.blob);
+                    fileOfSound.set(trackData.soundId, fileNameInZip);
+                } else if (engineTrack?.audio.buffer) {
+                    fileNameInZip = sanitizeFilename(trackData.name);
+                    zip.file(fileNameInZip, audioBufferToWav(engineTrack.audio.buffer));
+                } else continue;
+            }
             const manifestTrackData = { ...JSON.parse(JSON.stringify(trackData)), fileNameInZip };
             delete manifestTrackData.isSoloed;
+            delete manifestTrackData.soundId; // this browser's own reference; the import makes its own
             manifest.tracks.push(manifestTrackData); 
         } 
         zip.file('mix.json', JSON.stringify(manifest, null, 2)); 
@@ -3904,6 +3988,8 @@ function toggleTrackEnabled(mix, trackId, isEnabled, opts) {
     const track = mix.audioEngine[trackId]; if (!track) return;
     track.data.isEnabled = isEnabled;
     document.getElementById(trackId).classList.toggle('is-disabled', !isEnabled);
+    // In a mix restored from storage, switching on unpacks the sounds first (MS-130.03).
+    if (isEnabled && mix.soundsState !== 'loaded' && opts?.autoStart !== false) { ensureMixSounds(mix).then(() => { if (track.data.isEnabled) setTrackEnabled(mix, track, true, opts); }); return; }
     setTrackEnabled(mix, track, isEnabled, opts); // MS-197: switching on starts it (audio-engine.js)
 }
 // Enable All (MS-198): every track and Sync Group switch. It doesn't start anything while the mix is stopped.
@@ -4005,6 +4091,7 @@ function clearAllSolos(mix) {
 function toggleGroupEnabled(mix, group, isEnabled, opts) {
     group.isEnabled = isEnabled;
     document.getElementById(group.id)?.classList.toggle('is-disabled', !isEnabled);
+    if (isEnabled && mix.soundsState !== 'loaded' && opts?.autoStart !== false) { ensureMixSounds(mix).then(() => { if (group.isEnabled) setGroupEnabled(mix, group, true, opts); }); return; }
     setGroupEnabled(mix, group, isEnabled, opts); // MS-197: switching on starts it (audio-engine.js)
 }
 
@@ -4382,7 +4469,7 @@ async function pasteMix() {
         const trackIdMap = {};
         for (const trackData of sourceMix.tracks) {
             const buffer = sourceMix.audioEngine[trackData.id]?.audio.buffer;
-            if (!buffer) continue;
+            if (!buffer && !trackData.soundId) continue; // not unpacked yet: the copy unpacks the saved sound
             const newTrackData = JSON.parse(JSON.stringify(trackData));
             newTrackData.id = null;
             newTrackData.syncInfo.groupId = groupIdMap[trackData.syncInfo.groupId] || null;
@@ -4403,7 +4490,7 @@ async function pasteSelectedItems(mixId) {
     for (let i = 0; i < count; i++) {
         for (const itemToPaste of copiedItems.data) {
             if (copiedItems.type === 'track') {
-                if (!itemToPaste.audioBuffer) continue;
+                if (!itemToPaste.audioBuffer && !itemToPaste.soundId) continue;
                 const trackCopy = JSON.parse(JSON.stringify({ ...itemToPaste, audioBuffer: null }));
                 // A track pasted into another mix can't keep a sync group that only exists in the source mix.
                 if (!mix.syncGroups.some(g => g.id === trackCopy.syncInfo.groupId)) trackCopy.syncInfo.groupId = null;
@@ -4417,7 +4504,7 @@ async function pasteSelectedItems(mixId) {
                 createSyncGroupUI(mix, newGroupData);
                 const newGroupElement = document.getElementById(newGroupData.id);
                 for (const trackToPaste of itemToPaste.tracks) {
-                    if (!trackToPaste.audioBuffer) continue;
+                    if (!trackToPaste.audioBuffer && !trackToPaste.soundId) continue;
                     const trackCopy = JSON.parse(JSON.stringify({ ...trackToPaste, audioBuffer: null }));
                     trackCopy.syncInfo.groupId = newGroupData.id;
                     await processNewTrack(mix, trackToPaste.audioBuffer, trackToPaste.name, { ...trackCopy, id: null });
@@ -4655,7 +4742,7 @@ async function restoreItems(entry) {
     initializeAudioContext();
     entry.groups.forEach(g => { const groupData = cloneGroupData(g); mix.syncGroups.push(groupData); createSyncGroupUI(mix, groupData); });
     for (const t of entry.tracks) {
-        if (!t.buffer) continue;
+        if (!t.buffer && !t.data.soundId) continue; // a track of a mix not unpacked yet comes back from its saved sound
         const data = JSON.parse(JSON.stringify(t.data));
         if (!mix.syncGroups.some(g => g.id === data.syncInfo.groupId)) data.syncInfo.groupId = null;
         await processNewTrack(mix, t.buffer, data.name, data);
@@ -4689,7 +4776,7 @@ async function restoreMix(entry) {
     if (nextId) { document.getElementById(nextId).before(document.getElementById(mix.id)); mixes.splice(mixes.findIndex(m => m.id === nextId), 0, mix); }
     else { mixesArea.appendChild(document.getElementById(mix.id)); mixes.push(mix); }
     for (const t of entry.tracks) {
-        if (t.buffer) await processNewTrack(mix, t.buffer, t.data.name, JSON.parse(JSON.stringify(t.data)));
+        if (t.buffer || t.data.soundId) await processNewTrack(mix, t.buffer, t.data.name, JSON.parse(JSON.stringify(t.data)));
     }
     applyLayout(mix, entry.layout);
     updateMixMuteStates(mix);
@@ -4748,7 +4835,7 @@ function setupMediaSession() {
     handle('play', () => {
         const paused = mixes.filter(m => m.isPaused);
         if (paused.length) paused.forEach(m => resumeMix(m.id));
-        else if (mixes[0]) playMix(mixes[0].id);
+        else if (mixes[0]) ensureMixSounds(mixes[0]).then(() => playMix(mixes[0].id));
     });
     handle('pause', () => mixes.filter(m => m.isPlaying).forEach(m => pauseMix(m.id)));
 }
@@ -4771,6 +4858,417 @@ function updateKeepAlive(userStarted = false) {
         keepAliveAudio.pause();
     }
     if ('mediaSession' in navigator && keepAliveAudio) navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+}
+    </script>
+    <script>
+// --- js/storage.js ---
+// --- AUTOSAVE (v318, MS-130) ---
+// Everything open is kept in the browser's own storage for this address (IndexedDB), so it survives a reload and a
+// browser restart. Each browser at each address keeps its own copy (MS-130.04); Export stays the way to move a mix.
+//   sounds:    each sound once, as its original file (an MP3 stays an MP3), keyed by a fingerprint of its contents.
+//              Tracks point to it with soundId, so 9 thunder tracks share one stored file (MS-130.02).
+//   workspace: one record, 'current': every mix (tracks, Sync Groups, settings, screen order), the mix order and Master Vol.
+//   images:    background images (moved from localStorage, which held only ~5 MB), with their order.
+// Not saved (MS-130.01): playback position, the sleep timer, Undo history, Solo.
+// A mix comes back stopped, and its sounds are unpacked (decoded) only when it is first played or opened (MS-130.03).
+const DB_NAME = 'macks-sounds';
+const DB_VERSION = 1;
+const AUTOSAVE_DELAY = 800; // ms after the last change
+let dbPromise = null;
+let autosaveReady = false;  // false until the saved workspace is back on screen, so an empty start never overwrites it
+let autosaveTimer = null;
+let lastSavedJson = null;
+let saveChain = Promise.resolve();
+let storageError = null;    // set when this browser window can't save (e.g. a private window); shown in Settings
+const soundBuffers = new Map(); // soundId -> Promise<AudioBuffer>: each sound decoded once, shared by its tracks
+
+function openDb() {
+    if (dbPromise) return dbPromise;
+    dbPromise = new Promise((resolve, reject) => {
+        if (!window.indexedDB) { reject(new Error('this browser has no IndexedDB')); return; }
+        const req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = () => {
+            const db = req.result;
+            if (!db.objectStoreNames.contains('sounds')) db.createObjectStore('sounds', { keyPath: 'id' });
+            if (!db.objectStoreNames.contains('workspace')) db.createObjectStore('workspace');
+            if (!db.objectStoreNames.contains('images')) db.createObjectStore('images', { keyPath: 'id' });
+        };
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+        req.onblocked = () => reject(new Error('storage is busy in another tab'));
+    });
+    dbPromise.catch(err => { storageError = err; });
+    return dbPromise;
+}
+
+// One request in its own transaction. fn(store) returns the request whose result is wanted (or nothing).
+async function dbRun(storeName, mode, fn) {
+    const db = await openDb();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction(storeName, mode);
+        const req = fn(tx.objectStore(storeName));
+        tx.oncomplete = () => resolve(req?.result);
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error || new Error('storage write aborted'));
+    });
+}
+const dbGet = (store, key) => dbRun(store, 'readonly', s => s.get(key));
+const dbGetAll = store => dbRun(store, 'readonly', s => s.getAll());
+const dbPut = (store, value, key) => dbRun(store, 'readwrite', s => key === undefined ? s.put(value) : s.put(value, key));
+const dbDelete = (store, key) => dbRun(store, 'readwrite', s => s.delete(key));
+
+// --- Sounds ---
+// The fingerprint: SHA-256 of the file's bytes (with its size), so the same file always gets the same id, whatever
+// its name. Where SHA-256 isn't available (pages that aren't https or localhost), a slower 64-bit FNV-1a hash is used.
+async function soundFingerprint(bytes) {
+    if (window.crypto?.subtle) {
+        const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+        return 'snd_' + Array.from(hash.slice(0, 16), b => b.toString(16).padStart(2, '0')).join('') + '_' + bytes.byteLength;
+    }
+    const data = new Uint8Array(bytes);
+    let h1 = 0x811c9dc5, h2 = 0x01000193;
+    for (let i = 0; i < data.length; i++) { h1 = Math.imul(h1 ^ data[i], 16777619); h2 = Math.imul(h2 ^ data[i], 2246822519); }
+    return 'snd_' + (h1 >>> 0).toString(16).padStart(8, '0') + (h2 >>> 0).toString(16).padStart(8, '0') + '_' + bytes.byteLength;
+}
+
+const AUDIO_TYPES = { mp3: 'audio/mpeg', wav: 'audio/wav', ogg: 'audio/ogg', oga: 'audio/ogg', opus: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4', aac: 'audio/aac', webm: 'audio/webm' };
+function fileExtension(name) { const m = /\.([a-z0-9]{1,5})$/i.exec(name || ''); return m ? m[1].toLowerCase() : ''; }
+
+// Keeps a sound's original file (once) and returns its id. Saving it happens when it's added or imported (MS-130.03).
+// It is unpacked first, so a file that isn't a playable sound throws here and is never saved. If the browser can't
+// save it (storage full, private window), the sound still plays now; the message says it won't be there after a reload.
+async function storeSound(bytes, fileName, type = '') {
+    const id = await soundFingerprint(bytes);
+    await decodeSound(id, bytes);
+    try {
+        const existing = await dbGet('sounds', id);
+        if (!existing) {
+            const blobType = type || AUDIO_TYPES[fileExtension(fileName)] || '';
+            await dbPut('sounds', { id, name: fileName, type: blobType, size: bytes.byteLength, addedAt: Date.now(), blob: new Blob([bytes], { type: blobType }) });
+        }
+    } catch (err) {
+        console.error('Could not save the sound', fileName, err);
+        storageError = err;
+        showMessage(`"${fileName}" plays now, but this browser could not save it (${err.message || err.name}), so it won't be there after a reload.`);
+    }
+    return id;
+}
+
+async function getStoredSound(id) { try { return await dbGet('sounds', id); } catch (err) { return null; } }
+
+// The decoded sound, shared by every track that uses it. bytes: the file, when the caller has it already.
+function decodeSound(soundId, bytes = null) {
+    if (soundId && soundBuffers.has(soundId)) return soundBuffers.get(soundId);
+    const p = (async () => {
+        let data = bytes;
+        if (!data) {
+            const rec = await getStoredSound(soundId);
+            if (!rec) throw new Error('its sound is not saved in this browser');
+            data = await rec.blob.arrayBuffer();
+        }
+        initializeAudioContext();
+        return audioContext.decodeAudioData(data.slice(0));
+    })();
+    if (soundId) {
+        soundBuffers.set(soundId, p);
+        p.catch(() => soundBuffers.delete(soundId));
+    }
+    return p;
+}
+
+// Unpacks the sounds of a mix that came back from storage: when it is first played or opened (MS-130.03, .06).
+// mix.soundsState: 'loaded' (nothing left to unpack) · 'pending' (restored, not unpacked yet) · 'loading'.
+function ensureMixSounds(mix) {
+    if (!mix || mix.soundsState === 'loaded') return Promise.resolve();
+    if (mix.soundsLoading) return mix.soundsLoading;
+    mix.soundsState = 'loading';
+    setMixSoundsStatus(mix, 'Loading sounds…');
+    mix.soundsLoading = (async () => {
+        const missing = [];
+        let waiting;
+        // Loops until no track is left waiting, so a track added while loading is unpacked too.
+        while ((waiting = Object.values(mix.audioEngine).filter(t => !t.audio.buffer && t.data.soundId && !t.audio.soundMissing)).length) {
+            let done = 0;
+            await Promise.all(waiting.map(async track => {
+                try { attachTrackBuffer(mix, track, await decodeSound(track.data.soundId)); }
+                catch (err) { track.audio.soundMissing = true; missing.push(track.data.name); console.error(err); }
+                setMixSoundsStatus(mix, `Loading sounds… ${++done} / ${waiting.length}`);
+            }));
+        }
+        mix.soundsState = 'loaded';
+        mix.soundsLoading = null;
+        setMixSoundsStatus(mix, '');
+        if (missing.length) showMessage(`In "${mix.name}", ${missing.length} track(s) have no saved sound in this browser and stay silent:\n\n${missing.slice(0, 12).join('\n')}${missing.length > 12 ? `\n…and ${missing.length - 12} more` : ''}`);
+    })();
+    return mix.soundsLoading;
+}
+
+function setMixSoundsStatus(mix, text) {
+    const el = document.querySelector(`#${CSS.escape(mix.id)} .mix-sounds-status`);
+    if (el) { el.textContent = text; el.hidden = !text; }
+}
+
+// --- Saving the workspace ---
+// Everything is saved a moment after each change (no Save button). Any tap, typed value or drop schedules a save; the
+// workspace is then compared with the last save and written only when something changed.
+function scheduleSave() {
+    if (!autosaveReady) return;
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(saveWorkspaceNow, AUTOSAVE_DELAY);
+}
+
+function workspaceSnapshot() {
+    return {
+        masterVolume: parseFloat(masterVolumeSlider.value),
+        mixes: mixes.map(mix => {
+            const layout = mixLayout(mix);
+            return {
+                id: mix.id, name: mix.name, volume: parseFloat(mix.volume), isMuted: !!mix.isMuted, isExpanded: !!mix.isExpanded,
+                syncGroups: mix.syncGroups.map(cloneGroupData),
+                tracks: tracksInScreenOrder(mix, layout).map(t => { const d = JSON.parse(JSON.stringify(t)); delete d.isSoloed; return d; }),
+                layout
+            };
+        })
+    };
+}
+
+function saveWorkspaceNow() {
+    clearTimeout(autosaveTimer);
+    if (!autosaveReady) return saveChain;
+    saveChain = saveChain.then(async () => {
+        const snapshot = workspaceSnapshot();
+        const json = JSON.stringify(snapshot);
+        if (json === lastSavedJson) return;
+        try {
+            await dbPut('workspace', { ...snapshot, version: APP_VERSION, savedAt: Date.now() }, 'current');
+            lastSavedJson = json;
+        } catch (err) {
+            console.error('Autosave failed', err);
+            if (!storageError) showMessage(`This browser could not save your mixes (${err.message || err.name}).`);
+            storageError = err;
+        }
+    });
+    return saveChain;
+}
+
+// --- Restoring on start ---
+async function restoreWorkspace() {
+    try {
+        requestPersistentStorage();
+        const saved = await dbGet('workspace', 'current');
+        if (saved) {
+            if (Number.isFinite(saved.masterVolume)) {
+                masterVolumeSlider.value = saved.masterVolume;
+                if (masterGain) masterGain.gain.value = saved.masterVolume;
+                document.getElementById('master-volume-display').textContent = `${Math.round(saved.masterVolume * 100)}%`;
+            }
+            // Built bottom to top, since each new mix goes on top.
+            for (const m of [...(saved.mixes || [])].reverse()) restoreSavedMix(m);
+        }
+        lastSavedJson = JSON.stringify(workspaceSnapshot());
+    } catch (err) {
+        console.error('Could not restore the saved mixes', err);
+        storageError = err;
+        // Saving stays off, so whatever is saved isn't overwritten by an empty screen.
+        showMessage(`Saved mixes could not be loaded in this browser window (${err.message || err.name}). Changes made now won't be saved.`);
+        return;
+    }
+    autosaveReady = true;
+}
+
+function restoreSavedMix(saved) {
+    const tracks = (saved.tracks || []).map(t => ({
+        ...t, isSoloed: false,
+        settings: normalizeTrackSettings(t.settings),
+        syncInfo: { groupId: t.syncInfo?.groupId || null, startTime: t.syncInfo?.startTime || 0 },
+        openSections: { ...t.openSections }
+    }));
+    // The Sync Groups first, so each grouped track lands in its group.
+    const mix = createNewMix({ id: saved.id, name: saved.name, volume: saved.volume ?? 1, isMuted: !!saved.isMuted, isExpanded: saved.isExpanded !== false, syncGroups: saved.syncGroups || [], tracks: [] }, true);
+    mix.soundsState = tracks.some(t => t.soundId) ? 'pending' : 'loaded';
+    tracks.forEach(t => {
+        if (t.syncInfo.groupId && !mix.syncGroups.some(g => g.id === t.syncInfo.groupId)) t.syncInfo.groupId = null;
+        mix.tracks.push(t);
+        const engine = addTrackToMixUI(mix, t);
+        if (!t.soundId) engine.audio.soundMissing = true;
+    });
+    if (saved.layout) applyLayout(mix, saved.layout);
+    updateMixMuteStates(mix);
+    mixes.unshift(mix);
+    return mix;
+}
+
+// Asks the browser to keep the data permanently, so it isn't cleared to free space (MS-130.02). Browsers decide
+// themselves (Chrome often grants it to sites used often or added to the home screen).
+async function requestPersistentStorage() {
+    try { if (navigator.storage?.persist && !(await navigator.storage.persisted())) await navigator.storage.persist(); } catch (e) {}
+}
+
+// --- Background images (moved here from localStorage in v318) ---
+// bgImages entries: { id, name, dataUrl } where dataUrl is what the page shows: an object URL for a stored image
+// file, or the web address for an image loaded from a URL. Stored: { id, name, blob | url, order }.
+async function loadStoredBgImages() {
+    let records = [];
+    try { records = await dbGetAll('images'); } catch (err) { storageError = storageError || err; }
+    // Images saved by v317 and earlier sit in localStorage as data URLs: move them over once.
+    const legacy = localStorage.getItem('bgImages');
+    if (legacy) {
+        try {
+            const old = JSON.parse(legacy) || [];
+            for (const [i, img] of old.entries()) {
+                if (records.some(r => r.id === img.id)) continue;
+                const rec = { id: img.id, name: img.name, order: records.length + i };
+                if (String(img.dataUrl).startsWith('data:')) rec.blob = await (await fetch(img.dataUrl)).blob(); else rec.url = img.dataUrl;
+                await dbPut('images', rec);
+                records.push(rec);
+            }
+            localStorage.removeItem('bgImages');
+        } catch (err) { console.error('Could not move the background images', err); }
+    }
+    records.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    return records.map(r => ({ id: r.id, name: r.name, blob: r.blob || null, dataUrl: r.blob ? URL.createObjectURL(r.blob) : r.url }));
+}
+
+async function saveStoredBgImages(images) {
+    try {
+        const db = await openDb();
+        await new Promise((resolve, reject) => {
+            const tx = db.transaction('images', 'readwrite'), store = tx.objectStore('images');
+            const keep = new Set(images.map(img => img.id));
+            store.getAllKeys().onsuccess = e => e.target.result.forEach(key => { if (!keep.has(key)) store.delete(key); });
+            images.forEach((img, order) => store.put(img.blob ? { id: img.id, name: img.name, blob: img.blob, order } : { id: img.id, name: img.name, url: img.dataUrl, order }));
+            tx.oncomplete = resolve; tx.onerror = () => reject(tx.error); tx.onabort = () => reject(tx.error);
+        });
+    } catch (err) { storageError = err; showMessage(`This browser could not save the background images (${err.message || err.name}).`); }
+}
+
+// --- "Saved in this browser" (Settings, MS-130.05) ---
+// Which tracks use each sound: those in the mixes, plus deleted ones Undo can still bring back and copied ones
+// waiting to be pasted (a sound they use isn't offered for deletion).
+function soundUsage() {
+    const usage = new Map();
+    const add = (id, kind) => { if (!id) return; const u = usage.get(id) || { tracks: 0, held: 0 }; u[kind]++; usage.set(id, u); };
+    mixes.forEach(m => m.tracks.forEach(t => add(t.soundId, 'tracks')));
+    undoStack.forEach(e => (e.tracks || []).forEach(t => add(t.data?.soundId, 'held')));
+    (copiedItems.data || []).forEach(item => {
+        if (copiedItems.type === 'track') add(item.soundId, 'held');
+        else if (copiedItems.type === 'group') item.tracks.forEach(t => add(t.soundId, 'held'));
+    });
+    return usage;
+}
+
+function formatBytes(n) {
+    if (!Number.isFinite(n)) return '?';
+    if (n >= 1e9) return `${(n / 1e9).toFixed(2)} GB`;
+    if (n >= 1e6) return `${(n / 1e6).toFixed(1)} MB`;
+    if (n >= 1e3) return `${Math.round(n / 1e3)} KB`;
+    return `${n} bytes`;
+}
+
+async function renderSavedPanel() {
+    const panel = document.getElementById('saved-panel');
+    if (!panel) return;
+    const summary = panel.querySelector('.saved-summary'), mixList = panel.querySelector('.saved-mix-list'), soundList = panel.querySelector('.saved-sound-list');
+    const unusedBtn = document.getElementById('delete-unused-sounds-btn');
+    let sounds = [];
+    try { sounds = (await dbGetAll('sounds')).map(({ blob, ...info }) => info); } catch (err) { storageError = storageError || err; }
+    if (storageError && !autosaveReady) { summary.textContent = `Saving isn't available in this browser window (${storageError.message || storageError.name}).`; mixList.innerHTML = ''; soundList.innerHTML = ''; unusedBtn.hidden = true; return; }
+    let estimate = {}, persisted = false;
+    try { estimate = await navigator.storage.estimate(); persisted = await navigator.storage.persisted(); } catch (e) {}
+    const soundBytes = sounds.reduce((s, x) => s + (x.size || 0), 0);
+    const imageBytes = bgImages.reduce((s, img) => s + (img.blob?.size || 0), 0);
+    summary.innerHTML = '';
+    // The browser's own count lags behind: after a delete it can take a while (or a browser restart) to go down.
+    [
+        `Saved: ${formatBytes(soundBytes + imageBytes)} (sounds ${formatBytes(soundBytes)}, background images ${formatBytes(imageBytes)}).` +
+            (estimate.quota ? ` Space available: about ${formatBytes(Math.max(0, estimate.quota - (estimate.usage || 0)))} more.` : ''),
+        ...(estimate.usage ? [`The browser counts ${formatBytes(estimate.usage)} used here; after deleting, its count can take a while to go down.`] : []),
+        persisted ? 'Kept permanently: yes. The browser won\'t clear it to free space.' : 'Kept permanently: not granted yet (the browser decides; it may clear the data if the device runs very low on space). Export keeps a copy of a mix.',
+        'Saved automatically a moment after each change. Not saved: playback position, the sleep timer, Undo.'
+    ].forEach(text => { const p = document.createElement('p'); p.className = 'bg-storage-note'; p.textContent = text; summary.appendChild(p); });
+
+    const byId = new Map(sounds.map(s => [s.id, s]));
+    mixList.innerHTML = '';
+    if (!mixes.length) mixList.innerHTML = '<p class="bg-storage-note">No mixes.</p>';
+    mixes.forEach(mix => {
+        const ids = new Set(mix.tracks.map(t => t.soundId).filter(Boolean));
+        const bytes = [...ids].reduce((s, id) => s + (byId.get(id)?.size || 0), 0);
+        const row = document.createElement('div');
+        row.className = 'saved-row';
+        row.textContent = `${mix.name} · ${mix.tracks.length} track${mix.tracks.length === 1 ? '' : 's'}, ${ids.size} sound${ids.size === 1 ? '' : 's'} (${formatBytes(bytes)})`;
+        mixList.appendChild(row);
+    });
+
+    const usage = soundUsage();
+    soundList.innerHTML = '';
+    if (!sounds.length) soundList.innerHTML = '<p class="bg-storage-note">No sounds saved.</p>';
+    sounds.sort((a, b) => a.name.localeCompare(b.name));
+    let unused = 0;
+    sounds.forEach(sound => {
+        const u = usage.get(sound.id) || { tracks: 0, held: 0 };
+        const free = !u.tracks && !u.held;
+        if (free) unused++;
+        const row = document.createElement('div');
+        row.className = 'saved-row' + (free ? ' is-unused' : '');
+        row.innerHTML = '<span class="saved-row-text"></span><button class="small-btn saved-delete-btn" title="Delete this sound from the browser">Delete</button>';
+        row.querySelector('.saved-row-text').textContent = `${sound.name} · ${formatBytes(sound.size)} · ` +
+            (u.tracks ? `used by ${u.tracks} track${u.tracks === 1 ? '' : 's'}` : u.held ? 'kept for Undo / Paste' : 'not used');
+        const btn = row.querySelector('.saved-delete-btn');
+        btn.hidden = !free;
+        btn.addEventListener('click', async () => { if (await askConfirm(`Delete the saved sound "${sound.name}" (${formatBytes(sound.size)}) from this browser? No track uses it.`)) { await deleteStoredSounds([sound.id]); renderSavedPanel(); } });
+        soundList.appendChild(row);
+    });
+    unusedBtn.hidden = !unused;
+    unusedBtn.textContent = `Delete all unused sounds (${unused})`;
+}
+
+async function deleteStoredSounds(ids) {
+    const usage = soundUsage();
+    for (const id of ids) {
+        if (usage.has(id)) continue; // in use since the list was drawn
+        try { await dbDelete('sounds', id); soundBuffers.delete(id); } catch (err) { showMessage(`Could not delete the sound: ${err.message}`); }
+    }
+}
+
+async function clearEverythingSaved() {
+    const ok = await askConfirm('Clear everything saved in this browser?\n\nAll mixes (with their tracks and Sync Groups), every saved sound and the background images are deleted from the app and from this browser. This can\'t be undone: Export any mix you want to keep first.\n\nThe look settings (colors, fonts, theme) stay.', { confirmLabel: 'Clear everything' });
+    if (!ok) return;
+    [...mixes].forEach(m => deleteMix(m.id));
+    undoStack = [];
+    updateUndoButton();
+    copiedItems = { type: null, data: [], lastSelectedId: null };
+    updatePasteButtons();
+    soundBuffers.clear();
+    try {
+        const db = await openDb();
+        await new Promise((resolve, reject) => {
+            const tx = db.transaction(['sounds', 'workspace', 'images'], 'readwrite');
+            ['sounds', 'workspace', 'images'].forEach(s => tx.objectStore(s).clear());
+            tx.oncomplete = resolve; tx.onerror = () => reject(tx.error);
+        });
+        lastSavedJson = null;
+    } catch (err) { showMessage(`Could not clear the saved data: ${err.message}`); }
+    document.dispatchEvent(new CustomEvent('saved-data-cleared'));
+    showMessage('Everything saved in this browser was cleared.');
+    renderSavedPanel();
+}
+
+function setupAutosave() {
+    // Any change on screen schedules a save (it is written only if something changed).
+    ['input', 'change', 'click', 'drop', 'focusout', 'keyup'].forEach(type => document.addEventListener(type, scheduleSave, true));
+    // Leaving the page, switching apps or locking the phone saves at once.
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') saveWorkspaceNow(); });
+    window.addEventListener('pagehide', saveWorkspaceNow);
+    document.getElementById('delete-unused-sounds-btn')?.addEventListener('click', async () => {
+        const usage = soundUsage();
+        let sounds = [];
+        try { sounds = (await dbGetAll('sounds')).filter(s => !usage.has(s.id)); } catch (e) {}
+        if (!sounds.length) return;
+        const bytes = sounds.reduce((s, x) => s + (x.size || 0), 0);
+        if (await askConfirm(`Delete ${sounds.length} saved sound${sounds.length === 1 ? '' : 's'} that no track uses (${formatBytes(bytes)})?`)) { await deleteStoredSounds(sounds.map(s => s.id)); renderSavedPanel(); }
+    });
+    document.getElementById('clear-saved-btn')?.addEventListener('click', clearEverythingSaved);
+    restoreWorkspace();
 }
     </script>
     <script>
@@ -4802,6 +5300,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFontManagement();
     setupCompactHeaderObserver();
     setupUndo();
+    setupAutosave(); // brings back the saved mixes (js/storage.js, MS-130)
 });
 
 function initializeAudioContext() {
