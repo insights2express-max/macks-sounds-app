@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v316</title>
+    <title>Mack's Sounds v317</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -153,7 +153,7 @@ html[data-theme='light'] #settings-btn { color: #333; }
 /* MS-191: every checkbox, and its label, at twice the earlier size (for touch screens). On/off switches and the
    select boxes on the left of each track and Sync Group keep their size (JM). */
 /* Drawn by the app itself, so every browser shows the same box: white when off, solid blue with a bold white tick
-   when on (Opera ignored the browser colour setting and drew its own white box with a thin black tick). */
+   when on (Opera ignored the browser color setting and drew its own white box with a thin black tick). */
 input[type="checkbox"]:not(.select-checkbox):not(.switch > input) {
     -webkit-appearance: none; appearance: none;
     width: 26px; height: 26px; margin: 0 0.3em 0 0; flex-shrink: 0; cursor: pointer;
@@ -527,7 +527,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v316</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v317</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -819,7 +819,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v316';
+const APP_VERSION = 'v317';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -940,7 +940,7 @@ function showUndoMessage(text, onUndo) {
 
 // A question box with several answers. choices: [{ value, label, danger? }] in display order, Cancel included.
 // Resolves the chosen value, or null for Esc or a click outside. Cancel (value null) gets the focus.
-// title (optional): a heading centred at the top of the box.
+// title (optional): a heading centered at the top of the box.
 function askChoice(text, choices, { title } = {}) {
     return new Promise(resolve => {
         const overlay = document.createElement('div');
@@ -1049,7 +1049,7 @@ function runNextSlide() {
 // --- MIX MANAGEMENT ---
 function createNewMix(mixData = null, fromLoad = false) { 
     const mix = normalizeMixData(mixData); 
-    if (!fromLoad) mixes.push(mix); 
+    if (!fromLoad) mixes.unshift(mix); // new mixes go on top (MS-218)
     createMixUI(mix);
     applyStickyHeaders(localStorage.getItem('stickyHeadersMode') || 'none');
     return mix; 
@@ -1138,7 +1138,7 @@ function createMixUI(mix) {
         </div>
         <div class="tracks-area"><div class="tracks-container" data-mix-id="${mix.id}"></div></div>
     `;
-    mixesArea.appendChild(mixContainer);
+    mixesArea.prepend(mixContainer);
     
     const sortSelect = mixContainer.querySelector('.track-sort-select');
     const sortOptions = {'': 'Sort By...', 'name_asc': 'Name (A-Z)', 'name_desc': 'Name (Z-A)', 'duration_asc': 'Duration (Short-Long)', 'duration_desc': 'Duration (Long-Short)'};
@@ -3849,7 +3849,7 @@ async function handleMixImport(event) {
         if (manifest.layout) applyLayout(newMix, remapLayout(manifest.layout, { ...groupIdMap, ...trackIdMap }));
         updateMixMuteStates(newMix);
 
-        mixes.push(newMix);
+        mixes.unshift(newMix);
         if (missing.length) showMessage(`The mix was imported, but ${missing.length} audio file(s) were missing from the ZIP and those tracks were skipped:\n\n${missing.join('\n')}`);
 
     } catch (err) {
@@ -4362,7 +4362,8 @@ async function pasteMix() {
     const sourceMix = mixes.find(m => m.id === copiedItems.lastSelectedId);
     if (!sourceMix) { showMessage('The copied mix no longer exists.'); return; }
     const count = parseInt(document.getElementById('paste-mix-count').value, 10) || 1;
-    let lastPastedElement = document.getElementById(sourceMix.id);
+    // Copies go on top, in order (MS-218).
+    let lastPastedElement = null;
 
     for (let i = 0; i < count; i++) {
         // Build the copy from fresh objects so the source mix is never modified.
@@ -4375,7 +4376,7 @@ async function pasteMix() {
         const newMix = createNewMix({ name: `${sourceMix.name} (Copy)`, volume: sourceMix.volume, isMuted: sourceMix.isMuted, isExpanded: sourceMix.isExpanded, syncGroups, tracks: [] }, true);
         const newMixElement = document.getElementById(newMix.id);
         if (lastPastedElement) lastPastedElement.after(newMixElement);
-        mixes.splice(mixes.indexOf(mixes.find(m => m.id === lastPastedElement?.id)) + 1, 0, newMix);
+        mixes.splice(i, 0, newMix);
         lastPastedElement = newMixElement;
 
         const trackIdMap = {};
@@ -4588,7 +4589,7 @@ async function deleteSelectedItems(mixId) {
     deleteItems(mix, { trackIds: tracks.map(t => t.id), groupIds: groups.map(g => g.id), groupTracks });
 }
 
-// Greyed out until something in the mix is ticked.
+// Grayed out until something in the mix is ticked.
 function updateDeleteSelectedButton(mixId) {
     const btn = document.querySelector(`#${CSS.escape(mixId)} .delete-selected-btn`);
     if (btn) btn.disabled = !document.querySelector(`#${CSS.escape(mixId)} .select-checkbox:checked`);
@@ -4686,7 +4687,7 @@ async function restoreMix(entry) {
     // Back between the same mixes as before (or at the end).
     const nextId = entry.mixOrder.slice(entry.mixOrder.indexOf(entry.mix.id) + 1).find(id => mixes.some(m => m.id === id));
     if (nextId) { document.getElementById(nextId).before(document.getElementById(mix.id)); mixes.splice(mixes.findIndex(m => m.id === nextId), 0, mix); }
-    else mixes.push(mix);
+    else { mixesArea.appendChild(document.getElementById(mix.id)); mixes.push(mix); }
     for (const t of entry.tracks) {
         if (t.buffer) await processNewTrack(mix, t.buffer, t.data.name, JSON.parse(JSON.stringify(t.data)));
     }
