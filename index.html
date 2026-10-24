@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v315</title>
+    <title>Mack's Sounds v316</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -119,7 +119,7 @@ html[data-theme='light'] #settings-btn { color: #333; }
 .mix-drag-handle { cursor: grab; flex-shrink: 0; display: flex; align-items: center; } .mix-drag-handle:active { cursor: grabbing; }
 .mix-chevron, .sync-group-chevron, .track-chevron { transition: transform 0.3s ease; width: 1.5em; height: 1.5em; cursor: pointer; flex-shrink: 0; }
 .mix-container.expanded .mix-chevron { transform: rotate(90deg); }
-.mix-title-group { display: flex; align-items: center; gap: 1rem; flex-grow: 1; cursor: default; min-width: 200px; }
+.mix-title-group { display: flex; align-items: center; gap: 1rem; flex: 1 1 200px; cursor: default; min-width: 200px; } /* basis 200px: the name gives way first, so the buttons stay on one row (v316) */
 .mix-title { font-size: 1.5rem; font-weight: bold; background: none; border: none; color: var(--main-font-color); border-bottom: 2px solid transparent; padding: 0.2rem; cursor: text; font-family: var(--font-family-main); width: 100%; max-width: 450px; }
 .mix-title:focus { outline: none; border-bottom: 2px solid var(--primary-color); }
 .mix-main-actions { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; margin-left: auto; }
@@ -132,7 +132,9 @@ html[data-theme='light'] #settings-btn { color: #333; }
 .mix-container.expanded .sync-groups-area { max-height: none; padding-top: 1.5rem; }
 .tracks-area { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
 .mix-container.expanded .tracks-area { max-height: none; }
-.tracks-container { display: grid; gap: 0.5rem; padding-top: 1.5rem; }
+/* minmax(0, 1fr): a track or Sync Group is never wider than the mix; long names shorten with "…" instead of
+   pushing the right edge out of view (the tracks area hides overflow, so it was clipped, not scrollable). */
+.tracks-container { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.5rem; padding-top: 1.5rem; }
 
 .track { background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; transition: background-color 0.2s, opacity 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
 .track.is-playing { background: rgba(31, 64, 104, 0.4); }
@@ -271,6 +273,8 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .sync-group-controls .control-group { min-width: 140px; }
 .sync-group-tracks { min-height: 50px; background: rgba(0,0,0,0.2); border-radius: 4px; padding: 0.5rem; display: none; }
 .sync-group.expanded .sync-group-tracks, .sync-group.expanded .sync-group-controls { display: grid; }
+.sync-group-tracks { grid-template-columns: minmax(0, 1fr); }
+.sync-group, .track { min-width: 0; }
 .sync-group:not(.expanded) .sync-group-tracks, .sync-group:not(.expanded) .sync-group-controls { max-height: 0; padding-top: 0; padding-bottom: 0; }
 .sync-group:not(.mode-random_play) .random-play-delay-controls-wrapper, .track:not(.mode-random-play) .random-play-delay-controls-wrapper { display: none; }
 .sync-group.mode-random_play .loop-delay-controls-wrapper, .track.mode-random-play .loop-delay-controls-wrapper { display: none; }
@@ -280,7 +284,13 @@ button, .button-like, select, input { font-family: var(--font-family-main); font
 button, .button-like { background-color: var(--secondary-color); color: var(--text-color); border: none; border-radius: 6px; padding: 0.6rem 1rem; cursor: pointer; transition: background-color 0.2s, text-shadow 0.2s, box-shadow 0.2s; text-align: center; box-shadow: 0 0 0 1px black; }
 button:hover, .button-like:hover { background-color: var(--primary-color); }
 .small-btn { padding: 0.3rem 0.6rem; font-size: 0.9em; }
-.expand-collapse-group-tracks-btn { white-space: nowrap; }
+/* MS-104.06: − Level n + (open and close by levels), on each mix and Sync Group. */
+.level-control { display: inline-flex; align-items: center; gap: 0.35rem; flex-shrink: 0; }
+.level-control button { min-width: 2.2em; padding: 0.3rem 0.5rem; font-weight: bold; }
+.level-control button:disabled { opacity: 0.45; cursor: default; }
+.level-display { min-width: 4.8em; text-align: center; font-size: 0.85em; white-space: nowrap; }
+/* Phone-only pieces: ▲ / ▼ move buttons and the row breaks of the phone headers. */
+.move-btn, .row-break, .mix-move-group { display: none; }
 .mix-mute-toggle.is-muted, .track-mute-toggle.is-muted, .sync-group-mute-toggle.is-muted { background-color: var(--mute-color); }
 .track-solo-toggle.is-soloed, .sync-group-solo-toggle.is-soloed { background-color: var(--solo-color); color: #000; }
 .mix-mute-toggle svg, .track-mute-toggle svg, .sync-group-mute-toggle svg { width: 1.2em; height: 1.2em; vertical-align: middle; fill: currentColor; }
@@ -298,7 +308,7 @@ input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-o
 .filter-wrapper { position: relative; }
 .clear-filter-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--main-font-color); cursor: pointer; font-size: 1.2em; padding: 0 0.5rem; display: none; }
 
-.switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+.switch { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; } /* never squeezed by a long track name (it shrank to 7 px in mid-width windows) */
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--secondary-color); transition: .4s; border-radius: 24px; }
 .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
@@ -423,11 +433,12 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .track-chevron, .mix-chevron, .sync-group-chevron { width: 44px; height: 44px; padding: 11px; }
     .mix-drag-handle, .sync-group-drag-handle { width: 44px; height: 44px; justify-content: center; padding: 0; }
     .sync-group-drag-handle { display: flex; align-items: center; }
-    .sync-group-header .select-checkbox { width: 32px; height: 32px; margin: 6px; }
+    .sync-group-header .select-checkbox { width: 44px; height: 44px; transform: none; }
     .mix-header-row-secondary .check-label { min-height: 44px; }
     /* The track's settings open full width underneath, with the moved select box, grab handle and delete button on top. */
     .track-details-inner > .track-controls-grid { padding: 0.5rem; gap: 0.75rem; }
-    .track-actions-row { display: flex; align-items: center; gap: 0.5rem; grid-column: 1 / -1; }
+    .track-actions-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; grid-column: 1 / -1; }
+    .track-controls-grid { grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); }
     .track-actions-spacer { flex: 1; }
     .track .track-actions-row label.track-select-label { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding-right: 0.5rem; font-size: 0.9em; cursor: pointer; }
     .track-actions-row .select-checkbox { width: 28px; height: 28px; transform: none; }
@@ -437,6 +448,75 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .sync-group { padding: 0.5rem; }
     .sync-group-tracks { padding: 0.25rem; }
     .tracks-container { padding-top: 1rem; }
+
+    /* v316 · phone-only pieces shown, level word dropped to save room ("− 2 +"). */
+    .move-btn { display: inline-flex; align-items: center; justify-content: center; }
+    .row-break { display: block; flex-basis: 100%; height: 0; }
+    .level-word { display: none; }
+    .level-display { min-width: 1.5em; font-size: 1em; }
+    .level-control button { min-width: 44px; }
+    .mix-mute-toggle, .sync-group-mute-toggle { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
+
+    /* (b) Mix header: name and "..." on top; mute, play, stop and − / + below; the volume slider full width; every other
+       mix button lives in the "..." menu (the secondary row), shown only while it is open. */
+    .mix-header { padding: 0.5rem; gap: 0.5rem; }
+    .mix-header-row-primary { gap: 0.4rem; }
+    .mix-main-actions { display: contents; }
+    .mix-drag-handle { order: 1; } .mix-chevron { order: 2; }
+    .mix-title-group { order: 3; flex: 1 1 0; min-width: 0; }
+    .mix-title { font-size: 1.1rem; }
+    .mix-header-row-primary .more-controls-btn { display: inline-block; order: 4; }
+    .mix-header-row-primary .row-break { order: 5; }
+    .mix-mute-toggle { order: 6; } .play-pause-mix { order: 7; } .stop-mix { order: 8; }
+    .mix-header-row-primary .level-control { order: 9; margin-left: auto; }
+    .mix-header-volume-control { order: 10; flex-basis: 100%; }
+    .mix-header-volume-control input[type="range"] { width: auto; flex: 1; }
+    .mix-header-row-secondary:not(.is-expanded) { display: none; }
+    .mix-header-row-secondary { gap: 0.5rem; }
+    .mix-move-group { display: flex; align-items: center; gap: 0.5rem; flex-basis: 100%; }
+    .mix-header-row-secondary .control-group-row label.check-label { font-size: 1.2em; }
+
+    /* Sync Group header, like a track's: switch, arrow and name, S, mute / play, − / +, Loop / select box, ▲ ▼, grab
+       handle, ❌ / Sort and the timer. */
+    .sync-group-header { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+    .sync-group-header-top-row, .sync-group-header-second-row, .sync-group-actions { display: contents; }
+    .sync-group-header .switch { order: 1; }
+    .sync-group-title-group { order: 2; flex: 1 1 0; min-width: 0; gap: 0.25rem; }
+    .sync-group-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1rem; }
+    .sync-group-solo-toggle { order: 3; width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
+    .sync-group-mute-toggle { order: 4; }
+    .row-break-1 { order: 5; }
+    .play-stop-sync-group-btn { order: 6; }
+    .sync-group-header .level-control { order: 7; }
+    .sync-group-header-second-row > .control-group-row { order: 8; }
+    .sync-group-header .control-group-row label.check-label { font-size: 1.2em; }
+    .row-break-2 { order: 10; }
+    .sync-group-select-checkbox { order: 11; }
+    .sync-group-drag-handle { order: 12; }
+    .sync-group-header .move-up-btn { order: 13; } .sync-group-header .move-down-btn { order: 14; }
+    .delete-sync-group-btn { order: 15; margin-left: auto; }
+    .sync-group-sort-select { order: 16; }
+    .sync-group-counters { order: 17; font-size: 0.8em; white-space: normal; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
+    .sync-group-loop-delay-counter { min-width: 0; }
+    .sync-group-controls { grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr)); }
+    .sync-group-controls .control-group, .mode-box .control-group { min-width: 0; }
+    .sync-group-sort-select { min-width: 0; max-width: 100%; }
+    .sync-group-controls { order: 20; flex-basis: 100%; }
+
+    /* (d) Settings: a full-screen sheet; its title bar (with ✕) stays at the top while the settings scroll. */
+    #settings-modal-content { top: 0 !important; left: 0 !important; transform: none; width: 100%; max-width: none; height: 100%; max-height: none; border-radius: 0; margin: 0; }
+    #settings-modal-content .settings-header { position: sticky; top: 0; z-index: 1; padding: 0.75rem 1rem; background: var(--bg-color); cursor: default; }
+    #settings-modal-content .settings-header h2 { margin: 0; line-height: 44px; }
+    #settings-modal-content .settings-body { padding: 0.75rem 1rem 1rem; }
+    #settings-close-btn { top: 0.75rem; right: 0.75rem; width: 44px; height: 44px; padding: 0; }
+    #settings-modal-content fieldset { padding: 0.75rem; min-width: 0; }
+    .settings-grid { grid-template-columns: 1fr; gap: 1rem; }
+    #settings-modal-content input[type="color"] { height: 44px; }
+    #settings-modal-content .control-group-row { flex-wrap: wrap; }
+    #bg-image-url-input { min-width: 0; }
+    #settings-modal-content input[type="radio"] { width: 24px; height: 24px; flex-shrink: 0; }
+    .bg-image-item, #settings-modal-content .control-group-row:has(> input[type="checkbox"]) { min-height: 44px; }
+    .bg-image-item label { align-self: stretch; display: flex; align-items: center; }
 }
     </style>
 </head>
@@ -447,7 +527,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v315</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v316</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -739,7 +819,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v315';
+const APP_VERSION = 'v316';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1027,6 +1107,8 @@ function createMixUI(mix) {
                     <input type="range" id="mix-vol-${mix.id}" min="0" max="2" step="0.01" value="${mix.volume}">
                     <span id="mix-volume-display-${mix.id}" class="volume-display">${Math.round(mix.volume * 100)}%</span>
                 </div>
+                <span class="row-break"></span>
+                ${levelControlHTML()}
                 <div class="mix-main-actions">
                      <button class="mix-mute-toggle small-btn" title="Mute/Unmute All"></button>
                      <button class="play-pause-mix play-btn">▶</button> 
@@ -1035,8 +1117,8 @@ function createMixUI(mix) {
                 </div>
             </div>
             <div class="mix-header-row mix-header-row-secondary">
+                <div class="mix-move-group"><span>Move mix</span>${MOVE_BUTTONS}</div>
                 <div class="control-group-row"><input type="checkbox" id="enable-all-${mix.id}" checked><label class="check-label" for="enable-all-${mix.id}">Enable All</label></div>
-                <button class="expand-collapse-all-btn small-btn">Collapse All</button>
                 <button class="reset-defaults-btn small-btn">Reset Defaults</button>
                 <select class="track-sort-select small-btn"></select>
                 <div class="filter-wrapper">
@@ -1090,7 +1172,13 @@ function createMixUI(mix) {
     mixContainer.querySelector('.export-mix-btn').addEventListener('click', () => exportMix(mix.id));
     mixContainer.querySelector('.add-sync-group-btn').addEventListener('click', () => createSyncGroup(mix.id));
     sortSelect.addEventListener('change', e => { sortTracks(mix.id, e.target.value); e.target.selectedIndex = 0; });
-    mixContainer.querySelector('.expand-collapse-all-btn').addEventListener('click', e => toggleAllTracksExpanded(mix.id, e.target));
+    setupLevelControl(mixContainer.querySelector('.mix-header .level-control'),
+        () => viewLevel([...mixContainer.querySelectorAll('.sync-group')], [...mixContainer.querySelectorAll('.track')]),
+        level => { mixContainer.querySelectorAll('.sync-group').forEach(g => setGroupLevel(g, level)); mixContainer.querySelectorAll('.tracks-container > .track').forEach(t => setTrackLevel(t, level)); });
+    // Any arrow or title bar clicked by hand changes the level shown, so every level display in the mix is refreshed after a click.
+    mixContainer.addEventListener('click', () => setTimeout(() => refreshLevelControls(mixContainer), 0));
+    mixContainer.querySelector('.mix-header .move-up-btn').addEventListener('click', () => moveItem(mixContainer, -1));
+    mixContainer.querySelector('.mix-header .move-down-btn').addEventListener('click', () => moveItem(mixContainer, 1));
     mixContainer.querySelector('.reset-defaults-btn').addEventListener('click', () => resetAllTracksToDefaults(mix.id));
     const filterInput = mixContainer.querySelector('.track-filter-input');
     const clearFilterBtn = mixContainer.querySelector('.clear-filter-btn');
@@ -1111,6 +1199,7 @@ function createMixUI(mix) {
     if (mix.tracks) mix.tracks.forEach(trackData => addTrackToMixUI(mix, trackData));
     if (mix.syncGroups) mix.syncGroups.forEach(groupData => createSyncGroupUI(mix, groupData));
     updateMixMuteStates(mix);
+    refreshLevelControls(mixContainer);
 }
 
 function deleteMix(mixId) { 
@@ -1194,10 +1283,20 @@ phoneLayout.addEventListener('change', replaceTrackHeaderItems);
 window.addEventListener('resize', replaceTrackHeaderItems);
 
 // Opens or closes a track's settings and remembers it in the track's data, so Export / Import keeps it (MS-104).
+function trackDataOf(trackElement) { return mixes.flatMap(m => m.tracks || []).find(t => t.id === trackElement.id); }
 function setTrackExpanded(trackElement, open) {
     trackElement.classList.toggle('expanded', open);
-    const data = mixes.flatMap(m => m.tracks || []).find(t => t.id === trackElement.id);
+    const data = trackDataOf(trackElement);
     if (data) data.isExpanded = open;
+}
+// Opens or closes one of a track's Timing / Volume / Speed / Fades boxes, remembering it like setTrackExpanded.
+function setSectionOpen(trackElement, key, open) {
+    const box = trackElement.querySelector(`.mode-box[data-section="${key}"]`);
+    if (!box) return;
+    box.classList.toggle('is-open', open);
+    box.querySelector('.section-toggle').setAttribute('aria-expanded', String(open));
+    const data = trackDataOf(trackElement);
+    if (data) data.openSections = { ...data.openSections, [key]: open };
 }
 
 function addTrackToMixUI(mix, trackData) {
@@ -1241,7 +1340,7 @@ function addTrackToMixUI(mix, trackData) {
              <button class="remove-track-btn small-btn" title="Delete this track">❌</button>
         </div>
         <div class="track-details"><div class="track-details-inner"><div class="track-controls-grid">
-            <div class="track-actions-row"><label class="track-select-label"><span>Select</span></label><span class="track-actions-spacer"></span></div>
+            <div class="track-actions-row"><label class="track-select-label"><span>Select</span></label>${MOVE_BUTTONS}<span class="track-actions-spacer"></span></div>
             <div class="control-group">
                 <div class="control-group-row"><label class="volume-label">Volume</label><span class="volume-display"></span></div>
                 <input type="range" class="volume-slider" min="0" max="2" step="0.01">
@@ -1394,11 +1493,14 @@ function addTrackToMixUI(mix, trackData) {
     trackElement.querySelector('.track-chevron').addEventListener('click', () => setTrackExpanded(trackElement, !trackElement.classList.contains('expanded')));
     trackElement.querySelectorAll('.mode-box[data-section]').forEach(box => {
         const key = box.dataset.section, button = box.querySelector('.section-toggle');
-        const show = open => { box.classList.toggle('is-open', open); button.setAttribute('aria-expanded', String(open)); };
-        show(!!trackData.openSections?.[key]);
-        button.addEventListener('click', () => { const open = !box.classList.contains('is-open'); trackData.openSections = { ...trackData.openSections, [key]: open }; show(open); });
+        box.classList.toggle('is-open', !!trackData.openSections?.[key]);
+        button.setAttribute('aria-expanded', String(!!trackData.openSections?.[key]));
+        button.addEventListener('click', () => setSectionOpen(trackElement, key, !box.classList.contains('is-open')));
     });
+    trackElement.querySelector('.move-up-btn').addEventListener('click', () => moveItem(trackElement, -1));
+    trackElement.querySelector('.move-down-btn').addEventListener('click', () => moveItem(trackElement, 1));
     placeTrackHeaderItems(trackElement);
+    refreshLevelControls(document.getElementById(mix.id));
     trackElement.querySelector('.remove-track-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the track "${trackData.name}"?`)) deleteItems(mix, { trackIds: [trackData.id] }); });
     trackElement.querySelector('.copy-settings-btn').addEventListener('click', () => { copiedTrackSettings = JSON.parse(JSON.stringify(trackData.settings)); showMessage('Settings copied!'); });
     trackElement.querySelector('.paste-settings-btn').addEventListener('click', () => pasteTrackSettings(track.data.id));
@@ -1511,18 +1613,21 @@ function createSyncGroupUI(mix, groupData) {
                 </div>
                 <div class="sync-group-actions">
                     <button class="play-stop-sync-group-btn small-btn">▶</button>
-                    <button class="delete-sync-group-btn small-btn">❌</button>
+                    ${MOVE_BUTTONS}
+                    <button class="delete-sync-group-btn small-btn" title="Delete this Sync Group">❌</button>
                 </div>
             </div>
+            <span class="row-break row-break-1"></span>
             <div class="sync-group-header-second-row">
                 <select class="track-sort-select small-btn sync-group-sort-select"></select>
-                <button class="expand-collapse-group-tracks-btn small-btn" title="Expand/Collapse All Tracks">Collapse SG</button>
+                ${levelControlHTML()}
                 <div class="control-group-row"><label class="check-label"><input type="checkbox" class="sync-group-loop-toggle"> Loop</label></div>
                 <div class="sync-group-counters">
                     <span class="sync-group-loop-delay-counter"></span>
                     <code class="sync-group-play-counter" title="Time into this cycle | the cycle's length">--m--s | --m--s</code>
                 </div>
             </div>
+            <span class="row-break row-break-2"></span>
             <div class="sync-group-controls">
                 <div class="control-group">
                     <div class="control-group-row"><label class="group-volume-label">Group Vol</label><span class="volume-display">${Math.round(groupData.settings.volume * 100)}%</span></div>
@@ -1591,7 +1696,11 @@ function createSyncGroupUI(mix, groupData) {
 
     groupContainer.querySelector('.delete-sync-group-btn').addEventListener('click', () => deleteSyncGroup(mix.id, groupData.id));
     setupSecondsInputs(groupContainer.querySelector('.sync-group-controls') || groupContainer);
-    groupContainer.querySelector('.expand-collapse-group-tracks-btn').addEventListener('click', e => toggleAllGroupTracksExpanded(groupData.id, e.target));
+    setupLevelControl(groupContainer.querySelector('.level-control'),
+        () => viewLevel([groupContainer], [...groupContainer.querySelectorAll('.track')]),
+        level => setGroupLevel(groupContainer, level));
+    groupContainer.querySelector('.move-up-btn').addEventListener('click', () => moveItem(groupContainer, -1));
+    groupContainer.querySelector('.move-down-btn').addEventListener('click', () => moveItem(groupContainer, 1));
     
     groupContainer.querySelector('.sync-group-mute-toggle').addEventListener('click', () => toggleGroupMute(mix.id, groupData.id));
     groupContainer.querySelector('.sync-group-solo-toggle').addEventListener('click', () => toggleGroupSolo(mix.id, groupData.id));
@@ -1647,6 +1756,7 @@ function createSyncGroupUI(mix, groupData) {
     }
     
     updateAllMuteButtonUI(mix);
+    refreshLevelControls(document.getElementById(mix.id));
 }
 
 async function deleteSyncGroup(mixId, groupId) {
@@ -4121,8 +4231,59 @@ function updateSectionSummaries(trackElement, settings) {
 function updateModeUI(trackElement, settings) { updateSectionSummaries(trackElement, settings); updateVolumeRangeReadout(trackElement, settings); updateSpeedRangeReadout(trackElement, settings); trackElement.classList.toggle('mode-looping', !!settings.loop); trackElement.classList.toggle('mode-volume-range', settings.volumeMode === 'varying'); trackElement.classList.toggle('mode-speed-range', settings.speedMode === 'random' || settings.speedMode === 'varying'); trackElement.classList.toggle('mode-speed-wave', settings.speedMode === 'varying'); trackElement.classList.toggle('mode-random-play', settings.loop && settings.timingMode === 'random'); trackElement.classList.toggle('mode-loop-delay', settings.loop && settings.timingMode !== 'random'); trackElement.classList.toggle('fade-in-on', !!settings.fadeIn); trackElement.classList.toggle('fade-out-on', !!settings.fadeOut); trackElement.classList.toggle('crossfade-on', !!settings.crossfade); trackElement.classList.toggle('crossfade-unavailable', !settings.loop || settings.timingMode === 'random' || Number(settings.loopDelay) > 0); }
 function pasteTrackSettings(trackId) { if (!copiedTrackSettings) { showMessage('No settings copied.'); return; } const mix = mixes.find(m => m.tracks.some(t => t.id === trackId)); if (!mix) return; const trackData = mix.tracks.find(t => t.id === trackId); trackData.settings = normalizeTrackSettings(JSON.parse(JSON.stringify(copiedTrackSettings))); syncTrackUI(document.getElementById(trackId), trackData); convertLegacyFadeOut(mix.audioEngine[trackId]); updateFadeReadout(mix.audioEngine[trackId]); onTrackSettingChanged(mix.audioEngine[trackId], 'all'); }
 function resetAllTracksToDefaults(mixId) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; mix.tracks.forEach(t => { t.settings = { ...DEFAULT_TRACK_SETTINGS }; syncTrackUI(document.getElementById(t.id), t); onTrackSettingChanged(mix.audioEngine[t.id], 'all'); }); }
-function toggleAllTracksExpanded(mixId, button) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; const shouldExpand = button.textContent.includes('Expand'); const tracks = document.getElementById(mixId).querySelectorAll('.track'); tracks.forEach(t => setTrackExpanded(t, shouldExpand)); const syncGroups = document.getElementById(mixId).querySelectorAll('.sync-group'); syncGroups.forEach(sg => { sg.classList.toggle('expanded', shouldExpand); const groupData = mix.syncGroups.find(g => g.id === sg.id); if (groupData) groupData.isExpanded = shouldExpand; }); button.textContent = shouldExpand ? 'Collapse All' : 'Expand All'; }
-function toggleAllGroupTracksExpanded(groupId, button) { const groupEl = document.getElementById(groupId); if (!groupEl) return; const tracks = groupEl.querySelectorAll('.track'); const shouldExpand = button.textContent.includes('Expand'); tracks.forEach(t => setTrackExpanded(t, shouldExpand)); button.textContent = shouldExpand ? 'Collapse SG' : 'Expand SG';}
+// MS-104.06: open and close by levels with − / + (replacing Expand / Collapse All and Expand / Collapse SG).
+// 0 = everything closed · 1 = Sync Groups open (every track's header in view) · 2 = tracks open, their boxes closed ·
+// 3 = everything open. A Sync Group's own − / + uses the same levels for itself and its tracks.
+const LEVEL_TIP = 'Close (−) or open (+) one level: 0 = all closed · 1 = Sync Groups open · 2 = tracks open · 3 = their boxes open too';
+function levelControlHTML() { return `<div class="level-control" title="${LEVEL_TIP}"><button type="button" class="level-down small-btn" aria-label="Close one level">−</button><span class="level-display"><span class="level-word">Level </span><span class="level-num"></span></span><button type="button" class="level-up small-btn" aria-label="Open one level">+</button></div>`; }
+function setTrackLevel(trackEl, level) { setTrackExpanded(trackEl, level >= 2); trackEl.querySelectorAll('.mode-box[data-section]').forEach(box => setSectionOpen(trackEl, box.dataset.section, level >= 3)); }
+function setGroupLevel(groupEl, level) {
+    groupEl.classList.toggle('expanded', level >= 1);
+    const groupData = mixes.flatMap(m => m.syncGroups || []).find(g => g.id === groupEl.id);
+    if (groupData) groupData.isExpanded = level >= 1;
+    groupEl.querySelectorAll('.track').forEach(t => setTrackLevel(t, level));
+}
+// The level the screen is at: the highest level whose every item is open (boxes hidden in a Sync Group don't count).
+function viewLevel(groupEls, trackEls) {
+    if (!groupEls.every(g => g.classList.contains('expanded'))) return 0;
+    if (!trackEls.every(t => t.classList.contains('expanded'))) return 1;
+    const boxesOpen = t => [...t.querySelectorAll('.mode-box[data-section]')].every(b => b.classList.contains('is-open') || getComputedStyle(b).display === 'none');
+    return trackEls.every(boxesOpen) ? 3 : 2;
+}
+// Wires a level control: − and + step one level, skipping levels that would change nothing (e.g. level 1 with no Sync Groups).
+function setupLevelControl(control, getLevel, setLevel) {
+    const down = control.querySelector('.level-down'), up = control.querySelector('.level-up');
+    control.refresh = () => { const level = getLevel(); control.querySelector('.level-num').textContent = level; down.disabled = level <= 0; up.disabled = level >= 3; };
+    const step = dir => {
+        const before = getLevel();
+        let target = before;
+        do { target += dir; setLevel(target); } while (getLevel() === before && target > 0 && target < 3);
+        refreshLevelControls(control.closest('.mix-container'));
+    };
+    down.addEventListener('click', () => step(-1));
+    up.addEventListener('click', () => step(1));
+    control.refresh();
+}
+function refreshLevelControls(root) { root?.querySelectorAll('.level-control').forEach(c => c.refresh?.()); }
+
+// MS-104: ▲ / ▼ move a track, Sync Group or mix one place up or down (on phones, where dragging is unreliable: MS-162).
+// A track moves within its own list (the mix's list, or its Sync Group's); it steps past a whole Sync Group.
+const MOVE_BUTTONS = `<button type="button" class="move-btn move-up-btn small-btn" title="Move up">▲</button><button type="button" class="move-btn move-down-btn small-btn" title="Move down">▼</button>`;
+function moveItem(el, dir) {
+    const isItem = n => n && (n.classList.contains('track') || n.classList.contains('sync-group') || n.classList.contains('mix-container'));
+    let other = dir < 0 ? el.previousElementSibling : el.nextElementSibling;
+    while (other && !isItem(other)) other = dir < 0 ? other.previousElementSibling : other.nextElementSibling;
+    if (!other) return;
+    const topBefore = el.getBoundingClientRect().top;
+    if (dir < 0) other.before(el); else other.after(el);
+    window.scrollBy(0, el.getBoundingClientRect().top - topBefore); // the moved item stays under your finger
+    if (el.classList.contains('mix-container')) {
+        const order = Array.from(mixesArea.querySelectorAll('.mix-container')).map(m => m.id);
+        mixes.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    } else if (el.classList.contains('sync-group')) {
+        syncGroupOrderToScreen(mixes.find(m => m.id === el.closest('.mix-container').id));
+    }
+}
 function updateTrackUIVisibility(trackElement, isInGroup) { trackElement.querySelectorAll('.track-transposed-controls').forEach(el => el.style.display = isInGroup ? 'none' : ''); trackElement.querySelectorAll('.sync-track-controls').forEach(el => el.style.display = isInGroup ? '' : 'none'); }
 
 function sortTracks(mixId, sortType) {
