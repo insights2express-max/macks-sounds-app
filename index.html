@@ -878,7 +878,7 @@ const ICONS = {
 // Volume slider (v305). Wave Pauses: volumePauseEvery = average seconds between pauses (0 = none); volumePauseDuration = seconds each lasts.
 // Fades (v304) are off by default; each has its own length in seconds. Crossfade overlaps back-to-back loop plays.
 // playChance (v310, Sync Group members only): the share of the group's cycles the track plays in (1 = every cycle).
-const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 30, volumePauseEvery: 30, volumePauseDuration: 4, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 30, speedPauseEvery: 30, speedPauseDuration: 4, minDelay: 2, maxDelay: 10 };
+const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10 };
 // Before v303 a track had one `mode`; mixes and copied settings from older versions are converted on load.
 const LEGACY_TRACK_MODES = { normal: {}, random_play: { timingMode: 'random' }, random_volume: { volumeMode: 'varying' }, random_pitch: { pitchMode: 'random' }, oscillating_pitch: { pitchMode: 'oscillating' } };
 function normalizeTrackSettings(settings = {}) {
@@ -2140,8 +2140,8 @@ function holdParam(param, time) {
     else { param.cancelScheduledValues(time); param.setValueAtTime(param.value, time); }
 }
 const spread = (value, amount) => value * (1 - amount + Math.random() * 2 * amount);
-const volumeWaveSettings = s => ({ length: Math.max(1, num(s.volumeWave, 30)), every: Math.max(0, num(s.volumePauseEvery)), duration: Math.max(0, num(s.volumePauseDuration)) });
-const speedWaveSettings = s => ({ length: Math.max(1, num(s.speedWave, 30)), every: Math.max(0, num(s.speedPauseEvery)), duration: Math.max(0, num(s.speedPauseDuration)) });
+const volumeWaveSettings = s => ({ length: Math.max(1, num(s.volumeWave, DEFAULT_TRACK_SETTINGS.volumeWave)), every: Math.max(0, num(s.volumePauseEvery)), duration: Math.max(0, num(s.volumePauseDuration)) });
+const speedWaveSettings = s => ({ length: Math.max(1, num(s.speedWave, DEFAULT_TRACK_SETTINGS.speedWave)), every: Math.max(0, num(s.speedPauseEvery)), duration: Math.max(0, num(s.speedPauseDuration)) });
 function volumeRange(s) { const lo = num(s.minVolume, 0.2); return { lo, hi: Math.max(lo, num(s.maxVolume, 1)) }; }
 function waveHalfLength(w) { return w.length / 2 * (0.8 + Math.random() * 0.4); }
 // Seconds to ease into (and out of) a pause: 1.5 s, shorter for short waves.
