@@ -4372,11 +4372,12 @@ function syncTrackUI(trackElement, trackData) { if (!trackElement) return; track
 // Slider readouts, as percentages.
 function updateSettingDisplay(trackElement, key, value) { const display = trackElement.querySelector(`.${key}-display`); if (display) display.textContent = `${Math.round(value * 100)}%`; }
 // Speed: what Min / Max Speed (shares of the Speed slider, at least 10%) come to, e.g. Speed 100%, Min 94%, Max 100% -> "= 94%–100%".
-function speedRange(settings) { const v = Number(settings.speed) || 0, lo = Math.max(0.1, Number(settings.minSpeed) || 0), hi = Math.max(lo, Number(settings.maxSpeed) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
-function updateSpeedRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.speed-range-readout'); if (!el) return; const [lo, hi] = speedRange(settings); el.textContent = `= ${lo}%–${hi}%`; }
+// Named ...Percent: audio-engine.js has its own volumeRange / speedRange (all scripts share one set of names).
+function speedRangePercent(settings) { const v = Number(settings.speed) || 0, lo = Math.max(0.1, Number(settings.minSpeed) || 0), hi = Math.max(lo, Number(settings.maxSpeed) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
+function updateSpeedRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.speed-range-readout'); if (!el) return; const [lo, hi] = speedRangePercent(settings); el.textContent = `= ${lo}%–${hi}%`; }
 // Varying volume: what Min / Max Vol (shares of the Volume slider) come to, e.g. Volume 150%, Min 40%, Max 100% -> "= 60%–150%".
-function volumeRange(settings) { const v = Number(settings.volume) || 0, lo = Number(settings.minVolume) || 0, hi = Math.max(lo, Number(settings.maxVolume) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
-function updateVolumeRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.volume-range-readout'); if (!el) return; const [lo, hi] = volumeRange(settings); el.textContent = `= ${lo}%–${hi}%`; }
+function volumeRangePercent(settings) { const v = Number(settings.volume) || 0, lo = Number(settings.minVolume) || 0, hi = Math.max(lo, Number(settings.maxVolume) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
+function updateVolumeRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.volume-range-readout'); if (!el) return; const [lo, hi] = volumeRangePercent(settings); el.textContent = `= ${lo}%–${hi}%`; }
 // MS-104: a closed Timing / Volume / Speed / Fades box still shows its current choice beside its title.
 // MS-220 (v320): Volume and Speed show what they come to: Steady = the slider ("Steady 80%"); Random / Varying = the
 // actual range (the same numbers as the box's range readout); Varying adds its wave: WL, WPE and WPD, always, even at 0.
@@ -4392,8 +4393,8 @@ function updateSectionSummaries(trackElement, settings) {
     const volumeLabel = label('.volumeMode-select', settings.volumeMode), speedLabel = label('.speedMode-select', settings.speedMode);
     const summaries = {
         timing: !settings.loop ? 'Loop off' : settings.timingMode === 'random' ? `Loop · Random ${secs(settings.minDelay)}–${secs(settings.maxDelay)}` : `Loop · Regular${Number(settings.loopDelay) > 0 ? `, gap ${secs(settings.loopDelay)}` : ''}`,
-        volume: pieces(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRange(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`]),
-        speed: pieces(settings.speedMode === 'varying' ? [`${speedLabel} ${range(speedRange(settings))}`, ...wave(settings.speedWave, settings.speedPauseEvery, settings.speedPauseDuration)] : settings.speedMode === 'random' ? [`${speedLabel} ${range(speedRange(settings))}`] : [`${speedLabel} ${percent(settings.speed)}`]),
+        volume: pieces(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRangePercent(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`]),
+        speed: pieces(settings.speedMode === 'varying' ? [`${speedLabel} ${range(speedRangePercent(settings))}`, ...wave(settings.speedWave, settings.speedPauseEvery, settings.speedPauseDuration)] : settings.speedMode === 'random' ? [`${speedLabel} ${range(speedRangePercent(settings))}`] : [`${speedLabel} ${percent(settings.speed)}`]),
         fades: [settings.fadeIn && `In ${secs(settings.fadeInLength)}`, settings.fadeOut && `Out ${secs(settings.fadeOutLength)}`, settings.crossfade && !trackElement.closest('.sync-group') && `Crossfade ${secs(settings.crossfadeLength)}`].filter(Boolean).join(', ') || 'Off'
     };
     // The abbreviations are spelled out only in the tooltip.
