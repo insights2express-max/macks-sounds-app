@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v319</title>
+    <title>Mack's Sounds v320</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -452,7 +452,10 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .track-actions-row .select-checkbox { width: 28px; height: 28px; transform: none; }
     .track-actions-row .track-drag-handle { width: 44px; height: 44px; justify-content: center; margin-right: 0; }
     .mode-box { padding: 0 0.6rem; }
-    .section-toggle { min-height: 44px; }
+    /* MS-220: the title bar flows as text, so a long summary wraps under the title at full width (not in a narrow column beside it). */
+    .section-toggle { display: block; min-height: 44px; padding: 0.7rem 0; line-height: 1.35; }
+    .section-chevron, .section-title { margin-right: 0.5rem; }
+    .section-chevron { vertical-align: -0.1em; }
     .sync-group { padding: 0.5rem; }
     .sync-group-tracks { padding: 0.25rem; }
     .tracks-container { padding-top: 1rem; }
@@ -536,7 +539,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v319</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v320</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -841,7 +844,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v319';
+const APP_VERSION = 'v320';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -875,7 +878,7 @@ const ICONS = {
 // Volume slider (v305). Wave Pauses: volumePauseEvery = average seconds between pauses (0 = none); volumePauseDuration = seconds each lasts.
 // Fades (v304) are off by default; each has its own length in seconds. Crossfade overlaps back-to-back loop plays.
 // playChance (v310, Sync Group members only): the share of the group's cycles the track plays in (1 = every cycle).
-const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 30, volumePauseEvery: 30, volumePauseDuration: 4, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 30, speedPauseEvery: 30, speedPauseDuration: 4, minDelay: 2, maxDelay: 10 };
+const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10 };
 // Before v303 a track had one `mode`; mixes and copied settings from older versions are converted on load.
 const LEGACY_TRACK_MODES = { normal: {}, random_play: { timingMode: 'random' }, random_volume: { volumeMode: 'varying' }, random_pitch: { pitchMode: 'random' }, oscillating_pitch: { pitchMode: 'oscillating' } };
 function normalizeTrackSettings(settings = {}) {
@@ -2137,8 +2140,8 @@ function holdParam(param, time) {
     else { param.cancelScheduledValues(time); param.setValueAtTime(param.value, time); }
 }
 const spread = (value, amount) => value * (1 - amount + Math.random() * 2 * amount);
-const volumeWaveSettings = s => ({ length: Math.max(1, num(s.volumeWave, 30)), every: Math.max(0, num(s.volumePauseEvery)), duration: Math.max(0, num(s.volumePauseDuration)) });
-const speedWaveSettings = s => ({ length: Math.max(1, num(s.speedWave, 30)), every: Math.max(0, num(s.speedPauseEvery)), duration: Math.max(0, num(s.speedPauseDuration)) });
+const volumeWaveSettings = s => ({ length: Math.max(1, num(s.volumeWave, DEFAULT_TRACK_SETTINGS.volumeWave)), every: Math.max(0, num(s.volumePauseEvery)), duration: Math.max(0, num(s.volumePauseDuration)) });
+const speedWaveSettings = s => ({ length: Math.max(1, num(s.speedWave, DEFAULT_TRACK_SETTINGS.speedWave)), every: Math.max(0, num(s.speedPauseEvery)), duration: Math.max(0, num(s.speedPauseDuration)) });
 function volumeRange(s) { const lo = num(s.minVolume, 0.2); return { lo, hi: Math.max(lo, num(s.maxVolume, 1)) }; }
 function waveHalfLength(w) { return w.length / 2 * (0.8 + Math.random() * 0.4); }
 // Seconds to ease into (and out of) a pause: 1.5 s, shorter for short waves.
@@ -4369,20 +4372,39 @@ function syncTrackUI(trackElement, trackData) { if (!trackElement) return; track
 // Slider readouts, as percentages.
 function updateSettingDisplay(trackElement, key, value) { const display = trackElement.querySelector(`.${key}-display`); if (display) display.textContent = `${Math.round(value * 100)}%`; }
 // Speed: what Min / Max Speed (shares of the Speed slider, at least 10%) come to, e.g. Speed 100%, Min 94%, Max 100% -> "= 94%–100%".
-function updateSpeedRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.speed-range-readout'); if (!el) return; const v = Number(settings.speed) || 0, lo = Math.max(0.1, Number(settings.minSpeed) || 0), hi = Math.max(lo, Number(settings.maxSpeed) || 0); el.textContent = `= ${Math.round(v * lo * 100)}%–${Math.round(v * hi * 100)}%`; }
+// Named ...Percent: audio-engine.js has its own volumeRange / speedRange (all scripts share one set of names).
+function speedRangePercent(settings) { const v = Number(settings.speed) || 0, lo = Math.max(0.1, Number(settings.minSpeed) || 0), hi = Math.max(lo, Number(settings.maxSpeed) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
+function updateSpeedRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.speed-range-readout'); if (!el) return; const [lo, hi] = speedRangePercent(settings); el.textContent = `= ${lo}%–${hi}%`; }
 // Varying volume: what Min / Max Vol (shares of the Volume slider) come to, e.g. Volume 150%, Min 40%, Max 100% -> "= 60%–150%".
-function updateVolumeRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.volume-range-readout'); if (!el) return; const v = Number(settings.volume) || 0, lo = Number(settings.minVolume) || 0, hi = Math.max(lo, Number(settings.maxVolume) || 0); el.textContent = `= ${Math.round(v * lo * 100)}%–${Math.round(v * hi * 100)}%`; }
+function volumeRangePercent(settings) { const v = Number(settings.volume) || 0, lo = Number(settings.minVolume) || 0, hi = Math.max(lo, Number(settings.maxVolume) || 0); return [Math.round(v * lo * 100), Math.round(v * hi * 100)]; }
+function updateVolumeRangeReadout(trackElement, settings) { const el = trackElement.querySelector('.volume-range-readout'); if (!el) return; const [lo, hi] = volumeRangePercent(settings); el.textContent = `= ${lo}%–${hi}%`; }
 // MS-104: a closed Timing / Volume / Speed / Fades box still shows its current choice beside its title.
+// MS-220 (v320): Volume and Speed show what they come to: Steady = the slider ("Steady 80%"); Random / Varying = the
+// actual range (the same numbers as the box's range readout); Varying adds its wave: WL, WPE and WPD, always, even at 0.
+const WAVE_SUMMARY_TIP = 'WL = Wave Length · WPE = Wave Pause Every · WPD = Wave Pause Duration';
 function updateSectionSummaries(trackElement, settings) {
     const secs = v => `${Number(Number(v).toFixed(1))} s`;
     const label = (selector, value) => trackElement.querySelector(selector)?.querySelector(`option[value="${value}"]`)?.textContent || '';
+    const percent = v => `${Math.round((Number(v) || 0) * 100)}%`, range = ([lo, hi]) => `${lo}–${hi}%`;
+    const wave = (length, every, duration) => [`WL ${secs(length || 0)}`, `WPE ${secs(every || 0)}`, `WPD ${secs(duration || 0)}`];
+    // On a narrow phone a long summary wraps only between its "·" pieces, never inside one ("75–" / "80%").
+    const NBSP = String.fromCharCode(0xA0), NO_BREAK = String.fromCharCode(0x2060); // a space and a dash that never start a new line
+    const pieces = list => list.map(p => p.replace(/ /g, NBSP).replace(/–/g, '–' + NO_BREAK)).join(NBSP + '· ');
+    const volumeLabel = label('.volumeMode-select', settings.volumeMode), speedLabel = label('.speedMode-select', settings.speedMode);
     const summaries = {
         timing: !settings.loop ? 'Loop off' : settings.timingMode === 'random' ? `Loop · Random ${secs(settings.minDelay)}–${secs(settings.maxDelay)}` : `Loop · Regular${Number(settings.loopDelay) > 0 ? `, gap ${secs(settings.loopDelay)}` : ''}`,
-        volume: label('.volumeMode-select', settings.volumeMode),
-        speed: label('.speedMode-select', settings.speedMode),
+        volume: pieces(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRangePercent(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`]),
+        speed: pieces(settings.speedMode === 'varying' ? [`${speedLabel} ${range(speedRangePercent(settings))}`, ...wave(settings.speedWave, settings.speedPauseEvery, settings.speedPauseDuration)] : settings.speedMode === 'random' ? [`${speedLabel} ${range(speedRangePercent(settings))}`] : [`${speedLabel} ${percent(settings.speed)}`]),
         fades: [settings.fadeIn && `In ${secs(settings.fadeInLength)}`, settings.fadeOut && `Out ${secs(settings.fadeOutLength)}`, settings.crossfade && !trackElement.closest('.sync-group') && `Crossfade ${secs(settings.crossfadeLength)}`].filter(Boolean).join(', ') || 'Off'
     };
-    trackElement.querySelectorAll('.mode-box[data-section]').forEach(box => { const el = box.querySelector('.section-summary'); if (el) el.textContent = summaries[box.dataset.section] ? `· ${summaries[box.dataset.section]}` : ''; });
+    // The abbreviations are spelled out only in the tooltip.
+    const waveShown = { volume: settings.volumeMode === 'varying', speed: settings.speedMode === 'varying' };
+    trackElement.querySelectorAll('.mode-box[data-section]').forEach(box => {
+        const el = box.querySelector('.section-summary'); if (!el) return;
+        const key = box.dataset.section;
+        el.textContent = summaries[key] ? '· ' + summaries[key] : '';
+        if (waveShown[key]) el.title = WAVE_SUMMARY_TIP; else el.removeAttribute('title');
+    });
 }
 // Show only the controls that the track's Timing, Volume and Speed choices use. Timing only matters while Loop is on.
 function updateModeUI(trackElement, settings) { updateSectionSummaries(trackElement, settings); updateVolumeRangeReadout(trackElement, settings); updateSpeedRangeReadout(trackElement, settings); trackElement.classList.toggle('mode-looping', !!settings.loop); trackElement.classList.toggle('mode-volume-range', settings.volumeMode === 'varying'); trackElement.classList.toggle('mode-speed-range', settings.speedMode === 'random' || settings.speedMode === 'varying'); trackElement.classList.toggle('mode-speed-wave', settings.speedMode === 'varying'); trackElement.classList.toggle('mode-random-play', settings.loop && settings.timingMode === 'random'); trackElement.classList.toggle('mode-loop-delay', settings.loop && settings.timingMode !== 'random'); trackElement.classList.toggle('fade-in-on', !!settings.fadeIn); trackElement.classList.toggle('fade-out-on', !!settings.fadeOut); trackElement.classList.toggle('crossfade-on', !!settings.crossfade); trackElement.classList.toggle('crossfade-unavailable', !settings.loop || settings.timingMode === 'random' || Number(settings.loopDelay) > 0); }

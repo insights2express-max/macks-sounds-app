@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v320</title>
+    <title>Mack's Sounds v321</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link id="google-fonts-link" href="https://fonts.googleapis.com/css2?family=Agu+Display&family=Bagel+Fat+One&family=Bruno+Ace&family=Caesar+Dressing&family=Chokokutai&family=Geostar+Fill&family=Graduate&family=Kablammo&family=Kenia&family=Limelight&family=Orbitron&family=Original+Surfer&family=Poppins&family=Revalia&family=Sankofa+Display&family=Shojumaru&family=Spicy+Rice&family=Unlock&display=swap" rel="stylesheet">
@@ -229,7 +229,6 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .mode-box .control-group { min-width: 140px; }
 /* Fades: a tick box to switch each fade on, and its length in seconds (dimmed while off). */
 .fades-box .fade-label { display: flex; align-items: center; gap: 0.4rem; cursor: pointer; }
-.fades-box .fade-length { width: 70px; }
 .fade-note { font-size: 0.8em; opacity: 0.7; }
 /* Varying volume: the result of Min / Max Vol, and a one-line note under the controls. */
 .volume-range-readout { font-size: 0.9em; opacity: 0.9; padding: 0.35rem 0; }
@@ -279,7 +278,8 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .sync-group:not(.expanded) .sync-group-tracks, .sync-group:not(.expanded) .sync-group-controls { max-height: 0; padding-top: 0; padding-bottom: 0; }
 .sync-group:not(.mode-random_play) .random-play-delay-controls-wrapper, .track:not(.mode-random-play) .random-play-delay-controls-wrapper { display: none; }
 .sync-group.mode-random_play .loop-delay-controls-wrapper, .track.mode-random-play .loop-delay-controls-wrapper { display: none; }
-.random-play-delay-container { display: flex; align-items: center; gap: 0.5rem; }
+.random-play-delay-container { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.sync-group-controls .random-play-delay-controls-wrapper { grid-column: 1 / -1; } /* MS-224: the Min / Max pair side by side */
 
 button, .button-like, select, input { font-family: var(--font-family-main); font-size: inherit; vertical-align: middle; }
 button, .button-like { background-color: var(--secondary-color); color: var(--text-color); border: none; border-radius: 6px; padding: 0.6rem 1rem; cursor: pointer; transition: background-color 0.2s, text-shadow 0.2s, box-shadow 0.2s; text-align: center; box-shadow: 0 0 0 1px black; }
@@ -305,6 +305,16 @@ html[data-theme='dark'] select { background-color: #000; }
 html[data-theme='dark'] select option, html[data-theme='dark'] select optgroup { background: #000; color: #fff; }
 input[type="number"] { width: 90px; }
 input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { opacity: 1; height: 1.8em; background-color: var(--secondary-color); filter: invert(1); border-radius: 4px; width: 1.2em; }
+/* MS-224: the small "0" inside the right edge of a number box (the box's ▲▼ arrows move left to make room). */
+.zero-wrap { position: relative; display: inline-block; vertical-align: middle; width: max-content; justify-self: start; }
+.zero-wrap > input[type="number"] { width: 104px; padding-right: calc(0.5rem + 1.3em); }
+.zero-wrap .zero-btn { position: absolute; right: 3px; top: 50%; transform: translateY(-50%); width: 1.3em; height: 1.5em; min-width: 0; min-height: 0; padding: 0; font-size: 0.8em; line-height: 1; border-radius: 3px; opacity: 0.75; box-shadow: none; }
+.zero-wrap .zero-btn:hover { opacity: 1; }
+@media (pointer: coarse) { .zero-wrap .zero-btn { height: 70%; width: 1.6em; } .zero-wrap > input[type="number"] { padding-right: calc(0.4rem + 1.6em); } }
+.autolevel-readout { white-space: nowrap; }
+/* Settings > New track defaults (MS-223) */
+.track-defaults-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem 1rem; align-items: end; margin-bottom: 0.75rem; }
+.track-defaults-grid input[type="number"], .track-defaults-grid select { width: 100%; box-sizing: border-box; }
 .track-filter-input, .track-sort-select { max-width: 160px; }
 .filter-wrapper { position: relative; }
 .clear-filter-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--main-font-color); cursor: pointer; font-size: 1.2em; padding: 0 0.5rem; display: none; }
@@ -539,7 +549,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v320</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v321</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -603,6 +613,13 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                         </div>
                     </div>
                     <p id="audio-diagnostics" class="bg-storage-note" title="Useful if playback ever sounds too fast/high or too slow/low">Audio: not started yet (starts with the first mix).</p>
+                </fieldset>
+
+                <fieldset id="track-defaults-panel">
+                    <legend>New track defaults</legend>
+                    <p class="bg-storage-note">Each track you add from now on (Add Local, including Sound Lab files) starts with these settings. Tracks already in a mix, imported mixes and pasted tracks keep their own. Saved in this browser.</p>
+                    <div class="track-defaults-form"></div>
+                    <button id="reset-track-defaults-btn" class="small-btn">Reset to factory defaults</button>
                 </fieldset>
 
                 <fieldset>
@@ -844,7 +861,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v320';
+const APP_VERSION = 'v321';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -878,14 +895,20 @@ const ICONS = {
 // Volume slider (v305). Wave Pauses: volumePauseEvery = average seconds between pauses (0 = none); volumePauseDuration = seconds each lasts.
 // Fades (v304) are off by default; each has its own length in seconds. Crossfade overlaps back-to-back loop plays.
 // playChance (v310, Sync Group members only): the share of the group's cycles the track plays in (1 = every cycle).
-const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10 };
+// autoLevel (v321, MS-227): the track plays at the common level (js/auto-level.js).
+// These are the factory values. A newly added track takes the New track defaults from Settings instead
+// (newTrackSettings in js/track-defaults.js, MS-223), which start out as these.
+const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10, autoLevel: true };
 // Before v303 a track had one `mode`; mixes and copied settings from older versions are converted on load.
 const LEGACY_TRACK_MODES = { normal: {}, random_play: { timingMode: 'random' }, random_volume: { volumeMode: 'varying' }, random_pitch: { pitchMode: 'random' }, oscillating_pitch: { pitchMode: 'oscillating' } };
 function normalizeTrackSettings(settings = {}) {
     const legacy = ('mode' in settings && !('timingMode' in settings)) ? LEGACY_TRACK_MODES[settings.mode] : null;
     const beforeV305 = Object.keys(settings).length > 0 && !('volumePauseEvery' in settings);
+    const beforeV321 = Object.keys(settings).length > 0 && !('autoLevel' in settings);
     const s = { ...DEFAULT_TRACK_SETTINGS, ...settings, ...(legacy || {}) };
     delete s.mode;
+    // v321 (MS-227): a track that was already in a mix keeps its hand-set balance: it is measured, but Auto level starts off.
+    if (beforeV321) s.autoLevel = false;
     if (beforeV305) {
         // v305: Hold (stairsteps) became Wave Pauses: about one pause per swing, as long as the old Hold.
         // A smooth wave (Hold 0) stays smooth.
@@ -1274,11 +1297,13 @@ async function processNewTrack(mix, audioSource, trackName, existingTrackData = 
         id: existingTrackData?.id || uniqueId('track'),
         name: trackName, 
         isEnabled: existingTrackData?.isEnabled ?? true, isMuted: existingTrackData?.isMuted ?? false, isSoloed: false,
-        settings: normalizeTrackSettings(existingTrackData?.settings),
+        // A newly added file (no settings yet) takes the New track defaults from Settings (MS-223).
+        settings: normalizeTrackSettings(existingTrackData?.settings ?? newTrackSettings()),
         syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: existingTrackData?.syncInfo?.startTime || 0 },
         openSections: { ...existingTrackData?.openSections }, // MS-104: which of Timing / Volume / Speed / Fades are open (closed by default)
         isExpanded: !!existingTrackData?.isExpanded, // MS-104: the track's settings open (saved with the mix, like Sync Groups)
-        soundId: existingTrackData?.soundId || null // MS-130: the saved sound it plays (js/storage.js); several tracks may share one
+        soundId: existingTrackData?.soundId || null, // MS-130: the saved sound it plays (js/storage.js); several tracks may share one
+        loudness: existingTrackData?.loudness || null // MS-227: its sound's measured loudness (js/auto-level.js)
     };
     if (!mix.tracks) mix.tracks = [];
     mix.tracks.push(trackData);
@@ -1306,7 +1331,10 @@ function attachTrackBuffer(mix, track, buffer) {
     updateFadeReadout(track);
     setTimeout(() => updatePlayCounterDisplay(track), 0);
     // Added or pasted while the mix plays: start straight away (grouped tracks join the group's next cycle).
-    if (mix.isPlaying && track.data.isEnabled && !track.data.syncInfo.groupId && track.audio.state !== 'PLAYING') startTrackChain(track);
+    // With Auto level on, it starts once its sound is measured, so it is never heard at the wrong level first.
+    const startIfPlaying = () => { if (mix.audioEngine[track.data.id] && mix.isPlaying && track.data.isEnabled && !track.data.syncInfo.groupId && track.audio.state !== 'PLAYING') startTrackChain(track); };
+    const measuring = ensureTrackLoudness(track); // MS-227
+    if (track.data.settings.autoLevel && track.data.loudness?.version !== LOUDNESS_VERSION) measuring.then(startIfPlaying); else startIfPlaying();
 }
 
 // MS-104: the title bar of a track's Timing / Volume / Speed / Fades box. A tap opens or closes the box; while closed,
@@ -1337,8 +1365,9 @@ const replaceTrackHeaderItems = () => { if (phoneLayout.matches === phoneLayoutP
 phoneLayout.addEventListener('change', replaceTrackHeaderItems);
 window.addEventListener('resize', replaceTrackHeaderItems);
 
+// trackElement.trackData is set when the track is drawn, so this works even before its mix joins the list (an import in progress).
+function trackDataOf(trackElement) { return trackElement.trackData || mixes.flatMap(m => m.tracks || []).find(t => t.id === trackElement.id); }
 // Opens or closes a track's settings and remembers it in the track's data, so Export / Import keeps it (MS-104).
-function trackDataOf(trackElement) { return mixes.flatMap(m => m.tracks || []).find(t => t.id === trackElement.id); }
 function setTrackExpanded(trackElement, open) {
     trackElement.classList.toggle('expanded', open);
     const data = trackDataOf(trackElement);
@@ -1376,6 +1405,7 @@ function addTrackToMixUI(mix, trackData) {
     trackElement.className = 'track';
     trackElement.id = trackData.id;
     trackElement.dataset.trackId = trackData.id;
+    trackElement.trackData = trackData;
     
     trackElement.innerHTML = `
         <div class="track-header">
@@ -1424,8 +1454,8 @@ function addTrackToMixUI(mix, trackData) {
                     <div class="mode-specific-controls random-play-delay-controls">
                         <label class="minDelay-label">Gap Min / Max (s)</label>
                         <div class="random-play-delay-container">
-                            <input type="number" class="minDelay-input" min="0" step="0.1" title="Min gap (s)" style="width: 70px;">
-                            <input type="number" class="maxDelay-input" min="0" step="0.1" title="Max gap (s)" style="width: 70px;">
+                            <input type="number" class="minDelay-input" min="0" step="0.1" title="Min gap (s)">
+                            <input type="number" class="maxDelay-input" min="0" step="0.1" title="Max gap (s)">
                         </div>
                     </div>
                 </div>
@@ -1434,6 +1464,9 @@ function addTrackToMixUI(mix, trackData) {
             <div class="mode-box volume-box" data-section="volume">
                 ${sectionToggle('Volume', 'Steady: the Volume slider. Varying: the volume rises and falls in a slow wave between Min and Max Vol.')}
                 <div class="section-body"><div class="section-body-inner"><div class="section-content">
+                <div class="control-group autolevel-control">
+                    <div class="control-group-row"><label class="check-label" title="Plays this track at the same loudness as every other track with Auto level on (measured on its audible parts; the file is unchanged). Volume 100% is then the matched level."><input type="checkbox" class="autoLevel-toggle"> Auto level</label><span class="autolevel-readout fade-note"></span></div>
+                </div>
                 <div class="control-group"><select class="volumeMode-select" aria-label="Volume"></select></div>
                 <div class="control-group mode-specific-controls volume-range-controls">
                     <div class="control-group-row"><label class="minVolume-label" title="The quietest point of the wave, as a share of the Volume slider. Double-click to reset.">Min Vol</label><span class="minVolume-display"></span></div>
@@ -1700,8 +1733,8 @@ function createSyncGroupUI(mix, groupData) {
                 <div class="control-group random-play-delay-controls-wrapper">
                     <label>Delay (Min/Max)</label>
                     <div class="random-play-delay-container">
-                         <input type="number" class="sync-group-minDelay-input" min="0" step="0.1" value="${groupData.settings.minDelay || 0}" style="width:70px" title="Min Delay (s)">
-                         <input type="number" class="sync-group-maxDelay-input" min="0" step="0.1" value="${groupData.settings.maxDelay || 0}" style="width:70px" title="Max Delay (s)">
+                         <input type="number" class="sync-group-minDelay-input" min="0" step="0.1" value="${groupData.settings.minDelay || 0}" title="Min Delay (s)">
+                         <input type="number" class="sync-group-maxDelay-input" min="0" step="0.1" value="${groupData.settings.maxDelay || 0}" title="Max Delay (s)">
                     </div>
                 </div>
             </div>
@@ -1868,7 +1901,8 @@ function removeSyncGroup(mix, groupId) {
 // so loops have no gaps and delays stay accurate even when a background tab's timers are slowed.
 //
 // Each play of a sound is a "voice": its own buffer source and gain node, routed
-//   voice gain -> track.audio.driftGain (Varying volume wave) -> track.audio.gainNode (volume/mute/solo) -> mix -> master.
+//   voice gain -> track.audio.driftGain (Varying volume wave) -> track.audio.gainNode (volume/mute/solo, times the
+//   Auto level correction, MS-227) -> mix -> master.
 // Ungrouped tracks keep a "chain" of upcoming plays; sync groups keep a list of upcoming "cycles".
 // Both are topped up from voice 'ended' events and a 250 ms tick, always staying at least
 // SCHEDULE_MIN_AHEAD plays and SCHEDULE_HORIZON seconds ahead.
@@ -2695,7 +2729,7 @@ function updateSyncGroupButtonUI(groupId, state) {
 function onTrackSettingChanged(track, key) {
     if (!audioContext || !track) return;
     updateTrackGain(track);
-    if (key === 'volume') return;
+    if (key === 'volume' || key === 'autoLevel') return; // levels only: nothing to re-plan
     if (['volumeMode', 'minVolume', 'maxVolume', 'volumeWave', 'volumePauseEvery', 'volumePauseDuration', 'all'].includes(key)) track.audio.driftUntil = null;
     const mix = findMixOfTrack(track);
     const group = groupOfTrack(mix, track);
@@ -4241,7 +4275,9 @@ function updateTrackGain(track, immediate = false, timeConstant = 0.02) {
     if (!finalMuteState) {
         // The Volume slider is the track's master level in every mode. With Varying volume, the wave (Min / Max Vol,
         // shares of this level) is applied on top by the track's drift gain (see scheduleDrift in audio-engine.js).
-        targetVolume = track.data.settings.volume * (group?.settings.volume ?? 1);
+        // Auto level (MS-227) multiplies in its correction, so Volume 100% is the matched level (gains simply multiply,
+        // so this is the same as a separate gain ahead of Volume and Varying).
+        targetVolume = track.data.settings.volume * (group?.settings.volume ?? 1) * autoLevelFactor(track.data);
     }
 
     if (immediate) {
@@ -4366,7 +4402,32 @@ function filterTracks(mixId, searchTerm) {
 // MS-181: seconds fields step by whole seconds with the ▲▼ arrows (and arrow keys), still accept typed fractions
 // such as 2.5, and show one decimal place (2.0, 2.5) so it is clear that fractions are allowed.
 function formatSecondsInput(input) { if (input.value !== '' && isFinite(input.value)) input.value = Number(input.value).toFixed(1); }
-function setupSecondsInputs(container) { container.querySelectorAll('input[type="number"]').forEach(input => { input.step = 'any'; formatSecondsInput(input); input.addEventListener('change', () => formatSecondsInput(input)); }); }
+function setupSecondsInputs(container) { container.querySelectorAll('input[type="number"]').forEach(input => { input.step = 'any'; formatSecondsInput(input); input.addEventListener('change', () => formatSecondsInput(input)); addZeroButton(input); }); }
+// MS-224: a small "0" inside the right edge of each number box sets that one box to 0, or to its lowest value where 0
+// isn't allowed (Wave Length 1.0 s, fade lengths 0.1 s). It acts like typing the number (the same input and change
+// events), so playback re-plans and Autosave saves; the defaults are never touched.
+function addZeroButton(input) {
+    if (input.parentElement.classList.contains('zero-wrap')) return;
+    const zero = Math.max(0, Number(input.min) || 0);
+    const wrap = document.createElement('span');
+    wrap.className = 'zero-wrap';
+    input.before(wrap);
+    wrap.append(input);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'zero-btn';
+    btn.tabIndex = -1; // Tab moves between the boxes themselves
+    btn.textContent = '0';
+    btn.title = zero > 0 ? `Set to ${zero.toFixed(1)} (the lowest allowed)` : 'Set to 0';
+    btn.setAttribute('aria-label', btn.title);
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        input.value = zero;
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    wrap.append(btn);
+}
 function updatePlayCounterDisplay(track, counter = trackCounter(track, audioContext.currentTime)) { const el = document.getElementById(track.data.id)?.querySelector('.track-play-counter'); if (!el || !track.audio.buffer) return; el.textContent = formatCounter(counter); }
 function syncTrackUI(trackElement, trackData) { if (!trackElement) return; trackElement.querySelector('.track-enable-toggle').checked = trackData.isEnabled; Object.entries(trackData.settings).forEach(([key, value]) => { const input = trackElement.querySelector(`.${key}-slider, .${key}-select, .${key}-toggle, .${key}-input`); if(input) { const controlGroup = input.closest('.control-group, .control-group-row, .random-play-delay-container'); if (controlGroup) { if (input.type === 'checkbox') { input.checked = value; } else { input.value = value; if (input.type === 'number') formatSecondsInput(input); } if (input.type === 'range') updateSettingDisplay(trackElement, key, value); } } }); trackElement.querySelector('.sync-start-time-input').value = trackData.syncInfo.startTime; updateModeUI(trackElement, trackData.settings); }
 // Slider readouts, as percentages.
@@ -4391,9 +4452,11 @@ function updateSectionSummaries(trackElement, settings) {
     const NBSP = String.fromCharCode(0xA0), NO_BREAK = String.fromCharCode(0x2060); // a space and a dash that never start a new line
     const pieces = list => list.map(p => p.replace(/ /g, NBSP).replace(/–/g, '–' + NO_BREAK)).join(NBSP + '· ');
     const volumeLabel = label('.volumeMode-select', settings.volumeMode), speedLabel = label('.speedMode-select', settings.speedMode);
+    // MS-227: Auto level leads the Volume summary with its correction ("Auto +9.5 dB"), or just "Auto" until measured.
+    const auto = settings.autoLevel ? [`Auto ${formatAutoLevelDb(autoLevelDb(trackDataOf(trackElement)?.loudness))}`.trim()] : [];
     const summaries = {
         timing: !settings.loop ? 'Loop off' : settings.timingMode === 'random' ? `Loop · Random ${secs(settings.minDelay)}–${secs(settings.maxDelay)}` : `Loop · Regular${Number(settings.loopDelay) > 0 ? `, gap ${secs(settings.loopDelay)}` : ''}`,
-        volume: pieces(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRangePercent(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`]),
+        volume: pieces([...auto, ...(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRangePercent(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`])]),
         speed: pieces(settings.speedMode === 'varying' ? [`${speedLabel} ${range(speedRangePercent(settings))}`, ...wave(settings.speedWave, settings.speedPauseEvery, settings.speedPauseDuration)] : settings.speedMode === 'random' ? [`${speedLabel} ${range(speedRangePercent(settings))}`] : [`${speedLabel} ${percent(settings.speed)}`]),
         fades: [settings.fadeIn && `In ${secs(settings.fadeInLength)}`, settings.fadeOut && `Out ${secs(settings.fadeOutLength)}`, settings.crossfade && !trackElement.closest('.sync-group') && `Crossfade ${secs(settings.crossfadeLength)}`].filter(Boolean).join(', ') || 'Off'
     };
@@ -5369,6 +5432,268 @@ function setupAutosave() {
 }
     </script>
     <script>
+// --- js/auto-level.js ---
+// --- AUTO LEVEL (v321, MS-227) ---
+// Each sound's loudness is measured once, on its audible parts only, and a track with Auto level on gets the gain that
+// brings that sound to one common level (AUTO_LEVEL_TARGET). The file itself is never changed: the correction is a
+// gain in the track's chain (folded into its volume gain, see updateTrackGain), so Volume 100% means "matched level".
+//
+// The measurement follows broadcast loudness (ITU-R BS.1770 / EBU R128, "LUFS"): the sound is K-weighted (a filter
+// that hears roughly as people do: deep bass counts less, presence a little more), cut into 400 ms blocks (a new one
+// every 100 ms), and only audible blocks count: blocks below -70 LUFS are silence, and blocks more than 10 LU below the
+// sound's own average are its quiet gaps. So a clock's ticks or a thunder clap are measured by how loud they are when
+// heard, not averaged down by the silence between them (which would over-boost them).
+// The common level: JM's hand-set balance (most tracks fine at 100%) sits around -27 to -30 LUFS, and at -30 no
+// track of the sleep-sound library, once matched, peaks above -3 dBFS on its own, so the limiter stays out of the way.
+const AUTO_LEVEL_TARGET = -30;      // LUFS
+const AUTO_LEVEL_MAX_BOOST = 18;    // dB: a quiet sound is raised at most this much; cuts are unlimited
+const AUTO_LEVEL_PEAK_CEILING = -1; // dBFS: a boost never lifts the sound's own loudest sample above this (no clipping)
+const LOUDNESS_VERSION = 1;         // bump if the measurement changes, so saved measurements are redone
+
+// K-weighting for any sample rate (the two filters of BS.1770, as derived in libebur128).
+function kWeightingFilters(sampleRate) {
+    let K = Math.tan(Math.PI * 1681.974450955533 / sampleRate);
+    const Vh = Math.pow(10, 3.999843853973347 / 20), Vb = Math.pow(Vh, 0.4996667741545416), Q1 = 0.7071752369554196;
+    let a0 = 1 + K / Q1 + K * K;
+    const shelf = { b0: (Vh + Vb * K / Q1 + K * K) / a0, b1: 2 * (K * K - Vh) / a0, b2: (Vh - Vb * K / Q1 + K * K) / a0, a1: 2 * (K * K - 1) / a0, a2: (1 - K / Q1 + K * K) / a0 };
+    K = Math.tan(Math.PI * 38.13547087602444 / sampleRate);
+    const Q2 = 0.5003270373238773;
+    a0 = 1 + K / Q2 + K * K;
+    const highPass = { b0: 1, b1: -2, b2: 1, a1: 2 * (K * K - 1) / a0, a2: (1 - K / Q2 + K * K) / a0 };
+    return [shelf, highPass];
+}
+
+// A short break for the page between slices of work. A message, not a timer: browsers slow timers down to once a
+// second or less in a hidden tab or with the screen off, which would stretch a long sound's measurement to minutes.
+function yieldToPage() { return new Promise(resolve => { const channel = new MessageChannel(); channel.port1.onmessage = () => resolve(); channel.port2.postMessage(0); }); }
+
+// Returns { lufs, peakDb, version }. lufs is null for a sound with nothing audible. Runs in slices so the page stays
+// responsive (playback itself runs on the audio thread and is never held up).
+async function measureLoudness(buffer) {
+    const rate = buffer.sampleRate, length = buffer.length;
+    const step = Math.max(1, Math.round(rate * 0.1)); // 100 ms
+    const steps = Math.max(1, Math.ceil(length / step));
+    const power = new Float64Array(steps); // K-weighted energy of each 100 ms step, summed over the channels
+    const [f, g] = kWeightingFilters(rate);
+    let peak = 0, sinceYield = 0;
+    for (let c = 0; c < Math.min(buffer.numberOfChannels, 2); c++) {
+        const data = buffer.getChannelData(c);
+        let x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0; // filter memories: input, shelf output, high-pass output
+        for (let s = 0; s < steps; s++) {
+            const end = Math.min(length, (s + 1) * step);
+            let sum = 0;
+            for (let i = s * step; i < end; i++) {
+                const x = data[i];
+                if (x > peak) peak = x; else if (-x > peak) peak = -x;
+                const y = f.b0 * x + f.b1 * x1 + f.b2 * x2 - f.a1 * y1 - f.a2 * y2;
+                const z = y - 2 * y1 + y2 - g.a1 * z1 - g.a2 * z2;
+                x2 = x1; x1 = x; y2 = y1; y1 = y; z2 = z1; z1 = z;
+                sum += z * z;
+            }
+            power[s] += sum;
+            sinceYield += end - s * step;
+            if (sinceYield > 4e6) { sinceYield = 0; await yieldToPage(); }
+        }
+    }
+    return { lufs: gatedLoudness(power, step, length), peakDb: peak > 0 ? Math.round(200 * Math.log10(peak)) / 10 : null, version: LOUDNESS_VERSION };
+}
+
+// Integrated loudness from the 100 ms energies: 400 ms blocks, gated at -70 LUFS and then 10 LU below their average.
+function gatedLoudness(power, step, length) {
+    const toLufs = meanSquare => -0.691 + 10 * Math.log10(meanSquare);
+    const blocks = [];
+    if (power.length < 4) blocks.push(power.reduce((a, b) => a + b, 0) / Math.max(1, length)); // shorter than 400 ms: one block
+    else for (let s = 0; s + 4 <= power.length; s++) blocks.push((power[s] + power[s + 1] + power[s + 2] + power[s + 3]) / (4 * step));
+    const audible = blocks.filter(b => b > 0 && toLufs(b) > -70);
+    if (!audible.length) return null;
+    const relativeGate = toLufs(audible.reduce((a, b) => a + b, 0) / audible.length) - 10;
+    const counted = audible.filter(b => toLufs(b) > relativeGate);
+    return Math.round(toLufs(counted.reduce((a, b) => a + b, 0) / counted.length) * 10) / 10;
+}
+
+// The correction in dB for a measured sound (null = not measured yet, or nothing audible to measure). A boost stops at
+// +18 dB and where the sound's loudest sample would pass -1 dBFS; a cut is never limited.
+function autoLevelLimit(loudness) {
+    const wanted = AUTO_LEVEL_TARGET - loudness.lufs;
+    if (wanted <= 0) return { db: wanted, limit: null };
+    const peakRoom = loudness.peakDb == null ? Infinity : Math.max(0, AUTO_LEVEL_PEAK_CEILING - loudness.peakDb);
+    if (wanted > AUTO_LEVEL_MAX_BOOST && peakRoom >= AUTO_LEVEL_MAX_BOOST) return { db: AUTO_LEVEL_MAX_BOOST, limit: 'max' };
+    if (wanted > peakRoom) return { db: peakRoom, limit: 'peak' };
+    return { db: wanted, limit: null };
+}
+function autoLevelDb(loudness) {
+    if (!loudness || loudness.lufs == null) return null;
+    return Math.round(autoLevelLimit(loudness).db * 10) / 10;
+}
+// The gain a track gets: the correction while its Auto level is on, 1 otherwise.
+function autoLevelFactor(trackData) {
+    const db = trackData.settings.autoLevel ? autoLevelDb(trackData.loudness) : null;
+    return db == null ? 1 : Math.pow(10, db / 20);
+}
+function formatAutoLevelDb(db) { return db == null ? '' : `${db > 0 ? '+' : db < 0 ? '−' : '±'}${Math.abs(db).toFixed(1)} dB`; }
+
+// Each sound is measured once: kept by its saved sound (soundId), so tracks sharing a sound share the result, and
+// written into the saved sound's record so a reload doesn't measure again. A track also keeps its own copy
+// (trackData.loudness), which Autosave and Export carry.
+const loudnessOfSound = new Map(); // soundId -> Promise<loudness>
+function soundLoudness(soundId, buffer) {
+    if (soundId && loudnessOfSound.has(soundId)) return loudnessOfSound.get(soundId);
+    const p = (async () => {
+        const rec = soundId ? await getStoredSound(soundId) : null;
+        if (rec?.loudness?.version === LOUDNESS_VERSION) return rec.loudness;
+        const loudness = await measureLoudness(buffer);
+        if (rec) { try { await dbPut('sounds', { ...rec, loudness }); } catch (err) { console.error('Could not save the loudness', err); } }
+        return loudness;
+    })();
+    if (soundId) { loudnessOfSound.set(soundId, p); p.catch(() => loudnessOfSound.delete(soundId)); }
+    return p;
+}
+
+// Called when a track gets its sound: measures it if the track has no current measurement, then applies it.
+async function ensureTrackLoudness(track) {
+    const data = track.data;
+    if (data.loudness?.version === LOUDNESS_VERSION || !track.audio.buffer) { updateAutoLevelUI(track); return; }
+    updateAutoLevelUI(track, 'measuring…');
+    try {
+        data.loudness = await soundLoudness(data.soundId, track.audio.buffer);
+    } catch (err) { console.error('Could not measure', data.name, err); }
+    updateAutoLevelUI(track);
+    updateTrackGain(track);
+    scheduleSave();
+}
+
+// The readout beside the checkbox and the VOLUME header summary.
+function updateAutoLevelUI(track, status = null) {
+    const el = document.getElementById(track.data.id);
+    if (!el) return;
+    const readout = el.querySelector('.autolevel-readout');
+    const db = autoLevelDb(track.data.loudness);
+    if (readout) {
+        readout.textContent = status || (db != null ? formatAutoLevelDb(db) : track.data.loudness ? 'silent' : 'not measured yet');
+        const l = track.data.loudness, limit = l?.lufs != null ? autoLevelLimit(l).limit : null;
+        readout.title = l?.lufs != null ? `Measured loudness ${l.lufs.toFixed(1)} LUFS (audible parts only); common level ${AUTO_LEVEL_TARGET} LUFS` +
+            (limit === 'max' ? `; boost capped at +${AUTO_LEVEL_MAX_BOOST} dB` : limit === 'peak' ? `; boost stopped where its loudest moment reaches ${AUTO_LEVEL_PEAK_CEILING} dB` : '') : '';
+    }
+    updateSectionSummaries(el, track.data.settings);
+}
+    </script>
+    <script>
+// --- js/track-defaults.js ---
+// --- NEW TRACK DEFAULTS (v321, MS-223) ---
+// Settings > New track defaults: the Timing, Volume, Speed and Fades settings a newly added track starts with (Add
+// Local, including Sound Lab files). Kept in this browser (localStorage). Imported mixes, restored mixes, pasted and
+// undone tracks keep their own settings. "Reset to factory defaults" goes back to DEFAULT_TRACK_SETTINGS (js/state.js).
+const TRACK_DEFAULTS_KEY = 'newTrackDefaults';
+// kind: check · select · percent (stored as a share: 100% = 1) · seconds. min / max are in what is shown.
+const TRACK_DEFAULT_FIELDS = [
+    { section: 'Timing', fields: [
+        { key: 'loop', label: 'Loop', kind: 'check' },
+        { key: 'timingMode', label: 'Timing', kind: 'select', options: { fixed: 'Regular', random: 'Random' } },
+        { key: 'loopDelay', label: 'Gap Between Plays (s)', kind: 'seconds', min: 0 },
+        { key: 'minDelay', label: 'Gap Min (s)', kind: 'seconds', min: 0 },
+        { key: 'maxDelay', label: 'Gap Max (s)', kind: 'seconds', min: 0 }
+    ] },
+    { section: 'Volume', fields: [
+        { key: 'autoLevel', label: 'Auto level', kind: 'check' },
+        { key: 'volume', label: 'Volume (%)', kind: 'percent', min: 0, max: 200 },
+        { key: 'volumeMode', label: 'Volume mode', kind: 'select', options: { fixed: 'Steady', varying: 'Varying' } },
+        { key: 'minVolume', label: 'Min Vol (%)', kind: 'percent', min: 0, max: 100 },
+        { key: 'maxVolume', label: 'Max Vol (%)', kind: 'percent', min: 0, max: 100 },
+        { key: 'volumeWave', label: 'Wave Length (s)', kind: 'seconds', min: 1 },
+        { key: 'volumePauseEvery', label: 'Wave Pause Every (s)', kind: 'seconds', min: 0 },
+        { key: 'volumePauseDuration', label: 'Wave Pause Duration (s)', kind: 'seconds', min: 0 }
+    ] },
+    { section: 'Speed', fields: [
+        { key: 'speed', label: 'Speed (%)', kind: 'percent', min: 10, max: 300 },
+        { key: 'speedMode', label: 'Speed mode', kind: 'select', options: { fixed: 'Steady', random: 'Random', varying: 'Varying' } },
+        { key: 'minSpeed', label: 'Min Speed (%)', kind: 'percent', min: 0, max: 100 },
+        { key: 'maxSpeed', label: 'Max Speed (%)', kind: 'percent', min: 0, max: 100 },
+        { key: 'speedWave', label: 'Wave Length (s)', kind: 'seconds', min: 1 },
+        { key: 'speedPauseEvery', label: 'Wave Pause Every (s)', kind: 'seconds', min: 0 },
+        { key: 'speedPauseDuration', label: 'Wave Pause Duration (s)', kind: 'seconds', min: 0 }
+    ] },
+    { section: 'Fades', fields: [
+        { key: 'fadeIn', label: 'Fade In', kind: 'check' },
+        { key: 'fadeInLength', label: 'Fade In (s)', kind: 'seconds', min: 0.1 },
+        { key: 'fadeOut', label: 'Fade Out', kind: 'check' },
+        { key: 'fadeOutLength', label: 'Fade Out (s)', kind: 'seconds', min: 0.1 },
+        { key: 'crossfade', label: 'Crossfade', kind: 'check' },
+        { key: 'crossfadeLength', label: 'Crossfade (s)', kind: 'seconds', min: 0.1 }
+    ] }
+];
+const TRACK_DEFAULT_KEYS = TRACK_DEFAULT_FIELDS.flatMap(s => s.fields.map(f => f.key));
+
+// The user's saved values (only the keys above, only values of the right type).
+function savedTrackDefaults() {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(TRACK_DEFAULTS_KEY)) || {}; } catch (e) { saved = {}; }
+    const out = {};
+    TRACK_DEFAULT_KEYS.forEach(key => { if (key in saved && typeof saved[key] === typeof DEFAULT_TRACK_SETTINGS[key]) out[key] = saved[key]; });
+    return out;
+}
+// The settings a newly added track starts with.
+function newTrackSettings() { return { ...DEFAULT_TRACK_SETTINGS, ...savedTrackDefaults() }; }
+
+function setupTrackDefaultsPanel() {
+    const form = document.querySelector('#track-defaults-panel .track-defaults-form');
+    if (!form) return;
+    form.innerHTML = '';
+    TRACK_DEFAULT_FIELDS.forEach(({ section, fields }) => {
+        const box = document.createElement('div');
+        box.className = 'track-defaults-section';
+        box.innerHTML = `<h4 class="saved-heading">${section}</h4><div class="track-defaults-grid"></div>`;
+        const grid = box.querySelector('.track-defaults-grid');
+        fields.forEach(field => {
+            const group = document.createElement('div');
+            group.className = 'control-group';
+            const id = `track-default-${field.key}`;
+            if (field.kind === 'check') group.innerHTML = `<label class="check-label" for="${id}"><input type="checkbox" id="${id}"> ${field.label}</label>`;
+            else if (field.kind === 'select') group.innerHTML = `<label for="${id}">${field.label}</label><select id="${id}">${Object.entries(field.options).map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>`;
+            else group.innerHTML = `<label for="${id}">${field.label}</label><input type="number" id="${id}" min="${field.min}"${field.max != null ? ` max="${field.max}"` : ''} step="any">`;
+            const input = group.querySelector('input, select');
+            input.addEventListener('change', () => saveTrackDefault(field, input));
+            grid.appendChild(group);
+        });
+        form.appendChild(box);
+    });
+    showTrackDefaults();
+    document.getElementById('reset-track-defaults-btn')?.addEventListener('click', async () => {
+        if (!(await askConfirm('Reset the New track defaults to the factory settings? Tracks already in your mixes are not changed.', { confirmLabel: 'Reset' }))) return;
+        try { localStorage.removeItem(TRACK_DEFAULTS_KEY); } catch (e) {}
+        showTrackDefaults();
+    });
+}
+
+// Fills the form with the current defaults.
+function showTrackDefaults() {
+    const values = newTrackSettings();
+    TRACK_DEFAULT_FIELDS.forEach(({ fields }) => fields.forEach(field => {
+        const input = document.getElementById(`track-default-${field.key}`);
+        if (!input) return;
+        const v = values[field.key];
+        if (field.kind === 'check') input.checked = !!v;
+        else if (field.kind === 'select') input.value = v;
+        else if (field.kind === 'percent') input.value = Math.round(v * 100);
+        else input.value = Number(v).toFixed(1);
+    }));
+}
+
+function saveTrackDefault(field, input) {
+    let value;
+    if (field.kind === 'check') value = input.checked;
+    else if (field.kind === 'select') value = input.value;
+    else {
+        let n = parseFloat(input.value);
+        if (!Number.isFinite(n)) n = field.kind === 'percent' ? DEFAULT_TRACK_SETTINGS[field.key] * 100 : DEFAULT_TRACK_SETTINGS[field.key];
+        n = Math.max(field.min, field.max != null ? Math.min(field.max, n) : n);
+        value = field.kind === 'percent' ? Math.round(n) / 100 : Math.round(n * 10) / 10;
+    }
+    try { localStorage.setItem(TRACK_DEFAULTS_KEY, JSON.stringify({ ...savedTrackDefaults(), [field.key]: value })); }
+    catch (e) { showMessage(`This browser could not save the New track defaults (${e.message || e.name}).`); }
+    showTrackDefaults();
+}
+    </script>
+    <script>
 // --- js/main.js ---
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -5397,6 +5722,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFontManagement();
     setupCompactHeaderObserver();
     setupUndo();
+    setupTrackDefaultsPanel(); // Settings > New track defaults (MS-223)
     setupAutosave(); // brings back the saved mixes (js/storage.js, MS-130)
 });
 
