@@ -313,8 +313,15 @@ input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-o
 @media (pointer: coarse) { .zero-wrap .zero-btn { height: 70%; width: 1.6em; } .zero-wrap > input[type="number"] { padding-right: calc(0.4rem + 1.6em); } }
 .autolevel-readout { white-space: nowrap; }
 /* Settings > New track defaults (MS-223) */
+#track-defaults-panel { min-width: 0; } /* a fieldset is otherwise never narrower than its content */
 .track-defaults-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.6rem 1rem; align-items: end; margin-bottom: 0.75rem; }
 .track-defaults-grid input[type="number"], .track-defaults-grid select { width: 100%; box-sizing: border-box; }
+#track-defaults-panel .check-label { font-size: 0.9em; min-height: 2.6em; } /* the app's big tick-box labels, at the panel's normal size */
+.track-default-pair { grid-column: 1 / -1; display: flex; flex-flow: row wrap; align-items: center; gap: 0.5rem 1rem; } /* [ ] Fade In  [3.0] s */
+.track-default-pair .check-label { min-width: 9.5em; } /* the three seconds boxes line up */
+.track-default-length { display: inline-flex; align-items: center; gap: 0.4rem; }
+.track-defaults-grid .track-default-length input[type="number"] { width: 90px; }
+.track-default-note { grid-column: 1 / -1; margin: -0.2rem 0 0.2rem; }
 .track-filter-input, .track-sort-select { max-width: 160px; }
 .filter-wrapper { position: relative; }
 .clear-filter-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--main-font-color); cursor: pointer; font-size: 1.2em; padding: 0 0.5rem; display: none; }
@@ -5602,7 +5609,8 @@ const TRACK_DEFAULT_FIELDS = [
     ] },
     { section: 'Volume', fields: [
         { key: 'autoLevel', label: 'Auto level', kind: 'check' },
-        { key: 'autoLevelAdjust', label: 'Auto level adjustment (dB)', kind: 'db', min: -12, max: 12, step: 0.5 },
+        { key: 'autoLevelAdjust', label: 'Auto level adjustment (dB)', kind: 'db', min: -12, max: 12, step: 0.5,
+          note: 'Auto level still measures every new track and matches it automatically. This adjustment is added on top: +2 makes new tracks 2 dB louder than the matched level, −3 makes them 3 dB quieter. Tracks already in your mixes are not changed.' },
         { key: 'volume', label: 'Volume (%)', kind: 'percent', min: 0, max: 200 },
         { key: 'volumeMode', label: 'Volume mode', kind: 'select', options: { fixed: 'Steady', varying: 'Varying' } },
         { key: 'minVolume', label: 'Min Vol (%)', kind: 'percent', min: 0, max: 100 },
@@ -5622,11 +5630,11 @@ const TRACK_DEFAULT_FIELDS = [
     ] },
     { section: 'Fades', fields: [
         { key: 'fadeIn', label: 'Fade In', kind: 'check' },
-        { key: 'fadeInLength', label: 'Fade In (s)', kind: 'seconds', min: 0.1 },
+        { key: 'fadeInLength', label: 'Fade In (s)', kind: 'seconds', min: 0.1, pair: true },
         { key: 'fadeOut', label: 'Fade Out', kind: 'check' },
-        { key: 'fadeOutLength', label: 'Fade Out (s)', kind: 'seconds', min: 0.1 },
+        { key: 'fadeOutLength', label: 'Fade Out (s)', kind: 'seconds', min: 0.1, pair: true },
         { key: 'crossfade', label: 'Crossfade', kind: 'check' },
-        { key: 'crossfadeLength', label: 'Crossfade (s)', kind: 'seconds', min: 0.1 }
+        { key: 'crossfadeLength', label: 'Crossfade (s)', kind: 'seconds', min: 0.1, pair: true }
     ] }
 ];
 const TRACK_DEFAULT_KEYS = TRACK_DEFAULT_FIELDS.flatMap(s => s.fields.map(f => f.key));
@@ -5651,16 +5659,34 @@ function setupTrackDefaultsPanel() {
         box.className = 'track-defaults-section';
         box.innerHTML = `<h4 class="saved-heading">${section}</h4><div class="track-defaults-grid"></div>`;
         const grid = box.querySelector('.track-defaults-grid');
+        let lastGroup = null;
         fields.forEach(field => {
-            const group = document.createElement('div');
-            group.className = 'control-group';
             const id = `track-default-${field.key}`;
-            if (field.kind === 'check') group.innerHTML = `<label class="check-label" for="${id}"><input type="checkbox" id="${id}"> ${field.label}</label>`;
-            else if (field.kind === 'select') group.innerHTML = `<label for="${id}">${field.label}</label><select id="${id}">${Object.entries(field.options).map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>`;
-            else group.innerHTML = `<label for="${id}">${field.label}</label><input type="number" id="${id}" min="${field.min}"${field.max != null ? ` max="${field.max}"` : ''} step="${field.step || 'any'}">`;
-            const input = group.querySelector('input, select');
+            const numberBox = `<input type="number" id="${id}" min="${field.min}"${field.max != null ? ` max="${field.max}"` : ''} step="${field.step || 'any'}">`;
+            let group;
+            if (field.pair && lastGroup) {
+                // A fade's length sits on the same row as its tick box: [ ] Fade In  [3.0] s
+                group = lastGroup;
+                group.classList.add('track-default-pair');
+                group.insertAdjacentHTML('beforeend', `<span class="track-default-length">${numberBox}<span>s</span></span>`);
+                group.querySelector(`#${id}`).setAttribute('aria-label', field.label);
+            } else {
+                group = document.createElement('div');
+                group.className = 'control-group';
+                if (field.kind === 'check') group.innerHTML = `<label class="check-label" for="${id}"><input type="checkbox" id="${id}"> ${field.label}</label>`;
+                else if (field.kind === 'select') group.innerHTML = `<label for="${id}">${field.label}</label><select id="${id}">${Object.entries(field.options).map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>`;
+                else group.innerHTML = `<label for="${id}">${field.label}</label>${numberBox}`;
+                grid.appendChild(group);
+            }
+            const input = group.querySelector(`#${id}`);
             input.addEventListener('change', () => saveTrackDefault(field, input));
-            grid.appendChild(group);
+            if (field.note) {
+                // Explained under the box (across the whole row) and in its tooltip.
+                group.querySelector(`label[for="${id}"]`).title = input.title = field.note;
+                grid.insertAdjacentHTML('beforeend', `<p class="bg-storage-note track-default-note"></p>`);
+                grid.lastElementChild.textContent = field.note;
+            }
+            lastGroup = group;
         });
         form.appendChild(box);
     });
