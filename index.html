@@ -619,7 +619,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                     <legend>New track defaults</legend>
                     <p class="bg-storage-note">Each track you add from now on (Add Local, including Sound Lab files) starts with these settings. Tracks already in a mix, imported mixes and pasted tracks keep their own. Saved in this browser.</p>
                     <div class="track-defaults-form"></div>
-                    <button id="reset-track-defaults-btn" class="small-btn">Reset to factory defaults</button>
+                    <button id="reset-track-defaults-btn" class="small-btn">Reset to defaults</button>
                 </fieldset>
 
                 <fieldset>
@@ -895,10 +895,10 @@ const ICONS = {
 // Volume slider (v305). Wave Pauses: volumePauseEvery = average seconds between pauses (0 = none); volumePauseDuration = seconds each lasts.
 // Fades (v304) are off by default; each has its own length in seconds. Crossfade overlaps back-to-back loop plays.
 // playChance (v310, Sync Group members only): the share of the group's cycles the track plays in (1 = every cycle).
-// autoLevel (v321, MS-227): the track plays at the common level (js/auto-level.js).
+// autoLevel (v321, MS-227): the track plays at the common level (js/auto-level.js); autoLevelAdjust: dB added to that level.
 // These are the factory values. A newly added track takes the New track defaults from Settings instead
 // (newTrackSettings in js/track-defaults.js, MS-223), which start out as these.
-const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10, autoLevel: true };
+const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true, timingMode: 'fixed', volumeMode: 'fixed', loopDelay: 0, startAt: 0, fadeIn: false, fadeInLength: 3, fadeOut: false, fadeOutLength: 3, crossfade: false, crossfadeLength: 2, minVolume: 0.2, maxVolume: 1.0, volumeWave: 23.5, volumePauseEvery: 19.3, volumePauseDuration: 7.7, speedMode: 'fixed', minSpeed: 0.94, maxSpeed: 1.0, speedWave: 23.5, speedPauseEvery: 19.3, speedPauseDuration: 7.7, minDelay: 2, maxDelay: 10, autoLevel: true, autoLevelAdjust: 0 };
 // Before v303 a track had one `mode`; mixes and copied settings from older versions are converted on load.
 const LEGACY_TRACK_MODES = { normal: {}, random_play: { timingMode: 'random' }, random_volume: { volumeMode: 'varying' }, random_pitch: { pitchMode: 'random' }, oscillating_pitch: { pitchMode: 'oscillating' } };
 function normalizeTrackSettings(settings = {}) {
@@ -1611,6 +1611,7 @@ function addTrackToMixUI(mix, trackData) {
             onTrackSettingChanged(track, key);
         });
     });
+    updateAutoLevelUI(track); // a saved measurement shows at once, before the sound is unpacked
     return track;
 }
 
@@ -4453,7 +4454,7 @@ function updateSectionSummaries(trackElement, settings) {
     const pieces = list => list.map(p => p.replace(/ /g, NBSP).replace(/–/g, '–' + NO_BREAK)).join(NBSP + '· ');
     const volumeLabel = label('.volumeMode-select', settings.volumeMode), speedLabel = label('.speedMode-select', settings.speedMode);
     // MS-227: Auto level leads the Volume summary with its correction ("Auto +9.5 dB"), or just "Auto" until measured.
-    const auto = settings.autoLevel ? [`Auto ${formatAutoLevelDb(autoLevelDb(trackDataOf(trackElement)?.loudness))}`.trim()] : [];
+    const auto = settings.autoLevel ? [`Auto ${formatAutoLevelDb(autoLevelDb(trackDataOf(trackElement)))}`.trim()] : [];
     const summaries = {
         timing: !settings.loop ? 'Loop off' : settings.timingMode === 'random' ? `Loop · Random ${secs(settings.minDelay)}–${secs(settings.maxDelay)}` : `Loop · Regular${Number(settings.loopDelay) > 0 ? `, gap ${secs(settings.loopDelay)}` : ''}`,
         volume: pieces([...auto, ...(settings.volumeMode === 'varying' ? [`${volumeLabel} ${range(volumeRangePercent(settings))}`, ...wave(settings.volumeWave, settings.volumePauseEvery, settings.volumePauseDuration)] : [`${volumeLabel} ${percent(settings.volume)}`])]),
@@ -5443,9 +5444,10 @@ function setupAutosave() {
 // every 100 ms), and only audible blocks count: blocks below -70 LUFS are silence, and blocks more than 10 LU below the
 // sound's own average are its quiet gaps. So a clock's ticks or a thunder clap are measured by how loud they are when
 // heard, not averaged down by the silence between them (which would over-boost them).
-// The common level: JM's hand-set balance (most tracks fine at 100%) sits around -27 to -30 LUFS, and at -30 no
-// track of the sleep-sound library, once matched, peaks above -3 dBFS on its own, so the limiter stays out of the way.
-const AUTO_LEVEL_TARGET = -30;      // LUFS
+// The common level: JM's hand-set balance (most tracks fine at 100%) sits around -27 to -30 LUFS; -28 after JM's test
+// of v321 (2 dB up from -30). Each track adds its own Auto level adjustment (settings.autoLevelAdjust, dB), the value
+// of Settings > New track defaults when it was added, so the level it aims for is AUTO_LEVEL_TARGET + adjustment.
+const AUTO_LEVEL_TARGET = -28;      // LUFS
 const AUTO_LEVEL_MAX_BOOST = 18;    // dB: a quiet sound is raised at most this much; cuts are unlimited
 const AUTO_LEVEL_PEAK_CEILING = -1; // dBFS: a boost never lifts the sound's own loudest sample above this (no clipping)
 const LOUDNESS_VERSION = 1;         // bump if the measurement changes, so saved measurements are redone
@@ -5511,23 +5513,26 @@ function gatedLoudness(power, step, length) {
     return Math.round(toLufs(counted.reduce((a, b) => a + b, 0) / counted.length) * 10) / 10;
 }
 
-// The correction in dB for a measured sound (null = not measured yet, or nothing audible to measure). A boost stops at
-// +18 dB and where the sound's loudest sample would pass -1 dBFS; a cut is never limited.
-function autoLevelLimit(loudness) {
-    const wanted = AUTO_LEVEL_TARGET - loudness.lufs;
+// The level a track aims for: the common level plus its own adjustment (0 for tracks saved before the adjustment).
+function autoLevelTarget(trackData) { return AUTO_LEVEL_TARGET + num(trackData.settings.autoLevelAdjust); }
+// A track's correction in dB (null = not measured yet, or nothing audible to measure). A boost stops at +18 dB and
+// where the sound's loudest sample would pass -1 dBFS; a cut is never limited.
+function autoLevelLimit(trackData) {
+    const loudness = trackData.loudness;
+    const wanted = autoLevelTarget(trackData) - loudness.lufs;
     if (wanted <= 0) return { db: wanted, limit: null };
     const peakRoom = loudness.peakDb == null ? Infinity : Math.max(0, AUTO_LEVEL_PEAK_CEILING - loudness.peakDb);
     if (wanted > AUTO_LEVEL_MAX_BOOST && peakRoom >= AUTO_LEVEL_MAX_BOOST) return { db: AUTO_LEVEL_MAX_BOOST, limit: 'max' };
     if (wanted > peakRoom) return { db: peakRoom, limit: 'peak' };
     return { db: wanted, limit: null };
 }
-function autoLevelDb(loudness) {
-    if (!loudness || loudness.lufs == null) return null;
-    return Math.round(autoLevelLimit(loudness).db * 10) / 10;
+function autoLevelDb(trackData) {
+    if (!trackData?.loudness || trackData.loudness.lufs == null) return null;
+    return Math.round(autoLevelLimit(trackData).db * 10) / 10;
 }
 // The gain a track gets: the correction while its Auto level is on, 1 otherwise.
 function autoLevelFactor(trackData) {
-    const db = trackData.settings.autoLevel ? autoLevelDb(trackData.loudness) : null;
+    const db = trackData.settings.autoLevel ? autoLevelDb(trackData) : null;
     return db == null ? 1 : Math.pow(10, db / 20);
 }
 function formatAutoLevelDb(db) { return db == null ? '' : `${db > 0 ? '+' : db < 0 ? '−' : '±'}${Math.abs(db).toFixed(1)} dB`; }
@@ -5567,11 +5572,13 @@ function updateAutoLevelUI(track, status = null) {
     const el = document.getElementById(track.data.id);
     if (!el) return;
     const readout = el.querySelector('.autolevel-readout');
-    const db = autoLevelDb(track.data.loudness);
+    const db = autoLevelDb(track.data);
     if (readout) {
         readout.textContent = status || (db != null ? formatAutoLevelDb(db) : track.data.loudness ? 'silent' : 'not measured yet');
-        const l = track.data.loudness, limit = l?.lufs != null ? autoLevelLimit(l).limit : null;
+        const l = track.data.loudness, limit = l?.lufs != null ? autoLevelLimit(track.data).limit : null;
+        const adjust = num(track.data.settings.autoLevelAdjust);
         readout.title = l?.lufs != null ? `Measured loudness ${l.lufs.toFixed(1)} LUFS (audible parts only); common level ${AUTO_LEVEL_TARGET} LUFS` +
+            (adjust ? `, adjusted ${adjust > 0 ? '+' : '−'}${Math.abs(adjust).toFixed(1)} dB to ${autoLevelTarget(track.data).toFixed(1)} LUFS` : '') +
             (limit === 'max' ? `; boost capped at +${AUTO_LEVEL_MAX_BOOST} dB` : limit === 'peak' ? `; boost stopped where its loudest moment reaches ${AUTO_LEVEL_PEAK_CEILING} dB` : '') : '';
     }
     updateSectionSummaries(el, track.data.settings);
@@ -5582,9 +5589,9 @@ function updateAutoLevelUI(track, status = null) {
 // --- NEW TRACK DEFAULTS (v321, MS-223) ---
 // Settings > New track defaults: the Timing, Volume, Speed and Fades settings a newly added track starts with (Add
 // Local, including Sound Lab files). Kept in this browser (localStorage). Imported mixes, restored mixes, pasted and
-// undone tracks keep their own settings. "Reset to factory defaults" goes back to DEFAULT_TRACK_SETTINGS (js/state.js).
+// undone tracks keep their own settings. "Reset to defaults" goes back to DEFAULT_TRACK_SETTINGS (js/state.js).
 const TRACK_DEFAULTS_KEY = 'newTrackDefaults';
-// kind: check · select · percent (stored as a share: 100% = 1) · seconds. min / max are in what is shown.
+// kind: check · select · percent (stored as a share: 100% = 1) · seconds · db (0.5 dB steps). min / max are in what is shown.
 const TRACK_DEFAULT_FIELDS = [
     { section: 'Timing', fields: [
         { key: 'loop', label: 'Loop', kind: 'check' },
@@ -5595,6 +5602,7 @@ const TRACK_DEFAULT_FIELDS = [
     ] },
     { section: 'Volume', fields: [
         { key: 'autoLevel', label: 'Auto level', kind: 'check' },
+        { key: 'autoLevelAdjust', label: 'Auto level adjustment (dB)', kind: 'db', min: -12, max: 12, step: 0.5 },
         { key: 'volume', label: 'Volume (%)', kind: 'percent', min: 0, max: 200 },
         { key: 'volumeMode', label: 'Volume mode', kind: 'select', options: { fixed: 'Steady', varying: 'Varying' } },
         { key: 'minVolume', label: 'Min Vol (%)', kind: 'percent', min: 0, max: 100 },
@@ -5649,7 +5657,7 @@ function setupTrackDefaultsPanel() {
             const id = `track-default-${field.key}`;
             if (field.kind === 'check') group.innerHTML = `<label class="check-label" for="${id}"><input type="checkbox" id="${id}"> ${field.label}</label>`;
             else if (field.kind === 'select') group.innerHTML = `<label for="${id}">${field.label}</label><select id="${id}">${Object.entries(field.options).map(([v, t]) => `<option value="${v}">${t}</option>`).join('')}</select>`;
-            else group.innerHTML = `<label for="${id}">${field.label}</label><input type="number" id="${id}" min="${field.min}"${field.max != null ? ` max="${field.max}"` : ''} step="any">`;
+            else group.innerHTML = `<label for="${id}">${field.label}</label><input type="number" id="${id}" min="${field.min}"${field.max != null ? ` max="${field.max}"` : ''} step="${field.step || 'any'}">`;
             const input = group.querySelector('input, select');
             input.addEventListener('change', () => saveTrackDefault(field, input));
             grid.appendChild(group);
@@ -5658,7 +5666,7 @@ function setupTrackDefaultsPanel() {
     });
     showTrackDefaults();
     document.getElementById('reset-track-defaults-btn')?.addEventListener('click', async () => {
-        if (!(await askConfirm('Reset the New track defaults to the factory settings? Tracks already in your mixes are not changed.', { confirmLabel: 'Reset' }))) return;
+        if (!(await askConfirm('Reset the New track defaults? Tracks already in your mixes are not changed.', { confirmLabel: 'Reset' }))) return;
         try { localStorage.removeItem(TRACK_DEFAULTS_KEY); } catch (e) {}
         showTrackDefaults();
     });
@@ -5686,7 +5694,7 @@ function saveTrackDefault(field, input) {
         let n = parseFloat(input.value);
         if (!Number.isFinite(n)) n = field.kind === 'percent' ? DEFAULT_TRACK_SETTINGS[field.key] * 100 : DEFAULT_TRACK_SETTINGS[field.key];
         n = Math.max(field.min, field.max != null ? Math.min(field.max, n) : n);
-        value = field.kind === 'percent' ? Math.round(n) / 100 : Math.round(n * 10) / 10;
+        value = field.kind === 'percent' ? Math.round(n) / 100 : field.kind === 'db' ? Math.round(n * 2) / 2 : Math.round(n * 10) / 10;
     }
     try { localStorage.setItem(TRACK_DEFAULTS_KEY, JSON.stringify({ ...savedTrackDefaults(), [field.key]: value })); }
     catch (e) { showMessage(`This browser could not save the New track defaults (${e.message || e.name}).`); }
