@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v322</title>
+    <title>Mack's Sounds v323</title>
     <!-- The 18 built-in fonts ship with the app (v322, MS-229); build.ps1 puts them into the built page. -->
     <style>
 /* The app's built-in fonts (v322, MS-229): Google Fonts' Latin files, shipped with the app so no font is fetched
@@ -144,9 +144,16 @@ html[data-theme='light'] #settings-btn { color: #333; }
 
 .mix-header { display: flex; flex-direction: column; gap: 1rem; align-items: stretch; background: var(--glass-bg); padding: 1rem; border-radius: 12px; }
 .mix-header.is-sticky { position: sticky; top: var(--sticky-offset, 0px); z-index: 100; border-radius: 0 0 12px 12px; }
-.mix-header.is-compact .mix-header-row-secondary:not(.is-expanded) { display: none; }
-.mix-header-row-primary .more-controls-btn { display: none; }
-.mix-header.is-compact .mix-header-row-primary .more-controls-btn { display: inline-block; }
+/* MS-217: "..." on every screen; the rows of mix buttons under it show only while it is open. */
+.mix-header-row-secondary:not(.is-expanded) { display: none; }
+.more-controls-btn.is-open { background-color: var(--primary-color); }
+/* MS-199: the mix's Solo indicator, lit (and pulsing like a soloed track) while anything in the mix is soloed. */
+.mix-solo-indicator { font-weight: bold; }
+.mix-solo-indicator:disabled { opacity: 0.35; cursor: default; }
+.mix-solo-indicator:disabled:hover { background-color: var(--secondary-color); }
+.mix-solo-indicator.is-soloed { background-color: var(--solo-color); color: #000; animation: solo-pulse-btn 1.2s ease-in-out infinite; }
+@keyframes solo-pulse-btn { 0%, 100% { box-shadow: 0 0 10px 4px var(--solo-glow); } 50% { box-shadow: 0 0 4px 1px var(--solo-glow-dim); } }
+@media (prefers-reduced-motion: reduce) { .mix-solo-indicator.is-soloed { animation: none; box-shadow: 0 0 10px 4px var(--solo-glow); } }
 
 .mix-header-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
 .mix-header-volume-control { display: flex; align-items: center; gap: 0.5rem; }
@@ -304,6 +311,22 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .sync-group-counters { display: flex; align-items: center; gap: 0.5em; margin-left: auto; white-space: nowrap; }
 .sync-group-loop-delay-counter { min-width: 10ch; text-align: right; display: inline-block; font-style: italic; color: yellow; }
 .sync-group-play-counter { font-size: 1.1em; font-weight: bold; color: var(--accent-color); white-space: nowrap; } /* MS-194: like a track's play counter */
+/* MS-212: the seek bar under each Track Timer: tap or drag (mouse or finger) to jump there on release. The visible bar is
+   thin; the area that takes the tap is taller (more on touch screens), overlapping the space around it. */
+.tt-wrap { display: inline-flex; flex-direction: column; align-items: stretch; }
+.seek-bar { position: relative; display: block; height: 14px; margin: -2px 0 -6px; cursor: pointer; touch-action: pan-y; outline: none; }
+.seek-bar::before, .seek-fill { position: absolute; left: 0; top: 50%; height: 4px; transform: translateY(-50%); border-radius: 2px; }
+.seek-bar::before { content: ""; right: 0; background: currentColor; opacity: 0.25; }
+.seek-fill { width: 0; background: var(--accent-color); pointer-events: none; }
+.seek-bar:not(.is-idle):hover::before, .seek-bar.is-dragging::before, .seek-bar:not(.is-idle):hover .seek-fill, .seek-bar.is-dragging .seek-fill { height: 6px; }
+.seek-bar.is-idle { cursor: default; opacity: 0.45; }
+.seek-bar:focus-visible { box-shadow: 0 0 0 2px var(--primary-color); border-radius: 3px; }
+@media (pointer: coarse) { .seek-bar { height: 28px; margin: -10px 0 -12px; } }
+/* MS-213: ⏭5s beside the timer (outside Sync Groups, and on each Sync Group: its tracks move with the group). */
+.end-jump-btn { padding: 0.15rem 0.4rem; font-size: 0.85em; white-space: nowrap; flex-shrink: 0; }
+.end-jump-btn:disabled { opacity: 0.4; cursor: default; }
+.end-jump-btn:disabled:hover { background-color: var(--secondary-color); }
+.sync-group-tracks .end-jump-btn { display: none; }
 .sync-group-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); align-items: center; gap: 1rem; padding: 0.75rem 0.5rem; background: rgba(0,0,0,0.1); border-radius: 4px; max-height: 300px; overflow: hidden; transition: max-height 0.4s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out; }
 .sync-group-controls .control-group { min-width: 140px; }
 .sync-group-tracks { min-height: 50px; background: rgba(0,0,0,0.2); border-radius: 4px; padding: 0.5rem; display: none; }
@@ -488,6 +511,8 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .track-name-display { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.85em; }
     .track-header-counters { white-space: normal; flex-wrap: wrap; gap: 0 0.4em; font-size: 0.7em; }
     .track-play-counter, .track-loop-delay-counter { font-size: 1em; margin-right: 0; }
+    .track-header-counters .tt-wrap { flex: 1 1 auto; min-width: 0; } /* MS-212: the seek bar runs the width of the name, for an easier tap */
+    .end-jump-btn { min-width: 44px; min-height: 44px; font-size: 0.9rem; } /* MS-213: in the track's actions row on a phone (placeTrackHeaderItems) */
     .track-solo-toggle { order: 3; } .track-mute-toggle { order: 4; } .track-chevron { order: 5; }
     .track-solo-toggle, .track-mute-toggle { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
     .track-chevron, .mix-chevron, .sync-group-chevron { width: 44px; height: 44px; padding: 11px; }
@@ -518,7 +543,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .level-word { display: none; }
     .level-display { min-width: 1.5em; font-size: 1em; }
     .level-control button { min-width: 44px; }
-    .mix-mute-toggle, .sync-group-mute-toggle { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
+    .mix-mute-toggle, .sync-group-mute-toggle, .mix-solo-indicator { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
 
     /* (b) Mix header: name and "..." on top; mute, play, stop and − / + below; the volume slider full width; every other
        mix button lives in the "..." menu (the secondary row), shown only while it is open. */
@@ -528,13 +553,12 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     .mix-drag-handle { order: 1; } .mix-chevron { order: 2; }
     .mix-title-group { order: 3; flex: 1 1 0; min-width: 0; }
     .mix-title { font-size: 1.1rem; }
-    .mix-header-row-primary .more-controls-btn { display: inline-block; order: 4; }
+    .mix-header-row-primary .more-controls-btn { order: 4; }
     .mix-header-row-primary .row-break { order: 5; }
-    .mix-mute-toggle { order: 6; } .play-pause-mix { order: 7; } .stop-mix { order: 8; }
+    .mix-mute-toggle, .mix-solo-indicator { order: 6; } .play-pause-mix { order: 7; } .stop-mix { order: 8; }
     .mix-header-row-primary .level-control { order: 9; margin-left: auto; }
     .mix-header-volume-control { order: 10; flex-basis: 100%; }
     .mix-header-volume-control input[type="range"] { width: auto; flex: 1; }
-    .mix-header-row-secondary:not(.is-expanded) { display: none; }
     .mix-header-row-secondary { gap: 0.5rem; }
     .mix-move-group { display: flex; align-items: center; gap: 0.5rem; flex-basis: 100%; }
     .mix-header-row-secondary .control-group-row label.check-label { font-size: 1.2em; }
@@ -591,7 +615,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v322</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v323</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -903,7 +927,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v322';
+const APP_VERSION = 'v323';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1150,6 +1174,7 @@ function normalizeMixData(mixData) {
         id: uniqueId('mix'), name: `My Custom Mix ${mixes.length + 1}`, 
         tracks: [], syncGroups: [], isPlaying: false, isPaused: false, 
         isMuted: false, audioEngine: {}, isExpanded: true, volume: 1, soloedTrackIds: [],
+        isMenuOpen: false, // MS-217: the "..." menu (the rows of mix buttons) starts folded; each mix remembers it
         soundsState: 'loaded' // 'pending' for a mix restored from storage until its sounds are unpacked (js/storage.js)
     };
     if (!mixData) return defaults; 
@@ -1203,9 +1228,10 @@ function createMixUI(mix) {
                 ${levelControlHTML()}
                 <div class="mix-main-actions">
                      <button class="mix-mute-toggle small-btn" title="Mute/Unmute All"></button>
+                     <button class="mix-solo-indicator small-btn" title="Nothing in this mix is soloed" disabled>S</button>
                      <button class="play-pause-mix play-btn">▶</button> 
                      <button class="stop-mix play-btn">⏹️</button>
-                     <button class="more-controls-btn small-btn">...</button>
+                     <button class="more-controls-btn small-btn" title="Show or hide the mix's other buttons" aria-expanded="false">...</button>
                 </div>
             </div>
             <div class="mix-header-row mix-header-row-secondary">
@@ -1300,9 +1326,19 @@ function createMixUI(mix) {
     mixContainer.querySelector('.delete-selected-btn').addEventListener('click', () => deleteSelectedItems(mix.id));
     mixContainer.addEventListener('change', e => { if (e.target.classList.contains('select-checkbox')) updateDeleteSelectedButton(mix.id); });
 
-    mixContainer.querySelector('.more-controls-btn').addEventListener('click', (e) => {
-        e.target.closest('.mix-header').querySelector('.mix-header-row-secondary').classList.toggle('is-expanded');
-    });
+    // MS-217: "..." folds the rows of mix buttons away at every screen width (before v323: phones and the compact
+    // sticky header only). Each mix remembers whether it is open, and Autosave keeps it.
+    const moreBtn = mixContainer.querySelector('.more-controls-btn');
+    const setMenuOpen = open => {
+        mix.isMenuOpen = open;
+        mixContainer.querySelector('.mix-header-row-secondary').classList.toggle('is-expanded', open);
+        moreBtn.setAttribute('aria-expanded', String(open));
+        moreBtn.classList.toggle('is-open', open);
+    };
+    moreBtn.addEventListener('click', () => setMenuOpen(!mix.isMenuOpen));
+    setMenuOpen(!!mix.isMenuOpen);
+    // MS-199: the mix's "S" lights while anything in it is soloed; a click clears every solo in the mix.
+    mixContainer.querySelector('.mix-solo-indicator').addEventListener('click', () => { if (isMixSoloActive(mix)) clearAllSolos(mix); });
 
     toggleMixExpand(mix.isExpanded);
     if (mix.tracks) mix.tracks.forEach(trackData => addTrackToMixUI(mix, trackData));
@@ -1392,13 +1428,15 @@ const phoneLayout = window.matchMedia('(max-width: 600px)');
 function placeTrackHeaderItems(trackElement) {
     const header = trackElement.querySelector('.track-header'), row = trackElement.querySelector('.track-actions-row');
     const handle = trackElement.querySelector('.track-drag-handle'), select = trackElement.querySelector('.track-select-checkbox'), remove = trackElement.querySelector('.remove-track-btn');
+    const endJump = trackElement.querySelector('.end-jump-btn'); // MS-213: beside the timer on a wide screen, in this row on a phone
     if (!header || !row) return;
     if (phoneLayout.matches) {
         row.querySelector('.track-select-label').prepend(select);
         row.querySelector('.track-actions-spacer').before(handle);
-        row.append(remove);
+        row.append(endJump, remove);
     } else {
         header.prepend(handle, select);
+        header.querySelector('.track-header-counters').append(endJump);
         header.append(remove);
     }
 }
@@ -1462,7 +1500,7 @@ function addTrackToMixUI(mix, trackData) {
                 <span class="track-name-display">${escapeHtml(trackData.name)}</span>
                 <div class="track-header-counters">
                     <span class="track-loop-delay-counter"></span>
-                    <code class="track-play-counter">--m--s | --m--s</code>
+                    <span class="tt-wrap"><code class="track-play-counter">--m--s | --m--s</code>${SEEK_BAR_HTML}</span>${END_JUMP_HTML}
                 </div>
             </div>
              <button class="remove-track-btn small-btn" title="Delete this track">❌</button>
@@ -1757,7 +1795,7 @@ function createSyncGroupUI(mix, groupData) {
                 <div class="control-group-row"><label class="check-label"><input type="checkbox" class="sync-group-loop-toggle"> Loop</label></div>
                 <div class="sync-group-counters">
                     <span class="sync-group-loop-delay-counter"></span>
-                    <code class="sync-group-play-counter" title="Time into this cycle | the cycle's length">--m--s | --m--s</code>
+                    <span class="tt-wrap"><code class="sync-group-play-counter" title="Time into this cycle | the cycle's length">--m--s | --m--s</code>${SEEK_BAR_HTML}</span>${END_JUMP_HTML}
                 </div>
             </div>
             <span class="row-break row-break-2"></span>
@@ -2101,6 +2139,7 @@ function createVoice(track, when, offset, rate, opts = {}) {
     source.playbackRate.value = rate;
     const end = plan ? plan.end : when + (duration - startOffset) / rate;
     const fades = planFades(track, plan ? (duration - startOffset) / Math.max(0.001, end - when) : rate, when, end - when, opts.joinedIn);
+    if (opts.noFadeIn) fades.in = 0; // a seek past the fade-in only de-clicks (MS-212)
     // A play that fades in is created silent, so not even its first sample is heard at full level.
     const gain = new GainNode(audioContext, { gain: fades.in > 0 ? 0 : 1 });
     source.connect(gain);
@@ -2576,11 +2615,20 @@ function memberCyclePlan(track, kept) {
     };
 }
 
+// Where a member's play that began at `slot` from `offset` has got to by time `at`. Varying speed (v323): it follows
+// the speed wave from the play's start, as the play itself would have (before, it assumed the slider's speed).
+function memberPositionAt(track, slot, offset, at, rate, varying) {
+    if (!varying) return offset + (at - slot) * rate;
+    const plan = planVaryingRate(track, slot, offset);
+    return at >= plan.end ? track.audio.buffer.duration : voicePosition(track, { steps: plan.steps }, at);
+}
+
 // Schedule one cycle of a group starting at cycleStart. Members whose start offset has already
-// passed (when resuming mid-cycle) join at the correct position; finished members are skipped.
-// Returns { end, plan }.
-function scheduleGroupCycle(mix, group, cycleStart, delayBefore = 0, keep = null) {
-    const now = audioContext.currentTime;
+// passed (when resuming mid-cycle, or after a seek) join at the correct position; finished members are skipped.
+// `from`: the moment plays may start (a seek passes the block it takes over at); `seek`: members joining partway past
+// their fade-in come in at full level (only de-clicked). Returns { end, plan }.
+function scheduleGroupCycle(mix, group, cycleStart, delayBefore = 0, keep = null, { from = audioContext.currentTime, seek = false } = {}) {
+    const now = from;
     const offset = num(group.settings.startAt);
     let cycleEnd = cycleStart;
     let first = true;
@@ -2593,7 +2641,7 @@ function scheduleGroupCycle(mix, group, cycleStart, delayBefore = 0, keep = null
         const rate = trackRate(track, group, p.share);
         const opts = { groupId: group.id, delayBefore: first ? delayBefore : 0, speedShare: p.share, speedChoice: p.choice, varying: p.choice === 'varying' };
         const voice = slot >= now ? createVoice(track, slot, offset, rate, opts)
-            : createVoice(track, now, offset + (now - slot) * rate, rate, { ...opts, declick: true, playStart: slot });
+            : createVoice(track, now, memberPositionAt(track, slot, offset, now, rate, opts.varying), rate, { ...opts, declick: true, playStart: slot, noFadeIn: seek && pastFadeIn(track, now - slot) });
         cycleEnd = Math.max(cycleEnd, voice.end);
         first = false;
     });
@@ -2768,6 +2816,180 @@ function updateSyncGroupButtonUI(groupId, state) {
         btn.textContent = '▶';
         btn.classList.remove('is-playing', 'is-paused');
     }
+}
+
+// --- Seek (v323, MS-212) ---
+// The thin bar under each Track Timer (TT) jumps playback to a point when it is released: a seek, not audible
+// scrubbing (js/seek-bar.js). A track's bar shows how far through its sound the play is (from Start At to the end).
+// A Sync Group's bar shows how far through its cycle the group is, in listening time; moving it moves every member to
+// that point of the cycle, all placed from the same moment, so they stay sample-exact with each other. A member's own
+// bar moves its whole group, so that member lands on the point and the others keep in step.
+// A seek is heard from a processing block just ahead (replanTime, as with setting changes): the play under way fades out
+// over DECLICK_TIME there, and the new play starts on that same block from the sought point. The new play is an
+// ordinary play that starts partway, so it ends on an exact sample and the next loop starts right on it (back-to-back
+// plays, never source.loop). Random speed keeps the play's speed; Varying speed carries on along its wave.
+// Varying speed: the bar is the place in the sound, which doesn't move at a steady pace in time, so after a seek the TT's
+// "time into this play" is worked out at the speed of that moment (an estimate).
+const clamp01 = x => Math.min(1, Math.max(0, x));
+// Heard far enough into a play that its Fade In would be over: a seek there comes in at full level (only de-clicked).
+function pastFadeIn(track, heard) { const s = track.data.settings; return !s.fadeIn || heard >= num(s.fadeInLength, 3); }
+// The stretch of the sound a play covers: from Start At (the group's, for a member) to the end.
+function seekSpan(track, group) {
+    const dur = track.audio.soundDuration ?? track.audio.buffer?.duration;
+    if (dur == null) return null;
+    const from = Math.min(num(group ? group.settings.startAt : track.data.settings.startAt), dur);
+    return { from, length: dur - from };
+}
+// A bar can seek while its track or group is playing or paused; a stopped one has nothing to move.
+function canSeekGroup(group) { return group.isPlaying || (group.isPaused && !!getGroupRuntime(group).paused); }
+function canSeekTrack(track) {
+    if (!track.audio.buffer) return false;
+    const group = groupOfTrack(findMixOfTrack(track), track);
+    if (group) return canSeekGroup(group);
+    const a = track.audio;
+    return a.state === 'PLAYING' || (a.state === 'PAUSED' && !!a.paused && !a.paused.finished);
+}
+// Where the bars stand (0..1).
+function trackSeekFraction(track, now) {
+    const a = track.audio, span = seekSpan(track, groupOfTrack(findMixOfTrack(track), track));
+    if (!span || span.length <= 0) return 0;
+    // Just after a seek the new play starts a moment ahead (replanTime): the bar already shows where it starts.
+    const v = a.buffer && (soundingVoice(track, now) ?? a.voices.find(x => x.start > now && x.start - now <= REPLAN_AHEAD + 0.05));
+    if (v) return clamp01((voicePosition(track, v, now) - span.from) / span.length);
+    if (a.paused?.position != null) return clamp01((a.paused.position - span.from) / span.length);
+    const c = a.frozenCounter;
+    return c && c.total > 0 ? clamp01(c.elapsed / c.total) : 0;
+}
+function groupSeekFraction(mix, group, now) {
+    const c = groupCounter(mix, group, getGroupRuntime(group), now);
+    return c && c.total > 0 ? clamp01(c.elapsed / c.total) : 0;
+}
+
+// A track's bar released at `fraction`. Returns true when playback moved.
+function seekTrack(track, fraction) {
+    if (!canSeekTrack(track)) return false;
+    const mix = findMixOfTrack(track), group = groupOfTrack(mix, track);
+    const span = seekSpan(track, group);
+    const pos = span.from + clamp01(fraction) * span.length;
+    return group ? seekGroupToMember(mix, group, track, pos) : seekTrackTo(track, pos);
+}
+
+// An ungrouped track to `pos` seconds into its sound (MS-213, "5 s before the end", can call this too).
+function seekTrackTo(track, pos) {
+    const a = track.audio, s = track.data.settings;
+    const dur = a.buffer.duration, from = Math.min(num(s.startAt), dur);
+    pos = Math.min(Math.max(from, pos), Math.max(from, dur - 0.001));
+    if (a.state === 'PAUSED') {
+        // Paused: Resume carries on from the new point, and the TT shows it at once.
+        const total = a.frozenCounter?.total ?? (dur - from) / trackRate(track, null, idleSpeedShare(track));
+        const elapsed = dur > from ? (pos - from) / (dur - from) * total : 0;
+        a.paused = { position: pos, elapsed };
+        a.frozenCounter = { ...a.frozenCounter, elapsed, total };
+        return true;
+    }
+    if (a.state !== 'PLAYING') return false;
+    const t = replanTime();
+    const current = soundingVoice(track, t);
+    const choice = speedChoice(track);
+    const share = choice === 'random' ? (current?.speedChoice === 'random' ? current.speedShare : pickSpeedShare(track)) : 1;
+    const rate = trackRate(track, null, choice === 'varying' ? speedShareAt(track, t) : share);
+    // Everything still sounding at t (a crossfade's two plays included) or still to come gives way to the new play.
+    [...a.voices].filter(v => v.end > t).forEach(v => stopVoice(track, v, t));
+    const heard = (pos - from) / rate;
+    const voice = createVoice(track, t, pos, rate, {
+        speedShare: share, speedChoice: choice, varying: choice === 'varying', declick: true,
+        playStart: t - heard, noFadeIn: pastFadeIn(track, heard)
+    });
+    a.chain = { nextStart: null, nextOffset: num(s.startAt), nextDelayBefore: 0, first: false };
+    if (s.loop) planNextPlay(track, a.chain, voice);
+    topUpTrack(track);
+    return true;
+}
+
+// A member's bar: its group moves so that this member is at `pos` in its sound (at the speed it has now).
+function seekGroupToMember(mix, group, track, pos) {
+    const r = getGroupRuntime(group), now = audioContext.currentTime;
+    const cycle = r.cycles.find(c => c.start <= now && now < c.end) ?? r.cycles.find(c => c.start > now);
+    const kept = (group.isPaused ? r.paused?.plan : cycle?.plan)?.[track.data.id];
+    const choice = speedChoice(track);
+    const share = choice === 'varying' ? speedShareAt(track, now) : choice === 'random' && kept?.choice === 'random' ? kept.share : idleSpeedShare(track);
+    const heard = Math.max(0, pos - num(group.settings.startAt)) / trackRate(track, group, share);
+    return seekGroupTo(mix, group, num(track.data.syncInfo.startTime) + heard);
+}
+
+// A Sync Group to `tau` seconds into its cycle (listening time). The cycle keeps its choices (who sits out, Random
+// speeds); members with a later Sync Start start on their own slots, as usual.
+function seekGroupTo(mix, group, tau) {
+    const r = getGroupRuntime(group);
+    tau = Math.max(0, tau);
+    if (group.isPaused) {
+        if (!r.paused) return false;
+        const now = audioContext.currentTime;
+        const total = r.frozenCounter?.total ?? liveGroupCounter(mix, group, r, now)?.total ?? tau;
+        tau = Math.min(tau, Math.max(0, total - 0.01));
+        r.paused = { elapsed: tau, plan: r.paused.plan || null };
+        r.frozenCounter = { ...r.frozenCounter, elapsed: tau, total };
+        groupMemberEngines(mix, group, { enabledOnly: false }).forEach(t => {
+            const c = t.audio.frozenCounter || liveTrackCounter(t, now);
+            if (c) t.audio.frozenCounter = { ...c, elapsed: Math.min(c.total, Math.max(0, tau - num(t.data.syncInfo.startTime))) };
+        });
+        return true;
+    }
+    if (!group.isPlaying) return false;
+    const t = replanTime();
+    const ref = r.cycles.find(c => c.start <= t && t < c.end) ?? r.cycles.filter(c => c.start > t).sort((a, b) => a.start - b.start)[0];
+    groupMemberEngines(mix, group, { enabledOnly: false }).forEach(m =>
+        [...m.audio.voices].filter(v => v.groupId === group.id && v.end > t).forEach(v => stopVoice(m, v, t)));
+    r.cycles = r.cycles.filter(c => c.end <= t);
+    const cycleStart = t - tau;
+    const { end, plan } = scheduleGroupCycle(mix, group, cycleStart, 0, ref?.plan || null, { from: t, seek: true });
+    r.cycles.push({ start: cycleStart, end, delayBefore: 0, plan });
+    const delay = groupDelay(group);
+    r.nextCycleStart = group.isLooped && mix.isPlaying ? Math.max(t, end + delay) : null;
+    r.nextDelayBefore = delay;
+    topUpGroup(mix, group);
+    return true;
+}
+
+// --- Jump to 5 s before the end (v323, MS-213) ---
+// The ⏭5s button beside a track's or Sync Group's timer, to hear a loop join or a cycle's end without waiting. "The end"
+// is where the sound runs out: for a track, the end of the play under way (in a gap, the next play, which then starts at
+// once); with a Regular or Random gap, what follows is the gap, so the join heard is the sound ending into it. For a Sync
+// Group, the end of the cycle (its latest member's end), and every member jumps together through seekGroupTo. "5 s" is
+// listening time: at the play's own speed (Random: that play's speed). A track on Varying speed aims along its planned
+// speed steps, so its end is 5 s away too. In a Sync Group with a Varying-speed member, the cycle's end moves with that
+// member's speed after the jump, so it is about 5 s there. A play or cycle of END_JUMP_MIN seconds or less jumps to its
+// start instead, so the whole of it, and its end, are heard.
+const END_JUMP_LEAD = 5, END_JUMP_MIN = 6;
+function jumpTrackNearEnd(track) {
+    if (!canSeekTrack(track)) return false;
+    const mix = findMixOfTrack(track), group = groupOfTrack(mix, track);
+    if (group) return jumpGroupNearEnd(mix, group);
+    const a = track.audio, now = audioContext.currentTime;
+    const dur = a.buffer.duration, from = Math.min(num(track.data.settings.startAt), dur);
+    const v = soundingVoice(track, now) ?? a.voices.filter(x => x.start > now).sort((x, y) => x.start - y.start)[0];
+    let rate;
+    if (speedChoice(track) === 'varying') rate = trackRate(track, null, speedShareAt(track, now));
+    else if (v) rate = v.rate;
+    else rate = a.frozenCounter?.total > 0 ? (dur - from) / a.frozenCounter.total : trackRate(track, null, idleSpeedShare(track));
+    if ((dur - from) / rate <= END_JUMP_MIN) return seekTrackTo(track, from);
+    let pos = dur - END_JUMP_LEAD * rate;
+    if (speedChoice(track) === 'varying' && a.state === 'PLAYING') {
+        // Varying: the speed steps ahead are known (the wave is planned), so aim so the planned end is 5 s away.
+        const t = replanTime();
+        for (let i = 0; i < 4; i++) {
+            const left = planVaryingRate(track, t, pos).end - t;
+            if (!(left > 0) || Math.abs(left - END_JUMP_LEAD) < 0.001) break;
+            pos = Math.min(dur - 0.01, Math.max(from, pos + (left - END_JUMP_LEAD) * (dur - pos) / left));
+        }
+    }
+    return seekTrackTo(track, pos);
+}
+function jumpGroupNearEnd(mix, group) {
+    if (!canSeekGroup(group)) return false;
+    const c = groupCounter(mix, group, getGroupRuntime(group), audioContext.currentTime);
+    if (!c) return false;
+    return seekGroupTo(mix, group, c.total <= END_JUMP_MIN ? 0 : c.total - END_JUMP_LEAD);
 }
 
 // --- Setting changes from the controls ---
@@ -2958,7 +3180,8 @@ function liveTrackCounter(track, now) {
     const current = soundingVoice(track, now);
     if (current) return { elapsed: now - current.playStart, total: current.end - current.playStart };
     const next = a.voices.filter(v => v.start > now).sort((x, y) => x.start - y.start)[0];
-    if (next) return { elapsed: 0, total: next.end - next.playStart };
+    // A play that joins partway (just after a seek, MS-212) already counts the part it skipped.
+    if (next) return { elapsed: Math.max(0, Math.min(now, next.start) - next.playStart), total: next.end - next.playStart };
     const group = groupOfTrack(findMixOfTrack(track), track);
     const offset = num(group ? group.settings.startAt : track.data.settings.startAt);
     return { elapsed: 0, total: Math.max(0, a.soundDuration - offset) / trackRate(track, group, idleSpeedShare(track)), approx: speedChoice(track) !== 'fixed' };
@@ -2984,8 +3207,14 @@ function formatCounter(c) {
     return c ? `${formatTime(c.elapsed)} | ${c.approx ? '≈' : ''}${formatTime(Math.round(c.total))}` : '--m--s | --m--s';
 }
 function updateGroupCounterUI(mix, group, now) {
-    const el = document.getElementById(group.id)?.querySelector('.sync-group-play-counter');
+    const groupEl = document.getElementById(group.id);
+    if (!groupEl || isSeekDragging(groupEl)) return; // a bar being dragged shows the point it would jump to
+    const el = groupEl.querySelector('.sync-group-play-counter');
     if (el) el.textContent = formatCounter(groupCounter(mix, group, getGroupRuntime(group), now));
+    const canSeek = canSeekGroup(group);
+    updateSeekBarUI(groupEl.querySelector(':scope > .sync-group-header .seek-bar'), groupSeekFraction(mix, group, now), canSeek);
+    const jumpBtn = groupEl.querySelector(':scope > .sync-group-header .end-jump-btn');
+    if (jumpBtn) jumpBtn.disabled = !canSeek;
 }
 
 function updateTrackPlaybackUI(track, now) {
@@ -2993,7 +3222,13 @@ function updateTrackPlaybackUI(track, now) {
     if (!el) return;
     const current = soundingVoice(track, now);
     el.classList.toggle('is-playing', !!current);
-    updatePlayCounterDisplay(track, trackCounter(track, now));
+    if (!isSeekDragging(el)) {
+        updatePlayCounterDisplay(track, trackCounter(track, now));
+        const canSeek = canSeekTrack(track);
+        updateSeekBarUI(el.querySelector('.track-header .seek-bar'), trackSeekFraction(track, now), canSeek);
+        const jumpBtn = el.querySelector('.end-jump-btn');
+        if (jumpBtn) jumpBtn.disabled = !canSeek;
+    }
     const counter = el.querySelector('.track-loop-delay-counter');
     if (!counter) return;
     let text = '';
@@ -4273,6 +4508,18 @@ function updateAllMuteButtonUI(mix) {
         updateMuteButtonUI(t.id, t.isMuted);
         updateSoloButtonUI(t.id, t.isSoloed);
     });
+    updateMixSoloIndicator(mix);
+}
+
+// MS-199: the "S" in the mix header lights while anything in the mix (track, Sync Group track or Sync Group) is soloed.
+// Solo stays on through the mix's Stop and Play, so this shows a forgotten solo; clicking it clears them all.
+function updateMixSoloIndicator(mix) {
+    const btn = document.getElementById(mix.id)?.querySelector('.mix-solo-indicator');
+    if (!btn) return;
+    const active = isMixSoloActive(mix);
+    btn.disabled = !active;
+    btn.classList.toggle('is-soloed', active);
+    btn.title = active ? 'SOLO is on in this mix: click to clear all solos' : 'Nothing in this mix is soloed';
 }
 
 function updateMuteButtonUI(elementId, isMuted) {
@@ -4426,7 +4673,8 @@ function setupCompactHeaderObserver() {
         });
 
         if (!isCompact) {
-             document.querySelectorAll('.app-header-secondary-row, .mix-header-row-secondary').forEach(row => {
+             // Only the app header's row: each mix's "..." menu stays as its mix remembers it (MS-217).
+             document.querySelectorAll('.app-header-secondary-row').forEach(row => {
                 row.classList.remove('is-expanded');
             });
         }
@@ -4665,7 +4913,7 @@ async function pasteMix() {
             groupIdMap[sg.id] = newGroup.id;
             return newGroup;
         });
-        const newMix = createNewMix({ name: `${sourceMix.name} (Copy)`, volume: sourceMix.volume, isMuted: sourceMix.isMuted, isExpanded: sourceMix.isExpanded, syncGroups, tracks: [] }, true);
+        const newMix = createNewMix({ name: `${sourceMix.name} (Copy)`, volume: sourceMix.volume, isMuted: sourceMix.isMuted, isExpanded: sourceMix.isExpanded, isMenuOpen: sourceMix.isMenuOpen, syncGroups, tracks: [] }, true);
         const newMixElement = document.getElementById(newMix.id);
         if (lastPastedElement) lastPastedElement.after(newMixElement);
         mixes.splice(i, 0, newMix);
@@ -4754,6 +5002,124 @@ function audioBufferToWav(buffer) {
     }
     return new Blob([view.buffer], { type: 'audio/wav' });
 }
+    </script>
+    <script>
+// --- js/seek-bar.js ---
+// --- Seek bars (v323, MS-212) ---
+// A thin bar under each Track Timer (TT), on every track and Sync Group. Tap or drag it with a mouse or a finger, and
+// playback jumps to that point when you let go: a seek, not audible scrubbing. While dragging, the TT shows the point
+// it would jump to. A vertical swipe that starts on the bar still scrolls the page on a phone (and cancels the seek).
+// The arrow keys move a focused bar by 5 seconds, Home to the start. The audio side is in js/audio-engine.js (Seek).
+const SEEK_BAR_HTML = `<span class="seek-bar is-idle" role="slider" tabindex="0" aria-label="Seek: tap or drag to jump to a point" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="seek-fill"></span></span>`;
+// MS-213: ⏭5s jumps to 5 s before the end of the play (a track) or the cycle (a Sync Group); see jumpTrackNearEnd.
+// Shown on tracks outside Sync Groups and on each Sync Group (a group's tracks move with the group's button).
+const END_JUMP_HTML = `<button type="button" class="end-jump-btn small-btn" title="Jump to 5 seconds before the end, to hear the loop join (a play or cycle of 6 s or less: back to its start)" aria-label="Jump to 5 seconds before the end" disabled>⏭5s</button>`;
+const SEEK_KEY_STEP = 5; // seconds per arrow-key press
+let seekDrag = null; // { bar, itemEl, pointerId, fraction }
+
+// The bar being dragged belongs to this track or Sync Group (its timer then shows the drag point, not the live time).
+function isSeekDragging(itemEl) { return !!seekDrag && seekDrag.itemEl === itemEl; }
+
+function updateSeekBarUI(bar, fraction, enabled) {
+    if (!bar) return;
+    const pct = Math.round(fraction * 1000) / 10;
+    bar.firstElementChild.style.width = `${pct}%`;
+    bar.classList.toggle('is-idle', !enabled);
+    bar.setAttribute('aria-valuenow', String(Math.round(pct)));
+    bar.setAttribute('aria-disabled', String(!enabled));
+}
+
+// What a bar acts on: its track (ungrouped or in a Sync Group) or its Sync Group.
+function seekTarget(bar) {
+    const mix = mixes.find(m => m.id === bar.closest('.mix-container')?.id);
+    if (!mix) return null;
+    const trackEl = bar.closest('.track');
+    if (trackEl) {
+        const track = mix.audioEngine[trackEl.id];
+        return track && { itemEl: trackEl, mix, track };
+    }
+    const groupEl = bar.closest('.sync-group');
+    const group = mix.syncGroups.find(g => g.id === groupEl?.id);
+    return group && { itemEl: groupEl, mix, group };
+}
+function seekTargetCanSeek(target) { return target.track ? canSeekTrack(target.track) : canSeekGroup(target.group); }
+function seekTargetCounter(target) {
+    const now = audioContext.currentTime;
+    return target.track ? trackCounter(target.track, now) : groupCounter(target.mix, target.group, getGroupRuntime(target.group), now);
+}
+function seekTargetFraction(target) {
+    const now = audioContext.currentTime;
+    return target.track ? trackSeekFraction(target.track, now) : groupSeekFraction(target.mix, target.group, now);
+}
+
+function seekCommit(target, fraction) {
+    let moved;
+    if (target.track) moved = seekTrack(target.track, fraction);
+    else {
+        const c = seekTargetCounter(target);
+        moved = !!c && seekGroupTo(target.mix, target.group, fraction * c.total);
+    }
+    if (moved) engineTick(); // the timer and bar show the new point at once
+}
+
+// While dragging: the bar's fill and the timer follow the pointer (the timer shows the time into the play it would jump to).
+function seekPreview(bar, target, fraction) {
+    updateSeekBarUI(bar, fraction, true);
+    const c = seekTargetCounter(target);
+    const counterEl = bar.parentElement.querySelector('.track-play-counter, .sync-group-play-counter');
+    if (c && counterEl) counterEl.textContent = formatCounter({ ...c, elapsed: fraction * c.total });
+}
+const seekFractionAt = (bar, clientX) => { const r = bar.getBoundingClientRect(); return r.width > 0 ? clamp01((clientX - r.left) / r.width) : 0; };
+
+function endSeekDrag(commit) {
+    const d = seekDrag;
+    if (!d) return;
+    seekDrag = null;
+    d.bar.classList.remove('is-dragging');
+    if (commit && seekTargetCanSeek(d.target)) seekCommit(d.target, d.fraction);
+    else engineTick(); // cancelled: back to the live position
+}
+
+document.addEventListener('pointerdown', e => {
+    const bar = e.target.closest?.('.seek-bar');
+    if (!bar || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    const target = seekTarget(bar);
+    if (!target || !seekTargetCanSeek(target)) return;
+    endSeekDrag(false);
+    seekDrag = { bar, target, itemEl: target.itemEl, pointerId: e.pointerId, fraction: seekFractionAt(bar, e.clientX) };
+    try { bar.setPointerCapture(e.pointerId); } catch (err) {}
+    bar.classList.add('is-dragging');
+    if (e.pointerType === 'mouse') e.preventDefault(); // no text selection while dragging
+    seekPreview(bar, target, seekDrag.fraction);
+});
+document.addEventListener('pointermove', e => {
+    if (!seekDrag || e.pointerId !== seekDrag.pointerId) return;
+    seekDrag.fraction = seekFractionAt(seekDrag.bar, e.clientX);
+    seekPreview(seekDrag.bar, seekDrag.target, seekDrag.fraction);
+});
+document.addEventListener('pointerup', e => { if (seekDrag && e.pointerId === seekDrag.pointerId) endSeekDrag(true); });
+document.addEventListener('pointercancel', e => { if (seekDrag && e.pointerId === seekDrag.pointerId) endSeekDrag(false); });
+// A click on a bar does nothing else (e.g. it never opens or closes the track).
+document.addEventListener('click', e => { if (e.target.closest?.('.seek-bar')) e.stopPropagation(); }, true);
+document.addEventListener('click', e => {
+    const btn = e.target.closest?.('.end-jump-btn');
+    const target = btn && seekTarget(btn);
+    if (!target) return;
+    const moved = target.track ? jumpTrackNearEnd(target.track) : jumpGroupNearEnd(target.mix, target.group);
+    if (moved) engineTick();
+});
+
+document.addEventListener('keydown', e => {
+    const bar = e.target.closest?.('.seek-bar');
+    if (!bar || !['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', 'Home'].includes(e.key)) return;
+    e.preventDefault();
+    const target = seekTarget(bar);
+    if (!target || !seekTargetCanSeek(target)) return;
+    const c = seekTargetCounter(target);
+    if (!c || !(c.total > 0)) return;
+    const step = SEEK_KEY_STEP / c.total * (e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -1 : 1);
+    seekCommit(target, e.key === 'Home' ? 0 : clamp01(seekTargetFraction(target) + step));
+});
     </script>
     <script>
 // --- js/undo.js ---
@@ -4893,7 +5259,7 @@ function deleteMixWithUndo(mixId) {
     const layout = mixLayout(mix);
     const entry = {
         kind: 'mix', what: `the mix "${mix.name}"`, mixOrder: mixes.map(m => m.id), layout,
-        mix: { id: mix.id, name: mix.name, volume: mix.volume, isMuted: mix.isMuted, isExpanded: mix.isExpanded },
+        mix: { id: mix.id, name: mix.name, volume: mix.volume, isMuted: mix.isMuted, isExpanded: mix.isExpanded, isMenuOpen: mix.isMenuOpen },
         groups: mix.syncGroups.map(cloneGroupData),
         tracks: tracksInScreenOrder(mix, layout).map(t => trackSnapshot(mix, t))
     };
@@ -5276,7 +5642,7 @@ function workspaceSnapshot() {
         mixes: mixes.map(mix => {
             const layout = mixLayout(mix);
             return {
-                id: mix.id, name: mix.name, volume: parseFloat(mix.volume), isMuted: !!mix.isMuted, isExpanded: !!mix.isExpanded,
+                id: mix.id, name: mix.name, volume: parseFloat(mix.volume), isMuted: !!mix.isMuted, isExpanded: !!mix.isExpanded, isMenuOpen: !!mix.isMenuOpen,
                 syncGroups: mix.syncGroups.map(cloneGroupData),
                 tracks: tracksInScreenOrder(mix, layout).map(t => { const d = JSON.parse(JSON.stringify(t)); delete d.isSoloed; return d; }),
                 layout
@@ -5337,7 +5703,7 @@ function restoreSavedMix(saved) {
         openSections: { ...t.openSections }
     }));
     // The Sync Groups first, so each grouped track lands in its group.
-    const mix = createNewMix({ id: saved.id, name: saved.name, volume: saved.volume ?? 1, isMuted: !!saved.isMuted, isExpanded: saved.isExpanded !== false, syncGroups: saved.syncGroups || [], tracks: [] }, true);
+    const mix = createNewMix({ id: saved.id, name: saved.name, volume: saved.volume ?? 1, isMuted: !!saved.isMuted, isExpanded: saved.isExpanded !== false, isMenuOpen: !!saved.isMenuOpen, syncGroups: saved.syncGroups || [], tracks: [] }, true);
     mix.soundsState = tracks.some(t => t.soundId) ? 'pending' : 'loaded';
     tracks.forEach(t => {
         if (t.syncInfo.groupId && !mix.syncGroups.some(g => g.id === t.syncInfo.groupId)) t.syncInfo.groupId = null;

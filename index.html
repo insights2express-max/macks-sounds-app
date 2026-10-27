@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mack's Sounds v323</title>
+    <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
+         itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
+         build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-f6FqsSxCvIs7KX5Xl4nSyHJRR3yoRgmDUKoTgoDSh50=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-JpIE9korlqnwlGIyGFEAaev03x42261Q6xeriGHi8E4=' 'sha256-O1qCHIlpHD7qTwbeWnHUMjbv32zgobr6PfJwWPl8hE0=' 'sha256-ErNvvN/GceQkKSBZr7aFWSkMWKM06O2gInZi7zt3elo=' 'sha256-B+N3RqcOnuSQ8Ou43dmSJy4005n2lCh413HDK+AyzxQ=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-jT2e8USSKzgGUWOSr3S7m4uuhOw7//HgqIFl6YDQnGY=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-AvWXo9A8vpgRnCKQGwSfd/fZtZ9ZggOSKsZTAfKZBN0=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-xeUUm54+4xWR2NPVQBELudGyqmgrZAVBvLeVdae6i/k=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-dgAPekdVG7Th8Los+1rFOs1VIpaUxdu+ajcah3BUgQ4=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-lonjxkCIUdDI7d6xZGgkhzxxE8mEqmdZxoTbVtBepd0=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-eTO/E6DHGpCyMtuMYd2+Gr6nseup6GyJ7wFZR4ujrhs=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-rmKEZM1Mw8L+ujTDthe8o4Tb7uYpMznahh5ojvKSLpM=' 'sha256-JO0JRB3YNqwDwAC3shN2nHjXG6HGHSJjYoZzLBQ1bI0='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Mack's Sounds v324</title>
     <!-- The 18 built-in fonts ship with the app (v322, MS-229); build.ps1 puts them into the built page. -->
     <style>
 /* The app's built-in fonts (v322, MS-229): Google Fonts' Latin files, shipped with the app so no font is fetched
@@ -615,7 +619,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v323</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v324</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -722,10 +726,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
                              <input type="file" id="local-font-input" multiple accept=".ttf,.otf,.woff,.woff2" style="display:none;">
                              <button id="clear-local-fonts-btn" class="small-btn" style="display:none;">Clear All</button>
                         </div>
-                        <div class="font-loader-row">
-                            <textarea id="google-font-url-input" placeholder="Paste one or more Google Fonts <link> tags or URLs here, one per line..." style="flex-grow:1; height: 80px; resize: vertical;"></textarea>
-                            <button id="google-font-load-btn" class="small-btn">Load</button>
-                        </div>
+                        <p class="bg-storage-note">To use a Google font, download its file from fonts.google.com and add it with Load Local Fonts. (Since v324 the app loads nothing from other websites, so pasted Google Fonts links are no longer used.)</p>
                     </div>
                     <div id="user-font-list-container" style="display:none; margin-top: 1rem;">
                         <h4 style="margin-bottom: 0.5rem;">Loaded Fonts</h4>
@@ -927,7 +928,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v323';
+const APP_VERSION = 'v324';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -968,6 +969,7 @@ const DEFAULT_TRACK_SETTINGS = { volume: 1, playChance: 1, speed: 1, loop: true,
 // Before v303 a track had one `mode`; mixes and copied settings from older versions are converted on load.
 const LEGACY_TRACK_MODES = { normal: {}, random_play: { timingMode: 'random' }, random_volume: { volumeMode: 'varying' }, random_pitch: { pitchMode: 'random' }, oscillating_pitch: { pitchMode: 'oscillating' } };
 function normalizeTrackSettings(settings = {}) {
+    settings = cleanSettings(settings, DEFAULT_TRACK_SETTINGS);
     const legacy = ('mode' in settings && !('timingMode' in settings)) ? LEGACY_TRACK_MODES[settings.mode] : null;
     const beforeV305 = Object.keys(settings).length > 0 && !('volumePauseEvery' in settings);
     const beforeV321 = Object.keys(settings).length > 0 && !('autoLevel' in settings);
@@ -1001,15 +1003,39 @@ function normalizeTrackSettings(settings = {}) {
         }
     }
     delete s.pitchMode; delete s.pitchRange;
+    // MS-232: a mode is one of its known choices (it is looked up in the page by its value).
+    Object.entries(TRACK_MODE_CHOICES).forEach(([key, choices]) => { if (!choices.includes(s[key])) s[key] = DEFAULT_TRACK_SETTINGS[key]; });
     return s;
 }
 const DEFAULT_GROUP_SETTINGS = { volume: 1.0, speed: 1.0, mode: 'normal', loopDelay: 0, startAt: 0, fadeOutAt: 0, minDelay: 2, maxDelay: 10 };
+const TRACK_MODE_CHOICES = { timingMode: ['fixed', 'random'], volumeMode: ['fixed', 'varying'], speedMode: ['fixed', 'random', 'varying'] };
+const GROUP_MODE_CHOICES = ['normal', 'random_play'];
 
 // IDs are used in CSS selectors, so keep them to letters, digits and underscores.
 function uniqueId(prefix) { return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`; }
 
 // Names come from file names and imported mixes, so escape them before putting them in HTML.
 function escapeHtml(text) { return String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+// The same for a quoted CSS string (a font's name, an image's URL): quotes, backslashes and line breaks are escaped.
+function cssString(text) { return '"' + String(text ?? '').replace(/[\\"\n\r\f]/g, c => '\\' + c.charCodeAt(0).toString(16) + ' ') + '"'; }
+
+// --- Untrusted data (MS-232, v324) ---
+// A mix.json from someone else (and anything saved in this browser) may hold anything. Each setting keeps the type its
+// default has, so a crafted file can't slip text into a number that ends up in the page: numbers (or numeric text, as
+// sliders save them) become numbers, anything else the default; true/false stay true/false; text stays text.
+function cleanSettings(settings, defaults) {
+    const s = settings && typeof settings === 'object' && !Array.isArray(settings) ? { ...settings } : {};
+    for (const [key, def] of Object.entries(defaults)) {
+        if (!(key in s)) continue;
+        if (typeof def === 'number') { const n = typeof s[key] === 'number' || typeof s[key] === 'string' ? Number(s[key]) : NaN; s[key] = Number.isFinite(n) ? n : def; }
+        else if (typeof def === 'boolean') s[key] = s[key] === true || s[key] === 'true';
+        else if (typeof def === 'string') s[key] = typeof s[key] === 'string' ? s[key] : def;
+    }
+    return s;
+}
+// An ID from outside is kept only if it is one this app could have made (letters, digits, _ and -); otherwise a new one.
+function safeId(id, prefix) { return typeof id === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(id) ? id : uniqueId(prefix); }
+function safeName(name, fallback) { return typeof name === 'string' ? name.slice(0, 500) : typeof name === 'number' ? String(name) : fallback; }
 
 // Copy of a sync group's saved data, without runtime timers or playback state.
 function cloneGroupData(group) { return { ...JSON.parse(JSON.stringify({ ...group, delayInfo: null, delayResumeInfo: null })), isPlaying: false, isPaused: false, isSoloed: false }; }
@@ -1093,7 +1119,7 @@ async function askConfirm(text, { confirmLabel = 'Delete' } = {}) {
 function setActiveBgImage(id) {
     activeBgImageId = id;
     const image = bgImages.find(img => img.id === id);
-    document.getElementById('bg-image-layer').style.backgroundImage = image ? `url('${image.dataUrl}')` : 'none';
+    document.getElementById('bg-image-layer').style.backgroundImage = image ? `url(${cssString(image.dataUrl)})` : 'none';
 
     if (!slideshow.intervalId) {
         localStorage.setItem('activeBgImageId', activeBgImageId);
@@ -1174,29 +1200,37 @@ function normalizeMixData(mixData) {
         id: uniqueId('mix'), name: `My Custom Mix ${mixes.length + 1}`, 
         tracks: [], syncGroups: [], isPlaying: false, isPaused: false, 
         isMuted: false, audioEngine: {}, isExpanded: true, volume: 1, soloedTrackIds: [],
-        isMenuOpen: false, // MS-217: the "..." menu (the rows of mix buttons) starts folded; each mix remembers it
+        isMenuOpen: false, // MS-217: the "..." menu (the rows of mix buttons) starts folded; not saved, so a reload
+        // folds it again (MS-231, v324). Copy Mix and Undo keep it as it was.
         soundsState: 'loaded' // 'pending' for a mix restored from storage until its sounds are unpacked (js/storage.js)
     };
     if (!mixData) return defaults; 
-    const normalized = { ...defaults, ...mixData }; 
-    normalized.audioEngine = {}; 
-    normalized.isPlaying = false; 
-    normalized.isPaused = false; 
+    // MS-232: mixData may come from an imported file or from storage, so each value keeps its proper type (js/state.js).
+    const normalized = { ...defaults, ...cleanSettings(mixData, { volume: 1, isMuted: false, isExpanded: true, isMenuOpen: false }) };
+    normalized.id = safeId(mixData.id, 'mix');
+    normalized.name = safeName(mixData.name, defaults.name);
+    normalized.audioEngine = {};
+    normalized.isPlaying = false;
+    normalized.isPaused = false;
     normalized.soloedTrackIds = [];
-    if (!normalized.syncGroups) {
-        normalized.syncGroups = [];
-    } else {
-        normalized.syncGroups = normalized.syncGroups.map(sg => ({
-            ...sg,
-            isPaused: false,
-            isPlaying: false,
-            isSoloed: false,
-            delayInfo: null,
-            delayResumeInfo: null,
-            settings: {...DEFAULT_GROUP_SETTINGS, ...sg.settings}
-        }));
-    }
-    return normalized; 
+    normalized.syncGroups = (Array.isArray(normalized.syncGroups) ? normalized.syncGroups : []).filter(sg => sg && typeof sg === 'object').map((sg, i) => ({
+        ...cleanSettings(sg, { isExpanded: true, isLooped: false, isEnabled: true, isMuted: false }),
+        id: safeId(sg.id, 'syncgroup'),
+        name: safeName(sg.name, `Sync Group ${i + 1}`),
+        isPaused: false,
+        isPlaying: false,
+        isSoloed: false,
+        delayInfo: null,
+        delayResumeInfo: null,
+        settings: groupSettings(sg.settings)
+    }));
+    return normalized;
+}
+
+function groupSettings(settings) {
+    const s = { ...DEFAULT_GROUP_SETTINGS, ...cleanSettings(settings, DEFAULT_GROUP_SETTINGS) };
+    if (!GROUP_MODE_CHOICES.includes(s.mode)) s.mode = DEFAULT_GROUP_SETTINGS.mode;
+    return s;
 }
 
 function createMixUI(mix) {
@@ -1327,7 +1361,7 @@ function createMixUI(mix) {
     mixContainer.addEventListener('change', e => { if (e.target.classList.contains('select-checkbox')) updateDeleteSelectedButton(mix.id); });
 
     // MS-217: "..." folds the rows of mix buttons away at every screen width (before v323: phones and the compact
-    // sticky header only). Each mix remembers whether it is open, and Autosave keeps it.
+    // sticky header only). Each mix remembers whether it is open while the page is open; a reload folds it (MS-231).
     const moreBtn = mixContainer.querySelector('.more-controls-btn');
     const setMenuOpen = open => {
         mix.isMenuOpen = open;
@@ -1372,16 +1406,16 @@ async function handleFileAdd(mix, files) {
 
 async function processNewTrack(mix, audioSource, trackName, existingTrackData = null) {
     const trackData = { 
-        id: existingTrackData?.id || uniqueId('track'),
-        name: trackName, 
-        isEnabled: existingTrackData?.isEnabled ?? true, isMuted: existingTrackData?.isMuted ?? false, isSoloed: false,
+        id: existingTrackData?.id ? safeId(existingTrackData.id, 'track') : uniqueId('track'),
+        name: safeName(trackName, 'Track'), // MS-232: may come from an imported file
+        isEnabled: existingTrackData?.isEnabled !== false, isMuted: existingTrackData?.isMuted === true, isSoloed: false,
         // A newly added file (no settings yet) takes the New track defaults from Settings (MS-223).
         settings: normalizeTrackSettings(existingTrackData?.settings ?? newTrackSettings()),
-        syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: existingTrackData?.syncInfo?.startTime || 0 },
+        syncInfo: { groupId: existingTrackData?.syncInfo?.groupId || null, startTime: Math.max(0, Number(existingTrackData?.syncInfo?.startTime) || 0) },
         openSections: { ...existingTrackData?.openSections }, // MS-104: which of Timing / Volume / Speed / Fades are open (closed by default)
         isExpanded: !!existingTrackData?.isExpanded, // MS-104: the track's settings open (saved with the mix, like Sync Groups)
         soundId: existingTrackData?.soundId || null, // MS-130: the saved sound it plays (js/storage.js); several tracks may share one
-        loudness: existingTrackData?.loudness || null // MS-227: its sound's measured loudness (js/auto-level.js)
+        loudness: Number.isFinite(existingTrackData?.loudness?.lufs) ? existingTrackData.loudness : null // MS-227: its sound's measured loudness (js/auto-level.js)
     };
     if (!mix.tracks) mix.tracks = [];
     mix.tracks.push(trackData);
@@ -2958,9 +2992,15 @@ function seekGroupTo(mix, group, tau) {
 // Group, the end of the cycle (its latest member's end), and every member jumps together through seekGroupTo. "5 s" is
 // listening time: at the play's own speed (Random: that play's speed). A track on Varying speed aims along its planned
 // speed steps, so its end is 5 s away too. In a Sync Group with a Varying-speed member, the cycle's end moves with that
-// member's speed after the jump, so it is about 5 s there. A play or cycle of END_JUMP_MIN seconds or less jumps to its
-// start instead, so the whole of it, and its end, are heard.
-const END_JUMP_LEAD = 5, END_JUMP_MIN = 6;
+// member's speed after the jump, so it is about 5 s there.
+// v324 (MS-231): the jump lands on whichever is earlier, 5 s before the end or END_JUMP_FADE_LEAD (2 s) before a Fade Out
+// or Crossfade starts (only when one is switched on), so the whole fade and the join are heard. In a Sync Group the fades
+// that count are those of the members whose play ends on the cycle's end (the ones heard at the join); a member that ends
+// earlier has faded into silence before then. A play or cycle no longer than the lead plus END_JUMP_SPARE (1 s) jumps to
+// its start instead, so the whole of it, and its end, are heard (with the 5 s lead: 6 s or less, as in v323).
+const END_JUMP_LEAD = 5, END_JUMP_FADE_LEAD = 2, END_JUMP_SPARE = 1;
+// Listening seconds before the end to land on, for a play ending with a fade-out (or crossfade) of `fadeOut` seconds.
+function endJumpLead(fadeOut) { return Math.max(END_JUMP_LEAD, fadeOut > 0 ? fadeOut + END_JUMP_FADE_LEAD : 0); }
 function jumpTrackNearEnd(track) {
     if (!canSeekTrack(track)) return false;
     const mix = findMixOfTrack(track), group = groupOfTrack(mix, track);
@@ -2972,24 +3012,44 @@ function jumpTrackNearEnd(track) {
     if (speedChoice(track) === 'varying') rate = trackRate(track, null, speedShareAt(track, now));
     else if (v) rate = v.rate;
     else rate = a.frozenCounter?.total > 0 ? (dur - from) / a.frozenCounter.total : trackRate(track, null, idleSpeedShare(track));
-    if ((dur - from) / rate <= END_JUMP_MIN) return seekTrackTo(track, from);
-    let pos = dur - END_JUMP_LEAD * rate;
+    const playLength = (dur - from) / rate;
+    // The fade-out this play ends with: a Crossfade's length or Fade Out's, as planned for a play (with its caps).
+    const lead = endJumpLead(planFades(track, rate, now, playLength).out);
+    if (playLength <= lead + END_JUMP_SPARE) return seekTrackTo(track, from);
+    let pos = dur - lead * rate;
     if (speedChoice(track) === 'varying' && a.state === 'PLAYING') {
-        // Varying: the speed steps ahead are known (the wave is planned), so aim so the planned end is 5 s away.
+        // Varying: the speed steps ahead are known (the wave is planned), so aim so the planned end is `lead` s away.
         const t = replanTime();
         for (let i = 0; i < 4; i++) {
             const left = planVaryingRate(track, t, pos).end - t;
-            if (!(left > 0) || Math.abs(left - END_JUMP_LEAD) < 0.001) break;
-            pos = Math.min(dur - 0.01, Math.max(from, pos + (left - END_JUMP_LEAD) * (dur - pos) / left));
+            if (!(left > 0) || Math.abs(left - lead) < 0.001) break;
+            pos = Math.min(dur - 0.01, Math.max(from, pos + (left - lead) * (dur - pos) / left));
         }
     }
     return seekTrackTo(track, pos);
 }
 function jumpGroupNearEnd(mix, group) {
     if (!canSeekGroup(group)) return false;
-    const c = groupCounter(mix, group, getGroupRuntime(group), audioContext.currentTime);
+    const r = getGroupRuntime(group), now = audioContext.currentTime;
+    const c = groupCounter(mix, group, r, now);
     if (!c) return false;
-    return seekGroupTo(mix, group, c.total <= END_JUMP_MIN ? 0 : c.total - END_JUMP_LEAD);
+    const lead = endJumpLead(groupEndFadeOut(mix, group, r, c.total, now));
+    return seekGroupTo(mix, group, c.total <= lead + END_JUMP_SPARE ? 0 : c.total - lead);
+}
+// The longest Fade Out among the members whose play ends on the cycle's end (within 50 ms), in listening seconds.
+// Members sitting this cycle out (Play Chance) don't count. (Crossfade isn't used inside Sync Groups.)
+function groupEndFadeOut(mix, group, r, total, now) {
+    const cycle = r.cycles.find(x => x.start <= now && now < x.end) ?? r.cycles.find(x => x.start > now);
+    const plan = group.isPaused ? r.paused?.plan : cycle?.plan;
+    const offset = num(group.settings.startAt);
+    let longest = 0;
+    groupMemberEngines(mix, group).forEach(t => {
+        const s = t.data.settings, p = plan?.[t.data.id];
+        if (!s.fadeOut || p?.sitOut) return;
+        const ends = num(t.data.syncInfo.startTime) + memberPlayLength(t, group, offset, p ? p.share : idleSpeedShare(t));
+        if (ends >= total - 0.05) longest = Math.max(longest, num(s.fadeOutLength, 3));
+    });
+    return longest;
 }
 
 // --- Setting changes from the controls ---
@@ -3501,7 +3561,6 @@ function setupGlobalDragDropListeners() {
 function setupFontManagement() {
     initFontSelectors();
     document.getElementById('local-font-input').addEventListener('change', handleLocalFonts);
-    document.getElementById('google-font-load-btn').addEventListener('click', handleGoogleFontUrl);
     document.getElementById('clear-local-fonts-btn').addEventListener('click', clearLocalFonts);
 }
 
@@ -3523,7 +3582,7 @@ async function handleLocalFonts(event) {
         const styleEl = document.createElement('style');
         styleEl.className = 'user-added-font-style';
         styleEl.dataset.fontName = originalName;
-        styleEl.textContent = `@font-face { font-family: "${originalName}"; src: url(${dataURL}); }`;
+        styleEl.textContent = `@font-face { font-family: ${cssString(originalName)}; src: url(${cssString(dataURL)}); }`; // MS-232: a file name can hold quotes
         document.head.appendChild(styleEl);
         
         return { originalName, displayName: originalName, type: 'local' };
@@ -3535,72 +3594,6 @@ async function handleLocalFonts(event) {
         updateFontManagementUI();
     }
     event.target.value = '';
-}
-
-function handleGoogleFontUrl() {
-    const input = document.getElementById('google-font-url-input');
-    const inputValue = input.value.trim();
-    if (!inputValue) return;
-
-    const lines = inputValue.split('\n');
-    let anyFontsLoaded = false;
-    let allNewFonts = [];
-
-    for (const line of lines) {
-        const trimmedLine = line.trim();
-        if (!trimmedLine) continue;
-
-        let href = '';
-        if (trimmedLine.startsWith('https://fonts.googleapis.com/css2')) {
-            href = trimmedLine;
-        } else {
-            const hrefMatch = trimmedLine.match(/href="([^"]*fonts\.googleapis\.com\/css2[^"]*)"/);
-            if (hrefMatch && hrefMatch[1]) {
-                href = hrefMatch[1].replace(/&amp;/g, '&');
-            }
-        }
-
-        if (!href) {
-            console.warn("Could not find a valid Google Fonts URL in line:", trimmedLine);
-            continue;
-        }
-
-        const sourceId = `user-font-google-${Date.now()}`;
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = href;
-        link.className = 'user-added-font-style';
-        link.dataset.sourceId = sourceId;
-        document.head.appendChild(link);
-
-        try {
-            const url = new URL(href);
-            const families = url.searchParams.getAll('family');
-            const newFontsForThisUrl = families.map(f => {
-                const fontName = f.split(':')[0].replace(/\+/g, ' ');
-                if (!userLoadedFonts.some(font => font.originalName === fontName) && !allNewFonts.some(font => font.originalName === fontName)) {
-                    return { originalName: fontName, displayName: fontName, type: 'google', sourceId: sourceId };
-                }
-                return null;
-            }).filter(Boolean);
-
-            if (newFontsForThisUrl.length > 0) {
-                allNewFonts.push(...newFontsForThisUrl);
-                anyFontsLoaded = true;
-            }
-        } catch (e) {
-            console.error("Could not parse Google Font URL:", e);
-            document.head.removeChild(link);
-        }
-    }
-
-    if (anyFontsLoaded) {
-        userLoadedFonts.push(...allNewFonts);
-        updateFontManagementUI();
-        input.value = '';
-    } else {
-        showMessage("No new, unique fonts found in the provided URLs or tags.");
-    }
 }
 
 async function clearLocalFonts() {
@@ -3632,14 +3625,8 @@ function deleteUserFont(originalName) {
     const fontToDelete = userLoadedFonts[fontIndex];
 
     if (fontToDelete.type === 'local') {
-         const styleEl = document.querySelector(`style[data-font-name="${originalName}"]`);
+         const styleEl = [...document.querySelectorAll('style[data-font-name]')].find(el => el.dataset.fontName === originalName);
          if (styleEl) styleEl.remove();
-    } else if (fontToDelete.type === 'google') {
-        const fontsFromSameSource = userLoadedFonts.filter(f => f.sourceId === fontToDelete.sourceId);
-        if (fontsFromSameSource.length === 1) { // Only one font from this link
-             const linkEl = document.querySelector(`link[data-source-id="${fontToDelete.sourceId}"]`);
-             if (linkEl) linkEl.remove();
-        }
     }
 
     const selectors = [
@@ -3755,7 +3742,7 @@ function updateFontManagementUI() {
             });
             selector.prepend(newOptgroup);
             // Try to preserve selection if the font still exists
-            if (userLoadedFonts.some(f => f.originalName === currentVal) || selector.querySelector(`option[value="${currentVal}"]`)) {
+            if (userLoadedFonts.some(f => f.originalName === currentVal) || selector.querySelector(`option[value="${CSS.escape(currentVal)}"]`)) {
                 selector.value = currentVal;
             }
         }
@@ -4245,27 +4232,89 @@ function setSleepTimer(durationInSeconds) {
     <script>
 // --- js/import-export.js ---
 // --- FILE I/O ---
+// Import limits (MS-232, v324). A mix ZIP from someone else is checked before anything in it is unpacked: the sizes its
+// files declare (a "zip bomb" declares little and unpacks to a huge amount, or declares a huge amount), the number of
+// files, and while unpacking, no file may grow past what it declared. The limits sit far above real mixes (the Sleep
+// Sounds Mix: 32 WAVs, 801 MB). Sounds must be audio files.
+const IMPORT_MAX_ZIP_BYTES = 4 * 1024 ** 3;   // the ZIP file itself
+const IMPORT_MAX_TOTAL_BYTES = 4 * 1024 ** 3; // all its files, unpacked
+const IMPORT_MAX_FILE_BYTES = 2 * 1024 ** 3;  // one file, unpacked
+const IMPORT_MAX_FILES = 2000;
+const IMPORT_MAX_MANIFEST_BYTES = 20 * 1024 ** 2; // mix.json
+const AUDIO_EXTENSIONS = ['wav', 'wave', 'mp3', 'ogg', 'oga', 'opus', 'flac', 'm4a', 'mp4', 'aac', 'webm', 'weba', 'aif', 'aiff', 'aifc', 'caf'];
+class ImportRefused extends Error {}
+const gb = bytes => `${(bytes / 1024 ** 3).toFixed(1)} GB`;
+// The unpacked size a ZIP entry declares (JSZip keeps it from the ZIP's directory), or null if unknown. JSZip reads it as
+// a signed 32-bit number, so a size over 2 GB comes back negative.
+function declaredSize(entry) { const n = entry._data?.uncompressedSize; return Number.isFinite(n) ? (n < 0 ? n + 2 ** 32 : n) : null; }
+// Unpacks one entry, stopping as soon as it grows past `limit` bytes (its declared size).
+function readZipEntry(entry, limit) {
+    return new Promise((resolve, reject) => {
+        const chunks = []; let size = 0, stopped = false;
+        const stream = entry.internalStream('uint8array');
+        stream.on('data', chunk => {
+            if (stopped) return;
+            size += chunk.length;
+            if (size > limit) { stopped = true; stream.pause(); reject(new ImportRefused(`"${entry.name}" unpacks to more than it declares: the ZIP is damaged or built to overload the app.`)); return; }
+            chunks.push(chunk);
+        }).on('error', err => { if (!stopped) { stopped = true; reject(err); } })
+          .on('end', () => {
+            if (stopped) return;
+            const out = new Uint8Array(size); let at = 0;
+            chunks.forEach(c => { out.set(c, at); at += c.length; });
+            resolve(out.buffer);
+        }).resume();
+    });
+}
+// An audio file: its first bytes are a known sound format's, or its name ends like one (the browser's decoder decides).
+function looksLikeAudio(bytes, name) {
+    const b = new Uint8Array(bytes, 0, Math.min(12, bytes.byteLength));
+    const text = (from, n) => String.fromCharCode(...b.slice(from, from + n));
+    const known = (['RIFF', 'RF64'].includes(text(0, 4)) && text(8, 4) === 'WAVE')
+        || text(0, 3) === 'ID3' || (b[0] === 0xFF && (b[1] & 0xE0) === 0xE0) // MP3, AAC (ADTS)
+        || text(0, 4) === 'OggS' || text(0, 4) === 'fLaC' || text(4, 4) === 'ftyp' // Ogg / Opus, FLAC, M4A / MP4
+        || (b[0] === 0x1A && b[1] === 0x45 && b[2] === 0xDF && b[3] === 0xA3) // WebM
+        || (text(0, 4) === 'FORM' && ['AIFF', 'AIFC'].includes(text(8, 4))) || text(0, 4) === 'caff';
+    return known || AUDIO_EXTENSIONS.includes(fileExtension(name));
+}
+
 async function handleMixImport(event) {
     const file = event.target.files[0]; if (!file) return;
     initializeAudioContext();
     try {
-        const zip = await JSZip.loadAsync(file);
+        if (file.size > IMPORT_MAX_ZIP_BYTES) throw new ImportRefused(`This file is ${gb(file.size)}; a mix ZIP can be up to ${gb(IMPORT_MAX_ZIP_BYTES)}.`);
+        let zip;
+        try { zip = await JSZip.loadAsync(file); }
+        catch (err) { console.error(err); throw new ImportRefused(`"${file.name}" isn't a ZIP file, or it is damaged.\n\nChoose a mix exported from Mack's Sounds (a .zip holding mix.json and its sounds).`); }
+        const entries = Object.values(zip.files).filter(f => !f.dir);
+        if (entries.length > IMPORT_MAX_FILES) throw new ImportRefused(`This ZIP holds ${entries.length} files; a mix can hold up to ${IMPORT_MAX_FILES}.`);
+        let total = 0;
+        for (const f of entries) {
+            const size = declaredSize(f) ?? 0;
+            if (size > IMPORT_MAX_FILE_BYTES) throw new ImportRefused(`"${f.name}" unpacks to ${gb(size)}; one file can be up to ${gb(IMPORT_MAX_FILE_BYTES)}.`);
+            total += size;
+        }
+        if (total > IMPORT_MAX_TOTAL_BYTES) throw new ImportRefused(`This ZIP unpacks to ${gb(total)}; a mix can be up to ${gb(IMPORT_MAX_TOTAL_BYTES)}.`);
+        const unpack = (entry, max) => readZipEntry(entry, Math.min(declaredSize(entry) ?? max, max));
         // mix.json may sit inside a folder: apps that re-pack a ZIP when sharing it (or zipping a folder by hand)
         // often add one. Use the shallowest mix.json and look for the audio files next to it.
         const manifestFile = zip.file(/(^|\/)mix\.json$/i)
             .filter(f => !f.name.startsWith('__MACOSX/'))
             .sort((a, b) => a.name.split('/').length - b.name.split('/').length)[0];
         if (!manifestFile) {
-            const names = Object.keys(zip.files).filter(n => !zip.files[n].dir);
+            const names = entries.map(f => f.name);
             const listing = names.slice(0, 12).join('\n') + (names.length > 12 ? `\n…and ${names.length - 12} more` : '');
-            throw new Error(`mix.json (the mix's settings file) was not found in this ZIP.\n\nThe ZIP contains:\n${listing || '(no files)'}`);
+            throw new ImportRefused(`mix.json (the mix's settings file) was not found in this ZIP, so it isn't a Mack's Sounds mix.\n\nThe ZIP contains:\n${listing || '(no files)'}`);
         }
         const baseFolder = manifestFile.name.slice(0, manifestFile.name.length - 'mix.json'.length);
         const findAudioFile = name => zip.file(baseFolder + name)
             || zip.file(name)
             || zip.file(new RegExp('(^|/)' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i'))[0];
-        const manifest = JSON.parse(await manifestFile.async('string'));
-        
+        let manifest;
+        try { manifest = JSON.parse(new TextDecoder().decode(await unpack(manifestFile, IMPORT_MAX_MANIFEST_BYTES))); }
+        catch (err) { if (err instanceof ImportRefused) throw err; console.error(err); throw new ImportRefused('mix.json (the mix\'s settings file) in this ZIP is damaged: it can\'t be read.'); }
+        if (!manifest || typeof manifest !== 'object' || !Array.isArray(manifest.tracks)) throw new ImportRefused('mix.json in this ZIP isn\'t a Mack\'s Sounds mix (it has no list of tracks).');
+
         // Fresh IDs let the same mix be imported more than once without clashing. The list is put back in its exported
         // screen order afterwards (manifest.layout, v314 / MS-207); older files keep the order of their track list.
         const groupIdMap = {};
@@ -4289,16 +4338,19 @@ async function handleMixImport(event) {
         const trackIdMap = {};
         const soundIdOfFile = new Map(); // a file shared by several tracks is read and saved once (MS-130)
         for (const trackData of manifest.tracks) {
-            const audioFile = findAudioFile(trackData.fileNameInZip);
-            if (!audioFile) {
-                missing.push(trackData.fileNameInZip);
+            if (!trackData || typeof trackData !== 'object') continue;
+            const fileName = safeName(trackData.fileNameInZip, '');
+            const audioFile = fileName && findAudioFile(fileName);
+            if (!audioFile || audioFile.name === manifestFile.name) {
+                missing.push(fileName || '(a track with no sound file named)');
                 continue;
             }
             let soundId = soundIdOfFile.get(audioFile.name), audioBuffer = null;
             if (!soundId) {
-                audioBuffer = await audioFile.async('arraybuffer');
+                audioBuffer = await unpack(audioFile, IMPORT_MAX_FILE_BYTES);
+                if (!looksLikeAudio(audioBuffer, audioFile.name)) { missing.push(`${fileName} (not an audio file)`); continue; }
                 try { soundId = await storeSound(audioBuffer, audioFile.name.split('/').pop()); }
-                catch (err) { console.error(err); missing.push(`${trackData.fileNameInZip} (not a playable sound)`); continue; }
+                catch (err) { console.error(err); missing.push(`${fileName} (not a playable sound)`); continue; }
                 soundIdOfFile.set(audioFile.name, soundId);
             }
             const syncInfo = { ...trackData.syncInfo, groupId: groupIdMap[trackData.syncInfo?.groupId] || null };
@@ -4312,8 +4364,8 @@ async function handleMixImport(event) {
         if (missing.length) showMessage(`The mix was imported, but ${missing.length} audio file(s) were missing from the ZIP or could not be played, and those tracks were skipped:\n\n${missing.join('\n')}`);
 
     } catch (err) {
-        showMessage('Failed to import mix: ' + err.message);
-        console.error(err);
+        showMessage((err instanceof ImportRefused ? "This mix can't be imported. " : 'Failed to import mix: ') + err.message);
+        if (!(err instanceof ImportRefused)) console.error(err); // a refused file is explained on screen, not an app fault
     }
     event.target.value = '';
 }
@@ -5011,9 +5063,10 @@ function audioBufferToWav(buffer) {
 // it would jump to. A vertical swipe that starts on the bar still scrolls the page on a phone (and cancels the seek).
 // The arrow keys move a focused bar by 5 seconds, Home to the start. The audio side is in js/audio-engine.js (Seek).
 const SEEK_BAR_HTML = `<span class="seek-bar is-idle" role="slider" tabindex="0" aria-label="Seek: tap or drag to jump to a point" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="seek-fill"></span></span>`;
-// MS-213: ⏭5s jumps to 5 s before the end of the play (a track) or the cycle (a Sync Group); see jumpTrackNearEnd.
+// MS-213: ⏭5s jumps to 5 s before the end of the play (a track) or the cycle (a Sync Group), or earlier with a long fade
+// (MS-231, v324); see jumpTrackNearEnd.
 // Shown on tracks outside Sync Groups and on each Sync Group (a group's tracks move with the group's button).
-const END_JUMP_HTML = `<button type="button" class="end-jump-btn small-btn" title="Jump to 5 seconds before the end, to hear the loop join (a play or cycle of 6 s or less: back to its start)" aria-label="Jump to 5 seconds before the end" disabled>⏭5s</button>`;
+const END_JUMP_HTML = `<button type="button" class="end-jump-btn small-btn" title="Jump to 5 seconds before the end, to hear the loop join. With Fade Out or Crossfade on: 2 seconds before the fade starts, if that is earlier, so the whole fade is heard. A play or cycle too short for that: back to its start." aria-label="Jump to 5 seconds before the end" disabled>⏭5s</button>`;
 const SEEK_KEY_STEP = 5; // seconds per arrow-key press
 let seekDrag = null; // { bar, itemEl, pointerId, fraction }
 
@@ -5642,7 +5695,7 @@ function workspaceSnapshot() {
         mixes: mixes.map(mix => {
             const layout = mixLayout(mix);
             return {
-                id: mix.id, name: mix.name, volume: parseFloat(mix.volume), isMuted: !!mix.isMuted, isExpanded: !!mix.isExpanded, isMenuOpen: !!mix.isMenuOpen,
+                id: mix.id, name: mix.name, volume: parseFloat(mix.volume), isMuted: !!mix.isMuted, isExpanded: !!mix.isExpanded,
                 syncGroups: mix.syncGroups.map(cloneGroupData),
                 tracks: tracksInScreenOrder(mix, layout).map(t => { const d = JSON.parse(JSON.stringify(t)); delete d.isSoloed; return d; }),
                 layout
@@ -5698,12 +5751,14 @@ async function restoreWorkspace() {
 function restoreSavedMix(saved) {
     const tracks = (saved.tracks || []).map(t => ({
         ...t, isSoloed: false,
+        id: safeId(t.id, 'track'), name: safeName(t.name, 'Track'), isEnabled: t.isEnabled !== false, isMuted: t.isMuted === true, // MS-232
         settings: normalizeTrackSettings(t.settings),
-        syncInfo: { groupId: t.syncInfo?.groupId || null, startTime: t.syncInfo?.startTime || 0 },
+        syncInfo: { groupId: t.syncInfo?.groupId || null, startTime: Math.max(0, Number(t.syncInfo?.startTime) || 0) },
+        loudness: Number.isFinite(t.loudness?.lufs) ? t.loudness : null,
         openSections: { ...t.openSections }
     }));
     // The Sync Groups first, so each grouped track lands in its group.
-    const mix = createNewMix({ id: saved.id, name: saved.name, volume: saved.volume ?? 1, isMuted: !!saved.isMuted, isExpanded: saved.isExpanded !== false, isMenuOpen: !!saved.isMenuOpen, syncGroups: saved.syncGroups || [], tracks: [] }, true);
+    const mix = createNewMix({ id: saved.id, name: saved.name, volume: saved.volume ?? 1, isMuted: !!saved.isMuted, isExpanded: saved.isExpanded !== false, syncGroups: saved.syncGroups || [], tracks: [] }, true);
     mix.soundsState = tracks.some(t => t.soundId) ? 'pending' : 'loaded';
     tracks.forEach(t => {
         if (t.syncInfo.groupId && !mix.syncGroups.some(g => g.id === t.syncInfo.groupId)) t.syncInfo.groupId = null;
