@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- The same browser lock as the app (CSP, MS-232): this page loads nothing from other websites. build.ps1 swaps
          script-src 'self' for the SHA-256 hashes of the built page's own scripts. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-4rZsfBjYadGgIer21VCWWPE3nrFo+9ZNW/BW42rFG/M='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Sound Prep v331</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-e8oRXuc4GdF1kHVWzujvbULsCe674+Czqs+Z06QfMbw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Sound Prep v332</title>
     <style>
 /* Sound Prep (MS-209 step 1, v331): the loop editor page. Dark like the app; light when the app is set to light. */
 :root {
@@ -14,13 +14,14 @@
     --prep-accent: #4f8fd6; --prep-accent-text: #ffffff; --prep-btn: #2a3440; --prep-btn-hover: #364352;
     --prep-wave: #8fb8e6; --prep-loop: rgba(79, 143, 214, 0.18); --prep-start: #3ccf6e; --prep-end: #ff5a5a;
     --prep-xfade: rgba(255, 196, 0, 0.18); --prep-pass: #3ccf6e; --prep-warn: #ffb020; --prep-grid: rgba(255, 255, 255, 0.08);
+    --prep-fix: #ff9a2e;
     color-scheme: dark;
 }
 :root[data-theme="light"] {
     --prep-bg: #f2f4f7; --prep-panel: #ffffff; --prep-border: #c9d2db; --prep-text: #1b2430; --prep-dim: #5b6876;
     --prep-accent: #2f6fb8; --prep-btn: #e3e8ee; --prep-btn-hover: #d3dbe4; --prep-wave: #2f6fb8; --prep-loop: rgba(47, 111, 184, 0.14);
     --prep-start: #16994a; --prep-end: #d43c3c; --prep-xfade: rgba(220, 150, 0, 0.18); --prep-pass: #16994a; --prep-warn: #b86e00;
-    --prep-grid: rgba(0, 0, 0, 0.08); color-scheme: light;
+    --prep-grid: rgba(0, 0, 0, 0.08); --prep-fix: #d86a00; color-scheme: light;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--prep-bg); color: var(--prep-text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -67,6 +68,22 @@ canvas { display: block; width: 100%; border: 1px solid var(--prep-border); bord
 .prep-disabled { opacity: 0.45; pointer-events: none; }
 .prep-message { position: sticky; bottom: 0; margin: 0; padding: 0.5rem 0.8rem; background: var(--prep-panel); border: 1px solid var(--prep-border); border-radius: 8px; min-height: 1em; }
 .prep-message:empty { display: none; }
+/* The explanation under the title folds away (folded on every load), like the Project Hub's (v332). */
+.prep-fold-toggle { margin-left: 6px; padding: 0 6px; border: 0; background: none; color: var(--prep-dim); font-size: 16px; cursor: pointer; vertical-align: middle; }
+.prep-fold-toggle:hover { color: var(--prep-text); }
+body:not(.prep-intro-open) #prep-intro { display: none; }
+.prep-header-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+/* Repair (MS-248) and the saved-loops history (MS-247). */
+.prep-optional { font-size: 0.75rem; font-weight: normal; color: var(--prep-dim); border: 1px solid var(--prep-border); border-radius: 999px; padding: 0.05rem 0.5rem; }
+.prep-spots { max-height: 220px; overflow-y: auto; border: 1px solid var(--prep-border); border-radius: 6px; font-size: 0.88rem; }
+.prep-spot { display: grid; grid-template-columns: 2.5rem 7.5rem 1fr; gap: 0.6rem; padding: 0.3rem 0.6rem; cursor: pointer; border-bottom: 1px solid var(--prep-grid); }
+.prep-spot:hover { background: var(--prep-btn); }
+.prep-spot.prep-selected { background: var(--prep-loop); outline: 1px solid var(--prep-accent); }
+.prep-history { display: grid; gap: 0.5rem; }
+.prep-history-item { border: 1px solid var(--prep-border); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.88rem; }
+.prep-history-item strong { word-break: break-word; }
+.prep-history-item .prep-row { margin: 0.3rem 0 0; }
+.prep-history-empty { color: var(--prep-dim); font-size: 0.9rem; }
 body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-offset: -6px; }
 @media (max-width: 600px) {
     .prep-page { padding: 12px; }
@@ -81,10 +98,13 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
 <div class="prep-page">
     <header class="prep-header">
         <div>
-            <h1>Sound Prep <span id="prep-version" class="prep-badge">v331</span></h1>
-            <p class="prep-lead">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
+            <h1>Sound Prep <span id="prep-version" class="prep-badge">v332</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
+            <p class="prep-lead" id="prep-intro">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
         </div>
-        <a id="prep-app-link" class="prep-link" href="../">← Mack's Sounds</a>
+        <div class="prep-header-links">
+            <a id="prep-app-link" class="prep-link" href="../">← Mack's Sounds</a>
+            <a id="prep-own-tab" class="prep-link" href="sound-prep.html" target="_blank" rel="noopener" hidden>Open in its own tab ↗</a>
+        </div>
     </header>
 
     <section class="prep-step" id="step-open">
@@ -117,12 +137,18 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
             <label>Starts at (s) <input type="number" id="prep-start" min="0" step="0.001"></label>
             <label>Length (s) <input type="number" id="prep-length" min="0.05" step="0.001"></label>
             <span class="prep-quick">Quick length:
+                <button type="button" class="prep-btn prep-small" data-len="5">5 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="10">10 s</button>
                 <button type="button" class="prep-btn prep-small" data-len="15">15 s</button>
                 <button type="button" class="prep-btn prep-small" data-len="20">20 s</button>
                 <button type="button" class="prep-btn prep-small" data-len="30">30 s</button>
-                <button type="button" class="prep-btn prep-small" data-len="60">1 min</button>
+                <button type="button" class="prep-btn prep-small" data-len="45">45 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="60">60 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="90">90 s</button>
                 <button type="button" class="prep-btn prep-small" data-len="120">2 min</button>
+                <button type="button" class="prep-btn prep-small" data-len="150">2.5 min</button>
                 <button type="button" class="prep-btn prep-small" data-len="180">3 min</button>
+                <button type="button" class="prep-btn prep-small" data-len="240">4 min</button>
             </span>
         </div>
         <div class="prep-row">
@@ -154,8 +180,29 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         </div>
     </section>
 
+    <section class="prep-step" id="step-repair">
+        <h2><span class="prep-num">4</span> Repair clipped peaks and clicks <span class="prep-optional">optional</span></h2>
+        <p class="prep-hint">A recording that was too loud when it was made can crack at its loudest moments: the tops of its biggest waves were cut flat (clipping, still flat even if the file was turned down afterward), or the wave snaps sharply for a moment (crackle). This finds those spots in the loop and redraws each one from the sound around it. Only those few samples change; your original file never does. Natural sharp sounds, such as a clock's tick or a frog's croak, are left alone, and on a clean recording it finds nothing. Leave it off unless you hear a crack.</p>
+        <div class="prep-row">
+            <label class="prep-check"><input type="checkbox" id="prep-repair"> Repair</label>
+            <label class="prep-check"><input type="checkbox" id="prep-declip" checked> Flat-topped peaks (clipping)</label>
+            <label class="prep-check"><input type="checkbox" id="prep-decrackle" checked> Short clicks at the loudest moments (crackle)</label>
+        </div>
+        <p id="prep-repair-info" class="prep-info"></p>
+        <div id="prep-repair-box" hidden>
+            <div class="prep-row">
+                <span>Selected spot:</span>
+                <button type="button" id="prep-ab-before" class="prep-btn prep-small">▶ A: before repair</button>
+                <button type="button" id="prep-ab-after" class="prep-btn prep-small">▶ B: after repair</button>
+                <button type="button" id="prep-ab-stop" class="prep-btn prep-small">■ Stop</button>
+                <span class="prep-note">Plays 2 s around the spot. Click a row to select it and show it up close in the picture in step 2 (the repaired wave is drawn in orange).</span>
+            </div>
+            <div class="prep-spots" id="prep-spots" role="listbox" aria-label="Repaired spots"></div>
+        </div>
+    </section>
+
     <section class="prep-step" id="step-blend">
-        <h2><span class="prep-num">4</span> Blend the join</h2>
+        <h2><span class="prep-num">5</span> Blend the join</h2>
         <p class="prep-hint">Fades the last moments of the loop into the sound that comes just before its start, so the join is smooth even when the two ends don't match exactly. The loop's length doesn't change.</p>
         <div class="prep-row">
             <label class="prep-check"><input type="checkbox" id="prep-xfade" checked> Blend</label>
@@ -168,7 +215,7 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     </section>
 
     <section class="prep-step" id="step-check">
-        <h2><span class="prep-num">5</span> Check the join</h2>
+        <h2><span class="prep-num">6</span> Check the join</h2>
         <p class="prep-hint">Measured on the finished loop, at the exact spot where its end meets its start. A click is a sudden jump, so the jump at the join is compared with how much the sound normally moves from one sample to the next. Up to 3× is normal movement (no click); a level difference under 3 dB isn't noticeable.</p>
         <div id="prep-seam" class="prep-seam"></div>
         <canvas id="prep-join" class="prep-join" title="The join: the end of the loop (left of the line) runs into its start (right of the line)"></canvas>
@@ -181,14 +228,14 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     </section>
 
     <section class="prep-step" id="step-level">
-        <h2><span class="prep-num">6</span> Even loudness</h2>
+        <h2><span class="prep-num">7</span> Even loudness</h2>
         <p class="prep-hint">Sets the loop to the same loudness as the player's Auto level (<span id="prep-target"></span>), measured the same way, so it sits evenly with your other sounds. It never turns a sound up past the point where its loudest moment would distort.</p>
         <div class="prep-row"><label class="prep-check"><input type="checkbox" id="prep-normalize" checked> Match the player's Auto level</label></div>
         <p id="prep-level-info" class="prep-info"></p>
     </section>
 
     <section class="prep-step" id="step-listen">
-        <h2><span class="prep-num">7</span> Listen to it repeat</h2>
+        <h2><span class="prep-num">8</span> Listen to it repeat</h2>
         <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
         <div class="prep-row">
             <button type="button" id="prep-play" class="prep-btn prep-primary">▶ Play repeating</button>
@@ -200,13 +247,20 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     </section>
 
     <section class="prep-step" id="step-save">
-        <h2><span class="prep-num">8</span> Save the loop</h2>
+        <h2><span class="prep-num">9</span> Save the loop</h2>
         <p class="prep-hint">Saves the finished loop as a new WAV file. Then add it to a mix in Mack's Sounds with ➕ Add Local and switch its Loop on.</p>
         <div class="prep-row">
             <label class="prep-grow">File name <input type="text" id="prep-name"></label>
             <button type="button" id="prep-save" class="prep-btn prep-primary">Save loop as WAV</button>
         </div>
         <p id="prep-save-info" class="prep-info"></p>
+    </section>
+
+    <section class="prep-step" id="step-history">
+        <h2><span class="prep-num">⟲</span> Saved loops</h2>
+        <p class="prep-hint">The last 25 loops saved from this page, in this browser, newest first, with the settings that made them. "Use these settings" fills in the steps again when the same original sound is open. The folder isn't listed: browsers never tell a web page where you saved a file (a privacy rule).</p>
+        <div id="prep-history" class="prep-history"></div>
+        <div class="prep-row"><button type="button" id="prep-history-clear" class="prep-btn prep-small">Clear the list</button></div>
     </section>
     </div>
     <p id="prep-message" class="prep-message" role="status"></p>
@@ -383,6 +437,20 @@ const PREP_READ_SLICE = 1 << 20;        // frames per slice while scanning a who
 const PREP_ENV_HOP = 0.005;             // s: the loudness outline used to compare the two ends
 const PREP_SEAM_LIMIT = 3;              // a jump up to 3× the sound's normal sample-to-sample movement is no click
 const PREP_LEVEL_LIMIT_DB = 3;          // loudness either side of the join may differ this much
+// Repair (MS-248, v332): see "Repair" below for what each limit means.
+const PREP_CLIP_FLOOR = 0.0316;         // flat tops quieter than -30 dBFS are left alone (quiet waves flatten naturally)
+const PREP_FLAT_MIN = 3;                // a flat top is at least 3 samples long
+const PREP_FLAT_TOL = 0.0005;           // "flat": within 0.05% of its level (or 1 step of the file's resolution, if more)
+const PREP_OVERSHOOT = 0.01;            // ... and the wave either side points at least 1% (0.09 dB) higher than the flat top
+const PREP_CLIP_REPEAT = 3;             // ... and at least 3 flat tops share that level (clipping has one ceiling)
+const PREP_CLIP_MAX = 2;                // a rebuilt peak rises at most 2× (6 dB) above its flat top, and never past full scale
+const PREP_CLICK_K = 12;                // a click: the sound's unpredictable part jumps 12× its usual size …
+const PREP_CLICK_FLOOR = 0.002;         // … and by more than -54 dBFS
+const PREP_CLICK_MAX_MS = 2;            // … for 2 ms at most, the sound as predictable as usual just before and after it,
+const PREP_CLICK_NEAR_PEAK_DB = 3.5;    // … within 3.5 dB of the recording's loudest moment (overload crackle; a tick or croak is quieter)
+const PREP_AR_ORDER = 32;               // the wave model used to redraw a spot: 32 past samples predict the next
+const PREP_REPAIR_CONTEXT = 1024;       // samples either side of a spot the model learns from
+const PREP_HISTORY_MAX = 25;            // saved loops kept in the history (MS-247)
 
 const prepEl = id => document.getElementById(id);
 let prepSource = null;   // the open sound: { name, file, kind, rate, channels, frames, bits, read(start, count) }
@@ -393,6 +461,9 @@ let prepWork = null;     // the last range read as numbers: { start, frames, cha
 let prepBuilt = null;    // the finished loop: { channels, frames, start, end, gainDb, loudness, seam, xfade }
 let prepFound = null;    // the last Find result (shown under the button)
 let prepPreview = null;  // the repeat player while it plays
+let prepRepairCache = null; // the last repair: { key, start, channels (repaired, with context), spots, ms }
+let prepSpotSelected = -1; // the repaired spot chosen in the list
+let prepAB = null;       // the A-B excerpt while it plays
 let prepBuildPending = false, prepBuildTimer = null, prepBuildToken = 0, prepWaveToken = 0, prepWaveQueued = false;
 
 function prepClamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
@@ -506,7 +577,7 @@ async function prepOpenDecoded(file) {
 }
 
 async function prepOpenFile(file) {
-    prepStopPreview();
+    prepStopPreview(); prepStopAB();
     prepMessage(`Opening ${file.name}…`);
     prepEl('prep-work').classList.add('prep-disabled');
     const started = performance.now();
@@ -517,7 +588,7 @@ async function prepOpenFile(file) {
         prepMessage(`Couldn't open ${file.name}: ${err.message || 'this browser can\'t read this kind of file'}.`);
         return;
     }
-    prepSource = source; prepWork = null; prepBuilt = null; prepFound = null;
+    prepSource = source; prepWork = null; prepBuilt = null; prepFound = null; prepRepairCache = null; prepSpotSelected = -1;
     // The overview: one pass through the whole file, a slice at a time, keeping only a min / max per 512 frames.
     const count = Math.ceil(source.frames / PREP_PEAK_BUCKET);
     const mins = new Float32Array(count), maxs = new Float32Array(count);
@@ -544,6 +615,7 @@ async function prepOpenFile(file) {
     const start = Math.max(0, Math.min(source.frames - len, Math.round(source.frames * 0.1)));
     prepSetLoop(start, start + len, { fit: true });
     prepMessage('');
+    prepShowHistory(); // "Use these settings" now works for the loops made from this sound
 }
 
 // --- The loop's two ends ---
@@ -660,6 +732,25 @@ async function prepDrawWave() {
     else line.forEach(ch => { for (let j = 0; j <= frames; j++) { const x = j / perPx, y = mid - ch[j] * mid * 0.95; if (j) g.lineTo(x, y); else g.moveTo(x, y); } });
     g.stroke();
     if (line && 1 / perPx >= 6) { g.fillStyle = prepColor('--prep-wave'); line.forEach(ch => { for (let j = 0; j <= frames; j++) g.fillRect(j / perPx - 1.5, mid - ch[j] * mid * 0.95 - 1.5, 3, 3); }); }
+    // Repaired spots (MS-248): a mark at the top for each one and, zoomed in, the repaired wave in orange.
+    const rc = prepEl('prep-repair').checked && prepBuilt?.repair ? prepRepairCache : null;
+    if (rc) {
+        const dpr = window.devicePixelRatio || 1;
+        g.fillStyle = g.strokeStyle = prepColor('--prep-fix'); g.lineWidth = 2 * dpr;
+        for (const s of rc.spots) {
+            if (s.at + s.len < start || s.at > start + frames) continue;
+            const xa = prepFrameToX(s.at, w), xb = prepFrameToX(s.at + s.len, w);
+            g.fillRect(xa - 1, 0, Math.max(3, xb - xa), 5 * dpr);
+            if (perPx > 64) continue;
+            g.beginPath();
+            for (let i = s.at - 1; i <= s.at + s.len; i++) {
+                const x = (i - start) / perPx, y = mid - rc.channels[s.ch][i - rc.start] * mid * 0.95;
+                if (i < s.at) g.moveTo(x, y); else g.lineTo(x, y);
+            }
+            g.stroke();
+        }
+        g.lineWidth = 1;
+    }
     for (const [x, color] of [[x0, '--prep-start'], [x1, '--prep-end']]) { g.fillStyle = prepColor(color); g.fillRect(x - 1, 0, 3, h); }
 }
 
@@ -845,8 +936,12 @@ async function prepBuild() {
     const wantBlend = prepEl('prep-xfade').checked;
     const F = wantBlend ? Math.max(0, Math.min(Math.round((parseFloat(prepEl('prep-xfade-ms').value) || 0) * rate / 1000), Math.floor(frames / 2), s)) : 0;
     const linear = prepEl('prep-curve').value === 'linear';
-    const src = await prepRead(s - F, frames + F);
+    let src = await prepRead(s - F, frames + F);
     if (token !== prepBuildToken) return;
+    // Repair (optional) works on the stretch as read, before the blend and the loudness change.
+    const repair = prepEl('prep-repair').checked ? await prepRepairRange(s - F, frames + F) : null;
+    if (token !== prepBuildToken) return;
+    if (repair) src = repair.range;
     // The loop is the stretch itself; with a blend, its last F samples fade into the F samples just before its start,
     // which lead naturally into the start, so the end runs on into the beginning.
     const channels = src.map(ch => {
@@ -869,8 +964,9 @@ async function prepBuild() {
         const g = Math.pow(10, gainDb / 20);
         channels.forEach(ch => { for (let i = 0; i < ch.length; i++) ch[i] *= g; });
     }
-    prepBuilt = { channels, frames, start: s, end: s + frames, xfade: F, linear, gainDb, limit, loudness, seam: prepSeamCheck(channels), ms: performance.now() - started };
+    prepBuilt = { channels, frames, start: s, end: s + frames, xfade: F, linear, gainDb, limit, loudness, seam: prepSeamCheck(channels), repair, ms: performance.now() - started };
     prepShowBuilt();
+    prepShowRepair();
     if (prepPreview) prepPlay(prepPreview.fromJoin);
 }
 
@@ -922,6 +1018,344 @@ function prepShowBuilt() {
     prepRequestWave();
 }
 
+// --- Repair: clipped peaks and clicks (MS-248, v332) ---
+// Two kinds of damage, found in each channel of the stretch and redrawn from the sound around them:
+// (a) Flat tops: a recording that was too loud when it was made has the tops of its biggest waves cut flat, and turning
+//     it down afterward keeps them flat, just lower. A flat top is a run of at least PREP_FLAT_MIN samples, louder than
+//     PREP_CLIP_FLOOR, within PREP_FLAT_TOL of each other, at a peak (both neighbors lower), where a parabola fitted to
+//     the 3 samples either side rises at least PREP_OVERSHOOT above it: the wave was still climbing when it was cut. A
+//     natural rounded peak fits its own parabola, so it doesn't rise above itself.
+// (b) Clicks: a wave model (16 ms blocks, 20 past samples predicting the next) leaves only the unpredictable part. A
+//     click is where that part jumps PREP_CLICK_K times its usual size (the block's median) and past PREP_CLICK_FLOOR,
+//     for at most PREP_CLICK_MAX_MS, with the sound as predictable as usual just before and after it, and within
+//     PREP_CLICK_NEAR_PEAK_DB of the recording's loudest moment. That last rule makes it overload crackle only: measured
+//     on JM's sounds (v332, ±5 ms around each), the Thunder's sharp corners sit 0.1-3.3 dB below its peak, while the
+//     clock's loudest tick impulses (3.6 dB and more below) and frog croaks (14-22 dB below) pass every other test and
+//     must not be touched. The margin is thin (0.3 dB), so A-B listening stays the final judge.
+// Each spot is then redrawn by least-squares AR interpolation (Janssen et al. 1986): a PREP_AR_ORDER-sample wave model
+// learned from the PREP_REPAIR_CONTEXT samples either side, and the missing samples chosen so the model predicts the
+// whole stretch as well as possible. A flat top's samples never come out lower than the flat top (the real wave was at
+// least that high), nor higher than PREP_CLIP_MAX × it.
+function prepSolve(A, b, n) { // Cholesky: A (n × n, row-major, symmetric positive definite) x = b; null if it fails
+    const L = new Float64Array(n * n);
+    for (let i = 0; i < n; i++) for (let j = 0; j <= i; j++) {
+        let s = A[i * n + j];
+        for (let k = 0; k < j; k++) s -= L[i * n + k] * L[j * n + k];
+        if (i === j) { if (!(s > 0)) return null; L[i * n + i] = Math.sqrt(s); } else L[i * n + j] = s / L[j * n + j];
+    }
+    const x = Float64Array.from(b);
+    for (let i = 0; i < n; i++) { let s = x[i]; for (let k = 0; k < i; k++) s -= L[i * n + k] * x[k]; x[i] = s / L[i * n + i]; }
+    for (let i = n - 1; i >= 0; i--) { let s = x[i]; for (let k = i + 1; k < n; k++) s -= L[k * n + i] * x[k]; x[i] = s / L[i * n + i]; }
+    return x;
+}
+// A wave model a[0..p] (a[0] = 1): e[t] = Σ a[k]·x[t-k] is what the last p samples can't predict. Learned by least
+// squares from every run of p+1 known samples (unknown[i] = 1 marks the samples to be redrawn).
+function prepArModel(seg, unknown, p) {
+    const n = seg.length, R = new Float64Array(p * p), r = new Float64Array(p);
+    let rows = 0, run = 0;
+    for (let t = 0; t < n; t++) {
+        run = unknown && unknown[t] ? 0 : run + 1;
+        if (run <= p) continue;
+        rows++;
+        for (let j = 1; j <= p; j++) {
+            const xj = seg[t - j];
+            r[j - 1] += seg[t] * xj;
+            for (let k = j; k <= p; k++) R[(j - 1) * p + k - 1] += xj * seg[t - k];
+        }
+    }
+    if (rows < 2 * p) return null;
+    let trace = 0;
+    for (let j = 0; j < p; j++) { for (let k = 0; k < j; k++) R[j * p + k] = R[k * p + j]; trace += R[j * p + j]; }
+    if (!(trace > 0)) return null;
+    for (let j = 0; j < p; j++) { R[j * p + j] += trace / p * 1e-6; r[j] = -r[j]; } // a whisper of noise keeps it stable
+    const c = prepSolve(R, r, p);
+    if (!c) return null;
+    const a = new Float64Array(p + 1); a[0] = 1; a.set(c, 1);
+    return a;
+}
+// The same kind of model, quicker (autocorrelation and Levinson-Durbin), for scanning every block for clicks.
+const prepHann = {}; // window shapes by length, made once
+function prepArQuick(x, from, to, p) {
+    const n = to - from, w = new Float64Array(n), r = new Float64Array(p + 1);
+    let hann = prepHann[n];
+    if (!hann) { hann = prepHann[n] = new Float64Array(n); for (let i = 0; i < n; i++) hann[i] = 0.5 - 0.5 * Math.cos(2 * Math.PI * (i + 0.5) / n); }
+    for (let i = 0; i < n; i++) w[i] = x[from + i] * hann[i];
+    for (let k = 0; k <= p; k++) { let s = 0; for (let i = k; i < n; i++) s += w[i] * w[i - k]; r[k] = s; }
+    if (!(r[0] > 0)) return null;
+    r[0] *= 1 + 1e-6;
+    const a = new Float64Array(p + 1), prev = new Float64Array(p + 1);
+    a[0] = 1;
+    let err = r[0];
+    for (let i = 1; i <= p; i++) {
+        let acc = r[i];
+        for (let j = 1; j < i; j++) acc += a[j] * r[i - j];
+        const k = -acc / err;
+        prev.set(a);
+        for (let j = 1; j < i; j++) a[j] = prev[j] + k * prev[i - j];
+        a[i] = k; err *= 1 - k * k;
+        if (!(err > 0)) return null;
+    }
+    return a;
+}
+// Least-squares AR interpolation: fills seg[i] wherever unknown[i], so that Σ e[t]² over the segment is smallest.
+// Solved by conjugate gradients without building the matrix (each step is two passes of the model over the segment).
+function prepInterpolate(seg, unknown, a) {
+    const n = seg.length, p = a.length - 1, idx = [];
+    for (let i = 0; i < n; i++) if (unknown[i]) idx.push(i);
+    const m = idx.length;
+    if (!m) return;
+    const e = new Float64Array(n), z = new Float64Array(n);
+    const model = v => { for (let t = p; t < n; t++) { let s = 0; for (let k = 0; k <= p; k++) s += a[k] * v[t - k]; e[t] = s; } };
+    const back = out => { for (let j = 0; j < m; j++) { const i = idx[j]; let s = 0; for (let k = 0; k <= p; k++) { const t = i + k; if (t >= p && t < n) s += a[k] * e[t]; } out[j] = s; } };
+    const dot = (u, v) => { let s = 0; for (let j = 0; j < m; j++) s += u[j] * v[j]; return s; };
+    for (let i = 0; i < n; i++) z[i] = unknown[i] ? 0 : seg[i];
+    const b = new Float64Array(m); model(z); back(b);
+    const x = new Float64Array(m), r = new Float64Array(m), d = new Float64Array(m), q = new Float64Array(m);
+    for (let j = 0; j < m; j++) { r[j] = -b[j]; d[j] = r[j]; }
+    let rr = dot(r, r);
+    const stop = rr * 1e-14, steps = Math.min(m + 10, 600);
+    for (let it = 0; it < steps && rr > stop && rr > 0; it++) {
+        z.fill(0); for (let j = 0; j < m; j++) z[idx[j]] = d[j];
+        model(z); back(q);
+        const dq = dot(d, q);
+        if (!(dq > 0)) break;
+        const alpha = rr / dq;
+        for (let j = 0; j < m; j++) { x[j] += alpha * d[j]; r[j] -= alpha * q[j]; }
+        const rr2 = dot(r, r), beta = rr2 / rr;
+        for (let j = 0; j < m; j++) d[j] = r[j] + beta * d[j];
+        rr = rr2;
+    }
+    for (let j = 0; j < m; j++) seg[idx[j]] = x[j];
+}
+// How high a parabola through the 3 samples either side of a run (x[i … i+m-1]) rises inside it, in the run's direction.
+function prepFlatOvershoot(x, i, m, sign) {
+    const S = [0, 0, 0, 0, 0], T = [0, 0, 0], mid = (m - 1) / 2;
+    for (const t of [-3, -2, -1, m, m + 1, m + 2]) {
+        const u = t - mid, y = x[i + t];
+        let uk = 1;
+        for (let k = 0; k <= 4; k++) { S[k] += uk; if (k <= 2) T[k] += y * uk; uk *= u; }
+    }
+    const c = prepSolve(Float64Array.from([S[0], S[1], S[2], S[1], S[2], S[3], S[2], S[3], S[4]]), T, 3);
+    if (!c) return 0;
+    const f = u => sign * (c[0] + c[1] * u + c[2] * u * u);
+    let best = Math.max(f(-mid), f(mid));
+    if (c[2] && Math.abs(c[1] / (2 * c[2])) <= mid) best = Math.max(best, f(-c[1] / (2 * c[2])));
+    return best;
+}
+function prepFindFlatTops(x, from, to, step) {
+    const spots = [], end = Math.min(to, x.length - 3);
+    // Starts a little early, so a flat top that straddles the start of the stretch is found whole.
+    for (let i = Math.max(from - 256, 3); i < end;) {
+        const v = x[i], sign = Math.sign(v);
+        if (Math.abs(v) < PREP_CLIP_FLOOR) { i++; continue; }
+        const tol = Math.max(step, PREP_FLAT_TOL * Math.abs(v));
+        let lo = v, hi = v, j = i;
+        while (j + 1 < x.length - 3 && Math.sign(x[j + 1]) === sign) {
+            const nlo = Math.min(lo, x[j + 1]), nhi = Math.max(hi, x[j + 1]);
+            if (nhi - nlo > tol) break;
+            lo = nlo; hi = nhi; j++;
+        }
+        const m = j - i + 1;
+        if (m >= PREP_FLAT_MIN) {
+            let sum = 0; for (let k = i; k <= j; k++) sum += x[k];
+            const level = sum / m, top = Math.abs(level);
+            const peak = sign * x[i - 1] < top - tol && sign * x[j + 1] < top - tol;
+            const over = peak ? prepFlatOvershoot(x, i, m, sign) - top : 0;
+            if (j >= from && over >= Math.max(PREP_OVERSHOOT * top, 2 * tol)) spots.push({ kind: 'clip', at: i, len: m, level, over, tol });
+        }
+        i = j + 1;
+    }
+    // Clipping cuts every peak at the same ceiling, so a flat top counts only when PREP_CLIP_REPEAT of them share its
+    // level (within twice the "flat" tolerance). A lone flat top is a chance meeting of samples at a sharp natural peak.
+    const byLevel = spots.slice().sort((a, b) => a.level - b.level), keep = new Set();
+    for (let k = 0, lo = 0, hi = 0; k < byLevel.length; k++) {
+        const L = byLevel[k].level, t = 2 * byLevel[k].tol;
+        while (byLevel[lo].level < L - t) lo++;
+        hi = Math.max(hi, k);
+        while (hi + 1 < byLevel.length && byLevel[hi + 1].level <= L + t) hi++;
+        if (hi - lo + 1 >= PREP_CLIP_REPEAT) keep.add(byLevel[k]);
+    }
+    return spots.filter(s => keep.has(s));
+}
+function prepFindClicks(x, from, to, rate, busy, loudest) {
+    if (loudest == null) { loudest = 0; for (let i = from; i < to; i++) loudest = Math.max(loudest, Math.abs(x[i])); }
+    const nearPeak = loudest * Math.pow(10, -PREP_CLICK_NEAR_PEAK_DB / 20), ring = Math.round(0.005 * rate);
+    const p = 20, B = 768, found = [], lo = Math.max(from, p), n = to - lo;
+    if (n <= 0) return [];
+    const mag = new Float32Array(n), usual = new Float32Array(n); // the unpredictable part, and its usual size there
+    for (let b0 = lo; b0 < to; b0 += B) {
+        const b1 = Math.min(to, b0 + B), m = b1 - b0;
+        // A block too quiet to hold overload crackle is skipped (most of a recording): quicker, same result.
+        let loud = 0; for (let t = Math.max(0, b0 - ring); t < Math.min(x.length, b1 + ring); t++) loud = Math.max(loud, Math.abs(x[t]));
+        if (loud < nearPeak) { usual.fill(Infinity, b0 - lo, b1 - lo); continue; }
+        const a = m >= 4 * p ? prepArQuick(x, Math.max(0, b0 - B / 2), Math.min(x.length, b1 + B / 2), p) : null;
+        if (!a) { usual.fill(Infinity, b0 - lo, b1 - lo); continue; }
+        for (let t = b0; t < b1; t++) { let s = 0; for (let k = 0; k <= p; k++) s += a[k] * x[t - k]; mag[t - lo] = Math.abs(s); }
+        const sample = new Float32Array(Math.ceil(m / 3)); // the median of every 3rd sample: as good, and quicker
+        for (let t = 0; t < sample.length; t++) sample[t] = mag[b0 - lo + 3 * t];
+        const typical = 1.4826 * sample.sort()[sample.length >> 1];
+        usual.fill(typical, b0 - lo, b1 - lo);
+        const limit = Math.max(PREP_CLICK_K * typical, PREP_CLICK_FLOOR);
+        for (let t = b0; t < b1; t++) if (mag[t - lo] > limit && !busy[t]) found.push(t);
+    }
+    // Neighboring jumps (within 8 samples) are one click; it spans them plus 4 samples either side (a click bends the
+    // wave a little before and after its sharpest sample, and the redrawn stretch must take all of that in). It must stand alone:
+    // just before and just after it (0.5 to 5.5 ms away) the sound is as predictable as usual (at most 3× the usual size),
+    // which a natural attack (a tick, a croak, a crack of thunder that rings on) is not.
+    const spots = [], maxLen = Math.round(PREP_CLICK_MAX_MS / 1000 * rate), gap = Math.round(0.0005 * rate), win = Math.round(0.005 * rate);
+    const calm = (a, b) => {
+        a = Math.max(lo, a); b = Math.min(to, b);
+        if (b - a < win / 2) return true;
+        let s = 0, u = 0; for (let t = a; t < b; t++) { s += mag[t - lo]; u += usual[t - lo]; }
+        return s <= 3 * 0.8 * u; // usual is a spread (σ); the mean size of ordinary noise is 0.8 σ
+    };
+    for (let k = 0; k < found.length;) {
+        let j = k;
+        while (j + 1 < found.length && found[j + 1] - found[j] <= 8) j++;
+        const at = found[k] - 4, end = found[j] + 5;
+        k = j + 1;
+        if (end - at > maxLen) continue;
+        let local = 0; for (let t = Math.max(0, at - ring); t < Math.min(x.length, end + ring); t++) local = Math.max(local, Math.abs(x[t]));
+        if (local < nearPeak) continue;
+        if (!calm(at - gap - win, at - gap) || !calm(end + gap, end + gap + win)) continue;
+        let strength = 0, size = 0;
+        for (let t = Math.max(lo, at); t < Math.min(to, end); t++) { strength = Math.max(strength, mag[t - lo] / usual[t - lo]); size = Math.max(size, mag[t - lo]); }
+        spots.push({ kind: 'click', at, len: end - at, strength, size });
+    }
+    return spots;
+}
+// Rebuilds every spot in x (one channel). Spots close together are solved together.
+function prepRebuild(x, spots) {
+    const p = PREP_AR_ORDER, ctx = PREP_REPAIR_CONTEXT, mask = new Uint8Array(x.length);
+    for (const s of spots) mask.fill(1, s.at, s.at + s.len);
+    for (let g = 0; g < spots.length;) {
+        let h = g, end = spots[g].at + spots[g].len + ctx;
+        while (h + 1 < spots.length && spots[h + 1].at - ctx < end && end - spots[g].at < 16384) { h++; end = Math.max(end, spots[h].at + spots[h].len + ctx); }
+        const s0 = Math.max(0, spots[g].at - ctx), s1 = Math.min(x.length, end);
+        const seg = Float64Array.from(x.subarray(s0, s1)), unknown = mask.slice(s0, s1);
+        const a = prepArModel(seg, unknown, p) || prepArQuick(seg, 0, seg.length, p);
+        const own = spots.slice(g, h + 1);
+        if (a) {
+            prepInterpolate(seg, unknown, a);
+            // A flat top was at least as high as it is now: samples that came out lower are pinned to it, the rest redrawn.
+            let pinned = false;
+            for (const s of own) if (s.kind === 'clip') for (let i = s.at; i < s.at + s.len; i++) {
+                const k = i - s0, sign = Math.sign(s.level);
+                if (sign * seg[k] < Math.abs(s.level)) { seg[k] = s.level; unknown[k] = 0; pinned = true; }
+            }
+            if (pinned) prepInterpolate(seg, unknown, a);
+            for (const s of own) {
+                let peak = 0;
+                for (let i = s.at; i < s.at + s.len; i++) {
+                    let v = seg[i - s0];
+                    if (s.kind === 'clip') { const sign = Math.sign(s.level), top = Math.abs(s.level); v = sign * prepClamp(sign * v, top, Math.min(0.999, PREP_CLIP_MAX * top)); }
+                    x[i] = v; peak = Math.max(peak, Math.abs(v));
+                }
+                s.peak = peak;
+            }
+        }
+        g = h + 1;
+    }
+}
+// Finds and repairs the spots inside chans[c][from … to) (the samples outside are only context). Changes chans in place.
+function prepRepairChannels(chans, from, to, rate, step, { declip = true, decrackle = true, loudest = null } = {}) {
+    const spots = [];
+    if (loudest == null) { loudest = 0; for (const x of chans) for (let i = from; i < to; i++) loudest = Math.max(loudest, Math.abs(x[i])); }
+    chans.forEach((x, c) => {
+        const flat = declip ? prepFindFlatTops(x, from, to, step) : [];
+        const busy = new Uint8Array(x.length);
+        for (const s of flat) busy.fill(1, Math.max(0, s.at - 8), s.at + s.len + 8);
+        const clicks = decrackle ? prepFindClicks(x, from, to, rate, busy, loudest) : [];
+        const own = flat.concat(clicks).sort((a, b) => a.at - b.at);
+        for (const s of own) { s.ch = c; s.original = x.slice(s.at - 1, s.at + s.len + 1); s.before = 0; for (let i = s.at; i < s.at + s.len; i++) s.before = Math.max(s.before, Math.abs(x[i])); }
+        prepRebuild(x, own);
+        // Never make it worse: a click whose redrawn samples bend more sharply than before (largest second difference,
+        // edges included) is put back as it was and not counted.
+        const sharpest = (value, s) => { let m = 0; for (let i = s.at - 1; i <= s.at + s.len; i++) m = Math.max(m, Math.abs(value(i + 1) - 2 * value(i) + value(i - 1))); return m; };
+        for (const s of own) {
+            if (s.kind !== 'click') continue;
+            const o = s.original, at0 = s.at - 1; // o[k] was x[at0 + k]
+            const was = sharpest(i => i >= at0 && i < at0 + o.length ? o[i - at0] : x[i], s);
+            if (sharpest(i => x[i], s) >= was) { x.set(o, at0); s.reverted = true; }
+        }
+        spots.push(...own.filter(s => !s.reverted));
+        own.forEach(s => { delete s.original; });
+    });
+    return spots.sort((a, b) => a.at - b.at || a.ch - b.ch);
+}
+// The finest step the open file can hold (one step of 16-bit is 1 / 32768).
+function prepStep() { const b = prepSource.kind === 'wav' && !prepSource.float ? prepSource.bits : 24; return Math.pow(2, 1 - b); }
+async function prepRepairRange(start, count) {
+    const declip = prepEl('prep-declip').checked, decrackle = prepEl('prep-decrackle').checked;
+    const key = `${start}:${count}:${declip}:${decrackle}`;
+    if (prepRepairCache?.key !== key) {
+        const started = performance.now(), C = PREP_REPAIR_CONTEXT + 64;
+        const a = Math.max(0, start - C), b = Math.min(prepSource.frames, start + count + C);
+        prepMessage('Repairing…');
+        await prepPause();
+        const channels = await prepSource.read(a, b - a); // a fresh copy: the original's samples are never changed
+        // Overload crackle sits at the recording's loudest moments: the whole file's, from the overview.
+        let loudest = 0; for (let k = 0; k < prepPeaks.mins.length; k++) loudest = Math.max(loudest, -prepPeaks.mins[k], prepPeaks.maxs[k]);
+        const spots = prepRepairChannels(channels, start - a, start - a + count, prepSource.rate, prepStep(), { declip, decrackle, loudest });
+        spots.forEach(s => { s.at += a; });
+        prepRepairCache = { key, start: a, channels, spots, ms: performance.now() - started };
+        prepSpotSelected = -1;
+        prepMessage('');
+    }
+    const r = prepRepairCache, at = start - r.start;
+    return { spots: r.spots, ms: r.ms, range: r.channels.map(ch => ch.subarray(at, at + count)) };
+}
+function prepShowRepair() {
+    const on = prepEl('prep-repair').checked, r = prepBuilt?.repair, box = prepEl('prep-repair-box');
+    if (!on || !r) { prepEl('prep-repair-info').textContent = on ? '' : 'Off: the loop is left exactly as recorded.'; box.hidden = true; prepRequestWave(); return; }
+    const clips = r.spots.filter(s => s.kind === 'clip').length, clicks = r.spots.length - clips;
+    prepEl('prep-repair-info').textContent = r.spots.length
+        ? `Repaired ${r.spots.length} spot${r.spots.length === 1 ? '' : 's'} in this loop: ${clips} flat-topped peak${clips === 1 ? '' : 's'}, ${clicks} click${clicks === 1 ? '' : 's'} (${(r.ms / 1000).toFixed(2)} s).`
+        : `Nothing to repair: no flat-topped peaks or clicks in this loop (${(r.ms / 1000).toFixed(2)} s).`;
+    box.hidden = !r.spots.length;
+    const names = prepSource.channels === 2 ? ['left', 'right'] : prepSource.channels === 1 ? ['mono'] : null;
+    prepEl('prep-spots').innerHTML = r.spots.map((s, i) => {
+        const what = s.kind === 'clip'
+            ? `flat top, ${s.len} samples at ${prepDb(Math.abs(s.level)).toFixed(1)} dB → peak rebuilt to ${prepDb(s.peak).toFixed(1)} dB`
+            : `click, ${s.len} samples (${(s.len / prepSource.rate * 1000).toFixed(2)} ms), up to ${prepDb(s.before).toFixed(1)} dB → ${prepDb(s.peak).toFixed(1)} dB`;
+        return `<div class="prep-spot${i === prepSpotSelected ? ' prep-selected' : ''}" role="option" data-spot="${i}"><span>${i + 1}</span><span>${prepTime(s.at)}</span><span>${what} · ${names ? names[s.ch] : 'channel ' + (s.ch + 1)}</span></div>`;
+    }).join('');
+    prepRequestWave();
+}
+function prepSelectSpot(i) {
+    const s = prepBuilt?.repair?.spots[i];
+    if (!s) return;
+    prepSpotSelected = i;
+    document.querySelectorAll('.prep-spot').forEach(el => el.classList.toggle('prep-selected', Number(el.dataset.spot) === i));
+    const span = Math.max(240, s.len * 12);
+    prepSetView(s.at + s.len / 2 - span / 2, span);
+}
+// A-B: 2 s around the selected spot, as recorded (A) or repaired (B), at the loop's loudness.
+async function prepPlayAB(after) {
+    const s = prepBuilt?.repair?.spots[prepSpotSelected >= 0 ? prepSpotSelected : 0];
+    if (!s) return;
+    prepStopPreview(); prepStopAB();
+    const rate = prepSource.rate, n = Math.round(2 * rate), a = Math.max(0, Math.round(s.at + s.len / 2 - n / 2));
+    const chans = (await prepSource.read(a, n)).map(ch => ch.slice());
+    const r = prepRepairCache;
+    if (after && r) chans.forEach((ch, c) => { for (const sp of r.spots) if (sp.ch === c) for (let i = sp.at; i < sp.at + sp.len; i++) if (i >= a && i < a + n) ch[i - a] = r.channels[c][i - r.start]; });
+    const ctx = prepAudio(); ctx.resume();
+    const buffer = ctx.createBuffer(chans.length, n, rate);
+    chans.forEach((ch, c) => buffer.copyToChannel(ch, c));
+    const gain = ctx.createGain();
+    gain.gain.value = parseFloat(prepEl('prep-volume').value) * Math.pow(10, (prepBuilt.gainDb || 0) / 20);
+    gain.connect(ctx.destination);
+    const source = prepStartPlay(ctx, buffer, gain, Math.round((ctx.currentTime + 0.05) * ctx.sampleRate));
+    prepAB = { source, gain };
+    source.onended = () => { if (prepAB?.source === source) prepStopAB(); };
+}
+function prepStopAB() {
+    if (!prepAB) return;
+    const { source, gain } = prepAB;
+    prepAB = null;
+    source.onended = null; try { source.stop(); } catch (e) {} source.disconnect(); gain.disconnect();
+}
+
 // --- Listening: back-to-back plays on the audio clock ---
 // Each play is scheduled ahead on the audio clock at exactly (first + k × loop length) samples, the way the player's
 // engine does it (never the browser's own loop, MS-178). The audio runs at the file's own sample rate, so every start
@@ -946,7 +1380,7 @@ function prepStartPlay(ctx, buffer, destination, at, offset = 0) {
 }
 function prepPlay(fromJoin = false) {
     if (!prepBuilt) return;
-    prepStopPreview();
+    prepStopPreview(); prepStopAB();
     const ctx = prepAudio(), b = prepBuilt;
     ctx.resume();
     const buffer = ctx.createBuffer(b.channels.length, b.frames, prepSource.rate);
@@ -1028,12 +1462,13 @@ async function prepSave() {
     let name = prepEl('prep-name').value.trim() || prepFileName();
     if (!/\.wav$/i.test(name)) name += '.wav';
     name = name.replace(/[\\/:*?"<>|]/g, '-');
+    let how = 'download';
     try {
         if (window.showSaveFilePicker) {
             // Chrome, Opera and Edge on a computer: a Save dialog, so the loop can go straight into your sounds folder.
             const handle = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'WAV sound', accept: { 'audio/wav': ['.wav'] } }] });
             const w = await handle.createWritable(); await w.write(blob); await w.close();
-            name = handle.name;
+            name = handle.name; how = 'dialog';
         } else {
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob); a.download = name;
@@ -1046,6 +1481,61 @@ async function prepSave() {
         return;
     }
     prepEl('prep-save-info').textContent = `Saved "${name}": ${(blob.size / 1048576).toFixed(1)} MB, WAV ${bits}-bit, ${prepSource.rate.toLocaleString('en-US')} Hz, ${prepSource.channels === 1 ? 'mono' : 'stereo'}, ${(prepBuilt.frames / prepSource.rate).toFixed(3)} s.`;
+    prepAddHistory(name, blob.size, bits, how);
+}
+
+// --- Saved loops: a history in this browser (MS-247) ---
+// Each entry keeps what's needed to remake the loop from its original: the stretch to the sample and every setting.
+function prepLoadHistory() { try { const h = JSON.parse(localStorage.getItem('soundPrepHistory') || '[]'); return Array.isArray(h) ? h : []; } catch (e) { return []; } }
+function prepAddHistory(name, bytes, bits, how) {
+    const b = prepBuilt, src = prepSource;
+    const entry = {
+        name, bytes, bits, how, savedAt: new Date().toISOString(),
+        source: { name: src.name, frames: src.frames, rate: src.rate, channels: src.channels },
+        start: b.start, end: b.end,
+        blend: { on: prepEl('prep-xfade').checked, ms: parseFloat(prepEl('prep-xfade-ms').value) || 0, curve: prepEl('prep-curve').value },
+        normalize: prepEl('prep-normalize').checked, gainDb: Math.round(b.gainDb * 100) / 100,
+        repair: { on: prepEl('prep-repair').checked, declip: prepEl('prep-declip').checked, decrackle: prepEl('prep-decrackle').checked, spots: b.repair ? b.repair.spots.length : 0 }
+    };
+    const list = [entry, ...prepLoadHistory()].slice(0, PREP_HISTORY_MAX);
+    try { localStorage.setItem('soundPrepHistory', JSON.stringify(list)); } catch (e) {}
+    prepShowHistory();
+}
+function prepEscape(text) { return String(text).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+function prepShowHistory() {
+    const list = prepLoadHistory(), box = prepEl('prep-history');
+    prepEl('prep-history-clear').hidden = !list.length;
+    if (!list.length) { box.innerHTML = '<p class="prep-history-empty">No loops saved yet in this browser.</p>'; return; }
+    box.innerHTML = list.map((h, i) => {
+        const rate = h.source.rate, secs = f => (f / rate).toFixed(3);
+        const same = prepSource && prepSource.name === h.source.name && prepSource.frames === h.source.frames;
+        const when = new Date(h.savedAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const blend = h.blend.on ? `blend ${Math.round(h.blend.ms)} ms ${h.blend.curve === 'linear' ? 'linear' : 'equal-power'}` : 'no blend';
+        const level = h.normalize ? `loudness ${h.gainDb >= 0 ? '+' : '−'}${Math.abs(h.gainDb).toFixed(1)} dB (matched to Auto level)` : 'loudness left as it was';
+        const repair = h.repair?.on ? `repair on (${[h.repair.declip && 'flat tops', h.repair.decrackle && 'clicks'].filter(Boolean).join(' and ') || 'nothing'}): ${h.repair.spots} spot${h.repair.spots === 1 ? '' : 's'}` : 'repair off';
+        return `<div class="prep-history-item">
+            <strong>${prepEscape(h.name)}</strong> · ${(h.bytes / 1048576).toFixed(1)} MB · WAV ${h.bits}-bit · ${when}<br>
+            From: ${prepEscape(h.source.name)} (${prepTime(h.source.frames, rate, 1)}, ${rate.toLocaleString('en-US')} Hz)<br>
+            Loop: starts at ${secs(h.start)} s, ${secs(h.end - h.start)} s long (samples ${h.start.toLocaleString('en-US')} to ${h.end.toLocaleString('en-US')}) · ${blend} · ${level} · ${repair}<br>
+            <span class="prep-note">${h.how === 'dialog' ? 'Saved with the Save dialog, in the folder you chose there.' : 'Downloaded: usually your Downloads folder.'}</span>
+            <div class="prep-row"><button type="button" class="prep-btn prep-small" data-history="${i}" ${same ? '' : `disabled title="Open ${prepEscape(h.source.name)} first"`}>Use these settings</button>${same ? '' : `<span class="prep-note">Open the original first to use these settings.</span>`}</div>
+        </div>`;
+    }).join('');
+}
+function prepUseHistory(i) {
+    const h = prepLoadHistory()[i];
+    if (!h || !prepSource || prepSource.name !== h.source.name || prepSource.frames !== h.source.frames) return;
+    prepEl('prep-xfade').checked = h.blend.on;
+    prepEl('prep-xfade-ms').value = h.blend.ms;
+    prepEl('prep-curve').value = h.blend.curve;
+    prepEl('prep-normalize').checked = h.normalize;
+    prepEl('prep-repair').checked = !!h.repair?.on;
+    prepEl('prep-declip').checked = h.repair ? h.repair.declip : true;
+    prepEl('prep-decrackle').checked = h.repair ? h.repair.decrackle : true;
+    prepFound = null; prepShowFound();
+    prepSetLoop(h.start, h.end, { fit: true });
+    prepMessage(`Settings of "${h.name}" filled in: the same stretch and steps, so the loop comes out the same.`);
+    prepEl('step-region').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // --- Trim silence: both ends move inward past anything 50 dB below the stretch's loudest moment (or below -60 dB) ---
@@ -1069,6 +1559,18 @@ async function prepTrimSilence() {
 function prepSetupPage() {
     try { if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
     prepEl('prep-target').textContent = `${AUTO_LEVEL_TARGET} LUFS`;
+    // The explanation under the title: folded on every load, the chevron opens it (as in the Project Hub).
+    prepEl('prep-intro-toggle').addEventListener('click', e => {
+        const open = document.body.classList.toggle('prep-intro-open');
+        e.currentTarget.textContent = open ? '▾' : '▸';
+        e.currentTarget.setAttribute('aria-expanded', open);
+    });
+    // Inside the Project Hub's SOUND PREP tab (MS-245): links open new tabs instead of replacing the Hub's tab.
+    if (window.parent !== window && new URLSearchParams(location.search).has('hub')) {
+        prepEl('prep-app-link').target = '_blank';
+        const own = prepEl('prep-own-tab');
+        own.href = location.pathname; own.hidden = false;
+    }
     prepEl('prep-file').addEventListener('change', e => { const f = e.target.files[0]; if (f) prepOpenFile(f); e.target.value = ''; });
     document.addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('prep-dragover'); });
     document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('prep-dragover'); });
@@ -1143,10 +1645,22 @@ function prepSetupPage() {
     prepEl('prep-stop').addEventListener('click', prepStopPreview);
     prepEl('prep-volume').addEventListener('input', e => { if (prepPreview) prepPreview.gain.gain.value = parseFloat(e.target.value); });
     prepEl('prep-save').addEventListener('click', prepSave);
+    // Repair (MS-248): any change rebuilds the loop; the list selects a spot; A-B plays it as recorded or repaired.
+    ['prep-repair', 'prep-declip', 'prep-decrackle'].forEach(id => prepEl(id).addEventListener('change', () => { prepShowRepair(); prepScheduleBuild(); }));
+    prepEl('prep-spots').addEventListener('click', e => { const row = e.target.closest('[data-spot]'); if (row) prepSelectSpot(Number(row.dataset.spot)); });
+    prepEl('prep-ab-before').addEventListener('click', () => prepPlayAB(false));
+    prepEl('prep-ab-after').addEventListener('click', () => prepPlayAB(true));
+    prepEl('prep-ab-stop').addEventListener('click', prepStopAB);
+    prepShowRepair();
+    // Saved loops (MS-247).
+    prepEl('prep-history').addEventListener('click', e => { const btn = e.target.closest('[data-history]'); if (btn) prepUseHistory(Number(btn.dataset.history)); });
+    prepEl('prep-history-clear').addEventListener('click', () => { try { localStorage.removeItem('soundPrepHistory'); } catch (e) {} prepShowHistory(); });
+    prepShowHistory();
     // For measurements (tools and Claude's checks): the page's state and its own play function.
     window.soundPrep = {
         open: prepOpenFile, find: prepFindJoin, build: prepBuild, setLoop: prepSetLoop, play: prepPlay, stop: prepStopPreview, startPlay: prepStartPlay,
-        encode: prepEncodeWav, state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview })
+        encode: prepEncodeWav, repair: prepRepairChannels, findFlatTops: prepFindFlatTops, findClicks: prepFindClicks,
+        state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview, repair: prepRepairCache })
     };
 }
 prepSetupPage();
