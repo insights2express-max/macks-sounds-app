@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- The same browser lock as the app (CSP, MS-232): this page loads nothing from other websites. build.ps1 swaps
          script-src 'self' for the SHA-256 hashes of the built page's own scripts. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-6TrYTOyYFhVe4iHkzb2gLXkcowiQpw8EjuD/yD4yKJQ=' 'sha256-24/AkJweTjFg7gjxg4AlQF9NT5vIXkie71CNFBkhKAg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Sound Prep v333</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-6TrYTOyYFhVe4iHkzb2gLXkcowiQpw8EjuD/yD4yKJQ=' 'sha256-4UA+8t415TKSAtZOU1qfaAbHLHFj1nYOMFG+aPwI8hA='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Sound Prep v334</title>
     <style>
 /* CEC: collapse / expand sections (MS-249, v333), for js/cec.js. The same look as the app's Settings sections
    (.section-toggle / .section-body in css/styles.css). A page can set --cec-hover (the title's color on hover). */
@@ -170,13 +170,39 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     .prep-history-meta { font-size: 0.8rem; }
     .prep-history-details { padding-left: 0; }
 }
+/* MS-253 (v334): step titles in FULL CAPS, bold and larger (1.25rem: 1.33× the 15 px they had), so they stand level
+   with the circled step numbers. Only the look changes: the words stay as written in the page. */
+.prep-step > .cec-head { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em; line-height: 1.2; }
+.prep-step > .cec-head .cec-title { text-transform: uppercase; flex-wrap: nowrap; } /* a long title wraps beside its circle, not under it */
+.prep-step > .cec-head .prep-optional { text-transform: none; letter-spacing: normal; }
+.prep-step { scroll-margin-top: 8px; }
+/* MS-254 (v334): the floating play bar while step 8 plays (pause / play, stop and back to step 8). It sits at the
+   bottom of the window; the page gets room underneath so nothing is ever stuck behind it. */
+.prep-play-bar {
+    position: fixed; left: 12px; right: 12px; bottom: 12px; width: fit-content; margin: 0 auto; z-index: 20;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.4rem 0.6rem;
+    padding: 0.5rem 0.7rem; background: var(--prep-panel); border: 1px solid var(--prep-accent); border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+}
+.prep-play-bar[hidden] { display: none; }
+.prep-bar-info { color: var(--prep-dim); font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+#prep-bar-pause { min-width: 6.5rem; }
+body.prep-playing .prep-page { padding-bottom: 96px; }
+body.prep-playing .prep-message { bottom: 84px; }
+.prep-link-note { margin: 0.2rem 0 0; }
+@media (max-width: 600px) {
+    .prep-play-bar { width: auto; }
+    .prep-bar-info { flex-basis: 100%; text-align: center; }
+    body.prep-playing .prep-page { padding-bottom: 140px; }
+    body.prep-playing .prep-message { bottom: 128px; }
+}
     </style>
 </head>
 <body>
 <div class="prep-page">
     <header class="prep-header">
         <div>
-            <h1>Sound Prep <span id="prep-version" class="prep-badge">v333</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
+            <h1>Sound Prep <span id="prep-version" class="prep-badge">v334</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
             <p class="prep-lead" id="prep-intro">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
         </div>
         <div class="prep-header-links">
@@ -335,6 +361,7 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         <div class="prep-sub prep-about" data-cec="listen-about"><h3>How this step works</h3>
             <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
         </div>
+        <p class="prep-hint prep-link-note">While it plays, the line in step 2's picture shows where you are.</p>
         <div class="prep-row">
             <button type="button" id="prep-play" class="prep-btn prep-primary">▶ Play repeating</button>
             <button type="button" id="prep-play-join" class="prep-btn">▶ Hear the join</button>
@@ -343,6 +370,12 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
             <span id="prep-play-info" class="prep-note"></span>
         </div>
     </section>
+    <!-- MS-254 (v334): while step 8 plays, a small bar floats at the bottom of the window, wherever the page is scrolled. -->
+    <div id="prep-play-bar" class="prep-play-bar" role="group" aria-label="Step 8 playback" hidden>
+        <span id="prep-bar-info" class="prep-bar-info">Playing</span>
+        <button type="button" id="prep-bar-pause" class="prep-btn prep-primary">⏸ Pause</button>
+        <button type="button" id="prep-bar-stop" class="prep-btn">■ Stop &amp; back to step 8</button>
+    </div>
 
     <section class="prep-step" id="step-save" data-cec="save" data-cec-open>
         <h2><span class="prep-num">9</span> Save the loop</h2>
@@ -1139,7 +1172,11 @@ async function prepBuild() {
     prepBuilt = { channels, frames, start: s, end: s + frames, xfade: F, linear, gainDb, limit, loudness, seam: prepSeamCheck(channels), repair, ms: performance.now() - started };
     prepShowBuilt();
     prepShowRepair();
-    if (prepPreview) prepPlay(prepPreview.fromJoin);
+    if (prepPreview) { // a changed setting restarts the repeat with the new loop, where the page is, paused if it was
+        const paused = prepPreview.paused;
+        prepPlay(prepPreview.fromJoin, { show: false });
+        if (paused) prepTogglePause();
+    }
 }
 
 // The join, measured on the finished loop: what plays across it is ch[frames-2], ch[frames-1], ch[0], ch[1].
@@ -1550,7 +1587,7 @@ function prepStartPlay(ctx, buffer, destination, at, offset = 0) {
     source.start(at / ctx.sampleRate, offset / buffer.sampleRate);
     return source;
 }
-function prepPlay(fromJoin = false) {
+function prepPlay(fromJoin = false, { show = true } = {}) {
     if (!prepBuilt) return;
     prepStopPreview(); prepStopAB();
     const ctx = prepAudio(), b = prepBuilt;
@@ -1577,13 +1614,40 @@ function prepPlay(fromJoin = false) {
         }
         const pos = now - first, played = pos < b.frames - offset ? 0 : 1 + Math.floor((pos - (b.frames - offset)) / b.frames);
         const at = pos < 0 ? 0 : played ? (pos - (b.frames - offset)) % b.frames : offset + pos;
-        prepEl('prep-play-info').textContent = pos < 0 ? '' : `Play ${played + 1} · ${(at / prepSource.rate).toFixed(1)} s of ${(b.frames / prepSource.rate).toFixed(1)} s`;
+        const where = `Play ${played + 1} · ${(at / prepSource.rate).toFixed(1)} s of ${(b.frames / prepSource.rate).toFixed(1)} s`;
+        prepEl('prep-play-info').textContent = pos < 0 ? '' : where;
+        prepEl('prep-bar-info').textContent = `${p.paused ? 'Paused' : 'Playing'}${pos < 0 ? '' : ' · ' + where}`;
     };
     p.sources[0].onended = () => { p.sources[0].done = true; topUp(); };
     topUp();
     p.timer = setInterval(topUp, 250);
-    const follow = () => { if (prepPreview !== p) return; prepDrawPlayhead(); requestAnimationFrame(follow); };
+    p.topUp = topUp;
+    const follow = () => { if (prepPreview !== p) return; if (!p.paused) prepDrawPlayhead(); requestAnimationFrame(follow); };
     requestAnimationFrame(follow);
+    // MS-254: the floating bar appears, and the page glides to step 2's picture, where the line moves.
+    prepEl('prep-bar-pause').textContent = '⏸ Pause';
+    prepEl('prep-play-bar').hidden = false;
+    document.body.classList.add('prep-playing');
+    if (!show) return;
+    const region = prepEl('step-region');
+    if (!region.classList.contains('cec-open')) region.cecSetOpen(true);
+    prepScrollTo(region, 'start');
+    prepEl('prep-bar-pause').focus({ preventScroll: true });
+}
+// Smooth scrolling, or an instant jump when the system asks for less motion.
+function prepScrollTo(el, block) {
+    const still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block });
+}
+// Pause (MS-254) holds the whole audio clock (the context is suspended), so every play already scheduled waits on its
+// exact sample and the joins stay back to back; Play lets the clock run on from the same spot. The line stays put.
+function prepTogglePause() {
+    const p = prepPreview;
+    if (!p) return;
+    p.paused = !p.paused;
+    if (p.paused) p.ctx.suspend(); else p.ctx.resume();
+    prepEl('prep-bar-pause').textContent = p.paused ? '▶ Play' : '⏸ Pause';
+    p.topUp();
 }
 // The play position (MS-250): the sample of the loop being heard now, from the audio clock. The output's timestamp
 // says which context time is reaching the speakers (the clock runs a little ahead of what is heard), so the line
@@ -1616,7 +1680,10 @@ function prepStopPreview() {
     clearInterval(p.timer);
     p.sources.forEach(s => { s.onended = null; try { s.stop(); } catch (e) {} s.disconnect(); });
     p.gain.disconnect();
+    if (p.paused) p.ctx.resume(); // the clock runs again for the next play
     prepEl('prep-play-info').textContent = '';
+    prepEl('prep-play-bar').hidden = true;
+    document.body.classList.remove('prep-playing');
     prepDrawPlayhead(); // hides the line
 }
 
@@ -1886,6 +1953,12 @@ function prepSetupPage() {
     prepEl('prep-play').addEventListener('click', () => prepPlay(false));
     prepEl('prep-play-join').addEventListener('click', () => prepPlay(true));
     prepEl('prep-stop').addEventListener('click', prepStopPreview);
+    prepEl('prep-bar-pause').addEventListener('click', prepTogglePause);
+    prepEl('prep-bar-stop').addEventListener('click', () => {
+        prepStopPreview();
+        prepScrollTo(prepEl('step-listen'), 'center');
+        prepEl('prep-play').focus({ preventScroll: true });
+    });
     prepEl('prep-volume').addEventListener('input', e => { if (prepPreview) prepPreview.gain.gain.value = parseFloat(e.target.value); });
     prepEl('prep-save').addEventListener('click', prepSave);
     // Repair (MS-248): any change rebuilds the loop; the list selects a spot; A-B plays it as recorded or repaired.
@@ -1901,7 +1974,7 @@ function prepSetupPage() {
     prepShowHistory();
     // For measurements (tools and Claude's checks): the page's state and its own play function.
     window.soundPrep = {
-        open: prepOpenFile, find: prepFindJoin, build: prepBuild, setLoop: prepSetLoop, play: prepPlay, stop: prepStopPreview, startPlay: prepStartPlay,
+        open: prepOpenFile, find: prepFindJoin, build: prepBuild, setLoop: prepSetLoop, play: prepPlay, stop: prepStopPreview, pause: prepTogglePause, startPlay: prepStartPlay,
         encode: prepEncodeWav, repair: prepRepairChannels, findFlatTops: prepFindFlatTops, findClicks: prepFindClicks,
         heard: () => prepPreview ? prepHeardFrame(prepPreview) : null, mainTitle: prepMainTitle, lengthTag: prepLengthTag,
         state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview, repair: prepRepairCache, playhead: prepPlayhead })
