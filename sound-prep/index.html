@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- The same browser lock as the app (CSP, MS-232): this page loads nothing from other websites. build.ps1 swaps
          script-src 'self' for the SHA-256 hashes of the built page's own scripts. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-e8oRXuc4GdF1kHVWzujvbULsCe674+Czqs+Z06QfMbw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Sound Prep v332</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-6TrYTOyYFhVe4iHkzb2gLXkcowiQpw8EjuD/yD4yKJQ=' 'sha256-24/AkJweTjFg7gjxg4AlQF9NT5vIXkie71CNFBkhKAg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Sound Prep v333</title>
+    <style>
+/* CEC: collapse / expand sections (MS-249, v333), for js/cec.js. The same look as the app's Settings sections
+   (.section-toggle / .section-body in css/styles.css). A page can set --cec-hover (the title's color on hover). */
+.cec-head { margin: 0; font: inherit; }
+.cec-toggle {
+    -webkit-appearance: none; appearance: none;
+    display: flex; align-items: center; gap: 0.5rem; width: 100%; min-height: 36px; margin: 0; padding: 0.3rem 0;
+    border: 0; border-radius: 4px; background: none; box-shadow: none; color: inherit; font: inherit; text-align: left; cursor: pointer;
+}
+.cec-toggle:hover { color: var(--cec-hover, inherit); }
+.cec-toggle:focus-visible { outline: 2px solid var(--cec-hover, #0075ff); outline-offset: 2px; }
+.cec-chevron { display: inline-flex; width: 0.9em; height: 0.9em; flex-shrink: 0; transition: transform 0.3s ease; }
+.cec-chevron svg { width: 100%; height: 100%; }
+.cec-open > .cec-head .cec-chevron { transform: rotate(90deg); }
+.cec-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; min-width: 0; flex: 1; }
+.cec-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.3s ease-out; }
+.cec-open > .cec-body { grid-template-rows: 1fr; }
+.cec-inner { min-height: 0; min-width: 0; overflow: hidden; }
+@media (prefers-reduced-motion: reduce) { .cec-body, .cec-chevron { transition: none; } }
+@media (max-width: 600px) { .cec-toggle { min-height: 44px; } }
+    </style>
     <style>
 /* Sound Prep (MS-209 step 1, v331): the loop editor page. Dark like the app; light when the app is set to light. */
 :root {
@@ -14,14 +35,18 @@
     --prep-accent: #4f8fd6; --prep-accent-text: #ffffff; --prep-btn: #2a3440; --prep-btn-hover: #364352;
     --prep-wave: #8fb8e6; --prep-loop: rgba(79, 143, 214, 0.18); --prep-start: #3ccf6e; --prep-end: #ff5a5a;
     --prep-xfade: rgba(255, 196, 0, 0.18); --prep-pass: #3ccf6e; --prep-warn: #ffb020; --prep-grid: rgba(255, 255, 255, 0.08);
-    --prep-fix: #ff9a2e;
+    --prep-fix: #ff9a2e; --prep-play: #ffffff; --prep-track: #444; --prep-check: #0075ff;
+    --prep-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%239aa8b5'/%3E%3C/svg%3E");
+    --cec-hover: var(--prep-accent);
     color-scheme: dark;
 }
 :root[data-theme="light"] {
     --prep-bg: #f2f4f7; --prep-panel: #ffffff; --prep-border: #c9d2db; --prep-text: #1b2430; --prep-dim: #5b6876;
     --prep-accent: #2f6fb8; --prep-btn: #e3e8ee; --prep-btn-hover: #d3dbe4; --prep-wave: #2f6fb8; --prep-loop: rgba(47, 111, 184, 0.14);
     --prep-start: #16994a; --prep-end: #d43c3c; --prep-xfade: rgba(220, 150, 0, 0.18); --prep-pass: #16994a; --prep-warn: #b86e00;
-    --prep-grid: rgba(0, 0, 0, 0.08); --prep-fix: #d86a00; color-scheme: light;
+    --prep-grid: rgba(0, 0, 0, 0.08); --prep-fix: #d86a00; --prep-play: #111111; --prep-track: #b8c2cc;
+    --prep-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M0 0h10L5 6z' fill='%235b6876'/%3E%3C/svg%3E");
+    color-scheme: light;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--prep-bg); color: var(--prep-text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
@@ -37,16 +62,46 @@ h2 { margin: 0 0 0.3rem; font-size: 1.1rem; display: flex; align-items: center; 
 .prep-hint { margin: 0 0 0.7rem; color: var(--prep-dim); font-size: 0.9rem; max-width: 90ch; }
 .prep-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; margin: 0.5rem 0; }
 .prep-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 0.35rem 0.9rem; border: 1px solid var(--prep-border); border-radius: 6px; background: var(--prep-btn); color: var(--prep-text); font: inherit; cursor: pointer; user-select: none; }
+.prep-btn:focus-visible, .prep-fold-toggle:focus-visible { outline: 2px solid var(--prep-check); outline-offset: 2px; }
 .prep-btn:hover { background: var(--prep-btn-hover); }
 .prep-btn:disabled { opacity: 0.45; cursor: default; }
 .prep-primary { background: var(--prep-accent); border-color: var(--prep-accent); color: var(--prep-accent-text); }
 .prep-primary:hover { background: var(--prep-accent); filter: brightness(1.1); }
 .prep-small { min-height: 30px; padding: 0.15rem 0.6rem; font-size: 0.85rem; }
 .prep-check { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
-input[type="number"], input[type="text"], select { font: inherit; color: var(--prep-text); background: var(--prep-bg); border: 1px solid var(--prep-border); border-radius: 6px; padding: 0.3rem 0.45rem; }
-input[type="number"] { width: 7.5rem; }
+/* MS-252 (v333): every control is drawn by the page itself, so Chrome, Opera, Edge, Firefox and Safari show the same
+   one: the app's own look (css/styles.css). Each rule works in all of them; the ::-moz- lines only repeat the
+   ::-webkit- ones for Firefox, which has its own names for a slider's parts. */
+input, select, button { -webkit-appearance: none; appearance: none; margin: 0; }
+input[type="number"], input[type="text"], select { font: inherit; color: var(--prep-text); background-color: var(--prep-bg); border: 1px solid var(--prep-border); border-radius: 6px; padding: 0.3rem 0.45rem; min-height: 36px; line-height: 1.2; }
+input[type="number"]:focus-visible, input[type="text"]:focus-visible, select:focus-visible { outline: 2px solid var(--prep-check); outline-offset: 0; border-color: var(--prep-check); }
+/* Number fields: no up / down arrows (each browser draws its own; the fields take typing, and step 3 has ◀ ▶). */
+input[type="number"] { width: 7.5rem; -moz-appearance: textfield; appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; appearance: none; margin: 0; }
 #prep-flex, #prep-xfade-ms { width: 5.5rem; }
-input[type="checkbox"] { width: 18px; height: 18px; }
+select { padding-right: 1.8rem; background-image: var(--prep-arrow); background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 10px 6px; cursor: pointer; max-width: 100%; }
+select option { background: var(--prep-panel); color: var(--prep-text); }
+/* Checkboxes: white when off, solid blue with a bold white tick when on (the app's, a little smaller). */
+input[type="checkbox"] {
+    width: 22px; height: 22px; flex-shrink: 0; cursor: pointer; display: inline-grid; place-content: center; vertical-align: middle;
+    background: #fff; border: 2px solid #767676; border-radius: 5px;
+}
+input[type="checkbox"]:checked { background: var(--prep-check); border-color: var(--prep-check); }
+input[type="checkbox"]:checked::after { content: ""; width: 6px; height: 11px; border: solid #fff; border-width: 0 3px 3px 0; transform: translateY(-1px) rotate(45deg); }
+input[type="checkbox"]:focus-visible { outline: 2px solid var(--prep-check); outline-offset: 2px; }
+input[type="checkbox"]:disabled { opacity: 0.5; cursor: default; }
+/* Sliders: a gray 6 px track and a 24 px blue knob (the app's). */
+input[type="range"] { height: 24px; background: transparent; cursor: pointer; }
+input[type="range"]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: var(--prep-track); }
+input[type="range"]::-moz-range-track { height: 6px; border-radius: 3px; background: var(--prep-track); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; margin-top: -9px; border: 0; border-radius: 50%; background: #3498db; }
+input[type="range"]::-moz-range-thumb { width: 24px; height: 24px; border: 0; border-radius: 50%; background: #3498db; }
+input[type="range"]:focus { outline: none; }
+input[type="range"]:focus-visible { outline: 2px solid var(--prep-check); outline-offset: 2px; }
+#prep-volume { width: 140px; }
+.prep-row > label { display: inline-flex; align-items: center; gap: 0.35rem; }
+/* The file picker: the browser's own "Choose File" box is hidden; its label is a normal button that also takes the keyboard. */
+label.prep-btn:focus-visible { outline: 2px solid var(--prep-check); outline-offset: 2px; }
 .prep-grow { flex: 1 1 320px; display: flex; align-items: center; gap: 0.5rem; }
 .prep-grow input { flex: 1; min-width: 0; }
 .prep-note { color: var(--prep-dim); font-size: 0.85rem; }
@@ -57,7 +112,7 @@ input[type="checkbox"] { width: 18px; height: 18px; }
 .prep-progress { height: 6px; background: var(--prep-btn); border-radius: 3px; overflow: hidden; margin-top: 0.5rem; }
 .prep-progress-bar { height: 100%; width: 0; background: var(--prep-accent); transition: width 0.15s; }
 canvas { display: block; width: 100%; border: 1px solid var(--prep-border); border-radius: 6px; background: var(--prep-bg); touch-action: none; }
-.prep-overview { height: 48px; margin-bottom: 6px; cursor: pointer; }
+.prep-overview { height: 48px; cursor: pointer; }
 .prep-wave { height: 220px; cursor: crosshair; }
 .prep-join { height: 150px; margin-top: 0.5rem; }
 .prep-view-row input[type="range"] { flex: 1 1 200px; min-width: 120px; }
@@ -71,6 +126,8 @@ canvas { display: block; width: 100%; border: 1px solid var(--prep-border); bord
 /* The explanation under the title folds away (folded on every load), like the Project Hub's (v332). */
 .prep-fold-toggle { margin-left: 6px; padding: 0 6px; border: 0; background: none; color: var(--prep-dim); font-size: 16px; cursor: pointer; vertical-align: middle; }
 .prep-fold-toggle:hover { color: var(--prep-text); }
+.prep-fold-toggle .cec-chevron { width: 0.75em; height: 0.75em; vertical-align: -0.05em; }
+body.prep-intro-open .prep-fold-toggle .cec-chevron { transform: rotate(90deg); }
 body:not(.prep-intro-open) #prep-intro { display: none; }
 .prep-header-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
 /* Repair (MS-248) and the saved-loops history (MS-247). */
@@ -79,10 +136,7 @@ body:not(.prep-intro-open) #prep-intro { display: none; }
 .prep-spot { display: grid; grid-template-columns: 2.5rem 7.5rem 1fr; gap: 0.6rem; padding: 0.3rem 0.6rem; cursor: pointer; border-bottom: 1px solid var(--prep-grid); }
 .prep-spot:hover { background: var(--prep-btn); }
 .prep-spot.prep-selected { background: var(--prep-loop); outline: 1px solid var(--prep-accent); }
-.prep-history { display: grid; gap: 0.5rem; }
-.prep-history-item { border: 1px solid var(--prep-border); border-radius: 6px; padding: 0.5rem 0.7rem; font-size: 0.88rem; }
-.prep-history-item strong { word-break: break-word; }
-.prep-history-item .prep-row { margin: 0.3rem 0 0; }
+.prep-history { display: grid; gap: 0.35rem; }
 .prep-history-empty { color: var(--prep-dim); font-size: 0.9rem; }
 body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-offset: -6px; }
 @media (max-width: 600px) {
@@ -92,13 +146,37 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     .prep-wave { height: 180px; }
     input[type="number"] { width: 6.5rem; }
 }
+/* MS-249 (v333): the folds (css/cec.css). A step's title bar is its heading; the parts inside a step are boxed. */
+.prep-step > .cec-head { margin: -0.3rem 0 0; }
+.prep-step.cec-open > .cec-head { margin-bottom: 0.3rem; }
+.prep-sub { border: 1px solid var(--prep-border); border-radius: 8px; padding: 0 0.7rem; margin: 0.4rem 0 0.6rem; }
+.prep-sub > .cec-head { font-size: 0.9rem; color: var(--prep-dim); }
+.prep-sub > .cec-head .cec-toggle { min-height: 32px; }
+.prep-sub > .cec-body > .cec-inner > :last-child { margin-bottom: 0.6rem; } /* a margin, not padding: padding would show when closed */
+.prep-about .prep-hint { margin: 0; }
+/* Saved loops: one line each (name · length · date), its chevron opens the details. */
+.prep-history-item { border: 1px solid var(--prep-border); border-radius: 6px; padding: 0 0.7rem; font-size: 0.88rem; }
+.prep-history-item > .cec-head .cec-title { flex-wrap: nowrap; gap: 0.8rem; }
+.prep-history-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.prep-history-meta { flex-shrink: 0; color: var(--prep-dim); white-space: nowrap; }
+.prep-history-details { padding: 0 0 0.6rem 1.4rem; word-break: break-word; }
+.prep-history-details .prep-row { margin: 0.3rem 0 0; }
+/* MS-250 (v333): the play position, a line across step 2's pictures while step 8 plays. */
+.prep-canvas-box { position: relative; }
+.prep-canvas-box + .prep-canvas-box { margin-top: 6px; }
+.prep-playhead { position: absolute; top: 1px; bottom: 1px; left: 1px; width: 2px; margin-left: -1px; background: var(--prep-play); box-shadow: 0 0 3px rgba(0, 0, 0, 0.6); pointer-events: none; will-change: transform; }
+.prep-playhead[hidden] { display: none; }
+@media (max-width: 600px) {
+    .prep-history-meta { font-size: 0.8rem; }
+    .prep-history-details { padding-left: 0; }
+}
     </style>
 </head>
 <body>
 <div class="prep-page">
     <header class="prep-header">
         <div>
-            <h1>Sound Prep <span id="prep-version" class="prep-badge">v332</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
+            <h1>Sound Prep <span id="prep-version" class="prep-badge">v333</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
             <p class="prep-lead" id="prep-intro">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
         </div>
         <div class="prep-header-links">
@@ -107,11 +185,13 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         </div>
     </header>
 
-    <section class="prep-step" id="step-open">
+    <section class="prep-step" id="step-open" data-cec="open" data-cec-open>
         <h2><span class="prep-num">1</span> Open a sound</h2>
-        <p class="prep-hint">WAV, MP3 or any sound file this browser can play. Large WAV files (even 30-minute ones) open without loading the whole file into memory.</p>
+        <div class="prep-sub prep-about" data-cec="open-about"><h3>How this step works</h3>
+            <p class="prep-hint">WAV, MP3 or any sound file this browser can play. Large WAV files (even 30-minute ones) open without loading the whole file into memory.</p>
+        </div>
         <div class="prep-row">
-            <label class="prep-btn prep-primary" for="prep-file">Choose a sound file…</label>
+            <label class="prep-btn prep-primary" for="prep-file" id="prep-file-button" tabindex="0" role="button">Choose a sound file…</label>
             <input type="file" id="prep-file" accept="audio/*,.wav,.mp3,.ogg,.oga,.opus,.flac,.m4a,.aac,.webm" hidden>
             <span class="prep-drop-note">or drop a file anywhere on this page</span>
         </div>
@@ -120,11 +200,13 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
     </section>
 
     <div id="prep-work" class="prep-disabled">
-    <section class="prep-step" id="step-region">
+    <section class="prep-step" id="step-region" data-cec="region" data-cec-open>
         <h2><span class="prep-num">2</span> Choose the stretch to loop</h2>
-        <p class="prep-hint">Drag across the picture of the sound to choose a stretch, or type where it starts and how long it is. Drag a green or red line to move one end. The mouse wheel zooms; Shift + wheel scrolls. Pick a stretch that sounds typical, without a one-off noise in it.</p>
-        <canvas id="prep-overview" class="prep-overview" title="The whole file: click or drag to move the view"></canvas>
-        <canvas id="prep-wave" class="prep-wave"></canvas>
+        <div class="prep-sub prep-about" data-cec="region-about"><h3>How this step works</h3>
+            <p class="prep-hint">Drag across the picture of the sound to choose a stretch, or type where it starts and how long it is. Drag a green or red line to move one end. The mouse wheel zooms; Shift + wheel scrolls. Pick a stretch that sounds typical, without a one-off noise in it.</p>
+        </div>
+        <div class="prep-canvas-box"><canvas id="prep-overview" class="prep-overview" title="The whole file: click or drag to move the view"></canvas><div id="prep-overview-head" class="prep-playhead" hidden></div></div>
+        <div class="prep-canvas-box"><canvas id="prep-wave" class="prep-wave"></canvas><div id="prep-wave-head" class="prep-playhead" hidden></div></div>
         <div class="prep-row prep-view-row">
             <button type="button" id="prep-zoom-out" class="prep-btn" title="Zoom out">−</button>
             <button type="button" id="prep-zoom-in" class="prep-btn" title="Zoom in">+</button>
@@ -158,9 +240,11 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         <p id="prep-region-info" class="prep-info"></p>
     </section>
 
-    <section class="prep-step" id="step-find">
+    <section class="prep-step" id="step-find" data-cec="find" data-cec-open>
         <h2><span class="prep-num">3</span> Find the best join</h2>
-        <p class="prep-hint">Looks near both ends for the spot where the end of the loop flows best into its start: the same sound pattern on both sides, at a quiet moment, starting and ending where the wave crosses zero. For a steady rhythm such as a clock, the length becomes a whole number of beats.</p>
+        <div class="prep-sub prep-about" data-cec="find-about"><h3>How this step works</h3>
+            <p class="prep-hint">Looks near both ends for the spot where the end of the loop flows best into its start: the same sound pattern on both sides, at a quiet moment, starting and ending where the wave crosses zero. For a steady rhythm such as a clock, the length becomes a whole number of beats.</p>
+        </div>
         <div class="prep-row">
             <button type="button" id="prep-find" class="prep-btn prep-primary">Find the best join</button>
             <label title="How much the loop's length may change to find a better join">Length may change by up to <input type="number" id="prep-flex" min="0" max="30" step="0.1" value="1"> s</label>
@@ -180,9 +264,11 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         </div>
     </section>
 
-    <section class="prep-step" id="step-repair">
+    <section class="prep-step" id="step-repair" data-cec="repair" data-cec-open>
         <h2><span class="prep-num">4</span> Repair clipped peaks and clicks <span class="prep-optional">optional</span></h2>
-        <p class="prep-hint">A recording that was too loud when it was made can crack at its loudest moments: the tops of its biggest waves were cut flat (clipping, still flat even if the file was turned down afterward), or the wave snaps sharply for a moment (crackle). This finds those spots in the loop and redraws each one from the sound around it. Only those few samples change; your original file never does. Natural sharp sounds, such as a clock's tick or a frog's croak, are left alone, and on a clean recording it finds nothing. Leave it off unless you hear a crack.</p>
+        <div class="prep-sub prep-about" data-cec="repair-about"><h3>How this step works</h3>
+            <p class="prep-hint">A recording that was too loud when it was made can crack at its loudest moments: the tops of its biggest waves were cut flat (clipping, still flat even if the file was turned down afterward), or the wave snaps sharply for a moment (crackle). This finds those spots in the loop and redraws each one from the sound around it. Only those few samples change; your original file never does. Natural sharp sounds, such as a clock's tick or a frog's croak, are left alone, and on a clean recording it finds nothing. Leave it off unless you hear a crack.</p>
+        </div>
         <div class="prep-row">
             <label class="prep-check"><input type="checkbox" id="prep-repair"> Repair</label>
             <label class="prep-check"><input type="checkbox" id="prep-declip" checked> Flat-topped peaks (clipping)</label>
@@ -197,13 +283,17 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
                 <button type="button" id="prep-ab-stop" class="prep-btn prep-small">■ Stop</button>
                 <span class="prep-note">Plays 2 s around the spot. Click a row to select it and show it up close in the picture in step 2 (the repaired wave is drawn in orange).</span>
             </div>
-            <div class="prep-spots" id="prep-spots" role="listbox" aria-label="Repaired spots"></div>
+            <div class="prep-sub" data-cec="repair-spots" data-cec-open><h3>Repaired spots</h3>
+                <div class="prep-spots" id="prep-spots" role="listbox" aria-label="Repaired spots"></div>
+            </div>
         </div>
     </section>
 
-    <section class="prep-step" id="step-blend">
+    <section class="prep-step" id="step-blend" data-cec="blend" data-cec-open>
         <h2><span class="prep-num">5</span> Blend the join</h2>
-        <p class="prep-hint">Fades the last moments of the loop into the sound that comes just before its start, so the join is smooth even when the two ends don't match exactly. The loop's length doesn't change.</p>
+        <div class="prep-sub prep-about" data-cec="blend-about"><h3>How this step works</h3>
+            <p class="prep-hint">Fades the last moments of the loop into the sound that comes just before its start, so the join is smooth even when the two ends don't match exactly. The loop's length doesn't change.</p>
+        </div>
         <div class="prep-row">
             <label class="prep-check"><input type="checkbox" id="prep-xfade" checked> Blend</label>
             <label>over <input type="number" id="prep-xfade-ms" min="1" max="5000" step="1" value="400"> ms</label>
@@ -214,29 +304,37 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         </div>
     </section>
 
-    <section class="prep-step" id="step-check">
+    <section class="prep-step" id="step-check" data-cec="check" data-cec-open>
         <h2><span class="prep-num">6</span> Check the join</h2>
-        <p class="prep-hint">Measured on the finished loop, at the exact spot where its end meets its start. A click is a sudden jump, so the jump at the join is compared with how much the sound normally moves from one sample to the next. Up to 3× is normal movement (no click); a level difference under 3 dB isn't noticeable.</p>
+        <div class="prep-sub prep-about" data-cec="check-about"><h3>How this step works</h3>
+            <p class="prep-hint">Measured on the finished loop, at the exact spot where its end meets its start. A click is a sudden jump, so the jump at the join is compared with how much the sound normally moves from one sample to the next. Up to 3× is normal movement (no click); a level difference under 3 dB isn't noticeable.</p>
+        </div>
         <div id="prep-seam" class="prep-seam"></div>
-        <canvas id="prep-join" class="prep-join" title="The join: the end of the loop (left of the line) runs into its start (right of the line)"></canvas>
-        <div class="prep-row"><label>Join view: <select id="prep-join-span">
+        <div class="prep-sub" data-cec="check-closeup" data-cec-open><h3>Close-up of the join</h3>
+            <canvas id="prep-join" class="prep-join" title="The join: the end of the loop (left of the line) runs into its start (right of the line)"></canvas>
+            <div class="prep-row"><label>Join view: <select id="prep-join-span">
             <option value="0.005">10 ms around the join</option>
             <option value="0.02" selected>40 ms around the join</option>
             <option value="0.25">½ s around the join</option>
             <option value="2">4 s around the join</option>
         </select></label></div>
+        </div>
     </section>
 
-    <section class="prep-step" id="step-level">
+    <section class="prep-step" id="step-level" data-cec="level" data-cec-open>
         <h2><span class="prep-num">7</span> Even loudness</h2>
-        <p class="prep-hint">Sets the loop to the same loudness as the player's Auto level (<span id="prep-target"></span>), measured the same way, so it sits evenly with your other sounds. It never turns a sound up past the point where its loudest moment would distort.</p>
+        <div class="prep-sub prep-about" data-cec="level-about"><h3>How this step works</h3>
+            <p class="prep-hint">Sets the loop to the same loudness as the player's Auto level (<span id="prep-target"></span>), measured the same way, so it sits evenly with your other sounds. It never turns a sound up past the point where its loudest moment would distort.</p>
+        </div>
         <div class="prep-row"><label class="prep-check"><input type="checkbox" id="prep-normalize" checked> Match the player's Auto level</label></div>
         <p id="prep-level-info" class="prep-info"></p>
     </section>
 
-    <section class="prep-step" id="step-listen">
+    <section class="prep-step" id="step-listen" data-cec="listen" data-cec-open>
         <h2><span class="prep-num">8</span> Listen to it repeat</h2>
-        <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
+        <div class="prep-sub prep-about" data-cec="listen-about"><h3>How this step works</h3>
+            <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
+        </div>
         <div class="prep-row">
             <button type="button" id="prep-play" class="prep-btn prep-primary">▶ Play repeating</button>
             <button type="button" id="prep-play-join" class="prep-btn">▶ Hear the join</button>
@@ -246,9 +344,11 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         </div>
     </section>
 
-    <section class="prep-step" id="step-save">
+    <section class="prep-step" id="step-save" data-cec="save" data-cec-open>
         <h2><span class="prep-num">9</span> Save the loop</h2>
-        <p class="prep-hint">Saves the finished loop as a new WAV file. Then add it to a mix in Mack's Sounds with ➕ Add Local and switch its Loop on.</p>
+        <div class="prep-sub prep-about" data-cec="save-about"><h3>How this step works</h3>
+            <p class="prep-hint">Saves the finished loop as a new WAV file. Then add it to a mix in Mack's Sounds with ➕ Add Local and switch its Loop on.</p>
+        </div>
         <div class="prep-row">
             <label class="prep-grow">File name <input type="text" id="prep-name"></label>
             <button type="button" id="prep-save" class="prep-btn prep-primary">Save loop as WAV</button>
@@ -256,9 +356,11 @@ body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-
         <p id="prep-save-info" class="prep-info"></p>
     </section>
 
-    <section class="prep-step" id="step-history">
+    <section class="prep-step" id="step-history" data-cec="history" data-cec-open>
         <h2><span class="prep-num">⟲</span> Saved loops</h2>
-        <p class="prep-hint">The last 25 loops saved from this page, in this browser, newest first, with the settings that made them. "Use these settings" fills in the steps again when the same original sound is open. The folder isn't listed: browsers never tell a web page where you saved a file (a privacy rule).</p>
+        <div class="prep-sub prep-about" data-cec="history-about"><h3>About this list</h3>
+            <p class="prep-hint">The last 25 loops saved from this page, in this browser, newest first, with the settings that made them. "Use these settings" fills in the steps again when the same original sound is open. The folder isn't listed: browsers never tell a web page where you saved a file (a privacy rule).</p>
+        </div>
         <div id="prep-history" class="prep-history"></div>
         <div class="prep-row"><button type="button" id="prep-history-clear" class="prep-btn prep-small">Clear the list</button></div>
     </section>
@@ -418,6 +520,74 @@ function updateAutoLevelUI(track, status = null) {
 }
     </script>
 <script>
+// --- js/cec.js ---
+// --- CEC: COLLAPSE / EXPAND SECTIONS (MS-249, v333) ---
+// A reusable fold for any page, with the same look and behavior as the app's Settings sections (makeSettingsFold,
+// js/settings.js): a full-width title bar with a chevron (▸ closed, ▾ open) that slides the section open or shut.
+// Folding only shows or hides; it never changes anything inside. Which sections are open is remembered in this browser.
+// Needs css/cec.css. Every name here starts with "cec", so the file can join any page's scripts.
+//
+// Use: mark each section with data-cec="a-unique-key" (add data-cec-open to start it open). Its first heading
+// (h1 to h6) becomes the title bar; everything after it folds. Sections may sit inside each other, any number deep.
+//     <section data-cec="step-open" data-cec-open><h2>Open a sound</h2> … </section>
+//     cecSetup(document, 'myPageFolds');   // the second value names the localStorage entry
+// For sections made later (a list redrawn from data), call cecFold(element, { store, key, open, onToggle }) on each.
+const CEC_CHEVRON = '<svg viewBox="0 0 100 100" aria-hidden="true"><path d="M 30,15 L 70,50 L 30,85 Z" fill="currentColor"/></svg>';
+
+function cecLoad(store) { try { const s = JSON.parse(localStorage.getItem(store)); return s && typeof s === 'object' ? s : {}; } catch (e) { return {}; } }
+function cecRemember(store, key, open) {
+    if (!store || !key) return;
+    try { localStorage.setItem(store, JSON.stringify({ ...cecLoad(store), [key]: open })); } catch (e) {}
+}
+// Drops remembered keys that start with prefix but are no longer in keep (e.g. entries that left a list).
+function cecForget(store, prefix, keep) {
+    const s = cecLoad(store), live = new Set(keep);
+    let changed = false;
+    for (const k of Object.keys(s)) if (k.startsWith(prefix) && !live.has(k)) { delete s[k]; changed = true; }
+    if (changed) try { localStorage.setItem(store, JSON.stringify(s)); } catch (e) {}
+}
+
+// Turns el into a fold. Its first heading becomes the title bar (or, with none, a bar titled `title`). The open state
+// comes from the store, then `open`, then data-cec-open. onToggle(open) runs after each click.
+function cecFold(el, { store = null, key = el.dataset.cec, open, title, onToggle } = {}) {
+    if (el.classList.contains('cec')) return el;
+    const heading = el.querySelector(':scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6') || document.createElement('div');
+    if (!heading.parentNode) { heading.textContent = title || key || ''; }
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'cec-toggle';
+    toggle.innerHTML = `<span class="cec-chevron">${CEC_CHEVRON}</span><span class="cec-title"></span>`;
+    toggle.querySelector('.cec-title').append(...heading.childNodes); // moved, not copied: ids and listeners stay
+    heading.classList.add('cec-head');
+    heading.replaceChildren(toggle);
+    const body = document.createElement('div'), inner = document.createElement('div');
+    body.className = 'cec-body'; inner.className = 'cec-inner';
+    inner.append(...[...el.childNodes].filter(n => n !== heading));
+    body.appendChild(inner);
+    el.replaceChildren(heading, body);
+    el.classList.add('cec');
+    const setOpen = isOpen => {
+        el.classList.toggle('cec-open', isOpen);
+        toggle.setAttribute('aria-expanded', String(isOpen));
+        inner.inert = !isOpen; // nothing inside a closed section can be reached with Tab
+    };
+    const saved = store ? cecLoad(store)[key] : undefined;
+    setOpen(typeof saved === 'boolean' ? saved : open ?? el.hasAttribute('data-cec-open'));
+    toggle.addEventListener('click', () => {
+        const isOpen = !el.classList.contains('cec-open');
+        setOpen(isOpen);
+        cecRemember(store, key, isOpen);
+        if (onToggle) onToggle(isOpen);
+    });
+    el.cecSetOpen = isOpen => { setOpen(isOpen); cecRemember(store, key, isOpen); };
+    return el;
+}
+// Folds every [data-cec] inside root, outer sections first.
+function cecSetup(root, store, options = {}) {
+    root.querySelectorAll('[data-cec]').forEach(el => cecFold(el, { store, ...options }));
+}
+    </script>
+<script>
 // --- js/sound-prep.js ---
 // --- SOUND PREP (MS-209 step 1, v331): the loop editor ---
 // A page of its own (sound-prep.html) that turns a long recording into a short loop that repeats seamlessly: open a
@@ -451,6 +621,7 @@ const PREP_CLICK_NEAR_PEAK_DB = 3.5;    // … within 3.5 dB of the recording's 
 const PREP_AR_ORDER = 32;               // the wave model used to redraw a spot: 32 past samples predict the next
 const PREP_REPAIR_CONTEXT = 1024;       // samples either side of a spot the model learns from
 const PREP_HISTORY_MAX = 25;            // saved loops kept in the history (MS-247)
+const PREP_FOLDS_KEY = 'soundPrepFolds'; // which sections are open (MS-249), in localStorage
 
 const prepEl = id => document.getElementById(id);
 let prepSource = null;   // the open sound: { name, file, kind, rate, channels, frames, bits, read(start, count) }
@@ -613,6 +784,7 @@ async function prepOpenFile(file) {
     // A first stretch: 20 s (or the whole sound if shorter) from a tenth of the way in, away from any fade-in.
     const len = Math.min(source.frames, Math.round(Math.min(20, secs) * source.rate));
     const start = Math.max(0, Math.min(source.frames - len, Math.round(source.frames * 0.1)));
+    prepEl('prep-name').value = ''; // a new sound: a new suggested name
     prepSetLoop(start, start + len, { fit: true });
     prepMessage('');
     prepShowHistory(); // "Use these settings" now works for the loops made from this sound
@@ -629,7 +801,7 @@ function prepSetLoop(start, end, { fit = false, rebuild = true } = {}) {
     const len = end - start;
     prepEl('prep-region-info').textContent = `Loop: ${prepTime(start)} to ${prepTime(end)} · ${(len / src.rate).toFixed(3)} s (${len.toLocaleString('en-US')} samples)` +
         (end - start >= maxLen ? ` · ${PREP_MAX_LOOP_SECONDS / 60} minutes is the longest loop here` : '');
-    prepEl('prep-name').value = prepFileName(); // the suggested name carries the loop's length
+    prepSuggestName(); // the suggested name carries the loop's length
     if (fit) prepFitView();
     prepRequestWave();
     if (rebuild) prepScheduleBuild();
@@ -1390,7 +1562,7 @@ function prepPlay(fromJoin = false) {
     gain.connect(ctx.destination);
     const offset = fromJoin ? Math.max(0, b.frames - Math.round(3 * prepSource.rate)) : 0;
     const first = Math.round((ctx.currentTime + 0.15) * ctx.sampleRate);
-    const p = prepPreview = { ctx, buffer, gain, fromJoin, first, offset, next: 1, sources: [], timer: null };
+    const p = prepPreview = { ctx, buffer, gain, fromJoin, first, offset, next: 1, sources: [], timer: null, loopStart: b.start, frames: b.frames };
     // Play k (k ≥ 1) starts where play k-1 ended: first + (frames - offset) + (k - 1) × frames.
     p.sources.push(prepStartPlay(ctx, buffer, gain, first, offset));
     const frameOf = k => first + (b.frames - offset) + (k - 1) * b.frames;
@@ -1410,6 +1582,32 @@ function prepPlay(fromJoin = false) {
     p.sources[0].onended = () => { p.sources[0].done = true; topUp(); };
     topUp();
     p.timer = setInterval(topUp, 250);
+    const follow = () => { if (prepPreview !== p) return; prepDrawPlayhead(); requestAnimationFrame(follow); };
+    requestAnimationFrame(follow);
+}
+// The play position (MS-250): the sample of the loop being heard now, from the audio clock. The output's timestamp
+// says which context time is reaching the speakers (the clock runs a little ahead of what is heard), so the line
+// sits on what you hear. Before the first play starts: null.
+function prepHeardFrame(p) {
+    const ctx = p.ctx, ts = ctx.getOutputTimestamp ? ctx.getOutputTimestamp() : null;
+    let t = ts && ts.contextTime > 0 ? ts.contextTime + (performance.now() - ts.performanceTime) / 1000 : ctx.currentTime - (ctx.outputLatency || 0);
+    t = Math.min(t, ctx.currentTime);
+    const pos = Math.round(t * ctx.sampleRate) - p.first, lead = p.frames - p.offset;
+    if (pos < 0) return null;
+    return pos < lead ? p.offset + pos : (pos - lead) % p.frames;
+}
+// A line across step 2's picture (and the overview above it) at the play position, wrapping at each repeat.
+let prepPlayhead = null; // the source frame under the line, or null (for measurements)
+function prepDrawPlayhead() {
+    const p = prepPreview, waveHead = prepEl('prep-wave-head'), overHead = prepEl('prep-overview-head');
+    const at = p && prepSource ? prepHeardFrame(p) : null;
+    prepPlayhead = at == null ? null : p.loopStart + at;
+    if (prepPlayhead == null) { waveHead.hidden = overHead.hidden = true; return; }
+    const w = prepEl('prep-wave').clientWidth, x = (prepPlayhead - prepView.start) / prepView.frames * w;
+    waveHead.hidden = x < 0 || x > w;
+    waveHead.style.transform = `translateX(${x.toFixed(1)}px)`;
+    overHead.hidden = false;
+    overHead.style.transform = `translateX(${(prepPlayhead / prepSource.frames * prepEl('prep-overview').clientWidth).toFixed(1)}px)`;
 }
 function prepStopPreview() {
     const p = prepPreview;
@@ -1419,18 +1617,48 @@ function prepStopPreview() {
     p.sources.forEach(s => { s.onended = null; try { s.stop(); } catch (e) {} s.disconnect(); });
     p.gain.disconnect();
     prepEl('prep-play-info').textContent = '';
+    prepDrawPlayhead(); // hides the line
 }
 
 // --- Saving ---
-function prepLengthLabel(seconds) {
-    if (seconds < 60) return `${Number.isInteger(Math.round(seconds * 10) / 10) ? Math.round(seconds) : seconds.toFixed(1)}s`;
-    const m = Math.floor(seconds / 60), s = Math.round(seconds - m * 60);
-    return s === 60 ? `${m + 1}m00s` : `${m}m${String(s).padStart(2, '0')}s`;
+// Automatic names (MS-251): "SOUND PREP - Thunder, Rolling (far) [60s] 01.wav" (JM's convention; Windows doesn't allow
+// "|" in a file name).
+const PREP_NAME_PREFIX = 'SOUND PREP - ';
+// The loop's length as in the quick-length buttons, without the space: 7.5s, 60s, 90s, 2min, 2.5min, 2m15s.
+function prepLengthTag(seconds) {
+    if (seconds < 10) return `${Math.round(seconds * 10) / 10}s`;
+    const s = Math.round(seconds);
+    if (s < 120) return `${s}s`;
+    return s % 30 === 0 ? `${s / 60}min` : `${Math.floor(s / 60)}m${String(s % 60).padStart(2, '0')}s`;
 }
-// "a-1) Clocks … 30m00s.wav" → "a-1) Clocks … 20s loop.wav": the old length tag (if any) gives way to the loop's.
+// The main title of an imported file's name: "f-2) Thunder _ Rolling (far) 2m35s.wav" → "Thunder, Rolling (far)".
+// Drops the extension, a copy number "(2)", a leading code "f-2) ", a trailing length "2m35s" / "60s", and a loop saved
+// here before keeps only its title; " _ " and " - " become ", ". With nothing left, the whole name (no extension).
+function prepMainTitle(fileName) {
+    const whole = fileName.replace(/\.[A-Za-z0-9]{1,5}$/, '').trim();
+    let t = whole.replace(/\s*\(\d+\)$/, '');
+    if (/^SOUND PREP\s*[｜|_-]\s*/i.test(t)) t = t.replace(/^SOUND PREP\s*[｜|_-]\s*/i, '').replace(/\s*\[\d[^\]]*\]\s*\d{1,3}$/, '');
+    t = t.replace(/^[A-Za-z0-9]{1,4}(?:-[A-Za-z0-9]{1,4})?\)\s*/, '')
+        .replace(/\s+(?:\d+m\d{1,2}s|\d+(?:\.\d+)?\s?(?:s|sec|min))$/i, '')
+        .replace(/\s+[_-]\s+/g, ', ')
+        .replace(/\s{2,}/g, ' ').replace(/^[\s,]+|[\s,]+$/g, '');
+    return t || whole;
+}
+function prepNameBase() { return `${PREP_NAME_PREFIX}${prepMainTitle(prepSource.name)} [${prepLengthTag((prepLoop.end - prepLoop.start) / prepSource.rate)}]`; }
+// The next free number for this name among the saved loops: 01, then 02 …
 function prepFileName() {
-    const base = prepSource.name.replace(/\.[^.]+$/, '').replace(/\s+\d+m\d{2}s$/i, '');
-    return `${base} ${prepLengthLabel((prepLoop.end - prepLoop.start) / prepSource.rate)} loop.wav`;
+    const base = prepNameBase(), escaped = base.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const same = new RegExp(`^${escaped} (\\d+)(?:\\.wav)?$`, 'i');
+    let last = 0;
+    for (const h of prepLoadHistory()) { const m = same.exec(h.name); if (m) last = Math.max(last, Number(m[1])); }
+    return `${base} ${String(last + 1).padStart(2, '0')}.wav`;
+}
+// The name field follows the loop until it is edited by hand; then it is left alone until the next save or file.
+let prepAutoName = '';
+function prepSuggestName(force = false) {
+    const field = prepEl('prep-name');
+    if (!force && field.value.trim() && field.value !== prepAutoName) return;
+    field.value = prepAutoName = prepFileName();
 }
 // 16-bit PCM (with a tiny, inaudible random dither so quiet fades don't turn grainy), or 24-bit when the original
 // had more than 16 bits. Same sample rate and channels as the original.
@@ -1482,6 +1710,7 @@ async function prepSave() {
     }
     prepEl('prep-save-info').textContent = `Saved "${name}": ${(blob.size / 1048576).toFixed(1)} MB, WAV ${bits}-bit, ${prepSource.rate.toLocaleString('en-US')} Hz, ${prepSource.channels === 1 ? 'mono' : 'stereo'}, ${(prepBuilt.frames / prepSource.rate).toFixed(3)} s.`;
     prepAddHistory(name, blob.size, bits, how);
+    prepSuggestName(true); // the next save gets the next number
 }
 
 // --- Saved loops: a history in this browser (MS-247) ---
@@ -1506,21 +1735,30 @@ function prepShowHistory() {
     const list = prepLoadHistory(), box = prepEl('prep-history');
     prepEl('prep-history-clear').hidden = !list.length;
     if (!list.length) { box.innerHTML = '<p class="prep-history-empty">No loops saved yet in this browser.</p>'; return; }
+    // Each entry is one line (name · length · date) with its own chevron that opens the details (MS-249).
     box.innerHTML = list.map((h, i) => {
         const rate = h.source.rate, secs = f => (f / rate).toFixed(3);
         const same = prepSource && prepSource.name === h.source.name && prepSource.frames === h.source.frames;
-        const when = new Date(h.savedAt).toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const date = new Date(h.savedAt);
+        const when = date.toLocaleString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const short = date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
         const blend = h.blend.on ? `blend ${Math.round(h.blend.ms)} ms ${h.blend.curve === 'linear' ? 'linear' : 'equal-power'}` : 'no blend';
         const level = h.normalize ? `loudness ${h.gainDb >= 0 ? '+' : '−'}${Math.abs(h.gainDb).toFixed(1)} dB (matched to Auto level)` : 'loudness left as it was';
         const repair = h.repair?.on ? `repair on (${[h.repair.declip && 'flat tops', h.repair.decrackle && 'clicks'].filter(Boolean).join(' and ') || 'nothing'}): ${h.repair.spots} spot${h.repair.spots === 1 ? '' : 's'}` : 'repair off';
-        return `<div class="prep-history-item">
-            <strong>${prepEscape(h.name)}</strong> · ${(h.bytes / 1048576).toFixed(1)} MB · WAV ${h.bits}-bit · ${when}<br>
-            From: ${prepEscape(h.source.name)} (${prepTime(h.source.frames, rate, 1)}, ${rate.toLocaleString('en-US')} Hz)<br>
-            Loop: starts at ${secs(h.start)} s, ${secs(h.end - h.start)} s long (samples ${h.start.toLocaleString('en-US')} to ${h.end.toLocaleString('en-US')}) · ${blend} · ${level} · ${repair}<br>
-            <span class="prep-note">${h.how === 'dialog' ? 'Saved with the Save dialog, in the folder you chose there.' : 'Downloaded: usually your Downloads folder.'}</span>
-            <div class="prep-row"><button type="button" class="prep-btn prep-small" data-history="${i}" ${same ? '' : `disabled title="Open ${prepEscape(h.source.name)} first"`}>Use these settings</button>${same ? '' : `<span class="prep-note">Open the original first to use these settings.</span>`}</div>
+        return `<div class="prep-history-item" data-key="saved-${prepEscape(h.savedAt)}">
+            <h3><span class="prep-history-name" title="${prepEscape(h.name)}">${prepEscape(h.name)}</span><span class="prep-history-meta">${((h.end - h.start) / rate).toFixed(1)} s · ${short}</span></h3>
+            <div class="prep-history-details">
+                ${(h.bytes / 1048576).toFixed(1)} MB · WAV ${h.bits}-bit · saved ${when}<br>
+                From: ${prepEscape(h.source.name)} (${prepTime(h.source.frames, rate, 1)}, ${rate.toLocaleString('en-US')} Hz)<br>
+                Loop: starts at ${secs(h.start)} s, ${secs(h.end - h.start)} s long (samples ${h.start.toLocaleString('en-US')} to ${h.end.toLocaleString('en-US')}) · ${blend} · ${level} · ${repair}<br>
+                <span class="prep-note">${h.how === 'dialog' ? 'Saved with the Save dialog, in the folder you chose there.' : 'Downloaded: usually your Downloads folder.'}</span>
+                <div class="prep-row"><button type="button" class="prep-btn prep-small" data-history="${i}" ${same ? '' : `disabled title="Open ${prepEscape(h.source.name)} first"`}>Use these settings</button>${same ? '' : `<span class="prep-note">Open the original first to use these settings.</span>`}</div>
+            </div>
         </div>`;
     }).join('');
+    const items = [...box.querySelectorAll('.prep-history-item')];
+    items.forEach(el => cecFold(el, { store: PREP_FOLDS_KEY, key: el.dataset.key, open: false }));
+    cecForget(PREP_FOLDS_KEY, 'saved-', items.map(el => el.dataset.key)); // forget entries that left the list
 }
 function prepUseHistory(i) {
     const h = prepLoadHistory()[i];
@@ -1535,6 +1773,7 @@ function prepUseHistory(i) {
     prepFound = null; prepShowFound();
     prepSetLoop(h.start, h.end, { fit: true });
     prepMessage(`Settings of "${h.name}" filled in: the same stretch and steps, so the loop comes out the same.`);
+    prepEl('step-region').cecSetOpen?.(true);
     prepEl('step-region').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -1559,10 +1798,13 @@ async function prepTrimSilence() {
 function prepSetupPage() {
     try { if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
     prepEl('prep-target').textContent = `${AUTO_LEVEL_TARGET} LUFS`;
+    // Every step folds with a chevron on its title bar, and so do the parts inside it (MS-249, js/cec.js); which ones
+    // are open is remembered in this browser. The steps start open, "How this step works" starts closed.
+    cecSetup(document, PREP_FOLDS_KEY);
     // The explanation under the title: folded on every load, the chevron opens it (as in the Project Hub).
+    prepEl('prep-intro-toggle').innerHTML = `<span class="cec-chevron">${CEC_CHEVRON}</span>`; // the same chevron as the folds
     prepEl('prep-intro-toggle').addEventListener('click', e => {
         const open = document.body.classList.toggle('prep-intro-open');
-        e.currentTarget.textContent = open ? '▾' : '▸';
         e.currentTarget.setAttribute('aria-expanded', open);
     });
     // Inside the Project Hub's SOUND PREP tab (MS-245): links open new tabs instead of replacing the Hub's tab.
@@ -1571,6 +1813,7 @@ function prepSetupPage() {
         const own = prepEl('prep-own-tab');
         own.href = location.pathname; own.hidden = false;
     }
+    prepEl('prep-file-button').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); prepEl('prep-file').click(); } });
     prepEl('prep-file').addEventListener('change', e => { const f = e.target.files[0]; if (f) prepOpenFile(f); e.target.value = ''; });
     document.addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('prep-dragover'); });
     document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('prep-dragover'); });
@@ -1660,7 +1903,8 @@ function prepSetupPage() {
     window.soundPrep = {
         open: prepOpenFile, find: prepFindJoin, build: prepBuild, setLoop: prepSetLoop, play: prepPlay, stop: prepStopPreview, startPlay: prepStartPlay,
         encode: prepEncodeWav, repair: prepRepairChannels, findFlatTops: prepFindFlatTops, findClicks: prepFindClicks,
-        state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview, repair: prepRepairCache })
+        heard: () => prepPreview ? prepHeardFrame(prepPreview) : null, mainTitle: prepMainTitle, lengthTag: prepLengthTag,
+        state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview, repair: prepRepairCache, playhead: prepPlayhead })
     };
 }
 prepSetupPage();
