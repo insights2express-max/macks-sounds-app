@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-c1Q5pbF5xGaLSqtFtTbt9/P1TZEXP43z+ZSx3Q3cUKQ=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-sRNWghKOjF2TQYits6dHJINyMLHnTO+0YWF5Rg9r+6o=' 'sha256-W3ukLLk3um5i9rYGHuqvYLiiDSZslsMuK0rUtwP6v3c=' 'sha256-pDA0Jr1Z4s+cy/JiEK93lPvVO7Qx0uwnxqHx0KtJk0M=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-dbZ07mKz5I31pUJXTG+o+UXNlTX/9GNyBbl+qIlfo9c=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-/zhmEsTfZkatrm/6/SQ7XFTAOt15WIw554oKBhVKJDI=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-AvWXo9A8vpgRnCKQGwSfd/fZtZ9ZggOSKsZTAfKZBN0=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JplmPLKGyXPww9NedCLroIJQdBVMVxdIkdW7gwQFAWk=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-rmKEZM1Mw8L+ujTDthe8o4Tb7uYpMznahh5ojvKSLpM=' 'sha256-ycYgV7b+IsLv4KD6EZp51VWIR8rZkBIKvg1g5/YWlCg='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Mack's Sounds v329</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-kvoThsNrRCOwnNa2vFSxXamTR/bMkWolO0gRq+6mIDs=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-AvWXo9A8vpgRnCKQGwSfd/fZtZ9ZggOSKsZTAfKZBN0=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-rmKEZM1Mw8L+ujTDthe8o4Tb7uYpMznahh5ojvKSLpM=' 'sha256-Kg7QVwYwc1HhxKafVVxX61c/Trsc88sj2yiBly/5hls='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Mack's Sounds v330</title>
     <!-- The 18 built-in fonts ship with the app (v322, MS-229); build.ps1 puts them into the built page. -->
     <style>
 /* The app's built-in fonts (v322, MS-229): Google Fonts' Latin files, shipped with the app so no font is fetched
@@ -190,8 +190,7 @@ html[data-theme='light'] #settings-btn { color: #333; }
 @media (prefers-reduced-motion: reduce) { .track.is-soloed, .sync-group.is-soloed { animation: none; } }
 .track.is-disabled { opacity: 0.6; }
 .track.dragging { opacity: 0.4; }
-.drag-over-indicator-track { height: 8px; background: rgb(228, 63, 90); box-shadow: 0 0 10px rgba(228, 63, 90, 0.8); border-radius: 4px; margin: -4px 0; position: relative; z-index: 1; pointer-events: none; }
-/* MS-162: the label that follows the pointer while dragging (the item's name, or "⠿ 3 tracks" for a block, MS-210). */
+.drag-over-indicator-track { height: 8px; background: rgb(228, 63, 90); box-shadow: 0 0 10px rgba(228, 63, 90, 0.8); border-radius: 4px; margin: -4px 0; position: relative; z-index: 1; pointer-events: none; }/* MS-162: the label that follows the pointer while dragging (the item's name, or "⠿ 3 tracks" for a block, MS-210). */
 .drag-block-label { position: fixed; top: 0; left: 0; z-index: 4000; pointer-events: none; max-width: calc(100vw - 8px); overflow: hidden; text-overflow: ellipsis; padding: 0.4em 0.8em; border-radius: 6px; background: rgb(228, 63, 90); color: #fff; font-weight: bold; white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,0.5); }
 /* MS-162: the ⠿ handles start the app's own drag (js/drag-drop.js): a finger on them never scrolls, selects text or opens
    the browser's long-press menu. While dragging, the grabbing hand shows everywhere and nothing gets selected. */
@@ -396,7 +395,8 @@ input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-o
 .track-default-length { display: inline-flex; align-items: center; gap: 0.4rem; }
 .track-defaults-grid .track-default-length input[type="number"] { width: 90px; }
 .track-default-note { grid-column: 1 / -1; margin: -0.2rem 0 0.2rem; }
-.track-filter-input, .track-sort-select { max-width: 160px; }
+.track-filter-input { max-width: 160px; }
+.track-sort-select { max-width: 230px; } /* MS-239: room for "Sorted: Long-Short" */
 .filter-wrapper { position: relative; }
 .clear-filter-btn { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--main-font-color); cursor: pointer; font-size: 1.2em; padding: 0 0.5rem; display: none; }
 
@@ -480,6 +480,8 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 #message-area { position: fixed; right: 1rem; bottom: 1rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.5rem; max-width: min(420px, calc(100vw - 2rem)); }
 .app-message { background: var(--secondary-color); color: var(--text-color); padding: 0.7rem 1rem; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.5); white-space: pre-line; cursor: pointer; transition: opacity 0.3s; }
 .app-message.closing { opacity: 0; }
+/* MS-237: while an item is dragged, messages at the bottom of the screen fade back and no longer hide the drop spots under them. */
+html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 .undo-message { display: flex; align-items: center; gap: 0.75rem; }
 .undo-message-text { flex: 1; }
 .undo-message-btn { flex: none; font-weight: bold; }
@@ -511,6 +513,16 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 .mix-title-stack { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; }
 .mix-eq-summary { font-size: 0.8rem; opacity: 0.85; padding-left: 0.2rem; cursor: pointer; overflow-wrap: anywhere; }
 .mix-eq-summary[hidden] { display: none; }
+/* MS-240: the ⓘ beside TONE and MIX EQ (a 44 px tap target on a phone, drawn small) and the guide it opens. */
+.tone-info-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 1.6em; min-height: 1.6em; margin: -0.3em 0; border-radius: 50%; font-size: 1.1em; line-height: 1; cursor: pointer; opacity: 0.8; -webkit-user-select: none; user-select: none; }
+.tone-info-btn:hover, .tone-info-btn:focus-visible { opacity: 1; color: var(--accent-color); }
+.tone-primer { position: fixed; z-index: 3500; width: min(340px, calc(100vw - 16px)); max-height: calc(100vh - 16px); overflow-y: auto; background: var(--secondary-color); color: var(--text-color); border-radius: 10px; padding: 0.75rem 1rem 0.9rem; box-shadow: 0 8px 32px rgba(0,0,0,0.6); font-size: 0.9rem; line-height: 1.4; text-align: left; }
+.tone-primer-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.tone-primer-close { min-width: 36px; min-height: 36px; padding: 0; flex-shrink: 0; }
+.tone-primer-intro { margin: 0.25rem 0 0.5rem; opacity: 0.85; }
+.tone-primer dl { margin: 0; }
+.tone-primer dt { font-weight: bold; margin-top: 0.5rem; }
+.tone-primer dd { margin: 0.1rem 0 0; }
 
 /* --- MS-104: phone layout, below 600 px wide (the same width as phoneLayout in js/tracks.js) --- */
 @media (max-width: 600px) {
@@ -605,6 +617,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
     /* v329: Tone and Mix EQ rows give the slider as much of the width as they can. */
     .tone-row { gap: 0.5rem; }
     .tone-readout { flex-basis: 4.4em; }
+    .tone-info-btn { min-width: 44px; min-height: 44px; margin: -14px -8px; vertical-align: middle; }
 
     /* Sync Group header, like a track's: switch, arrow and name, S, mute / play, − / +, Loop / select box, ▲ ▼, grab
        handle, ❌ / Sort and the timer. */
@@ -658,7 +671,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v329</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v330</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -967,7 +980,7 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v329';
+const APP_VERSION = 'v330';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -1337,10 +1350,11 @@ function createMixUI(mix) {
     `;
     mixesArea.prepend(mixContainer);
     
-    const sortSelect = mixContainer.querySelector('.track-sort-select');
-    const sortOptions = {'': 'Sort By...', 'name_asc': 'Name (A-Z)', 'name_desc': 'Name (Z-A)', 'duration_asc': 'Duration (Short-Long)', 'duration_desc': 'Duration (Long-Short)'};
-    for(const [val, text] of Object.entries(sortOptions)) { sortSelect.options.add(new Option(text, val)); }
-    
+    setupSortSelect(mixContainer.querySelector('.track-sort-select'), mixContainer.querySelector('.tracks-container'), async type => {
+        if (type.startsWith('duration')) await ensureMixSounds(mix); // lengths are known once the sounds are unpacked
+        sortTracks(mix.id, type);
+    });
+
     const mixHeaderEl = mixContainer.querySelector('.mix-header'); const chevron = mixContainer.querySelector('.mix-chevron');
     const toggleMixExpand = (expand) => { 
         mix.isExpanded = (expand !== undefined) ? expand : !mix.isExpanded; 
@@ -1378,13 +1392,6 @@ function createMixUI(mix) {
     mixContainer.querySelector('.delete-mix-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the mix "${mix.name}"?`)) { deleteMixWithUndo(mix.id); }});
     mixContainer.querySelector('.export-mix-btn').addEventListener('click', () => exportMix(mix.id));
     mixContainer.querySelector('.add-sync-group-btn').addEventListener('click', () => createSyncGroup(mix.id));
-    sortSelect.addEventListener('change', async e => {
-        const type = e.target.value;
-        e.target.selectedIndex = 0;
-        if (type.startsWith('duration')) await ensureMixSounds(mix); // lengths are known once the sounds are unpacked
-        sortTracks(mix.id, type);
-        scheduleSave();
-    });
     setupLevelControl(mixContainer.querySelector('.mix-header .level-control'),
         () => viewLevel([...mixContainer.querySelectorAll('.sync-group')], [...mixContainer.querySelectorAll('.track')]),
         level => { mixContainer.querySelectorAll('.sync-group').forEach(g => setGroupLevel(g, level)); mixContainer.querySelectorAll('.tracks-container > .track').forEach(t => setTrackLevel(t, level)); },
@@ -1503,8 +1510,9 @@ function attachTrackBuffer(mix, track, buffer) {
 
 // MS-104: the title bar of a track's Timing / Volume / Speed / Fades box. A tap opens or closes the box; while closed,
 // the bar still shows the box's current choice (e.g. "VOLUME · Varying"), filled in by updateSectionSummaries.
-function sectionToggle(title, tip) {
-    return `<button type="button" class="section-toggle" title="${escapeHtml(tip)}" aria-expanded="false"><span class="section-chevron">${ICONS.CHEVRON}</span><span class="section-title">${title}</span><span class="section-summary"></span></button>`;
+// afterTitle: extra markup right after the title (the Tone box's ⓘ, MS-240).
+function sectionToggle(title, tip, afterTitle = '') {
+    return `<button type="button" class="section-toggle" title="${escapeHtml(tip)}" aria-expanded="false"><span class="section-chevron">${ICONS.CHEVRON}</span><span class="section-title">${title}</span>${afterTitle}<span class="section-summary"></span></button>`;
 }
 
 // MS-104: on a phone the track header keeps only the switch, name, timer, Solo, Mute and chevron; the grab handle,
@@ -1923,15 +1931,9 @@ function createSyncGroupUI(mix, groupData) {
     ['normal', 'random_play'].forEach(m => modeSelect.options.add(new Option(m.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()), m)));
     modeSelect.value = groupData.settings.mode;
     
-    const groupSortSelect = groupContainer.querySelector('.sync-group-sort-select');
-    const groupSortOptions = {'': 'Sort By...', 'name_asc': 'Name (A-Z)', 'name_desc': 'Name (Z-A)', 'duration_asc': 'Duration (Short-Long)', 'duration_desc': 'Duration (Long-Short)'};
-    for(const [val, text] of Object.entries(groupSortOptions)) { groupSortSelect.options.add(new Option(text, val)); }
-    groupSortSelect.addEventListener('change', async e => {
-        const type = e.target.value;
-        e.target.selectedIndex = 0;
+    setupSortSelect(groupContainer.querySelector('.sync-group-sort-select'), groupContainer.querySelector('.sync-group-tracks'), async type => {
         if (type.startsWith('duration')) await ensureMixSounds(mix);
         sortGroupTracks(mix.id, groupData.id, type);
-        scheduleSave();
     });
 
     const titleGroup = groupContainer.querySelector('.sync-group-title-group');
@@ -3654,7 +3656,7 @@ function setupToneRows(root, get, set) {
 // --- A track's Tone box (MS-140) ---
 function trackToneBoxHTML() {
     return `<div class="mode-box tone-box" data-section="tone">
-        ${sectionToggle('Tone', 'Low / Mid / High boost or cut parts of the sound; Low-pass softens it by removing the highs above a point; Pan places it left or right.')}
+        ${sectionToggle('Tone', 'Low / Mid / High boost or cut parts of the sound; Low-pass softens it by removing the highs above a point; Pan places it left or right.', toneInfoButton('tone'))}
         <div class="section-body"><div class="section-body-inner"><div class="section-content tone-content">
         ${eqControlsHTML(TRACK_EQ_KEYS)}
         ${toneRowHTML('lowpass', 'lowpass', 'Low-pass', 'Low-pass: keeps the sound below this point and softens what is above it (muffled, distant). At the far right it is off.')}
@@ -3677,7 +3679,7 @@ function syncTrackToneUI(trackElement, settings) { const box = trackElement?.que
 // --- A mix's EQ (MS-221): a box at the end of the mix's "..." menu, and a line under the mix's name ---
 function mixEqBoxHTML(mixId) {
     return `<div class="mode-box mix-eq-box">
-        <button type="button" class="section-toggle" title="Boost or cut the bass, middle or treble of the whole mix" aria-expanded="false"><span class="section-chevron">${ICONS.CHEVRON}</span><span class="section-title">Mix EQ</span><span class="section-summary"></span></button>
+        <button type="button" class="section-toggle" title="Boost or cut the bass, middle or treble of the whole mix" aria-expanded="false"><span class="section-chevron">${ICONS.CHEVRON}</span><span class="section-title">Mix EQ</span>${toneInfoButton('mixEq')}<span class="section-summary"></span></button>
         <div class="section-body"><div class="section-body-inner"><div class="section-content tone-content">
         ${eqControlsHTML({ low: 'low', mid: 'mid', high: 'high' }, `
             <label class="tone-switch" title="Switch the mix's EQ on or off (its settings are kept)"><span class="switch"><input type="checkbox" class="mix-eq-on" aria-label="Mix EQ on"><span class="slider"></span></span><span>On</span></label>
@@ -3716,6 +3718,66 @@ function setupMixEq(mix, mixContainer, openMenu) {
     mix.eqInsert = createToneInsert(mix.mixGainNode, masterGain);
     applyMixEq(mix);
     updateMixEqUI(mix);
+}
+
+// --- ⓘ primers (MS-240): a short plain-English guide to the Tone and Mix EQ settings ---
+// The ⓘ sits inside the box's title bar (a button), so it is a span: a tap on it opens the guide and doesn't fold the box.
+// The guide closes with ✕, a tap anywhere outside it, or Esc. Works the same with a finger or a mouse (no hover needed).
+const TONE_PRIMER_ROWS = {
+    bands: ['Low / Mid / High', 'Turn the deep, middle or bright part of the sound up (+) or down (−). Low is the rumble and bass, Mid the body of the sound, High the hiss and sparkle. +6 dB is clearly louder, −6 dB clearly softer.'],
+    lowpass: ['Low-pass', 'Lets the deep sounds through and cuts the high ones. Lower it to make a sound softer and more distant, as if it were behind a wall or in the next room. All the way to the right, it is off.'],
+    pan: ['Pan', 'Moves the sound toward the left or right ear (best heard with headphones). Center plays it equally in both.'],
+    trackFlat: ['Flat', 'Puts Low, Mid and High back to 0 dB (no change). Low-pass and Pan stay as they are.'],
+    mixFlat: ['Flat', 'Puts Low, Mid and High back to 0 dB (no change).'],
+    on: ['On', 'Switches the whole Mix EQ on or off. Your settings are kept for when you switch it back on.'],
+    keep: ['Keep Loudness', 'A boost also makes the mix louder. This turns the mix down by about what your boosts add, so you hear the change in tone rather than just "louder". Cuts never turn it up.'],
+    reset: ['Reset one setting', 'Double-tap a row (double-click with a mouse) to put just that setting back: 0 dB, Low-pass off or Pan center.']
+};
+const TONE_PRIMERS = {
+    tone: { title: 'Tone: what the settings do', intro: 'Shapes how this one track sounds.', rows: ['bands', 'lowpass', 'pan', 'trackFlat', 'reset'] },
+    mixEq: { title: 'Mix EQ: what the settings do', intro: 'Shapes how the whole mix sounds, on top of each track\'s own Tone.', rows: ['bands', 'mixFlat', 'on', 'keep', 'reset'] }
+};
+function toneInfoButton(kind) {
+    return `<span class="tone-info-btn" role="button" tabindex="0" data-primer="${kind}" title="What do these settings do?" aria-label="What do these settings do?">ⓘ</span>`;
+}
+function closeTonePrimer() { document.querySelector('.tone-primer')?.remove(); }
+function openTonePrimer(btn) {
+    closeTonePrimer();
+    const primer = TONE_PRIMERS[btn.dataset.primer];
+    if (!primer) return;
+    const box = document.createElement('div');
+    box.className = 'tone-primer';
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-label', primer.title);
+    box.innerHTML = `<div class="tone-primer-head"><strong>${escapeHtml(primer.title)}</strong><button type="button" class="tone-primer-close small-btn" aria-label="Close">✕</button></div>
+        <p class="tone-primer-intro">${escapeHtml(primer.intro)}</p>
+        <dl>${primer.rows.map(key => { const [term, text] = TONE_PRIMER_ROWS[key]; return `<dt>${escapeHtml(term)}</dt><dd>${escapeHtml(text)}</dd>`; }).join('')}</dl>`;
+    document.body.appendChild(box);
+    // Under the ⓘ, kept on screen (fixed: it stays put if the page scrolls behind it).
+    const at = btn.getBoundingClientRect(), margin = 8;
+    const left = Math.max(margin, Math.min(at.left - 16, window.innerWidth - box.offsetWidth - margin));
+    let top = at.bottom + 6;
+    if (top + box.offsetHeight > window.innerHeight - margin) top = Math.max(margin, at.top - 6 - box.offsetHeight);
+    box.style.left = `${left}px`;
+    box.style.top = `${top}px`;
+    box.querySelector('.tone-primer-close').focus({ preventScroll: true });
+}
+function setupTonePrimers() {
+    // Capture phase: the ⓘ's tap reaches no other handler, so the title bar around it doesn't fold or open the box.
+    document.addEventListener('click', e => {
+        const btn = e.target.closest?.('.tone-info-btn');
+        if (btn) { e.preventDefault(); e.stopPropagation(); openTonePrimer(btn); return; }
+        if (e.target.closest?.('.tone-primer-close')) closeTonePrimer();
+    }, true);
+    document.addEventListener('keydown', e => {
+        const btn = e.target.closest?.('.tone-info-btn');
+        if (btn && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); e.stopPropagation(); openTonePrimer(btn); }
+        else if (e.key === 'Escape' && document.querySelector('.tone-primer')) closeTonePrimer();
+    }, true);
+    // A tap or click anywhere outside the guide closes it (the ⓘ itself reopens it on its click).
+    document.addEventListener('pointerdown', e => {
+        if (!e.target.closest?.('.tone-primer, .tone-info-btn')) closeTonePrimer();
+    }, true);
 }
     </script>
     <script>
@@ -3821,6 +3883,11 @@ const HOLD_NAME_SELECTOR = '.track-name-display, .sync-group-title, .mix-title';
 const HOLD_LIFT_TIME = 500;      // ms a name is held still before the item lifts
 const HOLD_MOVE_TOLERANCE = 8;   // px the pointer may drift during the hold; more is a scroll (or a text selection)
 const HOLD_HINT_KEY = 'holdToMoveHintShown';
+// MS-238: the top and bottom edges of a Sync Group's title bar that place a dragged track above or below the group
+// (the rest of the group takes it in): a fifth of the bar's height, at least 12 px and at most 24 px.
+const GROUP_EDGE_SHARE = 0.2;
+const GROUP_EDGE_MIN = 12;
+const GROUP_EDGE_MAX = 24;
 
 // What a ⠿ handle or a held name moves: { el, type ('track', 'group' or 'mix') }, or null.
 function dragItemOf(target) {
@@ -3872,6 +3939,18 @@ function setupGlobalDragDropListeners() {
         document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
     };
     const isBelowMiddle = (target, y) => { const rect = target.getBoundingClientRect(); return (y - rect.top) / rect.height > 0.5; };
+    // MS-238: 'above' or 'below' when a track dragged over a Sync Group is at one of its edges, else null (into the group).
+    // The title bar is the group's header without its settings box (on a phone it wraps to several rows).
+    function groupEdgeSpot(group, y) {
+        const groupRect = group.getBoundingClientRect();
+        const header = group.querySelector('.sync-group-header').getBoundingClientRect();
+        const controls = group.querySelector('.sync-group-controls')?.getBoundingClientRect();
+        const barBottom = controls?.height ? controls.top : header.bottom;
+        const edge = Math.max(GROUP_EDGE_MIN, Math.min(GROUP_EDGE_MAX, (barBottom - header.top) * GROUP_EDGE_SHARE));
+        if (y < header.top + edge) return 'above'; // also the group's own margin above its title bar
+        const bottom = group.classList.contains('expanded') ? groupRect.bottom : barBottom;
+        return y > bottom - edge ? 'below' : null;
+    }
 
     // Where the item would land for the point under the pointer: { className, parent, before, intoGroup }, or null.
     // The same rules as the browser drag-and-drop before v325.
@@ -3882,19 +3961,24 @@ function setupGlobalDragDropListeners() {
             if (hit.closest('.mix-container') !== ownMix) return null; // tracks stay in their own mix (their audio lives there)
             const targetTrack = hit.closest('.track');
             const targetSyncGroup = hit.closest('.sync-group');
-            const dropZone = hit.closest('.tracks-container, .sync-group-tracks');
-            const intoGroup = targetSyncGroup && hit.closest('.sync-group-tracks') ? targetSyncGroup : null; // highlighted only when the drop goes into the group
-            if (targetTrack && !movingEls.includes(targetTrack)) {
+            if (targetTrack && movingEls.includes(targetTrack)) return null; // over the dragged track itself: it stays put
+            if (targetTrack) {
+                const intoGroup = targetTrack.closest('.sync-group'); // highlighted when the drop goes into the group
                 return { className: 'drag-over-indicator-track', parent: targetTrack.parentNode, before: isBelowMiddle(targetTrack, y) ? targetTrack.nextSibling : targetTrack, intoGroup };
             }
-            if (targetSyncGroup && !hit.closest('.sync-group-tracks') && targetSyncGroup.parentElement.classList.contains('tracks-container')) {
-                // MS-192: over a Sync Group's header or edges (not its track list): place the track before or after the group.
-                return { className: 'drag-over-indicator-track', parent: targetSyncGroup.parentNode, before: isBelowMiddle(targetSyncGroup, y) ? targetSyncGroup.nextSibling : targetSyncGroup, intoGroup };
+            if (targetSyncGroup) {
+                // MS-237 / MS-238: anywhere else on a Sync Group, open or closed (title bar, settings, track list), adds the
+                // track at the end of the group, except the edges (MS-192): the top edge of the title bar places it above
+                // the group, the bottom edge below it (the title bar's bottom edge on a closed group, the group's own on an open one).
+                const edge = groupEdgeSpot(targetSyncGroup, y);
+                if (edge) return { className: 'drag-over-indicator-track', parent: targetSyncGroup.parentNode, before: edge === 'below' ? targetSyncGroup.nextSibling : targetSyncGroup };
+                return { className: 'drag-over-indicator-track', parent: targetSyncGroup.querySelector('.sync-group-tracks'), before: null, intoGroup: targetSyncGroup };
             }
+            const dropZone = hit.closest('.tracks-container');
             if (dropZone && !dropZone.contains(draggedElement) && dropZone.children.length === 0) {
-                return { className: 'drag-over-indicator-track', parent: dropZone, before: null, intoGroup };
+                return { className: 'drag-over-indicator-track', parent: dropZone, before: null };
             }
-            return intoGroup ? { intoGroup } : null;
+            return null;
         }
         if (type === 'mix') {
             const targetMix = hit.closest('.mix-container');
@@ -3909,10 +3993,23 @@ function setupGlobalDragDropListeners() {
         return { className: 'drag-over-indicator-group', parent: target.parentNode, before: isBelowMiddle(target, y) ? target.nextSibling : target };
     }
 
+    function nearestListItem(list, y) {
+        let best = null, bestDistance = Infinity;
+        for (const item of list.children) {
+            if (item.matches(DRAG_INDICATOR_SELECTOR)) continue;
+            const rect = item.getBoundingClientRect();
+            const distance = y < rect.top ? rect.top - y : y > rect.bottom ? y - rect.bottom : 0;
+            if (rect.height && distance < bestDistance) { best = item; bestDistance = distance; }
+        }
+        return best;
+    }
+
     // Moves the drop marker to the spot under the pointer; it is rebuilt only when the spot changes.
     function updateDropMarker() {
-        const hit = document.elementFromPoint(drag.x, drag.y);
+        let hit = document.elementFromPoint(drag.x, drag.y);
         if (hit?.closest(DRAG_INDICATOR_SELECTOR)) return; // over the marker itself: it stays where it is
+        // MS-237: in the gap between two items of a list, the nearer item counts, so a drop there isn't lost.
+        if (hit?.matches('.tracks-container, .sync-group-tracks')) hit = nearestListItem(hit, drag.y) || hit;
         const spot = hit ? dropSpotAt(hit) : null;
         const current = document.querySelector(DRAG_INDICATOR_SELECTOR);
         const same = current && spot?.className && current.className === spot.className && current.parentNode === spot.parent
@@ -5571,6 +5668,37 @@ function sortTracks(mixId, sortType) {
     mix.syncGroups.sort((a, b) => items.findIndex(i => i.id === a.id) - items.findIndex(i => i.id === b.id));
 }
 
+// MS-239: a Sort By box (a mix's or a Sync Group's) always shows the list's current order: "Order: Custom", or
+// "Sorted: A-Z" (etc.) from a sort until the order changes (a drag, a ▲ / ▼ move, an added or pasted track or group,
+// an Undo). Deleting an item keeps the rest in order, so the label stays. Not saved: a reload shows "Order: Custom".
+// sort(type): sorts the list (may be async). Picking the same sort again sorts again (the box always shows the label).
+const SORT_CHOICES = { name_asc: 'Name (A-Z)', name_desc: 'Name (Z-A)', duration_asc: 'Duration (Short-Long)', duration_desc: 'Duration (Long-Short)' };
+const SORTED_LABELS = { name_asc: 'Sorted: A-Z', name_desc: 'Sorted: Z-A', duration_asc: 'Sorted: Short-Long', duration_desc: 'Sorted: Long-Short' };
+function setupSortSelect(select, list, sort) {
+    select.options.add(new Option('Order: Custom', ''));
+    for (const [value, text] of Object.entries(SORT_CHOICES)) select.options.add(new Option(text, value));
+    select.title = 'Sort by';
+    let sortedIds = null; // the list's order right after the last sort, while it lasts
+    const itemIds = () => [...list.children].filter(el => el.matches('.track, .sync-group')).map(el => el.id);
+    const showOrder = type => { select.options[0].text = type ? SORTED_LABELS[type] : 'Order: Custom'; select.selectedIndex = 0; };
+    new MutationObserver(() => {
+        if (!sortedIds) return;
+        // Still sorted while every item is one from the sort, in the same order (items may have gone, none came).
+        let from = 0;
+        const sorted = itemIds().every(id => { const at = sortedIds.indexOf(id, from); from = at + 1; return at >= 0; });
+        if (!sorted) { sortedIds = null; showOrder(null); }
+    }).observe(list, { childList: true });
+    select.addEventListener('change', async () => {
+        const type = select.value;
+        select.selectedIndex = 0;
+        if (!SORTED_LABELS[type]) return;
+        await sort(type);
+        sortedIds = itemIds();
+        showOrder(type);
+        scheduleSave();
+    });
+}
+
 function sortGroupTracks(mixId, groupId, sortType) { if (!sortType) return; const mix = mixes.find(m => m.id === mixId); if (!mix) return; const groupTracks = mix.tracks.filter(t => t.syncInfo.groupId === groupId); const [criteria, order] = sortType.split('_'); const getDuration = t => mix.audioEngine[t.id]?.audio?.buffer?.duration || 0; groupTracks.sort((a, b) => { let valA, valB; if (criteria === 'name') { valA = a.name.toLowerCase(); valB = b.name.toLowerCase(); } else { valA = getDuration(a); valB = getDuration(b); } if (valA < valB) return order === 'asc' ? -1 : 1; if (valA > valB) return order === 'asc' ? 1 : -1; return 0; }); const container = document.querySelector(`#${CSS.escape(groupId)} .sync-group-tracks`); groupTracks.forEach(t => container.appendChild(document.getElementById(t.id))); }
 function updatePasteButtons(mixId = null) { if (mixId) { const hasCopied = copiedItems.type === 'track' || copiedItems.type === 'group'; const pasteBtn = document.querySelector(`#${CSS.escape(mixId)} .paste-items-btn`); if (pasteBtn) pasteBtn.disabled = !hasCopied; } const hasCopiedMix = copiedItems.type === 'mix'; document.getElementById('paste-mix-btn').disabled = !hasCopiedMix; }
 function copyMix(mixId) { const mix = mixes.find(m => m.id === mixId); if (!mix) return; copiedItems = { type: 'mix', data: [mix], lastSelectedId: mixId }; showMessage(`Copied Mix: ${mix.name}`); updatePasteButtons(mixId); }
@@ -6924,6 +7052,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupFontManagement();
     setupCompactHeaderObserver();
     setupUndo();
+    setupTonePrimers(); // the ⓘ guides beside TONE and MIX EQ (js/tone.js, MS-240)
     setupTrackDefaultsPanel(); // Settings > New track defaults (MS-223)
     setupAutosave(); // brings back the saved mixes (js/storage.js, MS-130)
 });
