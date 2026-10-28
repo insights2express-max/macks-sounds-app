@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-kvoThsNrRCOwnNa2vFSxXamTR/bMkWolO0gRq+6mIDs=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-AvWXo9A8vpgRnCKQGwSfd/fZtZ9ZggOSKsZTAfKZBN0=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-rmKEZM1Mw8L+ujTDthe8o4Tb7uYpMznahh5ojvKSLpM=' 'sha256-Kg7QVwYwc1HhxKafVVxX61c/Trsc88sj2yiBly/5hls='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Mack's Sounds v330</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-WIXWIoOusYjivXapfVK97NwxXEqjf+eCALteksv0lZY=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-VR3QvFHvxasjAOAadekzgNwA7d9lPY7+GYu0RRx5d/I=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-Kg7QVwYwc1HhxKafVVxX61c/Trsc88sj2yiBly/5hls='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Mack's Sounds v331</title>
     <!-- The 18 built-in fonts ship with the app (v322, MS-229); build.ps1 puts them into the built page. -->
     <style>
 /* The app's built-in fonts (v322, MS-229): Google Fonts' Latin files, shipped with the app so no font is fetched
@@ -465,7 +465,16 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 #bg-image-url-input { flex-grow: 1; }
 .bg-storage-note { font-size: 0.8em; opacity: 0.7; margin-top: 0.5rem; }
 /* v318 (MS-130): Settings > Saved in this browser, and a mix's "Loading sounds…" note while its saved sounds are unpacked */
-.saved-heading { margin: 1rem 0 0.4rem; }
+/* MS-242 (v331): every Settings section and its subsections fold with the main panel's chevron title bar (js/settings.js). */
+#settings-modal-content fieldset.settings-fold { padding: 0 1rem; margin-bottom: 0.75rem; min-width: 0; }
+.settings-fold > .section-toggle { font-size: 1rem; }
+.settings-fold-sub { border: 1px solid rgba(128, 128, 128, 0.45); border-radius: 8px; padding: 0 0.8rem; margin-bottom: 0.6rem; }
+.settings-fold-sub > .section-toggle { font-size: 0.9em; }
+.settings-fold.is-open > .section-body { grid-template-rows: 1fr; }
+.settings-fold.is-open > .section-toggle .section-chevron { transform: rotate(90deg); }
+.settings-fold-content { padding: 0.3rem 0 0.8rem; min-width: 0; }
+.settings-fold-content > .gradient-control, .settings-fold-content > .control-group { max-width: 420px; }
+#sound-prep-link { display: inline-flex; align-items: center; min-height: 2.6em; margin-top: 0.5rem; text-decoration: none; }
 .saved-mix-list, .saved-sound-list { display: flex; flex-direction: column; gap: 0.3rem; max-height: 14rem; overflow-y: auto; }
 .saved-row { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; padding: 0.35rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.05); font-size: 0.85em; overflow-wrap: anywhere; }
 .saved-row.is-unused { opacity: 0.75; }
@@ -654,6 +663,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     #settings-modal-content .settings-body { padding: 0.75rem 1rem 1rem; }
     #settings-close-btn { top: 0.75rem; right: 0.75rem; width: 44px; height: 44px; padding: 0; }
     #settings-modal-content fieldset { padding: 0.75rem; min-width: 0; }
+    #settings-modal-content fieldset.settings-fold { padding: 0 0.6rem; }
+    .settings-fold-sub { padding: 0 0.6rem; }
+    #sound-prep-link { min-height: 44px; }
     .settings-grid { grid-template-columns: 1fr; gap: 1rem; }
     #settings-modal-content input[type="color"] { height: 44px; }
     #settings-modal-content .control-group-row { flex-wrap: wrap; }
@@ -671,7 +683,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v330</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v331</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -718,7 +730,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                 <h2>Settings</h2>
             </div>
             <div class="settings-body">
-                <fieldset>
+                <!-- MS-242 (v331): each fieldset and each [data-fold] block folds with a chevron (setupSettingsFolds, js/settings.js);
+                     data-fold is the key it is remembered by, data-title (or the legend) its title. -->
+                <fieldset data-fold="general">
                     <legend>General</legend>
                     <div class="settings-grid">
                         <div class="control-group">
@@ -737,18 +751,24 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                     <p id="audio-diagnostics" class="bg-storage-note" title="Useful if playback ever sounds too fast/high or too slow/low">Audio: not started yet (starts with the first mix).</p>
                 </fieldset>
 
-                <fieldset id="track-defaults-panel">
+                <fieldset id="track-defaults-panel" data-fold="track-defaults">
                     <legend>New track defaults</legend>
                     <p class="bg-storage-note">Each track you add from now on (Add Local, including Sound Lab files) starts with these settings. Tracks already in a mix, imported mixes and pasted tracks keep their own. Saved in this browser.</p>
                     <div class="track-defaults-form"></div>
                     <button id="reset-track-defaults-btn" class="small-btn">Reset to defaults</button>
                 </fieldset>
 
-                <fieldset>
+                <fieldset data-fold="sound-prep">
+                    <legend>Sound Prep</legend>
+                    <p class="bg-storage-note">A separate page that turns a long recording into a short loop that repeats without a gap or click: choose a stretch, let it find the best join, listen to it repeat, and save it as a new file. The original file is never changed.</p>
+                    <a id="sound-prep-link" class="button-like small-btn" href="sound-prep/" target="_blank" rel="noopener">Sound Prep: make short seamless loops</a>
+                </fieldset>
+
+                <fieldset data-fold="fonts">
                     <legend>Fonts</legend>
-                    <div class="settings-grid">
+                    <div data-fold="fonts-title" data-title="Title Font">
                         <div class="control-group">
-                            <label for="title-font-select">Title Font</label>
+                            <label for="title-font-select">Font</label>
                             <select id="title-font-select" style="width: 100%;"></select>
                             <div class="control-group-row" style="margin-top: 0.75rem;">
                                 <label for="title-font-color-picker" style="flex-shrink: 0; min-width: 4rem;">Color</label>
@@ -759,8 +779,10 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                                 <span id="title-font-size-display" class="font-size-display">100%</span>
                             </div>
                         </div>
+                    </div>
+                    <div data-fold="fonts-main" data-title="Main Font">
                         <div class="control-group">
-                            <label for="main-font-select">Main Font</label>
+                            <label for="main-font-select">Font</label>
                             <select id="main-font-select" style="width: 100%;"></select>
                             <div class="control-group-row" style="margin-top: 0.75rem;">
                                  <label for="main-font-color-picker" style="flex-shrink: 0; min-width: 4rem;">Color</label>
@@ -772,7 +794,8 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                             </div>
                         </div>
                     </div>
-                    <div class="font-loader-controls" style="margin-top: 1rem;">
+                    <div data-fold="fonts-own" data-title="Your Own Fonts">
+                    <div class="font-loader-controls">
                         <div class="font-loader-row">
                              <label for="local-font-input" class="button-like small-btn">Load Local Fonts</label>
                              <input type="file" id="local-font-input" multiple accept=".ttf,.otf,.woff,.woff2" style="display:none;">
@@ -784,13 +807,13 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                         <h4 style="margin-bottom: 0.5rem;">Loaded Fonts</h4>
                         <div id="user-font-list"></div>
                     </div>
+                    </div>
                 </fieldset>
 
-                <fieldset>
+                <fieldset data-fold="colors">
                     <legend>Color Scheme</legend>
-                    <div class="settings-grid">
+                    <div data-fold="colors-overlay" data-title="Background Overlay">
                         <div class="gradient-control">
-                            <strong>Background Overlay</strong>
                             <div class="gradient-control-row"><label>Start</label><input type="color" id="bg-overlay-color-start" value="#000000"></div>
                             <div class="gradient-control-row"><label>End</label><input type="color" id="bg-overlay-color-end" value="#000000"></div>
                             <div class="gradient-control-row"><label>Dir</label><select id="bg-overlay-gradient-direction"></select></div>
@@ -800,8 +823,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                                 <span id="overlay-opacity-display" class="opacity-display">0%</span>
                             </div>
                         </div>
+                    </div>
+                    <div data-fold="colors-ui" data-title="UI Containers">
                         <div class="gradient-control">
-                            <strong>UI Containers</strong>
                             <div class="gradient-control-row"><label>Start</label><input type="color" id="ui-color-start"></div>
                             <div class="gradient-control-row"><label>End</label><input type="color" id="ui-color-end"></div>
                             <div class="gradient-control-row"><label>Dir</label><select id="ui-gradient-direction"></select></div>
@@ -815,7 +839,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                     <button id="reset-color-scheme-btn" class="small-btn" style="margin-top: 1rem;">Reset Color Scheme</button>
                 </fieldset>
 
-                <fieldset>
+                <fieldset data-fold="glow">
                     <legend>Glow Settings</legend>
                     <div class="settings-grid">
                         <div class="control-group">
@@ -829,8 +853,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                     </div>
                 </fieldset>
 
-                <fieldset>
-                    <legend>Background Image Library</legend>
+                <fieldset data-fold="background">
+                    <legend>Background</legend>
+                    <div data-fold="bg-library" data-title="Image Library">
                     <div class="control-group-row">
                         <label for="bg-image-input" class="button-like">Load From Device</label>
                         <input type="file" id="bg-image-input" accept="image/*" multiple style="display:none;">
@@ -846,10 +871,8 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                     </div>
                     <div id="bg-image-playlist"></div>
                     <button id="reset-bg-image-btn" class="small-btn" style="margin-top: 1rem;">Reset Background</button>
-                </fieldset>
-                
-                <fieldset>
-                    <legend>Background Display Settings</legend>
+                    </div>
+                    <div data-fold="bg-display" data-title="Display">
                     <div class="settings-grid">
                         <div class="control-group">
                             <label for="bg-sizing-mode">Sizing Mode</label>
@@ -907,10 +930,8 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                             <input type="range" id="bg-rotate-slider" min="0" max="360" step="1" value="0">
                         </div>
                     </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Background Slideshow (BG Album)</legend>
+                    </div>
+                    <div data-fold="bg-slideshow" data-title="Slideshow (BG Album)">
                     <div id="bg-slideshow-playlist"></div>
                     <div class="settings-grid" style="margin-top: 1rem;">
                         <div class="control-group">
@@ -927,15 +948,14 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                         </div>
                     </div>
                     <button id="toggle-slideshow-btn" class="small-btn" style="margin-top: 1rem;">Start Slideshow</button>
+                    </div>
                 </fieldset>
 
-                <fieldset id="saved-panel">
+                <fieldset id="saved-panel" data-fold="saved">
                     <legend>Saved in this browser</legend>
                     <div class="saved-summary"></div>
-                    <h4 class="saved-heading">Mixes</h4>
-                    <div class="saved-mix-list"></div>
-                    <h4 class="saved-heading">Sounds</h4>
-                    <div class="saved-sound-list"></div>
+                    <div data-fold="saved-mixes" data-title="Mixes"><div class="saved-mix-list"></div></div>
+                    <div data-fold="saved-sounds" data-title="Sounds"><div class="saved-sound-list"></div></div>
                     <div class="control-group-row saved-actions">
                         <button id="delete-unused-sounds-btn" class="small-btn" hidden>Delete all unused sounds</button>
                         <button id="clear-saved-btn" class="small-btn">Clear everything saved…</button>
@@ -980,7 +1000,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v330';
+const APP_VERSION = 'v331';
 const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -4506,8 +4526,38 @@ function updateFontManagementUI() {
     </script>
     <script>
 // --- js/settings.js ---
+// --- SETTINGS SECTIONS FOLD (MS-242, v331) ---
+// Each fieldset of the Settings panel, and each [data-fold] block inside one, gets the main panel's title bar with a
+// chevron (sectionToggle, js/tracks.js) and folds the same way (.section-body). Closed by default, like the main panel's
+// boxes; which ones are open is remembered in this browser. Folding only shows or hides: it never changes a setting.
+const SETTINGS_FOLDS_KEY = 'settingsOpenSections';
+function settingsFoldsOpen() { try { return JSON.parse(localStorage.getItem(SETTINGS_FOLDS_KEY)) || {}; } catch (e) { return {}; } }
+function makeSettingsFold(el) {
+    if (el.classList.contains('settings-fold')) return;
+    const key = el.dataset.fold, legend = el.querySelector(':scope > legend');
+    const title = el.dataset.title || legend?.textContent.trim() || key;
+    legend?.remove();
+    el.classList.add('settings-fold', el.tagName === 'FIELDSET' ? 'settings-fold-main' : 'settings-fold-sub');
+    if (el.tagName === 'FIELDSET') el.setAttribute('aria-label', title);
+    const content = document.createElement('div');
+    content.className = 'settings-fold-content';
+    content.append(...el.childNodes); // moved, not copied: their listeners and ids stay
+    el.innerHTML = `${sectionToggle(escapeHtml(title), `Show or hide ${title}`)}<div class="section-body"><div class="section-body-inner"></div></div>`;
+    el.querySelector('.section-body-inner').appendChild(content);
+    const toggle = el.querySelector(':scope > .section-toggle');
+    const setOpen = open => { el.classList.toggle('is-open', open); toggle.setAttribute('aria-expanded', String(open)); };
+    setOpen(!!settingsFoldsOpen()[key]);
+    toggle.addEventListener('click', () => {
+        const open = !el.classList.contains('is-open');
+        setOpen(open);
+        try { localStorage.setItem(SETTINGS_FOLDS_KEY, JSON.stringify({ ...settingsFoldsOpen(), [key]: open })); } catch (e) {}
+    });
+}
+function setupSettingsFolds() { document.querySelectorAll('#settings-modal-content [data-fold]').forEach(makeSettingsFold); }
+
 // --- SETTINGS MODAL ---
 function setupSettingsModal() {
+    setupSettingsFolds();
     // Element Refs
     const settingsBtn = document.getElementById('settings-btn');
     const settingsModalOverlay = document.getElementById('settings-modal-overlay');
@@ -6953,7 +7003,9 @@ function setupTrackDefaultsPanel() {
     TRACK_DEFAULT_FIELDS.forEach(({ section, fields }) => {
         const box = document.createElement('div');
         box.className = 'track-defaults-section';
-        box.innerHTML = `<h4 class="saved-heading">${section}</h4><div class="track-defaults-grid"></div>`;
+        box.dataset.fold = `track-defaults-${section.toLowerCase()}`; // folds with a chevron (MS-242, js/settings.js)
+        box.dataset.title = section;
+        box.innerHTML = `<div class="track-defaults-grid"></div>`;
         const grid = box.querySelector('.track-defaults-grid');
         let lastGroup = null;
         fields.forEach(field => {
@@ -6984,6 +7036,7 @@ function setupTrackDefaultsPanel() {
             }
             lastGroup = group;
         });
+        makeSettingsFold(box);
         form.appendChild(box);
     });
     showTrackDefaults();

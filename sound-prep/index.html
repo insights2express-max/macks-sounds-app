@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The same browser lock as the app (CSP, MS-232): this page loads nothing from other websites. build.ps1 swaps
+         script-src 'self' for the SHA-256 hashes of the built page's own scripts. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-4rZsfBjYadGgIer21VCWWPE3nrFo+9ZNW/BW42rFG/M='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>Sound Prep v331</title>
+    <style>
+/* Sound Prep (MS-209 step 1, v331): the loop editor page. Dark like the app; light when the app is set to light. */
+:root {
+    --prep-bg: #101418; --prep-panel: #1a2027; --prep-border: #34404c; --prep-text: #e8edf2; --prep-dim: #9aa8b5;
+    --prep-accent: #4f8fd6; --prep-accent-text: #ffffff; --prep-btn: #2a3440; --prep-btn-hover: #364352;
+    --prep-wave: #8fb8e6; --prep-loop: rgba(79, 143, 214, 0.18); --prep-start: #3ccf6e; --prep-end: #ff5a5a;
+    --prep-xfade: rgba(255, 196, 0, 0.18); --prep-pass: #3ccf6e; --prep-warn: #ffb020; --prep-grid: rgba(255, 255, 255, 0.08);
+    color-scheme: dark;
+}
+:root[data-theme="light"] {
+    --prep-bg: #f2f4f7; --prep-panel: #ffffff; --prep-border: #c9d2db; --prep-text: #1b2430; --prep-dim: #5b6876;
+    --prep-accent: #2f6fb8; --prep-btn: #e3e8ee; --prep-btn-hover: #d3dbe4; --prep-wave: #2f6fb8; --prep-loop: rgba(47, 111, 184, 0.14);
+    --prep-start: #16994a; --prep-end: #d43c3c; --prep-xfade: rgba(220, 150, 0, 0.18); --prep-pass: #16994a; --prep-warn: #b86e00;
+    --prep-grid: rgba(0, 0, 0, 0.08); color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--prep-bg); color: var(--prep-text); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+.prep-page { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.prep-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+h1 { margin: 0.2rem 0; font-size: 1.6rem; }
+h2 { margin: 0 0 0.3rem; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
+.prep-badge { font-size: 0.75rem; font-weight: normal; border: 1px solid var(--prep-border); border-radius: 999px; padding: 0.1rem 0.5rem; vertical-align: middle; color: var(--prep-dim); }
+.prep-lead { margin: 0.2rem 0 0.8rem; color: var(--prep-dim); max-width: 60ch; }
+.prep-link { color: var(--prep-accent); text-decoration: none; padding: 0.6rem 0; }
+.prep-step { background: var(--prep-panel); border: 1px solid var(--prep-border); border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
+.prep-num { display: inline-flex; align-items: center; justify-content: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--prep-accent); color: var(--prep-accent-text); font-size: 0.85rem; flex-shrink: 0; }
+.prep-hint { margin: 0 0 0.7rem; color: var(--prep-dim); font-size: 0.9rem; max-width: 90ch; }
+.prep-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; margin: 0.5rem 0; }
+.prep-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 36px; padding: 0.35rem 0.9rem; border: 1px solid var(--prep-border); border-radius: 6px; background: var(--prep-btn); color: var(--prep-text); font: inherit; cursor: pointer; user-select: none; }
+.prep-btn:hover { background: var(--prep-btn-hover); }
+.prep-btn:disabled { opacity: 0.45; cursor: default; }
+.prep-primary { background: var(--prep-accent); border-color: var(--prep-accent); color: var(--prep-accent-text); }
+.prep-primary:hover { background: var(--prep-accent); filter: brightness(1.1); }
+.prep-small { min-height: 30px; padding: 0.15rem 0.6rem; font-size: 0.85rem; }
+.prep-check { display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+input[type="number"], input[type="text"], select { font: inherit; color: var(--prep-text); background: var(--prep-bg); border: 1px solid var(--prep-border); border-radius: 6px; padding: 0.3rem 0.45rem; }
+input[type="number"] { width: 7.5rem; }
+#prep-flex, #prep-xfade-ms { width: 5.5rem; }
+input[type="checkbox"] { width: 18px; height: 18px; }
+.prep-grow { flex: 1 1 320px; display: flex; align-items: center; gap: 0.5rem; }
+.prep-grow input { flex: 1; min-width: 0; }
+.prep-note { color: var(--prep-dim); font-size: 0.85rem; }
+.prep-info { margin: 0.4rem 0 0; font-size: 0.92rem; min-height: 1.2em; white-space: pre-line; }
+.prep-drop-note { color: var(--prep-dim); font-size: 0.85rem; }
+.prep-quick { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; color: var(--prep-dim); font-size: 0.85rem; }
+.prep-nudge-group { display: inline-flex; align-items: center; gap: 0.25rem; }
+.prep-progress { height: 6px; background: var(--prep-btn); border-radius: 3px; overflow: hidden; margin-top: 0.5rem; }
+.prep-progress-bar { height: 100%; width: 0; background: var(--prep-accent); transition: width 0.15s; }
+canvas { display: block; width: 100%; border: 1px solid var(--prep-border); border-radius: 6px; background: var(--prep-bg); touch-action: none; }
+.prep-overview { height: 48px; margin-bottom: 6px; cursor: pointer; }
+.prep-wave { height: 220px; cursor: crosshair; }
+.prep-join { height: 150px; margin-top: 0.5rem; }
+.prep-view-row input[type="range"] { flex: 1 1 200px; min-width: 120px; }
+.prep-seam { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.4rem 1rem; font-size: 0.92rem; }
+.prep-seam .prep-verdict { grid-column: 1 / -1; font-weight: bold; font-size: 1rem; }
+.prep-pass { color: var(--prep-pass); }
+.prep-warn { color: var(--prep-warn); }
+.prep-disabled { opacity: 0.45; pointer-events: none; }
+.prep-message { position: sticky; bottom: 0; margin: 0; padding: 0.5rem 0.8rem; background: var(--prep-panel); border: 1px solid var(--prep-border); border-radius: 8px; min-height: 1em; }
+.prep-message:empty { display: none; }
+body.prep-dragover .prep-page { outline: 3px dashed var(--prep-accent); outline-offset: -6px; }
+@media (max-width: 600px) {
+    .prep-page { padding: 12px; }
+    .prep-btn { min-height: 44px; }
+    .prep-small { min-height: 44px; min-width: 44px; }
+    .prep-wave { height: 180px; }
+    input[type="number"] { width: 6.5rem; }
+}
+    </style>
+</head>
+<body>
+<div class="prep-page">
+    <header class="prep-header">
+        <div>
+            <h1>Sound Prep <span id="prep-version" class="prep-badge">v331</span></h1>
+            <p class="prep-lead">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
+        </div>
+        <a id="prep-app-link" class="prep-link" href="../">← Mack's Sounds</a>
+    </header>
+
+    <section class="prep-step" id="step-open">
+        <h2><span class="prep-num">1</span> Open a sound</h2>
+        <p class="prep-hint">WAV, MP3 or any sound file this browser can play. Large WAV files (even 30-minute ones) open without loading the whole file into memory.</p>
+        <div class="prep-row">
+            <label class="prep-btn prep-primary" for="prep-file">Choose a sound file…</label>
+            <input type="file" id="prep-file" accept="audio/*,.wav,.mp3,.ogg,.oga,.opus,.flac,.m4a,.aac,.webm" hidden>
+            <span class="prep-drop-note">or drop a file anywhere on this page</span>
+        </div>
+        <p id="prep-file-info" class="prep-info"></p>
+        <div id="prep-progress" class="prep-progress" hidden><div class="prep-progress-bar"></div></div>
+    </section>
+
+    <div id="prep-work" class="prep-disabled">
+    <section class="prep-step" id="step-region">
+        <h2><span class="prep-num">2</span> Choose the stretch to loop</h2>
+        <p class="prep-hint">Drag across the picture of the sound to choose a stretch, or type where it starts and how long it is. Drag a green or red line to move one end. The mouse wheel zooms; Shift + wheel scrolls. Pick a stretch that sounds typical, without a one-off noise in it.</p>
+        <canvas id="prep-overview" class="prep-overview" title="The whole file: click or drag to move the view"></canvas>
+        <canvas id="prep-wave" class="prep-wave"></canvas>
+        <div class="prep-row prep-view-row">
+            <button type="button" id="prep-zoom-out" class="prep-btn" title="Zoom out">−</button>
+            <button type="button" id="prep-zoom-in" class="prep-btn" title="Zoom in">+</button>
+            <button type="button" id="prep-zoom-loop" class="prep-btn">Show the loop</button>
+            <button type="button" id="prep-zoom-all" class="prep-btn">Whole file</button>
+            <input type="range" id="prep-scroll" min="0" max="1000" value="0" aria-label="Scroll the view">
+            <span id="prep-view-info" class="prep-note"></span>
+        </div>
+        <div class="prep-row prep-fields">
+            <label>Starts at (s) <input type="number" id="prep-start" min="0" step="0.001"></label>
+            <label>Length (s) <input type="number" id="prep-length" min="0.05" step="0.001"></label>
+            <span class="prep-quick">Quick length:
+                <button type="button" class="prep-btn prep-small" data-len="15">15 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="20">20 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="30">30 s</button>
+                <button type="button" class="prep-btn prep-small" data-len="60">1 min</button>
+                <button type="button" class="prep-btn prep-small" data-len="120">2 min</button>
+                <button type="button" class="prep-btn prep-small" data-len="180">3 min</button>
+            </span>
+        </div>
+        <div class="prep-row">
+            <button type="button" id="prep-trim" class="prep-btn">Trim silence</button>
+            <span class="prep-note">Moves both ends inward past any silence. Useful for a one-off sound such as a thunder roll; a steady sound has none.</span>
+        </div>
+        <p id="prep-region-info" class="prep-info"></p>
+    </section>
+
+    <section class="prep-step" id="step-find">
+        <h2><span class="prep-num">3</span> Find the best join</h2>
+        <p class="prep-hint">Looks near both ends for the spot where the end of the loop flows best into its start: the same sound pattern on both sides, at a quiet moment, starting and ending where the wave crosses zero. For a steady rhythm such as a clock, the length becomes a whole number of beats.</p>
+        <div class="prep-row">
+            <button type="button" id="prep-find" class="prep-btn prep-primary">Find the best join</button>
+            <label title="How much the loop's length may change to find a better join">Length may change by up to <input type="number" id="prep-flex" min="0" max="30" step="0.1" value="1"> s</label>
+            <label class="prep-check"><input type="checkbox" id="prep-beats" checked> Whole beats, if the sound has a steady beat</label>
+        </div>
+        <p id="prep-find-info" class="prep-info"></p>
+        <div class="prep-row prep-nudge">
+            <span>Fine-tune:</span>
+            <span class="prep-nudge-group">Start <button type="button" class="prep-btn prep-small" data-nudge="start" data-dir="-1" title="Move the start earlier">◀</button><button type="button" class="prep-btn prep-small" data-nudge="start" data-dir="1" title="Move the start later">▶</button></span>
+            <span class="prep-nudge-group">End <button type="button" class="prep-btn prep-small" data-nudge="end" data-dir="-1" title="Move the end earlier">◀</button><button type="button" class="prep-btn prep-small" data-nudge="end" data-dir="1" title="Move the end later">▶</button></span>
+            <label>by <select id="prep-nudge-step">
+                <option value="sample">1 sample</option>
+                <option value="0.001" selected>1 ms</option>
+                <option value="0.01">10 ms</option>
+                <option value="0.1">100 ms</option>
+            </select></label>
+        </div>
+    </section>
+
+    <section class="prep-step" id="step-blend">
+        <h2><span class="prep-num">4</span> Blend the join</h2>
+        <p class="prep-hint">Fades the last moments of the loop into the sound that comes just before its start, so the join is smooth even when the two ends don't match exactly. The loop's length doesn't change.</p>
+        <div class="prep-row">
+            <label class="prep-check"><input type="checkbox" id="prep-xfade" checked> Blend</label>
+            <label>over <input type="number" id="prep-xfade-ms" min="1" max="5000" step="1" value="400"> ms</label>
+            <label>Curve <select id="prep-curve">
+                <option value="power">Equal-power (natural sounds: waves, rain, frogs)</option>
+                <option value="linear">Linear (when both ends match closely, like a clock)</option>
+            </select></label>
+        </div>
+    </section>
+
+    <section class="prep-step" id="step-check">
+        <h2><span class="prep-num">5</span> Check the join</h2>
+        <p class="prep-hint">Measured on the finished loop, at the exact spot where its end meets its start. A click is a sudden jump, so the jump at the join is compared with how much the sound normally moves from one sample to the next. Up to 3× is normal movement (no click); a level difference under 3 dB isn't noticeable.</p>
+        <div id="prep-seam" class="prep-seam"></div>
+        <canvas id="prep-join" class="prep-join" title="The join: the end of the loop (left of the line) runs into its start (right of the line)"></canvas>
+        <div class="prep-row"><label>Join view: <select id="prep-join-span">
+            <option value="0.005">10 ms around the join</option>
+            <option value="0.02" selected>40 ms around the join</option>
+            <option value="0.25">½ s around the join</option>
+            <option value="2">4 s around the join</option>
+        </select></label></div>
+    </section>
+
+    <section class="prep-step" id="step-level">
+        <h2><span class="prep-num">6</span> Even loudness</h2>
+        <p class="prep-hint">Sets the loop to the same loudness as the player's Auto level (<span id="prep-target"></span>), measured the same way, so it sits evenly with your other sounds. It never turns a sound up past the point where its loudest moment would distort.</p>
+        <div class="prep-row"><label class="prep-check"><input type="checkbox" id="prep-normalize" checked> Match the player's Auto level</label></div>
+        <p id="prep-level-info" class="prep-info"></p>
+    </section>
+
+    <section class="prep-step" id="step-listen">
+        <h2><span class="prep-num">7</span> Listen to it repeat</h2>
+        <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
+        <div class="prep-row">
+            <button type="button" id="prep-play" class="prep-btn prep-primary">▶ Play repeating</button>
+            <button type="button" id="prep-play-join" class="prep-btn">▶ Hear the join</button>
+            <button type="button" id="prep-stop" class="prep-btn">■ Stop</button>
+            <label>Volume <input type="range" id="prep-volume" min="0" max="1" step="0.01" value="0.8"></label>
+            <span id="prep-play-info" class="prep-note"></span>
+        </div>
+    </section>
+
+    <section class="prep-step" id="step-save">
+        <h2><span class="prep-num">8</span> Save the loop</h2>
+        <p class="prep-hint">Saves the finished loop as a new WAV file. Then add it to a mix in Mack's Sounds with ➕ Add Local and switch its Loop on.</p>
+        <div class="prep-row">
+            <label class="prep-grow">File name <input type="text" id="prep-name"></label>
+            <button type="button" id="prep-save" class="prep-btn prep-primary">Save loop as WAV</button>
+        </div>
+        <p id="prep-save-info" class="prep-info"></p>
+    </section>
+    </div>
+    <p id="prep-message" class="prep-message" role="status"></p>
+</div>
+<script>
+// --- js/auto-level.js ---
+// --- AUTO LEVEL (v321, MS-227) ---
+// Each sound's loudness is measured once, on its audible parts only, and a track with Auto level on gets the gain that
+// brings that sound to one common level (AUTO_LEVEL_TARGET). The file itself is never changed: the correction is a
+// gain in the track's chain (folded into its volume gain, see updateTrackGain), so Volume 100% means "matched level".
+//
+// The measurement follows broadcast loudness (ITU-R BS.1770 / EBU R128, "LUFS"): the sound is K-weighted (a filter
+// that hears roughly as people do: deep bass counts less, presence a little more), cut into 400 ms blocks (a new one
+// every 100 ms), and only audible blocks count: blocks below -70 LUFS are silence, and blocks more than 10 LU below the
+// sound's own average are its quiet gaps. So a clock's ticks or a thunder clap are measured by how loud they are when
+// heard, not averaged down by the silence between them (which would over-boost them).
+// The common level: JM's hand-set balance (most tracks fine at 100%) sits around -27 to -30 LUFS; -28 after JM's test
+// of v321 (2 dB up from -30). Each track adds its own Auto level adjustment (settings.autoLevelAdjust, dB), the value
+// of Settings > New track defaults when it was added, so the level it aims for is AUTO_LEVEL_TARGET + adjustment.
+const AUTO_LEVEL_TARGET = -28;      // LUFS
+const AUTO_LEVEL_MAX_BOOST = 18;    // dB: a quiet sound is raised at most this much; cuts are unlimited
+const AUTO_LEVEL_PEAK_CEILING = -1; // dBFS: a boost never lifts the sound's own loudest sample above this (no clipping)
+const LOUDNESS_VERSION = 1;         // bump if the measurement changes, so saved measurements are redone
+
+// K-weighting for any sample rate (the two filters of BS.1770, as derived in libebur128).
+function kWeightingFilters(sampleRate) {
+    let K = Math.tan(Math.PI * 1681.974450955533 / sampleRate);
+    const Vh = Math.pow(10, 3.999843853973347 / 20), Vb = Math.pow(Vh, 0.4996667741545416), Q1 = 0.7071752369554196;
+    let a0 = 1 + K / Q1 + K * K;
+    const shelf = { b0: (Vh + Vb * K / Q1 + K * K) / a0, b1: 2 * (K * K - Vh) / a0, b2: (Vh - Vb * K / Q1 + K * K) / a0, a1: 2 * (K * K - 1) / a0, a2: (1 - K / Q1 + K * K) / a0 };
+    K = Math.tan(Math.PI * 38.13547087602444 / sampleRate);
+    const Q2 = 0.5003270373238773;
+    a0 = 1 + K / Q2 + K * K;
+    const highPass = { b0: 1, b1: -2, b2: 1, a1: 2 * (K * K - 1) / a0, a2: (1 - K / Q2 + K * K) / a0 };
+    return [shelf, highPass];
+}
+
+// A short break for the page between slices of work. A message, not a timer: browsers slow timers down to once a
+// second or less in a hidden tab or with the screen off, which would stretch a long sound's measurement to minutes.
+function yieldToPage() { return new Promise(resolve => { const channel = new MessageChannel(); channel.port1.onmessage = () => resolve(); channel.port2.postMessage(0); }); }
+
+// Returns { lufs, peakDb, version }. lufs is null for a sound with nothing audible. Runs in slices so the page stays
+// responsive (playback itself runs on the audio thread and is never held up).
+async function measureLoudness(buffer) {
+    const rate = buffer.sampleRate, length = buffer.length;
+    const step = Math.max(1, Math.round(rate * 0.1)); // 100 ms
+    const steps = Math.max(1, Math.ceil(length / step));
+    const power = new Float64Array(steps); // K-weighted energy of each 100 ms step, summed over the channels
+    const [f, g] = kWeightingFilters(rate);
+    let peak = 0, sinceYield = 0;
+    for (let c = 0; c < Math.min(buffer.numberOfChannels, 2); c++) {
+        const data = buffer.getChannelData(c);
+        let x1 = 0, x2 = 0, y1 = 0, y2 = 0, z1 = 0, z2 = 0; // filter memories: input, shelf output, high-pass output
+        for (let s = 0; s < steps; s++) {
+            const end = Math.min(length, (s + 1) * step);
+            let sum = 0;
+            for (let i = s * step; i < end; i++) {
+                const x = data[i];
+                if (x > peak) peak = x; else if (-x > peak) peak = -x;
+                const y = f.b0 * x + f.b1 * x1 + f.b2 * x2 - f.a1 * y1 - f.a2 * y2;
+                const z = y - 2 * y1 + y2 - g.a1 * z1 - g.a2 * z2;
+                x2 = x1; x1 = x; y2 = y1; y1 = y; z2 = z1; z1 = z;
+                sum += z * z;
+            }
+            power[s] += sum;
+            sinceYield += end - s * step;
+            if (sinceYield > 4e6) { sinceYield = 0; await yieldToPage(); }
+        }
+    }
+    return { lufs: gatedLoudness(power, step, length), peakDb: peak > 0 ? Math.round(200 * Math.log10(peak)) / 10 : null, version: LOUDNESS_VERSION };
+}
+
+// Integrated loudness from the 100 ms energies: 400 ms blocks, gated at -70 LUFS and then 10 LU below their average.
+function gatedLoudness(power, step, length) {
+    const toLufs = meanSquare => -0.691 + 10 * Math.log10(meanSquare);
+    const blocks = [];
+    if (power.length < 4) blocks.push(power.reduce((a, b) => a + b, 0) / Math.max(1, length)); // shorter than 400 ms: one block
+    else for (let s = 0; s + 4 <= power.length; s++) blocks.push((power[s] + power[s + 1] + power[s + 2] + power[s + 3]) / (4 * step));
+    const audible = blocks.filter(b => b > 0 && toLufs(b) > -70);
+    if (!audible.length) return null;
+    const relativeGate = toLufs(audible.reduce((a, b) => a + b, 0) / audible.length) - 10;
+    const counted = audible.filter(b => toLufs(b) > relativeGate);
+    return Math.round(toLufs(counted.reduce((a, b) => a + b, 0) / counted.length) * 10) / 10;
+}
+
+// The level a track aims for: the common level plus its own adjustment (0 for tracks saved before the adjustment).
+function autoLevelTarget(trackData) { return AUTO_LEVEL_TARGET + num(trackData.settings.autoLevelAdjust); }
+// A track's correction in dB (null = not measured yet, or nothing audible to measure). A boost stops at +18 dB and
+// where the sound's loudest sample would pass -1 dBFS; a cut is never limited.
+function autoLevelLimit(trackData) {
+    const loudness = trackData.loudness;
+    const wanted = autoLevelTarget(trackData) - loudness.lufs;
+    if (wanted <= 0) return { db: wanted, limit: null };
+    const peakRoom = loudness.peakDb == null ? Infinity : Math.max(0, AUTO_LEVEL_PEAK_CEILING - loudness.peakDb);
+    if (wanted > AUTO_LEVEL_MAX_BOOST && peakRoom >= AUTO_LEVEL_MAX_BOOST) return { db: AUTO_LEVEL_MAX_BOOST, limit: 'max' };
+    if (wanted > peakRoom) return { db: peakRoom, limit: 'peak' };
+    return { db: wanted, limit: null };
+}
+function autoLevelDb(trackData) {
+    if (!trackData?.loudness || trackData.loudness.lufs == null) return null;
+    return Math.round(autoLevelLimit(trackData).db * 10) / 10;
+}
+// The gain a track gets: the correction while its Auto level is on, 1 otherwise.
+function autoLevelFactor(trackData) {
+    const db = trackData.settings.autoLevel ? autoLevelDb(trackData) : null;
+    return db == null ? 1 : Math.pow(10, db / 20);
+}
+function formatAutoLevelDb(db) { return db == null ? '' : `${db > 0 ? '+' : db < 0 ? '−' : '±'}${Math.abs(db).toFixed(1)} dB`; }
+
+// Each sound is measured once: kept by its saved sound (soundId), so tracks sharing a sound share the result, and
+// written into the saved sound's record so a reload doesn't measure again. A track also keeps its own copy
+// (trackData.loudness), which Autosave and Export carry.
+const loudnessOfSound = new Map(); // soundId -> Promise<loudness>
+function soundLoudness(soundId, buffer) {
+    if (soundId && loudnessOfSound.has(soundId)) return loudnessOfSound.get(soundId);
+    const p = (async () => {
+        const rec = soundId ? await getStoredSound(soundId) : null;
+        if (rec?.loudness?.version === LOUDNESS_VERSION) return rec.loudness;
+        const loudness = await measureLoudness(buffer);
+        if (rec) { try { await dbPut('sounds', { ...rec, loudness }); } catch (err) { console.error('Could not save the loudness', err); } }
+        return loudness;
+    })();
+    if (soundId) { loudnessOfSound.set(soundId, p); p.catch(() => loudnessOfSound.delete(soundId)); }
+    return p;
+}
+
+// Called when a track gets its sound: measures it if the track has no current measurement, then applies it.
+async function ensureTrackLoudness(track) {
+    const data = track.data;
+    if (data.loudness?.version === LOUDNESS_VERSION || !track.audio.buffer) { updateAutoLevelUI(track); return; }
+    updateAutoLevelUI(track, 'measuring…');
+    try {
+        data.loudness = await soundLoudness(data.soundId, track.audio.buffer);
+    } catch (err) { console.error('Could not measure', data.name, err); }
+    updateAutoLevelUI(track);
+    updateTrackGain(track);
+    scheduleSave();
+}
+
+// The readout beside the checkbox and the VOLUME header summary.
+function updateAutoLevelUI(track, status = null) {
+    const el = document.getElementById(track.data.id);
+    if (!el) return;
+    const readout = el.querySelector('.autolevel-readout');
+    const db = autoLevelDb(track.data);
+    if (readout) {
+        readout.textContent = status || (db != null ? formatAutoLevelDb(db) : track.data.loudness ? 'silent' : 'not measured yet');
+        const l = track.data.loudness, limit = l?.lufs != null ? autoLevelLimit(track.data).limit : null;
+        const adjust = num(track.data.settings.autoLevelAdjust);
+        readout.title = l?.lufs != null ? `Measured loudness ${l.lufs.toFixed(1)} LUFS (audible parts only); common level ${AUTO_LEVEL_TARGET} LUFS` +
+            (adjust ? `, adjusted ${adjust > 0 ? '+' : '−'}${Math.abs(adjust).toFixed(1)} dB to ${autoLevelTarget(track.data).toFixed(1)} LUFS` : '') +
+            (limit === 'max' ? `; boost capped at +${AUTO_LEVEL_MAX_BOOST} dB` : limit === 'peak' ? `; boost stopped where its loudest moment reaches ${AUTO_LEVEL_PEAK_CEILING} dB` : '') : '';
+    }
+    updateSectionSummaries(el, track.data.settings);
+}
+    </script>
+<script>
+// --- js/sound-prep.js ---
+// --- SOUND PREP (MS-209 step 1, v331): the loop editor ---
+// A page of its own (sound-prep.html) that turns a long recording into a short loop that repeats seamlessly: open a
+// file, choose a stretch, find the best join, blend it, check it by measurement, even its loudness, listen to it repeat
+// and save it as a new WAV. The original file is never changed. js/auto-level.js (loaded first) measures the loudness,
+// so a saved loop already sits at the player's Auto level. These names share js/'s one global scope with the app's
+// files only in tools/check-names.ps1 (the app doesn't load this file), so they all start with "prep".
+//
+// Memory: a WAV file is never loaded whole. Its header is read, then only the parts needed: one pass in 1 M-frame slices
+// draws the overview, and the loop being worked on (at most PREP_MAX_LOOP_SECONDS, plus a few seconds either side) is
+// read as numbers. Other formats (MP3 …) must be unpacked by the browser in one piece (decodeAudioData), so they are
+// limited by memory: about PREP_MAX_DECODED_MINUTES minutes.
+const PREP_MAX_LOOP_SECONDS = 600;      // the longest loop (10 min); JM's longest target is 3 min
+const PREP_MAX_DECODED_MINUTES = 40;    // a compressed file longer than this is refused (it would need > 1 GB unpacked)
+const PREP_PEAK_BUCKET = 512;           // frames per overview point
+const PREP_READ_SLICE = 1 << 20;        // frames per slice while scanning a whole file
+const PREP_ENV_HOP = 0.005;             // s: the loudness outline used to compare the two ends
+const PREP_SEAM_LIMIT = 3;              // a jump up to 3× the sound's normal sample-to-sample movement is no click
+const PREP_LEVEL_LIMIT_DB = 3;          // loudness either side of the join may differ this much
+
+const prepEl = id => document.getElementById(id);
+let prepSource = null;   // the open sound: { name, file, kind, rate, channels, frames, bits, read(start, count) }
+let prepPeaks = null;    // { mins, maxs }: one min / max pair per PREP_PEAK_BUCKET frames, all channels together
+let prepView = { start: 0, frames: 1 };
+let prepLoop = { start: 0, end: 0 };
+let prepWork = null;     // the last range read as numbers: { start, frames, channels }
+let prepBuilt = null;    // the finished loop: { channels, frames, start, end, gainDb, loudness, seam, xfade }
+let prepFound = null;    // the last Find result (shown under the button)
+let prepPreview = null;  // the repeat player while it plays
+let prepBuildPending = false, prepBuildTimer = null, prepBuildToken = 0, prepWaveToken = 0, prepWaveQueued = false;
+
+function prepClamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+function prepTime(frames, rate = prepSource?.rate || 44100, digits = 3) {
+    const s = frames / rate, m = Math.floor(s / 60);
+    return `${m}:${(s - m * 60).toFixed(digits).padStart(digits ? digits + 3 : 2, '0')}`;
+}
+function prepSeconds(frames) { return frames / prepSource.rate; }
+function prepDb(x) { return x > 0 ? 20 * Math.log10(x) : -Infinity; }
+function prepMessage(text) { prepEl('prep-message').textContent = text || ''; }
+function prepPause() { return new Promise(resolve => { const c = new MessageChannel(); c.port1.onmessage = () => resolve(); c.port2.postMessage(0); }); }
+function prepProgress(share) {
+    const box = prepEl('prep-progress');
+    box.hidden = share == null;
+    box.firstElementChild.style.width = `${Math.round((share || 0) * 100)}%`;
+}
+
+// --- Opening a file ---
+function prepTag(view, at) { return String.fromCharCode(view.getUint8(at), view.getUint8(at + 1), view.getUint8(at + 2), view.getUint8(at + 3)); }
+
+// A WAV file read straight from the disk, a slice at a time. Returns null when it isn't a WAV this code can read
+// (then the browser decodes it like any other format).
+async function prepOpenWav(file) {
+    if (file.size < 44) return null;
+    const head = new DataView(await file.slice(0, 12).arrayBuffer());
+    if (prepTag(head, 0) !== 'RIFF' || prepTag(head, 8) !== 'WAVE') return null;
+    let pos = 12, fmt = null, data = null;
+    while (pos + 8 <= file.size && !(fmt && data)) {
+        const h = new DataView(await file.slice(pos, pos + 8).arrayBuffer());
+        const id = prepTag(h, 0), size = h.getUint32(4, true);
+        if (id === 'fmt ') fmt = new DataView(await file.slice(pos + 8, pos + 8 + Math.min(size, 40)).arrayBuffer());
+        if (id === 'data') {
+            const fits = size !== 0 && size !== 0xFFFFFFFF && pos + 8 + size <= file.size;
+            data = { offset: pos + 8, size: fits ? size : file.size - pos - 8 };
+        }
+        pos += 8 + size + (size & 1);
+    }
+    if (!fmt || !data) return null;
+    let format = fmt.getUint16(0, true);
+    const channels = fmt.getUint16(2, true), rate = fmt.getUint32(4, true), blockAlign = fmt.getUint16(12, true), bits = fmt.getUint16(14, true);
+    if (format === 0xFFFE && fmt.byteLength >= 26) format = fmt.getUint16(24, true); // WAVE_FORMAT_EXTENSIBLE: its sub-format
+    const readable = (format === 1 && [8, 16, 24, 32].includes(bits)) || (format === 3 && (bits === 32 || bits === 64));
+    if (!readable || !channels || !rate || blockAlign !== channels * bits / 8) return null;
+    const frames = Math.floor(data.size / blockAlign);
+    return {
+        name: file.name, file, kind: 'wav', rate, channels, frames, bits, float: format === 3,
+        async read(start, count) {
+            const out = Array.from({ length: channels }, () => new Float32Array(count));
+            const a = Math.max(0, start), b = Math.min(frames, start + count);
+            if (b <= a) return out;
+            const bytes = await file.slice(data.offset + a * blockAlign, data.offset + b * blockAlign).arrayBuffer();
+            prepPcmToFloat(bytes, b - a, channels, bits, format === 3, out, a - start);
+            return out;
+        }
+    };
+}
+// Fills out[c][at …] with the samples in bytes (interleaved PCM), as numbers from -1 to 1.
+function prepPcmToFloat(bytes, frames, channels, bits, float, out, at) {
+    if (bits === 16 && !float) {
+        const a = new Int16Array(bytes, 0, frames * channels);
+        for (let c = 0; c < channels; c++) { const o = out[c]; for (let i = 0, k = c; i < frames; i++, k += channels) o[at + i] = a[k] / 32768; }
+        return;
+    }
+    if (float && bits === 32) {
+        const a = new Float32Array(bytes, 0, frames * channels);
+        for (let c = 0; c < channels; c++) { const o = out[c]; for (let i = 0, k = c; i < frames; i++, k += channels) o[at + i] = a[k]; }
+        return;
+    }
+    const v = new DataView(bytes), size = bits / 8;
+    for (let i = 0, p = 0; i < frames; i++) {
+        for (let c = 0; c < channels; c++, p += size) {
+            let x;
+            if (float) x = v.getFloat64(p, true);
+            else if (bits === 24) { const n = v.getUint8(p) | (v.getUint8(p + 1) << 8) | (v.getInt8(p + 2) << 16); x = n / 8388608; }
+            else if (bits === 32) x = v.getInt32(p, true) / 2147483648;
+            else x = (v.getUint8(p) - 128) / 128;
+            out[c][at + i] = x;
+        }
+    }
+}
+
+// The sample rate an MP3 or FLAC file was made at, so it is unpacked without being resampled (44.1 kHz otherwise).
+async function prepGuessRate(file) {
+    const b = new Uint8Array(await file.slice(0, 65536).arrayBuffer());
+    if (b[0] === 0x66 && b[1] === 0x4C && b[2] === 0x61 && b[3] === 0x43) return ((b[18] << 12) | (b[19] << 4) | (b[20] >> 4)) || 44100; // fLaC STREAMINFO
+    let i = 0;
+    if (b[0] === 0x49 && b[1] === 0x44 && b[2] === 0x33) i = 10 + ((b[6] & 127) << 21 | (b[7] & 127) << 14 | (b[8] & 127) << 7 | (b[9] & 127)); // skip ID3
+    for (; i + 3 < b.length; i++) {
+        if (b[i] !== 0xFF || (b[i + 1] & 0xE0) !== 0xE0) continue;
+        const version = (b[i + 1] >> 3) & 3, index = (b[i + 2] >> 2) & 3;
+        if (version === 1 || index === 3) continue;
+        return [[11025, 12000, 8000], null, [22050, 24000, 16000], [44100, 48000, 32000]][version][index];
+    }
+    return 44100;
+}
+// Any other format: the browser unpacks the whole file into memory.
+async function prepOpenDecoded(file) {
+    const rate = await prepGuessRate(file);
+    const buffer = await new OfflineAudioContext(1, 1, rate).decodeAudioData(await file.arrayBuffer());
+    if (buffer.duration > PREP_MAX_DECODED_MINUTES * 60) throw new Error(`it is ${Math.round(buffer.duration / 60)} minutes long; files other than WAV can be up to ${PREP_MAX_DECODED_MINUTES} minutes here (save it as WAV first for longer ones)`);
+    const channels = buffer.numberOfChannels, frames = buffer.length;
+    return {
+        name: file.name, file, kind: 'decoded', rate: buffer.sampleRate, channels, frames, bits: 0,
+        async read(start, count) {
+            const out = Array.from({ length: channels }, () => new Float32Array(count));
+            const a = Math.max(0, start), b = Math.min(frames, start + count);
+            if (b > a) for (let c = 0; c < channels; c++) out[c].set(buffer.getChannelData(c).subarray(a, b), a - start);
+            return out;
+        }
+    };
+}
+
+async function prepOpenFile(file) {
+    prepStopPreview();
+    prepMessage(`Opening ${file.name}…`);
+    prepEl('prep-work').classList.add('prep-disabled');
+    const started = performance.now();
+    let source;
+    try {
+        source = await prepOpenWav(file) || await prepOpenDecoded(file);
+    } catch (err) {
+        prepMessage(`Couldn't open ${file.name}: ${err.message || 'this browser can\'t read this kind of file'}.`);
+        return;
+    }
+    prepSource = source; prepWork = null; prepBuilt = null; prepFound = null;
+    // The overview: one pass through the whole file, a slice at a time, keeping only a min / max per 512 frames.
+    const count = Math.ceil(source.frames / PREP_PEAK_BUCKET);
+    const mins = new Float32Array(count), maxs = new Float32Array(count);
+    for (let start = 0; start < source.frames; start += PREP_READ_SLICE) {
+        const n = Math.min(PREP_READ_SLICE, source.frames - start), chans = await source.read(start, n);
+        for (let i = 0; i < n; i += PREP_PEAK_BUCKET) {
+            let lo = Infinity, hi = -Infinity;
+            const end = Math.min(n, i + PREP_PEAK_BUCKET);
+            for (const ch of chans) for (let j = i; j < end; j++) { const x = ch[j]; if (x < lo) lo = x; if (x > hi) hi = x; }
+            const k = (start + i) / PREP_PEAK_BUCKET;
+            mins[k] = lo; maxs[k] = hi;
+        }
+        prepProgress((start + n) / source.frames);
+        await prepPause();
+    }
+    prepProgress(null);
+    prepPeaks = { mins, maxs };
+    const secs = source.frames / source.rate;
+    const kind = source.kind === 'wav' ? `WAV, ${source.bits}-bit${source.float ? ' float' : ''}` : 'unpacked by the browser';
+    prepEl('prep-file-info').textContent = `${source.name}\n${prepTime(source.frames, source.rate, 1)} long · ${kind} · ${source.rate.toLocaleString('en-US')} Hz · ${source.channels === 1 ? 'mono' : source.channels === 2 ? 'stereo' : source.channels + ' channels'} · ${(file.size / 1048576).toFixed(1)} MB · opened in ${((performance.now() - started) / 1000).toFixed(1)} s`;
+    prepEl('prep-work').classList.remove('prep-disabled');
+    // A first stretch: 20 s (or the whole sound if shorter) from a tenth of the way in, away from any fade-in.
+    const len = Math.min(source.frames, Math.round(Math.min(20, secs) * source.rate));
+    const start = Math.max(0, Math.min(source.frames - len, Math.round(source.frames * 0.1)));
+    prepSetLoop(start, start + len, { fit: true });
+    prepMessage('');
+}
+
+// --- The loop's two ends ---
+function prepSetLoop(start, end, { fit = false, rebuild = true } = {}) {
+    const src = prepSource, maxLen = Math.round(PREP_MAX_LOOP_SECONDS * src.rate);
+    start = Math.round(prepClamp(start, 0, src.frames - 2));
+    end = Math.round(prepClamp(end, start + 2, Math.min(src.frames, start + maxLen)));
+    prepLoop = { start, end };
+    prepEl('prep-start').value = (start / src.rate).toFixed(3);
+    prepEl('prep-length').value = ((end - start) / src.rate).toFixed(3);
+    const len = end - start;
+    prepEl('prep-region-info').textContent = `Loop: ${prepTime(start)} to ${prepTime(end)} · ${(len / src.rate).toFixed(3)} s (${len.toLocaleString('en-US')} samples)` +
+        (end - start >= maxLen ? ` · ${PREP_MAX_LOOP_SECONDS / 60} minutes is the longest loop here` : '');
+    prepEl('prep-name').value = prepFileName(); // the suggested name carries the loop's length
+    if (fit) prepFitView();
+    prepRequestWave();
+    if (rebuild) prepScheduleBuild();
+}
+
+// --- Drawing ---
+function prepCanvas(id) {
+    const cv = prepEl(id), dpr = window.devicePixelRatio || 1;
+    const w = Math.max(1, Math.round(cv.clientWidth * dpr)), h = Math.max(1, Math.round(cv.clientHeight * dpr));
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    return { cv, g: cv.getContext('2d'), w, h, dpr };
+}
+function prepColor(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function prepFitView() {
+    const len = prepLoop.end - prepLoop.start, pad = Math.round(len * 0.08) + 1;
+    prepSetView(prepLoop.start - pad, len + 2 * pad);
+}
+function prepSetView(start, frames) {
+    const total = prepSource.frames;
+    frames = Math.round(prepClamp(frames, 64, total));
+    start = Math.round(prepClamp(start, 0, total - frames));
+    prepView = { start, frames };
+    prepEl('prep-scroll').value = total > frames ? Math.round(1000 * start / (total - frames)) : 0;
+    prepEl('prep-view-info').textContent = `Showing ${(frames / prepSource.rate).toFixed(frames < prepSource.rate ? 3 : 1)} s`;
+    prepRequestWave();
+}
+function prepRequestWave() {
+    if (prepWaveQueued) return;
+    prepWaveQueued = true;
+    requestAnimationFrame(() => { prepWaveQueued = false; prepDrawWave(); prepDrawOverview(); });
+}
+function prepFrameToX(frame, w) { return (frame - prepView.start) / prepView.frames * w; }
+
+function prepDrawOverview() {
+    if (!prepSource || !prepPeaks) return;
+    const { g, w, h } = prepCanvas('prep-overview'), total = prepSource.frames, n = prepPeaks.mins.length;
+    g.clearRect(0, 0, w, h);
+    g.fillStyle = prepColor('--prep-loop');
+    g.fillRect(prepLoop.start / total * w, 0, Math.max(2, (prepLoop.end - prepLoop.start) / total * w), h);
+    g.strokeStyle = prepColor('--prep-wave');
+    g.beginPath();
+    for (let x = 0; x < w; x++) {
+        const a = Math.floor(x / w * n), b = Math.max(a + 1, Math.floor((x + 1) / w * n));
+        let lo = 0, hi = 0;
+        for (let k = a; k < b && k < n; k++) { if (prepPeaks.mins[k] < lo) lo = prepPeaks.mins[k]; if (prepPeaks.maxs[k] > hi) hi = prepPeaks.maxs[k]; }
+        g.moveTo(x + 0.5, h / 2 - hi * h / 2); g.lineTo(x + 0.5, h / 2 - lo * h / 2 + 1);
+    }
+    g.stroke();
+    g.strokeStyle = prepColor('--prep-text'); g.lineWidth = 1;
+    g.strokeRect(prepView.start / total * w + 0.5, 0.5, Math.max(3, prepView.frames / total * w) - 1, h - 1);
+}
+
+async function prepDrawWave() {
+    if (!prepSource || !prepPeaks) return;
+    const token = ++prepWaveToken;
+    const { start, frames } = prepView;
+    const { w } = prepCanvas('prep-wave'), perPx = frames / w;
+    let columns = null, line = null;
+    if (perPx >= PREP_PEAK_BUCKET) {
+        columns = [];
+        for (let x = 0; x < w; x++) {
+            const a = Math.floor((start + x * perPx) / PREP_PEAK_BUCKET), b = Math.max(a + 1, Math.floor((start + (x + 1) * perPx) / PREP_PEAK_BUCKET));
+            let lo = 0, hi = 0;
+            for (let k = a; k < b && k < prepPeaks.mins.length; k++) { if (prepPeaks.mins[k] < lo) lo = prepPeaks.mins[k]; if (prepPeaks.maxs[k] > hi) hi = prepPeaks.maxs[k]; }
+            columns.push([lo, hi]);
+        }
+    } else {
+        // Zoomed in further than the overview: read the samples themselves (a small read).
+        const chans = await prepSource.read(start, frames + 1);
+        if (token !== prepWaveToken) return;
+        if (perPx > 1) {
+            columns = [];
+            for (let x = 0; x < w; x++) {
+                const a = Math.floor(x * perPx), b = Math.max(a + 1, Math.floor((x + 1) * perPx));
+                let lo = Infinity, hi = -Infinity;
+                for (const ch of chans) for (let j = a; j < b; j++) { if (ch[j] < lo) lo = ch[j]; if (ch[j] > hi) hi = ch[j]; }
+                columns.push([lo, hi]);
+            }
+        } else line = chans;
+    }
+    const { g, h } = prepCanvas('prep-wave'), mid = h / 2;
+    g.clearRect(0, 0, w, h);
+    // The loop, and the blend zone at its end.
+    const x0 = prepFrameToX(prepLoop.start, w), x1 = prepFrameToX(prepLoop.end, w);
+    g.fillStyle = prepColor('--prep-loop'); g.fillRect(x0, 0, x1 - x0, h);
+    if (prepBuilt?.xfade) { const xf = prepFrameToX(prepLoop.end - prepBuilt.xfade, w); g.fillStyle = prepColor('--prep-xfade'); g.fillRect(xf, 0, x1 - xf, h); }
+    g.strokeStyle = prepColor('--prep-grid'); g.beginPath(); g.moveTo(0, mid + 0.5); g.lineTo(w, mid + 0.5); g.stroke();
+    // A time ruler: about one label per 120 px.
+    const secs = frames / prepSource.rate, steps = [0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300, 600];
+    const step = steps.find(s => s * w / secs >= 120 * (window.devicePixelRatio || 1)) || 600;
+    g.fillStyle = prepColor('--prep-dim'); g.font = `${11 * (window.devicePixelRatio || 1)}px system-ui, sans-serif`;
+    for (let t = Math.ceil(start / prepSource.rate / step) * step; t < (start + frames) / prepSource.rate; t += step) {
+        const x = prepFrameToX(t * prepSource.rate, w);
+        g.fillRect(x, 0, 1, 6 * (window.devicePixelRatio || 1));
+        g.fillText(prepTime(Math.round(t * prepSource.rate), prepSource.rate, step < 0.01 ? 3 : step < 1 ? 2 : 0), x + 3, 14 * (window.devicePixelRatio || 1));
+    }
+    g.strokeStyle = prepColor('--prep-wave'); g.lineWidth = 1;
+    g.beginPath();
+    if (columns) columns.forEach(([lo, hi], x) => { g.moveTo(x + 0.5, mid - hi * mid * 0.95); g.lineTo(x + 0.5, mid - lo * mid * 0.95 + 1); });
+    else line.forEach(ch => { for (let j = 0; j <= frames; j++) { const x = j / perPx, y = mid - ch[j] * mid * 0.95; if (j) g.lineTo(x, y); else g.moveTo(x, y); } });
+    g.stroke();
+    if (line && 1 / perPx >= 6) { g.fillStyle = prepColor('--prep-wave'); line.forEach(ch => { for (let j = 0; j <= frames; j++) g.fillRect(j / perPx - 1.5, mid - ch[j] * mid * 0.95 - 1.5, 3, 3); }); }
+    for (const [x, color] of [[x0, '--prep-start'], [x1, '--prep-end']]) { g.fillStyle = prepColor(color); g.fillRect(x - 1, 0, 3, h); }
+}
+
+// The join, close up: the end of the finished loop (left of the line) running into its start (right).
+function prepDrawJoin() {
+    const { g, w, h } = prepCanvas('prep-join');
+    g.clearRect(0, 0, w, h);
+    if (!prepBuilt) return;
+    const span = Math.max(4, Math.round(parseFloat(prepEl('prep-join-span').value) * prepSource.rate));
+    const n = Math.min(span, Math.floor(prepBuilt.frames / 2)), total = 2 * n, mid = h / 2;
+    let peak = 0;
+    prepBuilt.channels.forEach(ch => { for (let i = 0; i < n; i++) peak = Math.max(peak, Math.abs(ch[i]), Math.abs(ch[prepBuilt.frames - 1 - i])); });
+    const scale = 0.9 * mid / Math.max(peak, 1e-4);
+    g.strokeStyle = prepColor('--prep-grid'); g.beginPath(); g.moveTo(0, mid + 0.5); g.lineTo(w, mid + 0.5); g.stroke();
+    const colors = [prepColor('--prep-wave'), prepColor('--prep-start')];
+    prepBuilt.channels.forEach((ch, c) => {
+        g.strokeStyle = colors[c % 2]; g.beginPath();
+        for (let i = 0; i < total; i++) {
+            const x = (i + 0.5) / total * w, v = i < n ? ch[prepBuilt.frames - n + i] : ch[i - n];
+            if (total > 2 * w) { if (i % Math.ceil(total / w)) continue; }
+            if (i) g.lineTo(x, mid - v * scale); else g.moveTo(x, mid - v * scale);
+        }
+        g.stroke();
+    });
+    g.fillStyle = prepColor('--prep-end'); g.fillRect(w / 2 - 1, 0, 2, h);
+    g.fillStyle = prepColor('--prep-dim'); g.font = `${11 * (window.devicePixelRatio || 1)}px system-ui, sans-serif`;
+    g.fillText('end of loop', 6, 14 * (window.devicePixelRatio || 1));
+    const label = 'start of loop', lw = g.measureText(label).width;
+    g.fillText(label, w - lw - 6, 14 * (window.devicePixelRatio || 1));
+    g.fillText(`height ×${(1 / Math.max(peak, 1e-4)).toFixed(peak < 0.1 ? 0 : 1)}`, 6, h - 6);
+}
+
+// --- Finding the join ---
+// The two ends are compared in two steps. (1) Their loudness outlines (one value per 5 ms): around the start, and at
+// each length the loop may have, how alike are the two? That picks the length (for a steady beat, among whole numbers of
+// beats) and a quiet moment to join at. (2) The waves themselves, sample by sample, around the nearest strong moment
+// (e.g. a tick), which sets the length to the exact sample. The start then moves to the nearest upward zero crossing.
+function prepMono(chans) {
+    const n = chans[0].length, m = new Float32Array(n);
+    for (const ch of chans) for (let i = 0; i < n; i++) m[i] += ch[i] / chans.length;
+    return m;
+}
+function prepEnvelope(mono, hop) {
+    const env = new Float32Array(Math.floor(mono.length / hop));
+    for (let k = 0; k < env.length; k++) { let s = 0; for (let i = k * hop, e = i + hop; i < e; i++) s += mono[i] * mono[i]; env[k] = Math.sqrt(s / hop); }
+    return env;
+}
+// How alike two stretches are, from -1 to 1 (1 = the same shape), ignoring their overall level.
+function prepLikeness(a, ia, b, ib, n) {
+    let ma = 0, mb = 0;
+    for (let i = 0; i < n; i++) { ma += a[ia + i]; mb += b[ib + i]; }
+    ma /= n; mb /= n;
+    let sab = 0, saa = 0, sbb = 0;
+    for (let i = 0; i < n; i++) { const x = a[ia + i] - ma, y = b[ib + i] - mb; sab += x * y; saa += x * x; sbb += y * y; }
+    return saa > 0 && sbb > 0 ? sab / Math.sqrt(saa * sbb) : 0;
+}
+// A steady beat (a clock's ticks): the repeat time of the sound's attacks, if one stands out clearly. Returns seconds or null.
+function prepFindBeat(env, hop, rate) {
+    const n = Math.min(env.length, Math.round(40 * rate / hop));
+    const onset = new Float32Array(n);
+    for (let i = 1; i < n; i++) onset[i] = Math.max(0, env[i] - env[i - 1]);
+    let mean = 0; for (let i = 0; i < n; i++) mean += onset[i]; mean /= n;
+    for (let i = 0; i < n; i++) onset[i] -= mean;
+    const lo = Math.round(0.25 * rate / hop), hi = Math.min(Math.round(3 * rate / hop), Math.floor(n / 3));
+    if (hi <= lo) return null;
+    let zero = 0; for (let i = 0; i < n; i++) zero += onset[i] * onset[i];
+    if (!(zero > 0)) return null;
+    const acf = new Float32Array(hi + 2);
+    for (let L = lo - 1; L <= hi + 1; L++) { let s = 0; for (let i = 0; i + L < n; i++) s += onset[i] * onset[i + L]; acf[L] = s / zero * n / (n - L); }
+    let best = lo;
+    for (let L = lo; L <= hi; L++) if (acf[L] > acf[best]) best = L;
+    if (acf[best] < 0.35) return null;
+    // Prefer the shortest repeat that is nearly as strong (a beat, not a bar of two beats).
+    for (const d of [4, 3, 2]) {
+        const L = Math.round(best / d);
+        if (L >= lo) { let m = L; for (let k = L - 2; k <= L + 2; k++) if (k >= lo && acf[k] > acf[m]) m = k; if (acf[m] >= 0.8 * acf[best]) { best = m; break; } }
+    }
+    const a = acf[best - 1], b = acf[best], c = acf[best + 1], shift = (a - 2 * b + c) ? 0.5 * (a - c) / (a - 2 * b + c) : 0;
+    return { seconds: (best + prepClamp(shift, -0.5, 0.5)) * hop / rate, strength: acf[best] };
+}
+
+async function prepFindJoin() {
+    if (!prepSource) return;
+    const started = performance.now(), src = prepSource, rate = src.rate;
+    prepMessage('Looking for the best join…');
+    await prepPause();
+    const s0 = prepLoop.start, L0 = prepLoop.end - prepLoop.start;
+    const flex = Math.round(prepClamp(parseFloat(prepEl('prep-flex').value) || 0, 0, 30) * rate);
+    const RL = Math.min(flex, Math.floor(L0 / 4));
+    const Rs = Math.round(prepClamp(L0 * 0.1, 0.05 * rate, 5 * rate));
+    const W = Math.round(1.5 * rate), margin = Rs + W + Math.round(0.5 * rate);
+    const a = Math.max(0, s0 - margin), b = Math.min(src.frames, s0 + L0 + RL + margin);
+    const mono = prepMono(await src.read(a, b - a));
+    const hop = Math.max(1, Math.round(PREP_ENV_HOP * rate)), env = prepEnvelope(mono, hop);
+    const toEnv = f => Math.round((f - a) / hop);
+    // (1) The length: the loudness outline around the start compared with the same stretch one loop-length later.
+    const ia = Math.max(0, toEnv(s0 - Rs - W)), ib = toEnv(s0 + Rs + W), wn = ib - ia;
+    const maxLag = env.length - ib - 1;
+    const beat = prepEl('prep-beats').checked ? prepFindBeat(env, hop, rate) : null;
+    let lags = [];
+    const lo = Math.max(1, Math.round((L0 - RL) / hop)), hi = Math.min(maxLag, Math.round((L0 + RL) / hop));
+    if (beat) {
+        const per = beat.seconds * rate / hop;
+        const kLo = Math.max(1, Math.ceil(lo / per)), kHi = Math.floor(hi / per), kNear = Math.max(1, Math.round(L0 / hop / per));
+        const ks = new Set([kNear]); for (let k = kLo; k <= kHi; k++) ks.add(k);
+        for (const k of ks) { const c = Math.round(k * per), r = Math.ceil(k * 0.5 + 2); for (let L = c - r; L <= c + r; L++) if (L >= 1 && L <= maxLag) lags.push({ L, k }); }
+    } else for (let L = lo; L <= Math.max(lo, hi); L++) if (L <= maxLag) lags.push({ L, k: 0 });
+    if (!lags.length || wn < 4) { prepMessage('The stretch is too close to the start or end of the file to search around it. Move it inward a little.'); return; }
+    let bestLag = lags[0], bestScore = -2;
+    for (const cand of lags) { const s = prepLikeness(env, ia, env, ia + cand.L, wn); if (s > bestScore) { bestScore = s; bestLag = cand; } }
+    const lagEnv = bestLag.L;
+    // Where to join: a quiet moment (quiet at both ends) where the two ends' outlines match, within Rs of the start.
+    const smooth = new Float32Array(env.length);
+    for (let i = 0; i < env.length; i++) { let s = 0, c = 0; for (let j = Math.max(0, i - 5); j <= Math.min(env.length - 1, i + 5); j++) { s += env[j]; c++; } smooth[i] = s / c; }
+    let envMean = 0; for (let i = 0; i < env.length; i++) envMean += env[i]; envMean = envMean / env.length || 1e-9;
+    const local = Math.round(0.2 * rate / hop);
+    let tBest = toEnv(s0), tScore = Infinity;
+    for (let t = Math.max(local, toEnv(s0 - Rs)); t <= Math.min(env.length - lagEnv - local - 1, toEnv(s0 + Rs)); t++) {
+        const quiet = (smooth[t] + smooth[t + lagEnv]) / (2 * envMean);
+        const score = quiet - 0.5 * prepLikeness(env, t - local, env, t - local + lagEnv, 2 * local);
+        if (score < tScore) { tScore = score; tBest = t; }
+    }
+    // (2) The exact length, sample by sample, on the waves around the strongest moment within ½ s of the join.
+    let peakAt = tBest;
+    for (let t = Math.max(0, tBest - Math.round(0.5 * rate / hop)); t <= Math.min(env.length - lagEnv - 1, tBest + Math.round(0.5 * rate / hop)); t++) if (env[t] > env[peakAt]) peakAt = t;
+    const N = Math.round(0.02 * rate), c0 = prepClamp(peakAt * hop + (hop >> 1), N, mono.length - N - 1);
+    const Lc = lagEnv * hop, R = 2 * hop;
+    let L = Lc, waveScore = -2;
+    for (let cand = Lc - R; cand <= Lc + R; cand++) {
+        if (c0 - N + cand < 0 || c0 + N + cand >= mono.length) continue;
+        const s = prepLikeness(mono, c0 - N, mono, c0 - N + cand, 2 * N);
+        if (s > waveScore) { waveScore = s; L = cand; }
+    }
+    // The start: the upward zero crossing near the quiet moment where the two ends line up best.
+    const t0 = tBest * hop + (hop >> 1), Z = Math.round(0.005 * rate);
+    let start = t0, zScore = Infinity;
+    for (let i = Math.max(1, t0 - Z); i <= Math.min(mono.length - L - 2, t0 + Z); i++) {
+        const up = mono[i - 1] < 0 && mono[i] >= 0;
+        const step = Math.abs(mono[i + L] - mono[i]) + Math.abs((mono[i + L] - mono[i + L - 1]) - (mono[i] - mono[i - 1]));
+        const score = step + (up ? 0 : 1);
+        if (score < zScore) { zScore = score; start = i; }
+    }
+    const loopStart = a + start;
+    prepFound = { beat, beats: beat ? bestLag.k : 0, outline: bestScore, wave: waveScore, ms: performance.now() - started };
+    // The blend that suits it: a close match blends briefly and straight across; anything else with equal power, over
+    // 2% of the loop (0.2 to 2 s), long enough to smooth a mismatch without blurring the sound.
+    const close = waveScore >= 0.7;
+    prepEl('prep-curve').value = close ? 'linear' : 'power';
+    prepEl('prep-xfade-ms').value = close ? 50 : Math.round(prepClamp(L / rate * 0.02, 0.2, 2) * 1000);
+    prepSetLoop(loopStart, loopStart + L, { fit: true });
+    prepShowFound();
+    prepMessage('');
+}
+function prepShowFound() {
+    const f = prepFound;
+    if (!f) { prepEl('prep-find-info').textContent = ''; return; }
+    const len = (prepLoop.end - prepLoop.start) / prepSource.rate;
+    const pct = x => `${Math.round(Math.max(0, x) * 100)}%`;
+    prepEl('prep-find-info').textContent =
+        `Join found in ${(f.ms / 1000).toFixed(2)} s: starts at ${prepTime(prepLoop.start)}, ${len.toFixed(3)} s long` +
+        (f.beats ? ` = ${f.beats} × the sound's steady beat of ${(len / f.beats).toFixed(3)} s (for a clock that may be a tick-tock pair)` : f.beat === null && prepEl('prep-beats').checked ? ' (no steady beat in this sound)' : '') +
+        `.\nHow alike the two ends are: ${pct(f.outline)} in their rise and fall, ${pct(f.wave)} wave for wave` +
+        (f.wave >= 0.98 ? ' (identical: the recording itself repeats here).' : f.wave >= 0.7 ? ' (a close match).' : ' (natural sounds rarely match wave for wave; the blend smooths the join).') +
+        `\nBlend set to ${prepEl('prep-xfade-ms').value} ms, ${prepEl('prep-curve').value === 'linear' ? 'linear' : 'equal-power'} (step 4).`;
+}
+
+// --- Building the finished loop ---
+function prepScheduleBuild() { prepBuildPending = true; clearTimeout(prepBuildTimer); prepBuildTimer = setTimeout(prepBuild, 150); }
+async function prepRead(start, count) {
+    // Re-uses the last read when it covers the range (nudging and blending don't read the file again).
+    if (!prepWork || start < prepWork.start || start + count > prepWork.start + prepWork.frames) {
+        const pad = Math.round(5 * prepSource.rate), a = Math.max(0, start - pad), n = Math.min(prepSource.frames, start + count + pad) - a;
+        prepWork = { start: a, frames: n, channels: await prepSource.read(a, n) };
+    }
+    const at = start - prepWork.start;
+    return prepWork.channels.map(ch => ch.subarray(at, at + count));
+}
+async function prepBuild() {
+    if (!prepSource) return;
+    prepBuildPending = false; clearTimeout(prepBuildTimer);
+    const token = ++prepBuildToken, started = performance.now(), rate = prepSource.rate;
+    const s = prepLoop.start, frames = prepLoop.end - prepLoop.start;
+    const wantBlend = prepEl('prep-xfade').checked;
+    const F = wantBlend ? Math.max(0, Math.min(Math.round((parseFloat(prepEl('prep-xfade-ms').value) || 0) * rate / 1000), Math.floor(frames / 2), s)) : 0;
+    const linear = prepEl('prep-curve').value === 'linear';
+    const src = await prepRead(s - F, frames + F);
+    if (token !== prepBuildToken) return;
+    // The loop is the stretch itself; with a blend, its last F samples fade into the F samples just before its start,
+    // which lead naturally into the start, so the end runs on into the beginning.
+    const channels = src.map(ch => {
+        const out = ch.slice(F, F + frames);
+        for (let k = 0; k < F; k++) {
+            const p = (k + 1) / F, gIn = linear ? p : Math.sin(p * Math.PI / 2), gOut = linear ? 1 - p : Math.cos(p * Math.PI / 2);
+            out[frames - F + k] = ch[F + frames - F + k] * gOut + ch[k] * gIn;
+        }
+        return out;
+    });
+    const view = { sampleRate: rate, length: frames, numberOfChannels: channels.length, getChannelData: c => channels[c] };
+    const loudness = await measureLoudness(view);
+    if (token !== prepBuildToken) return;
+    let gainDb = 0, limit = '';
+    if (prepEl('prep-normalize').checked && loudness.lufs != null) {
+        gainDb = AUTO_LEVEL_TARGET - loudness.lufs;
+        const room = loudness.peakDb == null ? Infinity : AUTO_LEVEL_PEAK_CEILING - loudness.peakDb;
+        if (gainDb > room) { gainDb = room; limit = 'peak'; }
+        if (gainDb > AUTO_LEVEL_MAX_BOOST) { gainDb = AUTO_LEVEL_MAX_BOOST; limit = 'max'; }
+        const g = Math.pow(10, gainDb / 20);
+        channels.forEach(ch => { for (let i = 0; i < ch.length; i++) ch[i] *= g; });
+    }
+    prepBuilt = { channels, frames, start: s, end: s + frames, xfade: F, linear, gainDb, limit, loudness, seam: prepSeamCheck(channels), ms: performance.now() - started };
+    prepShowBuilt();
+    if (prepPreview) prepPlay(prepPreview.fromJoin);
+}
+
+// The join, measured on the finished loop: what plays across it is ch[frames-2], ch[frames-1], ch[0], ch[1].
+function prepSeamCheck(channels) {
+    const n = channels[0].length, near = Math.min(2048, Math.floor(n / 4)), lvl = Math.min(Math.round(0.05 * prepSource.rate), Math.floor(n / 4));
+    const at = i => (i + n) % n;
+    let worstStep = 0, worstSlope = 0, worstJump = 0, levelDiff = 0;
+    for (const ch of channels) {
+        // The sound's normal movement around the join (not counting the join itself): sample-to-sample steps and bends.
+        let s1 = 0, s2 = 0, c = 0;
+        for (let i = -near; i < near; i++) {
+            if (i === 0 || i === 1 || i === -1) continue;
+            const d1 = ch[at(i)] - ch[at(i - 1)], d2 = ch[at(i + 1)] - 2 * ch[at(i)] + ch[at(i - 1)];
+            s1 += d1 * d1; s2 += d2 * d2; c++;
+        }
+        const step1 = Math.max(Math.sqrt(s1 / c), 1e-5), step2 = Math.max(Math.sqrt(s2 / c), 1e-5);
+        const jump = ch[0] - ch[n - 1];
+        const bendBefore = ch[0] - 2 * ch[n - 1] + ch[n - 2], bendAfter = ch[1] - 2 * ch[0] + ch[n - 1];
+        worstJump = Math.max(worstJump, Math.abs(jump));
+        worstStep = Math.max(worstStep, Math.abs(jump) / step1);
+        worstSlope = Math.max(worstSlope, Math.max(Math.abs(bendBefore), Math.abs(bendAfter)) / step2);
+        let e = 0, b = 0;
+        for (let i = 0; i < lvl; i++) { e += ch[n - 1 - i] * ch[n - 1 - i]; b += ch[i] * ch[i]; }
+        const diff = Math.abs(10 * Math.log10((e + 1e-12) / (b + 1e-12)));
+        levelDiff = Math.max(levelDiff, diff);
+    }
+    const pass = worstStep <= PREP_SEAM_LIMIT && worstSlope <= PREP_SEAM_LIMIT && levelDiff <= PREP_LEVEL_LIMIT_DB;
+    return { pass, step: worstStep, slope: worstSlope, jump: worstJump, levelDiff };
+}
+
+function prepShowBuilt() {
+    const b = prepBuilt, s = b.seam;
+    const fmt = x => x < 10 ? x.toFixed(2) : x.toFixed(0);
+    const cls = ok => ok ? 'prep-pass' : 'prep-warn';
+    prepEl('prep-seam').innerHTML = `
+        <div class="prep-verdict ${cls(s.pass)}">${s.pass ? '✓ PASS: the join should be seamless.' : '⚠ WARNING: the join may be heard. Try Find the best join, a longer blend, or another stretch.'}</div>
+        <div class="${cls(s.step <= PREP_SEAM_LIMIT)}">Jump in level at the join: ${fmt(s.step)}× the normal sample-to-sample step (${prepDb(s.jump) === -Infinity ? 'none' : prepDb(s.jump).toFixed(0) + ' dB'})</div>
+        <div class="${cls(s.slope <= PREP_SEAM_LIMIT)}">Jump in slope at the join: ${fmt(s.slope)}× the normal bend</div>
+        <div class="${cls(s.levelDiff <= PREP_LEVEL_LIMIT_DB)}">Loudness either side (50 ms): ${s.levelDiff.toFixed(1)} dB apart</div>
+        <div>Loop: ${(b.frames / prepSource.rate).toFixed(3)} s · blend ${b.xfade ? `${Math.round(b.xfade / prepSource.rate * 1000)} ms, ${b.linear ? 'linear' : 'equal-power'}` : 'off'}</div>`;
+    const l = b.loudness;
+    prepEl('prep-level-info').textContent = l.lufs == null ? 'Nothing audible to measure in this stretch.' :
+        `Measured ${l.lufs.toFixed(1)} LUFS, loudest moment ${l.peakDb.toFixed(1)} dB.` +
+        (prepEl('prep-normalize').checked ? ` Changed by ${b.gainDb >= 0 ? '+' : '−'}${Math.abs(b.gainDb).toFixed(1)} dB to ${(l.lufs + b.gainDb).toFixed(1)} LUFS` +
+            (b.limit === 'peak' ? ` (stopped where the loudest moment reaches ${AUTO_LEVEL_PEAK_CEILING} dB, so it can't distort; the player's Auto level adds the rest)` : b.limit === 'max' ? ` (the most it raises a sound is +${AUTO_LEVEL_MAX_BOOST} dB)` : '') + '.' : ' Left as it is.');
+    prepEl('prep-target').textContent = `${AUTO_LEVEL_TARGET} LUFS`;
+    prepDrawJoin();
+    prepRequestWave();
+}
+
+// --- Listening: back-to-back plays on the audio clock ---
+// Each play is scheduled ahead on the audio clock at exactly (first + k × loop length) samples, the way the player's
+// engine does it (never the browser's own loop, MS-178). The audio runs at the file's own sample rate, so every start
+// lands on a whole sample. Kept topped up (at least 2 plays and 10 s ahead) from each play's end and a 250 ms tick.
+let prepContext = null;
+function prepAudio() {
+    const rate = prepSource.rate;
+    if (prepContext && prepContext.sampleRate !== rate) { prepContext.close(); prepContext = null; }
+    if (!prepContext) {
+        try { prepContext = new AudioContext({ sampleRate: rate, latencyHint: 'playback' }); }
+        catch (err) { prepContext = new AudioContext({ latencyHint: 'playback' }); } // resamples: still back to back, not to the sample
+    }
+    return prepContext;
+}
+// Starts one play of buffer at context frame `at` (from `offset` frames into it). Shared with the measurement in tools.
+function prepStartPlay(ctx, buffer, destination, at, offset = 0) {
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(destination);
+    source.start(at / ctx.sampleRate, offset / buffer.sampleRate);
+    return source;
+}
+function prepPlay(fromJoin = false) {
+    if (!prepBuilt) return;
+    prepStopPreview();
+    const ctx = prepAudio(), b = prepBuilt;
+    ctx.resume();
+    const buffer = ctx.createBuffer(b.channels.length, b.frames, prepSource.rate);
+    b.channels.forEach((ch, c) => buffer.copyToChannel(ch, c));
+    const gain = ctx.createGain();
+    gain.gain.value = parseFloat(prepEl('prep-volume').value);
+    gain.connect(ctx.destination);
+    const offset = fromJoin ? Math.max(0, b.frames - Math.round(3 * prepSource.rate)) : 0;
+    const first = Math.round((ctx.currentTime + 0.15) * ctx.sampleRate);
+    const p = prepPreview = { ctx, buffer, gain, fromJoin, first, offset, next: 1, sources: [], timer: null };
+    // Play k (k ≥ 1) starts where play k-1 ended: first + (frames - offset) + (k - 1) × frames.
+    p.sources.push(prepStartPlay(ctx, buffer, gain, first, offset));
+    const frameOf = k => first + (b.frames - offset) + (k - 1) * b.frames;
+    const topUp = () => {
+        if (prepPreview !== p) return;
+        const now = ctx.currentTime * ctx.sampleRate;
+        p.sources = p.sources.filter(s => !s.done);
+        while (p.sources.length < 3 || frameOf(p.next) < now + 10 * ctx.sampleRate) {
+            const s = prepStartPlay(ctx, buffer, gain, frameOf(p.next), 0);
+            s.onended = () => { s.done = true; topUp(); };
+            p.sources.push(s); p.next++;
+        }
+        const pos = now - first, played = pos < b.frames - offset ? 0 : 1 + Math.floor((pos - (b.frames - offset)) / b.frames);
+        const at = pos < 0 ? 0 : played ? (pos - (b.frames - offset)) % b.frames : offset + pos;
+        prepEl('prep-play-info').textContent = pos < 0 ? '' : `Play ${played + 1} · ${(at / prepSource.rate).toFixed(1)} s of ${(b.frames / prepSource.rate).toFixed(1)} s`;
+    };
+    p.sources[0].onended = () => { p.sources[0].done = true; topUp(); };
+    topUp();
+    p.timer = setInterval(topUp, 250);
+}
+function prepStopPreview() {
+    const p = prepPreview;
+    if (!p) return;
+    prepPreview = null;
+    clearInterval(p.timer);
+    p.sources.forEach(s => { s.onended = null; try { s.stop(); } catch (e) {} s.disconnect(); });
+    p.gain.disconnect();
+    prepEl('prep-play-info').textContent = '';
+}
+
+// --- Saving ---
+function prepLengthLabel(seconds) {
+    if (seconds < 60) return `${Number.isInteger(Math.round(seconds * 10) / 10) ? Math.round(seconds) : seconds.toFixed(1)}s`;
+    const m = Math.floor(seconds / 60), s = Math.round(seconds - m * 60);
+    return s === 60 ? `${m + 1}m00s` : `${m}m${String(s).padStart(2, '0')}s`;
+}
+// "a-1) Clocks … 30m00s.wav" → "a-1) Clocks … 20s loop.wav": the old length tag (if any) gives way to the loop's.
+function prepFileName() {
+    const base = prepSource.name.replace(/\.[^.]+$/, '').replace(/\s+\d+m\d{2}s$/i, '');
+    return `${base} ${prepLengthLabel((prepLoop.end - prepLoop.start) / prepSource.rate)} loop.wav`;
+}
+// 16-bit PCM (with a tiny, inaudible random dither so quiet fades don't turn grainy), or 24-bit when the original
+// had more than 16 bits. Same sample rate and channels as the original.
+function prepEncodeWav(channels, rate, bits) {
+    const n = channels[0].length, ch = channels.length, bytes = bits / 8, size = n * ch * bytes;
+    const buf = new ArrayBuffer(44 + size), v = new DataView(buf);
+    const text = (at, s) => { for (let i = 0; i < 4; i++) v.setUint8(at + i, s.charCodeAt(i)); };
+    text(0, 'RIFF'); v.setUint32(4, 36 + size, true); text(8, 'WAVE'); text(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, ch, true); v.setUint32(24, rate, true);
+    v.setUint32(28, rate * ch * bytes, true); v.setUint16(32, ch * bytes, true); v.setUint16(34, bits, true);
+    text(36, 'data'); v.setUint32(40, size, true);
+    let p = 44;
+    if (bits === 16) {
+        const out = new Int16Array(buf, 44, n * ch);
+        for (let i = 0, k = 0; i < n; i++) for (let c = 0; c < ch; c++) out[k++] = prepClamp(Math.round(channels[c][i] * 32767 + Math.random() - Math.random()), -32768, 32767);
+    } else {
+        for (let i = 0; i < n; i++) for (let c = 0; c < ch; c++, p += 3) {
+            const x = prepClamp(Math.round(channels[c][i] * 8388607), -8388608, 8388607);
+            v.setUint8(p, x & 255); v.setUint8(p + 1, (x >> 8) & 255); v.setInt8(p + 2, x >> 16);
+        }
+    }
+    return new Blob([buf], { type: 'audio/wav' });
+}
+async function prepSave() {
+    if (!prepBuilt) return;
+    if (prepBuildPending) await prepBuild(); // a change made a moment ago isn't built yet
+    const bits = prepSource.bits > 16 ? 24 : 16;
+    const blob = prepEncodeWav(prepBuilt.channels, prepSource.rate, bits);
+    let name = prepEl('prep-name').value.trim() || prepFileName();
+    if (!/\.wav$/i.test(name)) name += '.wav';
+    name = name.replace(/[\\/:*?"<>|]/g, '-');
+    try {
+        if (window.showSaveFilePicker) {
+            // Chrome, Opera and Edge on a computer: a Save dialog, so the loop can go straight into your sounds folder.
+            const handle = await window.showSaveFilePicker({ suggestedName: name, types: [{ description: 'WAV sound', accept: { 'audio/wav': ['.wav'] } }] });
+            const w = await handle.createWritable(); await w.write(blob); await w.close();
+            name = handle.name;
+        } else {
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob); a.download = name;
+            document.body.appendChild(a); a.click(); a.remove();
+            setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+        }
+    } catch (err) {
+        if (err.name === 'AbortError') return;
+        prepMessage(`Couldn't save: ${err.message}`);
+        return;
+    }
+    prepEl('prep-save-info').textContent = `Saved "${name}": ${(blob.size / 1048576).toFixed(1)} MB, WAV ${bits}-bit, ${prepSource.rate.toLocaleString('en-US')} Hz, ${prepSource.channels === 1 ? 'mono' : 'stereo'}, ${(prepBuilt.frames / prepSource.rate).toFixed(3)} s.`;
+}
+
+// --- Trim silence: both ends move inward past anything 50 dB below the stretch's loudest moment (or below -60 dB) ---
+async function prepTrimSilence() {
+    const s = prepLoop.start, n = prepLoop.end - prepLoop.start;
+    const mono = prepMono(await prepRead(s, n)), hop = Math.max(1, Math.round(0.01 * prepSource.rate)), env = prepEnvelope(mono, hop);
+    let peak = 0; for (const x of env) peak = Math.max(peak, x);
+    const floor = Math.max(peak * Math.pow(10, -50 / 20), Math.pow(10, -60 / 20));
+    let i = 0, j = env.length - 1;
+    while (i < env.length && env[i] < floor) i++;
+    while (j > i && env[j] < floor) j--;
+    if (i >= env.length) { prepMessage('This stretch is all silence.'); return; }
+    if (i === 0 && j === env.length - 1) { prepMessage('No silence at either end of this stretch.'); return; }
+    const start = s + Math.max(0, i - 1) * hop, end = Math.min(s + n, s + (j + 2) * hop);
+    prepFound = null; prepShowFound();
+    prepSetLoop(start, end, { fit: true });
+    prepMessage(`Trimmed ${((start - s) / prepSource.rate).toFixed(2)} s of silence from the start and ${((s + n - end) / prepSource.rate).toFixed(2)} s from the end.`);
+}
+
+// --- Controls ---
+function prepSetupPage() {
+    try { if (localStorage.getItem('theme') === 'light') document.documentElement.dataset.theme = 'light'; } catch (e) {}
+    prepEl('prep-target').textContent = `${AUTO_LEVEL_TARGET} LUFS`;
+    prepEl('prep-file').addEventListener('change', e => { const f = e.target.files[0]; if (f) prepOpenFile(f); e.target.value = ''; });
+    document.addEventListener('dragover', e => { e.preventDefault(); document.body.classList.add('prep-dragover'); });
+    document.addEventListener('dragleave', e => { if (!e.relatedTarget) document.body.classList.remove('prep-dragover'); });
+    document.addEventListener('drop', e => { e.preventDefault(); document.body.classList.remove('prep-dragover'); const f = e.dataTransfer.files[0]; if (f) prepOpenFile(f); });
+
+    const wave = prepEl('prep-wave');
+    const frameAt = e => { const r = wave.getBoundingClientRect(); return prepView.start + (e.clientX - r.left) / r.width * prepView.frames; };
+    let drag = null;
+    wave.addEventListener('pointerdown', e => {
+        if (!prepSource) return;
+        const r = wave.getBoundingClientRect(), x = e.clientX - r.left, pxOf = f => (f - prepView.start) / prepView.frames * r.width;
+        const grab = e.pointerType === 'touch' ? 16 : 6;
+        if (Math.abs(x - pxOf(prepLoop.start)) <= grab) drag = { edge: 'start' };
+        else if (Math.abs(x - pxOf(prepLoop.end)) <= grab) drag = { edge: 'end' };
+        else drag = { anchor: frameAt(e) };
+        wave.setPointerCapture(e.pointerId);
+    });
+    wave.addEventListener('pointermove', e => {
+        if (!prepSource) return;
+        if (!drag) {
+            const r = wave.getBoundingClientRect(), x = e.clientX - r.left, pxOf = f => (f - prepView.start) / prepView.frames * r.width;
+            wave.style.cursor = Math.min(Math.abs(x - pxOf(prepLoop.start)), Math.abs(x - pxOf(prepLoop.end))) <= 6 ? 'ew-resize' : 'crosshair';
+            return;
+        }
+        const f = frameAt(e);
+        if (drag.edge === 'start') prepSetLoop(Math.min(f, prepLoop.end - 2), prepLoop.end, { rebuild: false });
+        else if (drag.edge === 'end') prepSetLoop(prepLoop.start, Math.max(f, prepLoop.start + 2), { rebuild: false });
+        else if (Math.abs(f - drag.anchor) > prepView.frames / 400) prepSetLoop(Math.min(f, drag.anchor), Math.max(f, drag.anchor), { rebuild: false });
+        drag.moved = true;
+    });
+    const endDrag = () => { if (drag?.moved) { prepFound = null; prepShowFound(); prepScheduleBuild(); } drag = null; };
+    wave.addEventListener('pointerup', endDrag);
+    wave.addEventListener('pointercancel', endDrag);
+    wave.addEventListener('wheel', e => {
+        if (!prepSource) return;
+        e.preventDefault();
+        if (e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) { prepSetView(prepView.start + Math.sign(e.deltaX || e.deltaY) * prepView.frames * 0.15, prepView.frames); return; }
+        const f = frameAt(e), k = e.deltaY > 0 ? 1.25 : 0.8, frames = prepView.frames * k;
+        prepSetView(f - (f - prepView.start) * k, frames);
+    }, { passive: false });
+    const overview = prepEl('prep-overview');
+    const overviewTo = e => { const r = overview.getBoundingClientRect(); prepSetView((e.clientX - r.left) / r.width * prepSource.frames - prepView.frames / 2, prepView.frames); };
+    overview.addEventListener('pointerdown', e => { if (!prepSource) return; overview.setPointerCapture(e.pointerId); overviewTo(e); });
+    overview.addEventListener('pointermove', e => { if (prepSource && overview.hasPointerCapture(e.pointerId)) overviewTo(e); });
+    prepEl('prep-zoom-in').addEventListener('click', () => prepSetView(prepView.start + prepView.frames * 0.25, prepView.frames * 0.5));
+    prepEl('prep-zoom-out').addEventListener('click', () => prepSetView(prepView.start - prepView.frames * 0.5, prepView.frames * 2));
+    prepEl('prep-zoom-loop').addEventListener('click', prepFitView);
+    prepEl('prep-zoom-all').addEventListener('click', () => prepSetView(0, prepSource.frames));
+    prepEl('prep-scroll').addEventListener('input', e => prepSetView((prepSource.frames - prepView.frames) * e.target.value / 1000, prepView.frames));
+    window.addEventListener('resize', () => { prepRequestWave(); prepDrawJoin(); });
+
+    const typed = () => {
+        const rate = prepSource.rate, start = Math.round((parseFloat(prepEl('prep-start').value) || 0) * rate);
+        const len = Math.round((parseFloat(prepEl('prep-length').value) || 0) * rate);
+        prepFound = null; prepShowFound();
+        prepSetLoop(start, start + Math.max(2, len), { fit: true });
+    };
+    prepEl('prep-start').addEventListener('change', typed);
+    prepEl('prep-length').addEventListener('change', typed);
+    document.querySelectorAll('[data-len]').forEach(btn => btn.addEventListener('click', () => { prepEl('prep-length').value = btn.dataset.len; typed(); }));
+    prepEl('prep-trim').addEventListener('click', prepTrimSilence);
+    prepEl('prep-find').addEventListener('click', prepFindJoin);
+    document.querySelectorAll('[data-nudge]').forEach(btn => btn.addEventListener('click', () => {
+        const v = prepEl('prep-nudge-step').value, step = (v === 'sample' ? 1 : Math.round(parseFloat(v) * prepSource.rate)) * Number(btn.dataset.dir);
+        if (btn.dataset.nudge === 'start') prepSetLoop(prepLoop.start + step, prepLoop.end);
+        else prepSetLoop(prepLoop.start, prepLoop.end + step);
+    }));
+    ['prep-xfade', 'prep-xfade-ms', 'prep-curve', 'prep-normalize'].forEach(id => prepEl(id).addEventListener('change', prepScheduleBuild));
+    prepEl('prep-join-span').addEventListener('change', prepDrawJoin);
+    prepEl('prep-play').addEventListener('click', () => prepPlay(false));
+    prepEl('prep-play-join').addEventListener('click', () => prepPlay(true));
+    prepEl('prep-stop').addEventListener('click', prepStopPreview);
+    prepEl('prep-volume').addEventListener('input', e => { if (prepPreview) prepPreview.gain.gain.value = parseFloat(e.target.value); });
+    prepEl('prep-save').addEventListener('click', prepSave);
+    // For measurements (tools and Claude's checks): the page's state and its own play function.
+    window.soundPrep = {
+        open: prepOpenFile, find: prepFindJoin, build: prepBuild, setLoop: prepSetLoop, play: prepPlay, stop: prepStopPreview, startPlay: prepStartPlay,
+        encode: prepEncodeWav, state: () => ({ source: prepSource, loop: { ...prepLoop }, built: prepBuilt, found: prepFound, preview: prepPreview })
+    };
+}
+prepSetupPage();
+    </script>
+</body>
+</html>
