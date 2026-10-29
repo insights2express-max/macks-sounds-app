@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sound Probe (probe 1)</title>
+<meta name="description" content="Test page for Mack's Sounds: install, offline opening, screen-off sound and storage.">
+<meta name="theme-color" content="#101628">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Sound Probe">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+    :root { --bg: #101628; --panel: #1a2340; --line: #2c3963; --text: #e9edf7; --dim: #a7b1cc; --ok: #5fd39a; --bad: #ff7b7b; --wait: #f0c674; --accent: #78dcc8; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--text); }
+    body { font: 17px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); overflow-wrap: anywhere; }
+    main { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .badge { font-size: 0.8rem; font-weight: 600; background: var(--accent); color: #0b1020; border-radius: 999px; padding: 2px 10px; }
+    .intro { color: var(--dim); margin: 0 0 14px; font-size: 0.95rem; }
+    details.section { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; margin: 0 0 14px; }
+    details.section > summary { cursor: pointer; list-style: none; padding: 14px 16px; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+    details.section > summary::-webkit-details-marker { display: none; }
+    details.section > summary::before { content: "▸"; color: var(--accent); width: 1em; }
+    details.section[open] > summary::before { content: "▾"; }
+    .body { padding: 0 16px 16px; }
+    button { font: inherit; font-weight: 600; border: 0; border-radius: 12px; padding: 14px 18px; min-height: 52px; cursor: pointer; background: #33447a; color: var(--text); }
+    button.big { width: 100%; font-size: 1.2rem; }
+    button.primary { background: var(--accent); color: #0b1020; }
+    button.stop { background: #c75a5a; color: #fff; }
+    button.small { min-height: 44px; padding: 10px 14px; font-size: 0.95rem; }
+    .row { display: flex; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+    .row:first-child { border-top: 0; }
+    .mark { flex: 0 0 auto; min-width: 72px; text-align: center; font-weight: 700; border-radius: 10px; padding: 4px 6px; align-self: flex-start; }
+    .mark.ok { background: rgba(95, 211, 154, 0.18); color: var(--ok); }
+    .mark.bad { background: rgba(255, 123, 123, 0.18); color: var(--bad); }
+    .mark.wait { background: rgba(240, 198, 116, 0.15); color: var(--wait); font-size: 0.85rem; }
+    .row h3 { margin: 0; font-size: 1rem; }
+    .row p { margin: 2px 0 0; color: var(--dim); font-size: 0.95rem; }
+    .note { color: var(--dim); font-size: 0.95rem; margin: 10px 0 0; }
+    .status { margin: 12px 0 0; font-size: 0.95rem; }
+    #update { display: none; background: var(--wait); color: #0b1020; border-radius: 14px; padding: 12px 16px; margin: 0 0 14px; font-weight: 600; }
+    #update button { margin-top: 8px; width: 100%; background: #0b1020; color: var(--wait); }
+    textarea { width: 100%; min-height: 220px; margin-top: 12px; background: #0d1222; color: var(--text); border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: 13px/1.4 ui-monospace, Consolas, monospace; resize: vertical; }
+    #log { font: 13px/1.4 ui-monospace, Consolas, monospace; color: var(--dim); white-space: pre-wrap; margin: 10px 0 0; }
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .buttons button { flex: 1 1 140px; }
+    footer { color: var(--dim); font-size: 0.85rem; text-align: center; margin-top: 8px; }
+</style>
+</head>
+<body>
+<main>
+    <h1>Sound Probe <span class="badge" id="versionBadge">probe 1</span></h1>
+    <p class="intro">A small test page for Mack's Sounds (MS-255). It checks whether this device can install the app, open it with no internet, keep sound going with the screen off and protect saved data. It has no app features; its only sound is a soft test noise.</p>
+
+    <div id="update">A new version of the probe is ready.<button id="updateBtn">New version: reload</button></div>
+
+    <details class="section" data-cec="install" open>
+        <summary>1 · Install</summary>
+        <div class="body">
+            <button class="big primary" id="installBtn" hidden>Install</button>
+            <p id="installHint" class="note" style="margin-top:0"></p>
+            <p id="installOffered" class="note"></p>
+        </div>
+    </details>
+
+    <details class="section" data-cec="sound" open>
+        <summary>2 · Sound test</summary>
+        <div class="body">
+            <button class="big primary" id="playBtn">▶ Play</button>
+            <p class="note">Press Play, lock the screen for 10 minutes, then unlock and look at check 3 below. The noise is soft on purpose: you should still hear it faintly.</p>
+            <p class="status" id="soundStatus">Not playing.</p>
+            <p class="status" id="lastSession"></p>
+        </div>
+    </details>
+
+    <details class="section" data-cec="checks" open>
+        <summary>3 · Checks</summary>
+        <div class="body" id="checks"></div>
+    </details>
+
+    <details class="section" data-cec="results" open>
+        <summary>4 · Results to send</summary>
+        <div class="body">
+            <button class="big primary" id="copyBtn">Copy results</button>
+            <p class="note" id="copyNote">Copies the text below. Paste it into the chat with Claude.</p>
+            <textarea id="resultsText" readonly></textarea>
+        </div>
+    </details>
+
+    <details class="section" data-cec="log">
+        <summary>Details (sound log)</summary>
+        <div class="body">
+            <p class="note" style="margin-top:0">While the sound plays, the probe writes down the sound clock against the normal clock every 5 seconds. If the sound clock falls behind, or the queued sound runs out, that is a gap.</p>
+            <div id="log"></div>
+            <div class="buttons"><button class="small" id="resetBtn">Clear this probe's saved results</button></div>
+        </div>
+    </details>
+
+    <footer id="footer"></footer>
+</main>
+
+<script>
+'use strict';
+// --- PWA probe (MS-255) ---
+// Everything this page saves goes under keys starting with "pwaProbe." (it shares the site with the real app,
+// so it must never touch the app's own keys or IndexedDB).
+const VERSION = 'probe 1';            // also in sw.js: bump both for every change
+const KEY = 'pwaProbe.';
+const AHEAD = 90;                     // seconds of sound queued ahead on the audio clock (as in the app)
+const CHUNK = 5;                      // length of one play of the test noise, in seconds
+const SAMPLE_MS = 5000;               // how often the sound clock is written down
+const GAP_LIMIT = 0.5;                // a gap of half a second or more counts as a gap
+const MAX_SAMPLES = 720, MAX_EVENTS = 60;
+
+const $ = id => document.getElementById(id);
+function load(k, fallback) { try { const v = localStorage.getItem(KEY + k); return v == null ? fallback : JSON.parse(v); } catch (e) { return fallback; } }
+function save(k, v) { try { localStorage.setItem(KEY + k, JSON.stringify(v)); } catch (e) {} }
+function forget(k) { try { localStorage.removeItem(KEY + k); } catch (e) {} }
+
+function fmtDuration(sec) {
+    sec = Math.max(0, Math.round(sec));
+    const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    if (h) return h + ' h ' + m + ' min';
+    if (m) return m + ' min ' + s + ' s';
+    return s + ' s';
+}
+function fmtTime(ms) { return new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }); }
+function fmtDate(ms) { return new Date(ms).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+
+// --- Device and browser ---
+function describeDevice() {
+    const ua = navigator.userAgent;
+    const brands = (navigator.userAgentData && navigator.userAgentData.brands || []).map(b => b.brand).join(' ');
+    const iOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+    const android = /Android/.test(ua);
+    let browser = 'an unknown browser';
+    if (/OPR\/|OPT\/|Opera/.test(ua) || /Opera/.test(brands)) browser = 'Opera';
+    else if (/Edg(A|iOS)?\//.test(ua)) browser = 'Edge';
+    else if (/SamsungBrowser/.test(ua)) browser = 'Samsung Internet';
+    else if (/Firefox|FxiOS/.test(ua)) browser = 'Firefox';
+    else if (/CriOS|Chrome\//.test(ua)) browser = 'Chrome';
+    else if (/Safari/.test(ua)) browser = 'Safari';
+    const device = iOS ? (/iPhone/.test(ua) ? 'iPhone' : 'iPad') : android ? 'Android' :
+        /Windows/.test(ua) ? 'Windows computer' : /CrOS/.test(ua) ? 'Chromebook' : /Mac/.test(ua) ? 'Mac' : /Linux/.test(ua) ? 'Linux computer' : 'unknown device';
+    return { iOS, android, mobile: iOS || android, browser, device, label: browser + ' on ' + (device === 'Android' ? 'Android' : device) };
+}
+const DEV = describeDevice();
+
+function isInstalledWindow() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: window-controls-overlay)').matches ||
+        window.matchMedia('(display-mode: fullscreen)').matches || window.matchMedia('(display-mode: minimal-ui)').matches || navigator.standalone === true;
+}
+
+// --- Event log (kept in localStorage so it survives the page being closed) ---
+function logEvent(text) {
+    const events = load('events', []);
+    events.push([Date.now(), text]);
+    save('events', events.slice(-MAX_EVENTS));
+    renderLog();
+}
+
+// --- 1 · Install ---
+let installPrompt = null;
+function installHint() {
+    if (isInstalledWindow()) return 'You are in the installed probe (its own window). Nothing to do here.';
+    if (DEV.iOS && DEV.browser === 'Safari') return 'On iPhone: tap the Share button (a square with an arrow pointing up; on newer iPhones it may be inside the ⋯ menu), then "Add to Home Screen", then "Add". If you see "Open as Web App", leave it on.';
+    if (DEV.iOS) return 'On iPhone, install from Safari: open this same address in Safari, then Share → "Add to Home Screen". Some other iPhone browsers also have "Add to Home Screen" in their Share menu.';
+    if (DEV.android && DEV.browser === 'Chrome') return 'On Android Chrome: tap the ⋮ menu (top right), then "Add to Home screen" or "Install app", then "Install".';
+    if (DEV.android && DEV.browser === 'Opera') return 'On Android Opera: open Opera\'s menu and look for an item that adds the page to the Home screen (the exact name differs between Opera versions; it may sit under "Add to…").';
+    if (DEV.android) return 'Look in the browser\'s menu for "Install" or "Add to Home screen".';
+    if (DEV.browser === 'Opera') return 'On a computer, look for an install icon at the right end of the address bar, or look in Opera\'s menu for Install. If neither exists, Opera on this computer can\'t install web apps: that is worth knowing too.';
+    if (DEV.browser === 'Chrome' || DEV.browser === 'Edge') return 'On a computer, look for an install icon at the right end of the address bar, or look in the browser\'s menu for Install.';
+    return 'Look in the browser\'s menu for Install or "Add to Home Screen". Some browsers can\'t install web apps.';
+}
+function renderInstall() {
+    $('installHint').textContent = installHint();
+    $('installBtn').hidden = !installPrompt || isInstalledWindow();
+    const offered = load('installOffered', null);
+    $('installOffered').textContent = isInstalledWindow() ? '' :
+        offered ? 'This browser offered its own Install button (first on ' + fmtDate(offered.time) + ').' :
+        'This browser has not offered its own Install button so far (Safari never does; use the steps above).';
+}
+window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    installPrompt = e;
+    if (!load('installOffered', null)) save('installOffered', { time: Date.now(), browser: DEV.label });
+    renderInstall(); renderAll();
+});
+$('installBtn').addEventListener('click', async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    try { const r = await installPrompt.userChoice; logEvent('Install prompt: ' + r.outcome); } catch (e) {}
+    installPrompt = null;
+    renderInstall();
+});
+window.addEventListener('appinstalled', () => { save('installedAt', { time: Date.now(), browser: DEV.label }); logEvent('Installed'); renderAll(); });
+
+// --- Service worker, offline and updates ---
+let swInfo = 'not checked yet';
+let updateRequested = false;
+let waitingWorker = null;
+async function setupServiceWorker() {
+    if (!('serviceWorker' in navigator)) { swInfo = 'not supported by this browser'; renderAll(); return; }
+    try {
+        const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+        swInfo = 'registered, scope ' + new URL(reg.scope).pathname;
+        const checkWaiting = () => { if (reg.waiting && navigator.serviceWorker.controller) showUpdate(reg.waiting); };
+        checkWaiting();
+        reg.addEventListener('updatefound', () => {
+            const w = reg.installing;
+            if (w) w.addEventListener('statechange', () => { if (w.state === 'installed') checkWaiting(); });
+        });
+        navigator.serviceWorker.addEventListener('controllerchange', () => { if (updateRequested) location.reload(); else renderAll(); });
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) reg.update().catch(() => {}); });
+    } catch (e) { swInfo = 'could not register (' + e.message + ')'; }
+    renderAll();
+}
+function showUpdate(worker) {
+    waitingWorker = worker;
+    $('update').style.display = 'block';
+}
+$('updateBtn').addEventListener('click', () => {
+    if (!waitingWorker) return location.reload();
+    updateRequested = true;
+    waitingWorker.postMessage('skipWaiting');
+});
+
+// Is there internet right now? A tiny request the service worker always sends to the network.
+async function internetReachable() {
+    if (!navigator.onLine) return false;
+    const ctl = 'AbortController' in window ? new AbortController() : null;
+    const timer = setTimeout(() => ctl && ctl.abort(), 5000);
+    try {
+        await fetch('manifest.webmanifest?pwaProbePing=' + Date.now(), { cache: 'no-store', signal: ctl && ctl.signal });
+        return true;
+    } catch (e) { return false; } finally { clearTimeout(timer); }
+}
+let openedOfflineNow = null; // null = still checking
+async function checkOfflineOpen() {
+    const online = await internetReachable();
+    const fromCache = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+    openedOfflineNow = !online;
+    if (!online && fromCache) {
+        save('offlineOpen', { time: Date.now(), installed: isInstalledWindow(), browser: DEV.label });
+        logEvent('Opened with no internet (' + (isInstalledWindow() ? 'installed' : 'browser tab') + ')');
+    }
+    renderAll();
+}
+
+// --- 4 · Storage ---
+let storageInfo = { status: 'wait', text: 'Checking…' };
+async function checkStorage() {
+    const s = navigator.storage;
+    if (!s || !s.persisted) { storageInfo = { status: 'bad', text: 'This browser can\'t be asked to protect the probe\'s saved data.' }; renderAll(); return; }
+    try {
+        let persisted = await s.persisted();
+        if (!persisted && s.persist) persisted = await s.persist();
+        let quota = '';
+        if (s.estimate) {
+            const est = await s.estimate();
+            if (est && est.quota) quota = ' Space allowed for this site: about ' + (est.quota >= 1e9 ? (est.quota / 1e9).toFixed(1) + ' GB' : Math.round(est.quota / 1e6) + ' MB') + '.';
+        }
+        storageInfo = persisted
+            ? { status: 'ok', text: 'The browser promised not to clear saved data on its own (only you can).' + quota }
+            : { status: 'bad', text: 'The browser said no for now: it may clear saved data when space runs low. Chrome often says yes only once the app is installed or used often.' + quota };
+    } catch (e) { storageInfo = { status: 'bad', text: 'Asking failed (' + e.message + ').' }; }
+    renderAll();
+}
+
+// --- 2 · Sound test: Web Audio scheduled ahead, plus the app's keep-alive (js/keep-alive.js) ---
+let ctx = null, master = null, noiseBuf = null;
+let playing = false, scheduledEnd = 0, tickTimer = null;
+const pending = new Set();
+let lastSample = null, silenceSinceSample = 0;
+let session = null;   // the running session, saved as pwaProbe.sound.current
+
+function makeNoise() {
+    // Soft brown noise (like a distant fan), made so the end joins the start without a click
+    const rate = ctx.sampleRate, n = Math.round(rate * CHUNK);
+    const buf = ctx.createBuffer(2, n, rate);
+    for (let ch = 0; ch < 2; ch++) {
+        const d = buf.getChannelData(ch);
+        let last = 0;
+        for (let i = 0; i < n; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; d[i] = last * 3.5; }
+        const step = (d[n - 1] - d[0]) / n;
+        let mean = 0;
+        for (let i = 0; i < n; i++) { d[i] -= step * i; mean += d[i]; }
+        mean /= n;
+        for (let i = 0; i < n; i++) d[i] -= mean;
+    }
+    return buf;
+}
+
+function scheduleAhead() {
+    if (!playing) return;
+    const now = ctx.currentTime;
+    if (scheduledEnd < now) {
+        // The queued sound ran out before it was topped up: silence until the next play starts
+        const restart = now + 0.1;
+        silenceSinceSample += restart - scheduledEnd;
+        scheduledEnd = restart;
+    }
+    while (scheduledEnd < now + AHEAD || pending.size < 2) {
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuf;
+        src.connect(master);
+        src.onended = () => { pending.delete(src); scheduleAhead(); };
+        src.start(scheduledEnd);
+        pending.add(src);
+        scheduledEnd += noiseBuf.duration;
+    }
+}
+
+// Keep-alive, as in the app: an inaudible looping audio element (random +/-1 step of 16-bit sound) so the
+// browser shows its media notification / lock-screen player and treats the page as a media app.
+let keepAliveAudio = null, keepAliveOwnPause = false;
+function makeKeepAliveUrl() {
+    const rate = 8000, frames = rate * 30;
+    const view = new DataView(new ArrayBuffer(44 + frames * 2));
+    const text = (offset, s) => { for (let i = 0; i < s.length; i++) view.setUint8(offset + i, s.charCodeAt(i)); };
+    text(0, 'RIFF'); view.setUint32(4, 36 + frames * 2, true); text(8, 'WAVE');
+    text(12, 'fmt '); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+    view.setUint32(24, rate, true); view.setUint32(28, rate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+    text(36, 'data'); view.setUint32(40, frames * 2, true);
+    for (let i = 0; i < frames; i++) view.setInt16(44 + i * 2, Math.random() < 0.5 ? -1 : 1, true);
+    return URL.createObjectURL(new Blob([view.buffer], { type: 'audio/wav' }));
+}
+function setupMediaSession() {
+    if (!('mediaSession' in navigator)) return;
+    try {
+        navigator.mediaSession.metadata = new MediaMetadata({ title: 'Sound Probe', artist: 'Mack\'s Sounds test',
+            artwork: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png' }] });
+    } catch (e) {}
+    const handle = (action, fn) => { try { navigator.mediaSession.setActionHandler(action, fn); } catch (e) {} };
+    handle('play', () => { logEvent('Lock-screen Play'); startSound(); });
+    handle('pause', () => { logEvent('Lock-screen Pause'); stopSound(); });
+    handle('stop', () => { logEvent('Lock-screen Stop'); stopSound(); });
+}
+function updateKeepAlive() {
+    if (playing) {
+        if (!keepAliveAudio) {
+            keepAliveAudio = new Audio(makeKeepAliveUrl());
+            keepAliveAudio.loop = true;
+            keepAliveAudio.addEventListener('pause', () => { if (!keepAliveOwnPause && playing) logEvent('Keep-alive paused from outside'); keepAliveOwnPause = false; });
+            setupMediaSession();
+        }
+        if (keepAliveAudio.paused) keepAliveAudio.play().catch(e => logEvent('Keep-alive could not start (' + e.name + ')'));
+    } else if (keepAliveAudio && !keepAliveAudio.paused) {
+        keepAliveOwnPause = true;
+        keepAliveAudio.pause();
+    }
+    if ('mediaSession' in navigator && keepAliveAudio) navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+}
+
+function saveSession() { if (session) save('sound.current', session); }
+
+// Write down the audio clock against the wall clock. Between two notes, a gap is the time the audio clock
+// fell behind the wall clock (sound engine paused) plus any time the queued sound ran out.
+function takeSample() {
+    if (!session) return;
+    const wall = Date.now(), audio = ctx.currentTime;
+    if (lastSample) {
+        const dw = (wall - lastSample.wall) / 1000, da = audio - lastSample.audio;
+        const gap = Math.max(0, dw - da) + silenceSinceSample;
+        if (gap >= 0.05) {
+            session.gapTotal += gap;
+            if (session.period) session.period.gapTotal += gap;
+        }
+        session.longestGap = Math.max(session.longestGap, gap);
+        if (session.period) session.period.longestGap = Math.max(session.period.longestGap, gap);
+        if (gap >= GAP_LIMIT) { session.gaps.push([wall, +gap.toFixed(1), document.hidden ? 1 : 0]); session.gaps = session.gaps.slice(-20); }
+    }
+    silenceSinceSample = 0;
+    lastSample = { wall, audio };
+    session.samples.push([wall, +audio.toFixed(2), document.hidden ? 1 : 0, ctx.state]);
+    if (session.samples.length > MAX_SAMPLES) session.samples = session.samples.slice(-MAX_SAMPLES);
+    session.lastWall = wall;
+    if (session.period) session.period.lastWall = wall;
+    saveSession();
+}
+
+function closePeriod(endWall, killed) {
+    const p = session.period;
+    if (!p) return;
+    const dur = (endWall - p.startWall) / 1000;
+    const result = { startWall: p.startWall, endWall, duration: dur, played: Math.max(0, dur - p.gapTotal), longestGap: p.longestGap, gapTotal: p.gapTotal, killed: !!killed, browser: DEV.label, installed: isInstalledWindow() };
+    session.periods.push(result);
+    session.periods = session.periods.slice(-10);
+    session.period = null;
+    save('sound.lastPeriod', result);
+}
+
+async function startSound() {
+    if (playing) return;
+    try {
+        if (!ctx) {
+            const AC = window.AudioContext || window.webkitAudioContext;
+            try { ctx = new AC({ latencyHint: 'playback' }); } catch (e) { ctx = new AC(); }
+            // iPhone: ask for "playback" sound so the ring / silent switch doesn't mute it (iOS 17 and later)
+            if (navigator.audioSession) { try { navigator.audioSession.type = 'playback'; } catch (e) {} }
+            master = ctx.createGain();
+            master.gain.value = 0.25;
+            master.connect(ctx.destination);
+            noiseBuf = makeNoise();
+            ctx.addEventListener('statechange', () => { if (session) logEvent('Sound engine: ' + ctx.state); });
+        }
+        if (ctx.state !== 'running') await ctx.resume().catch(() => {});
+    } catch (e) { $('soundStatus').textContent = 'The sound engine could not start (' + e.message + ').'; return; }
+    playing = true;
+    session = { startWall: Date.now(), lastWall: Date.now(), status: 'playing', gapTotal: 0, longestGap: 0, gaps: [], samples: [], periods: [], period: null, browser: DEV.label, installed: isInstalledWindow() };
+    lastSample = null; silenceSinceSample = 0;
+    scheduledEnd = ctx.currentTime + 0.1;
+    scheduleAhead();
+    takeSample();
+    updateKeepAlive();
+    tickTimer = setInterval(tick, 250);
+    logEvent('Play');
+    renderAll();
+}
+
+function stopSound() {
+    if (!playing) return;
+    scheduleAhead();
+    takeSample();
+    if (session.period) closePeriod(Date.now(), false);
+    playing = false;
+    clearInterval(tickTimer); tickTimer = null;
+    pending.forEach(s => { s.onended = null; try { s.stop(); } catch (e) {} });
+    pending.clear();
+    updateKeepAlive();
+    ctx.suspend().catch(() => {});
+    session.status = 'stopped';
+    session.endWall = Date.now();
+    save('sound.last', session);
+    forget('sound.current');
+    session = null;
+    logEvent('Stop');
+    renderAll();
+}
+
+function tick() {
+    if (!playing) return;
+    scheduleAhead();
+    if (!lastSample || Date.now() - lastSample.wall >= SAMPLE_MS) takeSample();
+    renderSoundStatus();
+}
+
+document.addEventListener('visibilitychange', () => {
+    if (!playing) return;
+    if (document.hidden) {
+        takeSample();
+        if (session.period) return;
+        session.period = { startWall: Date.now(), lastWall: Date.now(), gapTotal: 0, longestGap: 0 };
+        saveSession();
+        logEvent('Screen off / page hidden');
+    } else {
+        scheduleAhead();   // finds out if the queued sound ran out while hidden
+        takeSample();
+        closePeriod(Date.now(), false);
+        saveSession();
+        logEvent('Page visible again');
+        if (ctx.state !== 'running') ctx.resume().catch(() => {});
+        renderAll();
+    }
+});
+// Leaving or reloading the page also makes it "hidden": a screen-off period that only began as the page
+// closed is not a screen-off test, so it is dropped.
+window.addEventListener('pagehide', () => {
+    if (playing && session && session.period && Date.now() - session.period.startWall < 2000) { session.period = null; saveSession(); }
+});
+document.addEventListener('freeze', () => logEvent('Browser froze the page'));
+document.addEventListener('resume', () => logEvent('Browser unfroze the page'));
+
+// A session still marked "playing" at load time ended without Stop: the page was closed, reloaded or
+// shut by the system. Keep what it measured.
+function finishOrphanSession() {
+    const cur = load('sound.current', null);
+    if (!cur || cur.status !== 'playing') return;
+    if (cur.period) {
+        session = cur;
+        closePeriod(cur.lastWall, true);
+        session = null;
+    }
+    cur.status = 'ended without Stop';
+    cur.endWall = cur.lastWall;
+    save('sound.last', cur);
+    forget('sound.current');
+    logEvent('Last session ended without Stop (the page was closed, reloaded or shut by the system)');
+}
+
+// --- Rendering ---
+function soundResult() {
+    const p = (session && session.periods.length) ? session.periods[session.periods.length - 1] : load('sound.lastPeriod', null);
+    if (!p) return { status: 'wait', text: 'Press Play, lock the screen for 10 minutes, then unlock.' };
+    const when = ' (' + fmtDate(p.startWall) + ', ' + (p.installed ? 'installed' : 'browser tab') + ')';
+    if (p.killed) return { status: 'bad', text: 'The page was closed while the screen was off. Last sign of life ' + fmtDuration(p.duration) + ' after the screen went off' + when + '.' };
+    if (p.longestGap >= GAP_LIMIT) return { status: 'bad', text: 'Sound stopped or skipped with the screen off: played ' + fmtDuration(p.played) + ' of ' + fmtDuration(p.duration) + ', longest gap ' + fmtDuration(p.longestGap) + when + '.' };
+    if (p.duration < 60) return { status: 'wait', text: 'The screen was off only ' + fmtDuration(p.duration) + ' (no gaps). Lock it for 10 minutes for a real test.' };
+    return { status: 'ok', text: 'Played ' + fmtDuration(p.duration) + ' with the screen off, no gaps' + when + '.' + (p.duration < 570 ? ' A full test is 10 minutes.' : '') };
+}
+
+function checkList() {
+    const installed = isInstalledWindow();
+    const installedBefore = load('installedSeen', null);
+    const offline = load('offlineOpen', null);
+    return [
+        { name: 'Installed', ...(installed
+            ? { status: 'ok', text: 'Running in its own window, like an app.' }
+            : { status: 'wait', text: 'Running in a normal browser tab.' + (installedBefore ? ' (It did open installed on ' + fmtDate(installedBefore.time) + '.)' : ' Install it (section 1), then open it from the home screen or app list.') }) },
+        { name: 'Opened with no internet', ...(offline
+            ? { status: 'ok', text: 'It opened from the device\'s own copy with no internet (' + fmtDate(offline.time) + ', ' + (offline.installed ? 'installed' : 'browser tab') + ').' }
+            : { status: 'wait', text: (openedOfflineNow === null ? 'Checking the internet… ' : '') + 'Turn on airplane mode, then open the probe from the home screen. If it doesn\'t open at all, that is the ✕.' }) },
+        { name: 'Sound kept playing with the screen off', ...soundResult() },
+        { name: 'Storage protected', ...storageInfo }
+    ];
+}
+const MARK = { ok: '✓', bad: '✕', wait: 'not yet' };
+
+function renderChecks() {
+    const box = $('checks');
+    box.textContent = '';
+    checkList().forEach((c, i) => {
+        const row = document.createElement('div'); row.className = 'row';
+        const mark = document.createElement('div'); mark.className = 'mark ' + c.status; mark.textContent = MARK[c.status];
+        const txt = document.createElement('div');
+        const h = document.createElement('h3'); h.textContent = (i + 1) + '. ' + c.name;
+        const p = document.createElement('p'); p.textContent = c.text;
+        txt.append(h, p); row.append(mark, txt); box.append(row);
+    });
+}
+
+function renderSoundStatus() {
+    $('playBtn').textContent = playing ? '■ Stop' : '▶ Play';
+    $('playBtn').className = 'big ' + (playing ? 'stop' : 'primary');
+    if (playing && session) {
+        $('soundStatus').textContent = 'Playing for ' + fmtDuration((Date.now() - session.startWall) / 1000) + ' · sound engine ' + ctx.state +
+            ' · keep-alive ' + (keepAliveAudio && !keepAliveAudio.paused ? 'on' : 'off') + ' · longest gap ' + fmtDuration(session.longestGap) + '.';
+    } else $('soundStatus').textContent = 'Not playing.';
+    const last = load('sound.last', null);
+    $('lastSession').textContent = last ? 'Last session (' + fmtDate(last.startWall) + '): ' + fmtDuration((last.endWall - last.startWall) / 1000) + ' in all, ' +
+        last.periods.length + ' screen-off period(s), longest gap ' + fmtDuration(last.longestGap) + ', ' + last.status + '.' : '';
+}
+
+function renderLog() {
+    const lines = [];
+    const events = load('events', []).slice(-15);
+    if (events.length) { lines.push('Events:'); events.forEach(e => lines.push(fmtTime(e[0]) + '  ' + e[1])); }
+    const src = session || load('sound.last', null);
+    if (src && src.samples.length) {
+        lines.push('', 'Sound clock (' + (session ? 'this session' : 'last session') + ', newest last):');
+        src.samples.slice(-12).forEach(s => lines.push(fmtTime(s[0]) + '  sound clock ' + s[1].toFixed(1) + ' s  ' + (s[2] ? 'hidden' : 'visible') + '  ' + s[3]));
+    }
+    $('log').textContent = lines.join('\n') || 'Nothing yet.';
+}
+
+function resultsText() {
+    const lines = [
+        'Sound Probe results (' + VERSION + ')',
+        'Date: ' + new Date().toString(),
+        'Device: ' + DEV.label,
+        'Running: ' + (isInstalledWindow() ? 'installed (own window)' : 'browser tab'),
+        'Install button offered by the browser: ' + (load('installOffered', null) ? 'yes' : 'not so far'),
+        ''
+    ];
+    checkList().forEach((c, i) => lines.push((i + 1) + '. ' + c.name + ': ' + MARK[c.status] + ' - ' + c.text));
+    const last = load('sound.last', null);
+    if (last) {
+        lines.push('', 'Last sound session: ' + fmtDate(last.startWall) + ', ' + fmtDuration((last.endWall - last.startWall) / 1000) + ', ' + last.status + ', longest gap ' + fmtDuration(last.longestGap) + ', ' + (last.installed ? 'installed' : 'browser tab'));
+        last.periods.forEach(p => lines.push('  screen off ' + fmtDuration(p.duration) + ', played ' + fmtDuration(p.played) + ', longest gap ' + p.longestGap.toFixed(1) + ' s' + (p.killed ? ', page closed' : '')));
+        if (last.gaps.length) lines.push('  gaps: ' + last.gaps.map(g => fmtTime(g[0]) + ' ' + g[1] + ' s' + (g[2] ? ' (hidden)' : '')).join('; '));
+    }
+    const events = load('events', []).slice(-10);
+    if (events.length) lines.push('', 'Recent events: ' + events.map(e => fmtTime(e[0]) + ' ' + e[1]).join('; '));
+    lines.push('', 'Service worker: ' + swInfo + (navigator.serviceWorker && navigator.serviceWorker.controller ? ', page served by it' : ', page not served by it yet'));
+    lines.push('iPhone playback mode (audioSession): ' + (navigator.audioSession ? 'available' : 'not available'));
+    lines.push('Address: ' + location.href);
+    lines.push('User agent: ' + navigator.userAgent);
+    return lines.join('\n');
+}
+
+function renderAll() {
+    renderInstall();
+    renderChecks();
+    renderSoundStatus();
+    renderLog();
+    $('resultsText').value = resultsText();
+    $('footer').textContent = VERSION + ' · ' + DEV.label + ' · service worker: ' + swInfo;
+}
+
+// --- Buttons ---
+$('playBtn').addEventListener('click', () => { playing ? stopSound() : startSound(); });
+$('copyBtn').addEventListener('click', async () => {
+    const text = resultsText();
+    $('resultsText').value = text;
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+        const ta = $('resultsText'); ta.focus(); ta.select();
+        try { ok = document.execCommand('copy'); } catch (e2) {}
+    }
+    $('copyNote').textContent = ok ? 'Copied. Paste it into the chat with Claude.' : 'Could not copy by itself: press and hold the text below, Select all, then Copy.';
+});
+$('resetBtn').addEventListener('click', () => {
+    if (playing) stopSound();
+    try { Object.keys(localStorage).filter(k => k.startsWith(KEY)).forEach(k => localStorage.removeItem(k)); } catch (e) {}
+    renderAll();
+});
+
+// CECs: each section remembers whether it is open
+document.querySelectorAll('details[data-cec]').forEach(d => {
+    const saved = load('open.' + d.dataset.cec, null);
+    if (saved !== null) d.open = saved;
+    d.addEventListener('toggle', () => save('open.' + d.dataset.cec, d.open));
+});
+
+// --- Start ---
+$('versionBadge').textContent = VERSION;
+if (isInstalledWindow()) save('installedSeen', { time: Date.now(), browser: DEV.label });
+finishOrphanSession();
+renderAll();
+setupServiceWorker().then(checkOfflineOpen);
+checkStorage();
+window.addEventListener('online', renderAll);
+window.addEventListener('offline', renderAll);
+setInterval(() => { if (!playing) renderAll(); }, 30000);
+</script>
+</body>
+</html>
