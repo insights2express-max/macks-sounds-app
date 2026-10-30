@@ -6,8 +6,17 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-Dl9UaQmQz9KdBgmZD28iesqKGY2VM4vMrw463mYX+Ro=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-VR3QvFHvxasjAOAadekzgNwA7d9lPY7+GYu0RRx5d/I=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-SYmawVSMXBH+11EkweD61Vfef0RvFbApR2/nrGNmNLA=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-Kg7QVwYwc1HhxKafVVxX61c/Trsc88sj2yiBly/5hls='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Mack's Sounds v335</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-hkUNllI2uc35U9Hh18FMWlov7r5BFq5vHCcYXlD9e68=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-pkIh+S85ZUhQkR/nIGNe9QKO+IcdRZho3q9u0w45FNc=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v336</title>
+    <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="WeaveSoundz">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <!-- The 18 built-in fonts ship with the app (v322, MS-229); build.ps1 puts them into the built page. -->
     <style>
 /* The app's built-in fonts (v322, MS-229): Google Fonts' Latin files, shipped with the app so no font is fetched
@@ -674,16 +683,29 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     .bg-image-item, #settings-modal-content .control-group-row:has(> input[type="checkbox"]) { min-height: 44px; }
     .bg-image-item label { align-self: stretch; display: flex; align-items: center; }
 }
+
+/* --- Notices over the page (v336, MS-163): a new version is ready (js/pwa.js); an alarm, a call or another app stopped the sound (js/sound-resume.js). Above everything, sleep mode included. --- */
+#app-notices { position: fixed; top: max(0.75rem, env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); z-index: 3600; display: flex; flex-direction: column; gap: 0.5rem; width: min(440px, calc(100vw - 2rem)); pointer-events: none; }
+.app-notice { pointer-events: auto; width: 100%; padding: 0.9rem 1rem; border: none; border-radius: 10px; font: inherit; font-size: 1rem; font-weight: bold; text-align: center; cursor: pointer; box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
+.app-notice[hidden] { display: none; }
+#update-notice { background: var(--pause-color); color: #111; }
+#sound-stopped-notice { background: var(--primary-color); color: #fff; }
     </style>
 </head>
 <body>
     <div id="bg-image-layer"></div>
+    <!-- v336 (MS-163): notices over the page: a new version is ready (js/pwa.js); an alarm, a call or another app stopped
+         the sound (js/sound-resume.js). -->
+    <div id="app-notices">
+        <button id="update-notice" class="app-notice" type="button" hidden>New version ready: tap to reload</button>
+        <button id="sound-stopped-notice" class="app-notice" type="button" hidden>Sound stopped: tap to resume</button>
+    </div>
     <div class="app-container">
         <header class="app-header glass-container">
              <div class="app-header-main-row">
                  <div class="app-title-group">
-                    <h1 id="app-title">Mack's Sounds</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v335</span>
+                    <h1 id="app-title">WeaveSoundz</h1>
+                    <span id="app-version" class="app-version-badge" title="App version">v336</span>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -1000,8 +1022,11 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for Mack's Sounds ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v335';
-const DEFAULT_APP_TITLE = `Mack's Sounds`; // the version is shown separately, in the badge beside the title
+const APP_VERSION = 'v336';
+// The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
+// A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
+const APP_NAME = `WeaveSoundz`;
+const DEFAULT_APP_TITLE = APP_NAME; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
 const mixesArea = document.getElementById('mixes-area');
@@ -4752,7 +4777,9 @@ function setupSettingsModal() {
         }
     }
 
-    function updateAppTitle(newTitle) { const titleToSet = newTitle || DEFAULT_APP_TITLE; appTitleH1.textContent = titleToSet; document.title = `${titleToSet} ${APP_VERSION}`; localStorage.setItem('appTitle', titleToSet); }
+    function updateAppTitle(newTitle) { const titleToSet = newTitle || DEFAULT_APP_TITLE; appTitleH1.textContent = titleToSet; document.title = `${titleToSet} ${APP_VERSION}`;
+        // v336: only a title the user chose is saved, so the default can follow a later rename (APP_NAME)
+        if (titleToSet === DEFAULT_APP_TITLE) localStorage.removeItem('appTitle'); else localStorage.setItem('appTitle', titleToSet); }
     function updateCSSVar(varName, value, useQuotes = false, storageKey) { const finalValue = useQuotes ? `'${value}', sans-serif` : value; document.documentElement.style.setProperty(varName, finalValue); if (storageKey) localStorage.setItem(storageKey, value); }
     
     function updateBackgroundOverlay() {
@@ -4854,11 +4881,12 @@ function setupSettingsModal() {
     }
 
     function loadCustomizations() {
-        // A saved title that is just an older default with a version in it ("Mack's Sounds v.211") becomes the plain default;
-        // the version now shows in its own badge.
+        // A saved title that is just an older default ("Mack's Sounds", or with a version in it, "Mack's Sounds v.211") becomes
+        // the current default (APP_NAME); the version now shows in its own badge. Before v336 every page load saved the title
+        // shown, so nearly everyone has "Mack's Sounds" saved without ever having typed it.
         document.getElementById('app-version').textContent = APP_VERSION;
         const savedTitle = localStorage.getItem('appTitle');
-        const isOldDefaultTitle = /^Mack's Sounds v\.?\d+$/.test(savedTitle || '');
+        const isOldDefaultTitle = /^Mack's Sounds( v\.?\d+)?$/.test(savedTitle || '');
         appTitleInput.value = (savedTitle && !isOldDefaultTitle) ? savedTitle : DEFAULT_APP_TITLE; updateAppTitle(appTitleInput.value);
         
         const savedStickyMode = localStorage.getItem('stickyHeadersMode') || 'none';
@@ -6296,6 +6324,7 @@ function setupMediaSession() {
     navigator.mediaSession.metadata = new MediaMetadata({ title: DEFAULT_APP_TITLE, artist: 'Sleep sounds' });
     const handle = (action, fn) => { try { navigator.mediaSession.setActionHandler(action, fn); } catch (e) {} };
     handle('play', () => {
+        if (isAnythingPlaying()) { resumeInterruptedSound(); return; } // v336: still playing, but stopped from outside
         const paused = mixes.filter(m => m.isPaused);
         if (paused.length) paused.forEach(m => resumeMix(m.id));
         else if (mixes[0]) ensureMixSounds(mixes[0]).then(() => playMix(mixes[0].id));
@@ -6312,7 +6341,9 @@ function updateKeepAlive(userStarted = false) {
         if (!keepAliveAudio) {
             keepAliveAudio = new Audio(makeKeepAliveUrl());
             keepAliveAudio.loop = true;
-            keepAliveAudio.addEventListener('pause', () => { if (!keepAliveOwnPause && isAnythingPlaying()) keepAliveHeld = true; keepAliveOwnPause = false; });
+            keepAliveAudio.addEventListener('pause', () => { if (!keepAliveOwnPause && isAnythingPlaying()) keepAliveHeld = true; keepAliveOwnPause = false; checkSoundInterruption(); });
+            // v336: playing again (the browser restarted it after an alarm or call, or the app's retry): the hold is over
+            keepAliveAudio.addEventListener('playing', () => { keepAliveHeld = false; checkSoundInterruption(); });
             setupMediaSession();
         }
         if (keepAliveAudio.paused) keepAliveAudio.play().catch(() => {});
@@ -6321,6 +6352,141 @@ function updateKeepAlive(userStarted = false) {
         keepAliveAudio.pause();
     }
     if ('mediaSession' in navigator && keepAliveAudio) navigator.mediaSession.playbackState = playing ? 'playing' : 'paused';
+    checkSoundInterruption(); // v336: tries to resume, or says so, if an alarm or call stopped the sound (js/sound-resume.js)
+}
+    </script>
+    <script>
+// --- js/sound-resume.js ---
+// --- RESUME AFTER AN INTERRUPTION (v336, MS-163) ---
+// An alarm, a phone call or another app can take the device's sound while a mix plays. Two signs show it:
+//  - the sound engine stopped (the AudioContext is 'suspended', or 'interrupted' on iPhone) although the mixes still play;
+//  - the keep-alive element (js/keep-alive.js) was paused from outside.
+// The app then tries to resume by itself, and if the sound engine stays stopped for 2 s it shows "Sound stopped: tap to
+// resume", so playback is never silent without saying so. A deliberate pause (Stop, Pause, the sleep timer, the lock-screen
+// Pause) ends the mixes' playing state first, so none of this runs and nothing fights it.
+const RESUME_NOTICE_AFTER = 2000; // ms of stopped sound before the notice shows (a short hiccup shows nothing)
+const RESUME_RETRY_EVERY = 5000;  // ms between the app's own tries while the sound engine is stopped
+let soundStoppedSince = 0;        // when the sound engine was found stopped during playback (0 = it isn't)
+let soundResumeLastTry = 0;
+let soundKeepAliveTriedAt = 0;    // when the app retried a held keep-alive since the page was last shown (0 = not yet)
+
+function soundEngineStopped() {
+    return !!audioContext && audioContext.state !== 'running' && audioContext.state !== 'closed';
+}
+
+// Asking a stopped AudioContext to resume takes nothing from other apps: the device refuses until the call or alarm is over.
+function trySoundResume() {
+    soundResumeLastTry = Date.now();
+    audioContext.resume().then(checkSoundInterruption).catch(() => {});
+}
+
+// Called from updateKeepAlive (so on every Play / Pause / Stop and the engine's 250 ms tick) and on the AudioContext's
+// and the keep-alive's own state changes.
+function checkSoundInterruption() {
+    const playing = isAnythingPlaying();
+    if (playing && soundEngineStopped()) {
+        const now = Date.now();
+        if (!soundStoppedSince) soundStoppedSince = now;
+        if (now - soundResumeLastTry >= RESUME_RETRY_EVERY) trySoundResume();
+        showSoundNotice(now - soundStoppedSince >= RESUME_NOTICE_AFTER, 'Sound stopped: tap to resume');
+        return;
+    }
+    if (soundStoppedSince) {
+        soundStoppedSince = 0;
+        // The audio clock stood still while stopped, so the queued sounds simply carry on; only the sleep timer's fade
+        // (placed on the audio clock) is put back in line with the wall clock.
+        if (playing) applyMasterVolume();
+    }
+    // The sound engine runs, but the keep-alive was paused from outside: the mix is still heard, yet the browser may
+    // lose its media standing (lock-screen player, staying alive with the screen off). The browser itself usually
+    // restarts it after an alarm or call; the app tries once more whenever the page is shown again (another app's
+    // music is not interrupted while the app is out of sight), and otherwise offers the tap.
+    const held = playing && keepAliveHeld;
+    if (held && !document.hidden && !soundKeepAliveTriedAt) {
+        soundKeepAliveTriedAt = Date.now();
+        keepAliveAudio.play().catch(() => {});
+    }
+    showSoundNotice(held && soundKeepAliveTriedAt && Date.now() - soundKeepAliveTriedAt >= RESUME_NOTICE_AFTER,
+        'Sound interrupted by another app: tap to resume');
+}
+
+// Called 4 times a second, so the page is only touched when something changes.
+function showSoundNotice(show, text) {
+    const notice = document.getElementById('sound-stopped-notice');
+    if (show && notice.textContent !== text) notice.textContent = text;
+    if (notice.hidden === !!show) notice.hidden = !show;
+}
+
+// The tap (also the lock-screen Play while a mix plays): a user's tap may restart what the device stopped.
+function resumeInterruptedSound() {
+    if (soundEngineStopped()) audioContext.resume().then(checkSoundInterruption).catch(() => {});
+    updateKeepAlive(true); // clears the hold and restarts the keep-alive
+}
+
+function setupSoundResume() {
+    document.getElementById('sound-stopped-notice').addEventListener('click', resumeInterruptedSound);
+    const shown = () => {
+        if (document.hidden) return;
+        soundKeepAliveTriedAt = 0;
+        if (soundEngineStopped() && isAnythingPlaying()) trySoundResume();
+        checkSoundInterruption();
+    };
+    document.addEventListener('visibilitychange', shown);
+    window.addEventListener('focus', shown);
+    window.addEventListener('pageshow', shown);
+}
+    </script>
+    <script>
+// --- js/pwa.js ---
+// --- INSTALLED APP: OFFLINE COPY AND NEW VERSIONS (v336, MS-163) ---
+// The published app registers its service worker (sw.js, written by build.ps1 beside index.html), which stores the app
+// on the first visit so it opens with no internet. When a newer version is published, the browser fetches it in the
+// background and keeps it waiting; the "New version" notice then lets one tap switch to it (the page reloads).
+// Nothing here runs on this computer's test servers (JM's Project Hub on 8770, Claude's on 8765, the playback check)
+// unless the address ends in ?sw=1, so a stored copy never stands in for the files being worked on.
+const SW_LOCAL_HOSTS = ['localhost', '127.0.0.1', '[::1]'];
+const SW_CHECK_EVERY = 60 * 60 * 1000; // also looks for a new version hourly while the app stays open
+let swWaitingWorker = null;
+let swReloadRequested = false;
+
+function serviceWorkerAllowed() {
+    if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return false;
+    return !SW_LOCAL_HOSTS.includes(location.hostname) || new URLSearchParams(location.search).get('sw') === '1' ||
+        !!navigator.serviceWorker.controller; // a test that began with ?sw=1 keeps getting its updates
+}
+
+function setupServiceWorker() {
+    document.getElementById('update-notice').addEventListener('click', applyWaitingUpdate);
+    if (!serviceWorkerAllowed()) return;
+    // The new version took over (after the tap): load it
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (swReloadRequested) location.reload(); });
+    navigator.serviceWorker.register('./sw.js', { scope: './' }).then(reg => {
+        // A waiting worker with a page already served by the old one = a new version is ready
+        const offer = () => { if (reg.waiting && navigator.serviceWorker.controller) showUpdateNotice(reg.waiting); };
+        const watch = worker => { if (worker) worker.addEventListener('statechange', () => { if (worker.state === 'installed') offer(); }); };
+        offer();
+        watch(reg.installing); // opening the page may already have started fetching the new version
+        reg.addEventListener('updatefound', () => watch(reg.installing));
+        const check = () => reg.update().catch(() => {}); // offline: nothing to check
+        document.addEventListener('visibilitychange', () => { if (!document.hidden) check(); });
+        window.addEventListener('online', check);
+        setInterval(check, SW_CHECK_EVERY);
+    }).catch(err => console.warn('Offline copy not set up:', err && err.message));
+}
+
+function showUpdateNotice(worker) {
+    swWaitingWorker = worker;
+    document.getElementById('update-notice').hidden = false;
+}
+
+// One tap: the waiting version takes over and the page reloads with it. Playback stops with the reload; the mixes come back
+// from the autosave (js/storage.js).
+function applyWaitingUpdate() {
+    document.getElementById('update-notice').hidden = true;
+    if (!swWaitingWorker) { location.reload(); return; }
+    swReloadRequested = true;
+    swWaitingWorker.postMessage('skipWaiting');
+    setTimeout(() => location.reload(), 3000); // in case the switch-over message never comes
 }
     </script>
     <script>
@@ -7108,6 +7274,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTonePrimers(); // the ⓘ guides beside TONE and MIX EQ (js/tone.js, MS-240)
     setupTrackDefaultsPanel(); // Settings > New track defaults (MS-223)
     setupAutosave(); // brings back the saved mixes (js/storage.js, MS-130)
+    setupSoundResume(); // resume after an alarm or call, or say the sound stopped (js/sound-resume.js, MS-163)
+    setupServiceWorker(); // opens with no internet; "New version" notice (js/pwa.js, MS-163)
 });
 
 function initializeAudioContext() {
@@ -7128,6 +7296,9 @@ function initializeAudioContext() {
     masterTrim.gain.value = 0.9365;
     masterGain.connect(masterLimiter).connect(masterTrim).connect(audioContext.destination);
     audioContext.addEventListener('statechange', updateAudioDiagnostics);
+    audioContext.addEventListener('statechange', checkSoundInterruption); // v336: an alarm or call stopped it (js/sound-resume.js)
+    // v336: on iPhone (iOS 17 and later), 'playback' marks the app as a player of sound, so the ring / silent switch doesn't mute it.
+    if (navigator.audioSession) { try { navigator.audioSession.type = 'playback'; } catch (e) { } }
     updateAudioDiagnostics();
 }
 
