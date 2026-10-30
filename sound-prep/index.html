@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- The same browser lock as the app (CSP, MS-232): this page loads nothing from other websites. build.ps1 swaps
          script-src 'self' for the SHA-256 hashes of the built page's own scripts. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-6TrYTOyYFhVe4iHkzb2gLXkcowiQpw8EjuD/yD4yKJQ=' 'sha256-zO8+W/65GztRnnotibFqKaRBxNKr8d9YnPbLfuzRbwQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>Sound Prep v335</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-6TrYTOyYFhVe4iHkzb2gLXkcowiQpw8EjuD/yD4yKJQ=' 'sha256-eE1cUvzQzqIzWf9yLLUZPPDVID6XT9ASKqqU2PGvQEQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz Studio v1.0</title>
     <style>
 /* CEC: collapse / expand sections (MS-249, v333), for js/cec.js. The same look as the app's Settings sections
    (.section-toggle / .section-body in css/styles.css). A page can set --cec-hover (the title's color on hover). */
@@ -29,7 +29,7 @@
 @media (max-width: 600px) { .cec-toggle { min-height: 44px; } }
     </style>
     <style>
-/* Sound Prep (MS-209 step 1, v331): the loop editor page. Dark like the app; light when the app is set to light. */
+/* WeaveSoundz Studio (Sound Prep until v336; MS-209 step 1, v331): the sound and loop editor page. Dark like the app; light when the app is set to light. */
 :root {
     --prep-bg: #101418; --prep-panel: #1a2027; --prep-border: #34404c; --prep-text: #e8edf2; --prep-dim: #9aa8b5;
     --prep-accent: #4f8fd6; --prep-accent-text: #ffffff; --prep-btn: #2a3440; --prep-btn-hover: #364352;
@@ -240,11 +240,11 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
 <div class="prep-page">
     <header class="prep-header">
         <div>
-            <h1>Sound Prep <span id="prep-version" class="prep-badge">v335</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
-            <p class="prep-lead" id="prep-intro">Turn a long recording into a short loop that repeats without a gap or click. Your original file is never changed: the loop is saved as a new file.</p>
+            <h1>WeaveSoundz Studio <span id="prep-version" class="prep-badge">v1.0</span><button type="button" class="prep-fold-toggle" id="prep-intro-toggle" aria-expanded="false" title="Show or hide the explanation">▸</button></h1>
+            <p class="prep-lead" id="prep-intro">Turn a long recording into a short sound: a loop that repeats without a gap or click, or a sound that plays once. Your original file is never changed: the sound is saved as a new file.</p>
         </div>
         <div class="prep-header-links">
-            <a id="prep-app-link" class="prep-link" href="../">← Mack's Sounds</a>
+            <a id="prep-app-link" class="prep-link" href="../">← WeaveSoundz</a>
             <a id="prep-own-tab" class="prep-link" href="sound-prep.html" target="_blank" rel="noopener" hidden>Open in its own tab ↗</a>
         </div>
     </header>
@@ -265,7 +265,7 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
 
     <div id="prep-work" class="prep-disabled">
     <section class="prep-step" id="step-region" data-cec="region" data-cec-open>
-        <h2><span class="prep-num">2</span> Choose the stretch to loop</h2>
+        <h2><span class="prep-num">2</span> Choose the stretch to use</h2>
         <div class="prep-sub prep-about" data-cec="region-about"><h3>How this step works</h3>
             <p class="prep-hint">Drag across the picture of the sound to choose a stretch, or type where it starts and how long it is. Drag a green or red line to move one end. The mouse wheel zooms; Shift + wheel scrolls. Pick a stretch that sounds typical, without a one-off noise in it.</p>
         </div>
@@ -274,7 +274,7 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
         <div class="prep-row prep-view-row">
             <button type="button" id="prep-zoom-out" class="prep-btn" title="Zoom out">−</button>
             <button type="button" id="prep-zoom-in" class="prep-btn" title="Zoom in">+</button>
-            <button type="button" id="prep-zoom-loop" class="prep-btn">Show the loop</button>
+            <button type="button" id="prep-zoom-loop" class="prep-btn">Show the stretch</button>
             <button type="button" id="prep-zoom-all" class="prep-btn">Whole file</button>
             <input type="range" id="prep-scroll" min="0" max="1000" value="0" aria-label="Scroll the view">
             <span id="prep-view-info" class="prep-note"></span>
@@ -344,7 +344,7 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
     <section class="prep-step" id="step-repair" data-cec="repair" data-cec-open>
         <h2><span class="prep-num">4</span> Repair clipped peaks and clicks <span class="prep-optional">optional</span></h2>
         <div class="prep-sub prep-about" data-cec="repair-about"><h3>How this step works</h3>
-            <p class="prep-hint">A recording that was too loud when it was made can crack at its loudest moments: the tops of its biggest waves were cut flat (clipping, still flat even if the file was turned down afterward), or the wave snaps sharply for a moment (crackle). This finds those spots in the loop and redraws each one from the sound around it. Only those few samples change; your original file never does. Natural sharp sounds, such as a clock's tick or a frog's croak, are left alone, and on a clean recording it finds nothing. Leave it off unless you hear a crack.</p>
+            <p class="prep-hint">A recording that was too loud when it was made can crack at its loudest moments: the tops of its biggest waves were cut flat (clipping, still flat even if the file was turned down afterward), or the wave snaps sharply for a moment (crackle). This finds those spots in the sound and redraws each one from the sound around it. Only those few samples change; your original file never does. Natural sharp sounds, such as a clock's tick or a frog's croak, are left alone, and on a clean recording it finds nothing. Leave it off unless you hear a crack.</p>
         </div>
         <div class="prep-row">
             <label class="prep-check"><input type="checkbox" id="prep-repair"> Repair</label>
@@ -435,9 +435,9 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
     </section>
 
     <section class="prep-step" id="step-listen" data-cec="listen" data-cec-open>
-        <h2><span class="prep-num">8</span> Listen to it repeat</h2>
+        <h2><span class="prep-num">8</span> Listen to it</h2>
         <div class="prep-sub prep-about" data-cec="listen-about"><h3>How this step works</h3>
-            <p class="prep-hint">Plays the loop over and over, each time starting on the exact sample where the last one ended, the way the player does. "Hear the join" starts 3 seconds before the end so you reach the join quickly.</p>
+            <p class="prep-hint">A repeating loop plays over and over, each time starting on the exact sample where the last one ended, the way the player does; "Hear the join" starts 3 seconds before the end so you reach the join quickly. A sound that plays once plays one time; "Hear the ending" starts 3 seconds before its end.</p>
         </div>
         <p class="prep-hint prep-link-note">While it plays, the line in step 2's picture shows where you are.</p>
         <div class="prep-row">
@@ -456,9 +456,9 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
     </div>
 
     <section class="prep-step" id="step-save" data-cec="save" data-cec-open>
-        <h2><span class="prep-num">9</span> Save the loop</h2>
+        <h2><span class="prep-num">9</span> Save the sound</h2>
         <div class="prep-sub prep-about" data-cec="save-about"><h3>How this step works</h3>
-            <p class="prep-hint">Saves the finished loop as a new WAV file. Then add it to a mix in Mack's Sounds with ➕ Add Local and switch its Loop on.</p>
+            <p class="prep-hint">Saves the finished sound as a new WAV file. Then add it to a mix in WeaveSoundz with ➕ Add Local; for a repeating loop, switch its Loop on.</p>
         </div>
         <!-- MS-243 (v335): a repeating loop (no fades: a fade would dip at every repeat) or a sound that plays once. -->
         <div class="prep-sub" data-cec="save-kind" data-cec-open><h3>Kind of sound</h3>
@@ -474,7 +474,7 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
         </div>
         <div class="prep-row">
             <label class="prep-grow">File name <input type="text" id="prep-name"></label>
-            <button type="button" id="prep-save" class="prep-btn prep-primary">Save loop as WAV</button>
+            <button type="button" id="prep-save" class="prep-btn prep-primary">Save as WAV file</button>
         </div>
         <p id="prep-save-info" class="prep-info"></p>
     </section>
@@ -484,7 +484,7 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
     <section class="prep-step" id="step-batch" data-cec="batch" data-cec-open>
         <h2><span class="prep-num">⇶</span> Prepare several files at once</h2>
         <div class="prep-sub prep-about" data-cec="batch-about"><h3>How this works</h3>
-            <p class="prep-hint">Set up steps 2 to 9 on one sound first and listen to it. Then choose several files: each one is opened in turn, gets a stretch as chosen below, then the same blend, repair, tone, loudness and kind of sound, and is saved with its automatic name. "Find the best join" sets each file's blend length the way it does by hand. Marks you made on a file in step 2 are kept and used. Each saved file appears under Saved loops.</p>
+            <p class="prep-hint">Set up steps 2 to 9 on one sound first and listen to it. Then choose several files: each one is opened in turn, gets a stretch as chosen below, then the same blend, repair, tone, loudness and kind of sound, and is saved with its automatic name. "Find the best join" sets each file's blend length the way it does by hand. Marks you made on a file in step 2 are kept and used. Each saved file appears under Saved sounds.</p>
         </div>
         <div class="prep-row">
             <label>Stretch for each file <select id="prep-batch-stretch">
@@ -514,9 +514,9 @@ body.prep-once .prep-loop-only { opacity: 0.45; pointer-events: none; }
     </section>
 
     <section class="prep-step" id="step-history" data-cec="history" data-cec-open>
-        <h2><span class="prep-num">⟲</span> Saved loops</h2>
+        <h2><span class="prep-num">⟲</span> Saved sounds</h2>
         <div class="prep-sub prep-about" data-cec="history-about"><h3>About this list</h3>
-            <p class="prep-hint">The last 25 loops saved from this page, in this browser, newest first, with the settings that made them. "Use these settings" fills in the steps again when the same original sound is open. The folder isn't listed: browsers never tell a web page where you saved a file (a privacy rule).</p>
+            <p class="prep-hint">The last 25 sounds saved from this page, in this browser, newest first, with the settings that made them. "Use these settings" fills in the steps again when the same original sound is open. The folder isn't listed: browsers never tell a web page where you saved a file (a privacy rule).</p>
         </div>
         <div id="prep-history" class="prep-history"></div>
         <div class="prep-row"><button type="button" id="prep-history-clear" class="prep-btn prep-small">Clear the list</button></div>
@@ -745,7 +745,7 @@ function cecSetup(root, store, options = {}) {
     </script>
 <script>
 // --- js/sound-prep.js ---
-// --- SOUND PREP (MS-209 step 1, v331): the loop editor ---
+// --- WEAVESOUNDZ STUDIO (Sound Prep until v336; MS-209 step 1, v331): the sound and loop editor ---
 // A page of its own (sound-prep.html) that turns a long recording into a short loop that repeats seamlessly: open a
 // file, choose a stretch, find the best join, blend it, check it by measurement, even its loudness, listen to it repeat
 // and save it as a new WAV. The original file is never changed. js/auto-level.js (loaded first) measures the loudness,
@@ -990,8 +990,8 @@ function prepSetLoop(start, end, { fit = false, rebuild = true } = {}) {
     prepEl('prep-start').value = (start / src.rate).toFixed(3);
     prepEl('prep-length').value = ((end - start) / src.rate).toFixed(3);
     const len = end - start;
-    prepEl('prep-region-info').textContent = `Loop: ${prepTime(start)} to ${prepTime(end)} · ${(len / src.rate).toFixed(3)} s (${len.toLocaleString('en-US')} samples)` +
-        (end - start >= maxLen ? ` · ${PREP_MAX_LOOP_SECONDS / 60} minutes is the longest loop here` : '');
+    prepEl('prep-region-info').textContent = `Stretch: ${prepTime(start)} to ${prepTime(end)} · ${(len / src.rate).toFixed(3)} s (${len.toLocaleString('en-US')} samples)` +
+        (end - start >= maxLen ? ` · ${PREP_MAX_LOOP_SECONDS / 60} minutes is the longest stretch here` : '');
     prepSuggestName(); // the suggested name carries the loop's length
     if (fit) prepFitView();
     prepRequestWave();
@@ -1866,11 +1866,11 @@ async function prepRepairRange(start, count) {
 }
 function prepShowRepair() {
     const on = prepEl('prep-repair').checked, r = prepBuilt?.repair, box = prepEl('prep-repair-box');
-    if (!on || !r) { prepEl('prep-repair-info').textContent = on ? '' : 'Off: the loop is left exactly as recorded.'; box.hidden = true; prepRequestWave(); return; }
+    if (!on || !r) { prepEl('prep-repair-info').textContent = on ? '' : 'Off: the sound is left exactly as recorded.'; box.hidden = true; prepRequestWave(); return; }
     const clips = r.spots.filter(s => s.kind === 'clip').length, clicks = r.spots.length - clips;
     prepEl('prep-repair-info').textContent = r.spots.length
-        ? `Repaired ${r.spots.length} spot${r.spots.length === 1 ? '' : 's'} in this loop: ${clips} flat-topped peak${clips === 1 ? '' : 's'}, ${clicks} click${clicks === 1 ? '' : 's'} (${(r.ms / 1000).toFixed(2)} s).`
-        : `Nothing to repair: no flat-topped peaks or clicks in this loop (${(r.ms / 1000).toFixed(2)} s).`;
+        ? `Repaired ${r.spots.length} spot${r.spots.length === 1 ? '' : 's'} in this sound: ${clips} flat-topped peak${clips === 1 ? '' : 's'}, ${clicks} click${clicks === 1 ? '' : 's'} (${(r.ms / 1000).toFixed(2)} s).`
+        : `Nothing to repair: no flat-topped peaks or clicks in this sound (${(r.ms / 1000).toFixed(2)} s).`;
     box.hidden = !r.spots.length;
     const names = prepSource.channels === 2 ? ['left', 'right'] : prepSource.channels === 1 ? ['mono'] : null;
     prepEl('prep-spots').innerHTML = r.spots.map((s, i) => {
@@ -2040,9 +2040,9 @@ function prepStopPreview() {
 }
 
 // --- Saving ---
-// Automatic names (MS-251): "SOUND PREP - Thunder, Rolling (far) [60s] 01.wav" (JM's convention; Windows doesn't allow
-// "|" in a file name).
-const PREP_NAME_PREFIX = 'SOUND PREP - ';
+// Automatic names (MS-251): "STUDIO - Thunder, Rolling (far) [60s] 01.wav" (JM's convention; Windows doesn't allow
+// "|" in a file name). Until v1.0 (MS-901.06) the prefix was "SOUND PREP - "; files saved before keep their names.
+const PREP_NAME_PREFIX = 'STUDIO - ';
 // The loop's length as in the quick-length buttons, without the space: 7.5s, 60s, 90s, 2min, 2.5min, 2m15s.
 function prepLengthTag(seconds) {
     if (seconds < 10) return `${Math.round(seconds * 10) / 10}s`;
@@ -2056,7 +2056,7 @@ function prepLengthTag(seconds) {
 function prepMainTitle(fileName) {
     const whole = fileName.replace(/\.[A-Za-z0-9]{1,5}$/, '').trim();
     let t = whole.replace(/\s*\(\d+\)$/, '');
-    if (/^SOUND PREP\s*[｜|_-]\s*/i.test(t)) t = t.replace(/^SOUND PREP\s*[｜|_-]\s*/i, '').replace(/\s*\[\d[^\]]*\]\s*\d{1,3}$/, '');
+    if (/^(?:STUDIO|SOUND PREP)\s*[｜|_-]\s*/i.test(t)) t = t.replace(/^(?:STUDIO|SOUND PREP)\s*[｜|_-]\s*/i, '').replace(/\s*\[\d[^\]]*\]\s*\d{1,3}$/, '');
     t = t.replace(/^[A-Za-z0-9]{1,4}(?:-[A-Za-z0-9]{1,4})?\)\s*/, '')
         .replace(/\s+(?:\d+m\d{1,2}s|\d+(?:\.\d+)?\s?(?:s|sec|min))$/i, '')
         .replace(/\s+[_-]\s+/g, ', ')
@@ -2163,7 +2163,7 @@ function prepEscape(text) { return String(text).replace(/[&<>"']/g, c => ({ '&':
 function prepShowHistory() {
     const list = prepLoadHistory(), box = prepEl('prep-history');
     prepEl('prep-history-clear').hidden = !list.length;
-    if (!list.length) { box.innerHTML = '<p class="prep-history-empty">No loops saved yet in this browser.</p>'; return; }
+    if (!list.length) { box.innerHTML = '<p class="prep-history-empty">No sounds saved yet in this browser.</p>'; return; }
     // Each entry is one line (name · length · date) with its own chevron that opens the details (MS-249).
     box.innerHTML = list.map((h, i) => {
         const rate = h.source.rate, secs = f => (f / rate).toFixed(3);
@@ -2182,7 +2182,7 @@ function prepShowHistory() {
             <div class="prep-history-details">
                 ${(h.bytes / 1048576).toFixed(1)} MB · WAV ${h.bits}-bit · saved ${when}<br>
                 From: ${prepEscape(h.source.name)} (${prepTime(h.source.frames, rate, 1)}, ${rate.toLocaleString('en-US')} Hz)<br>
-                Loop: starts at ${secs(h.start)} s, ${secs(h.end - h.start)} s long (samples ${h.start.toLocaleString('en-US')} to ${h.end.toLocaleString('en-US')}) · ${kind} · ${h.kind === 'once' ? '' : blend + ' · '}${repair} · ${tone} · ${level}<br>
+                Stretch: starts at ${secs(h.start)} s, ${secs(h.end - h.start)} s long (samples ${h.start.toLocaleString('en-US')} to ${h.end.toLocaleString('en-US')}) · ${kind} · ${h.kind === 'once' ? '' : blend + ' · '}${repair} · ${tone} · ${level}<br>
                 <span class="prep-note">${h.how === 'dialog' ? 'Saved with the Save dialog, in the folder you chose there.' : h.how === 'folder' ? 'Saved by "Prepare several files at once", in the folder you chose there.' : 'Downloaded: usually your Downloads folder.'}</span>
                 <div class="prep-row"><button type="button" class="prep-btn prep-small" data-history="${i}" ${same ? '' : `disabled title="Open ${prepEscape(h.source.name)} first"`}>Use these settings</button>${same ? '' : `<span class="prep-note">Open the original first to use these settings.</span>`}</div>
             </div>
@@ -2212,7 +2212,7 @@ function prepUseHistory(i) {
     prepShowKind(); prepShowTone();
     prepFound = null; prepShowFound();
     prepSetLoop(h.start, h.end, { fit: true });
-    prepMessage(`Settings of "${h.name}" filled in: the same stretch and steps, so the loop comes out the same.`);
+    prepMessage(`Settings of "${h.name}" filled in: the same stretch and steps, so the sound comes out the same.`);
     prepEl('step-region').cecSetOpen?.(true);
     prepEl('step-region').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -2556,12 +2556,12 @@ function prepShowKind() {
     const once = prepEl('prep-kind').value === 'once';
     prepEl('prep-fade-row').hidden = !once;
     prepEl('prep-kind-note').textContent = once
-        ? 'Plays once: it fades in and out and has no join, for a one-off sound such as a thunder clap. In Mack\'s Sounds, leave its Loop off. Steps 5 and 6 are not used.'
+        ? 'Plays once: it fades in and out and has no join, for a one-off sound such as a thunder clap. In WeaveSoundz, leave its Loop off. Steps 5 and 6 are not used.'
         : 'Repeating loop: the end runs straight into the start. No fades: a fade would dip at every repeat.';
     document.body.classList.toggle('prep-once', once);
     prepEl('prep-play').textContent = once ? '▶ Play once' : '▶ Play repeating';
     prepEl('prep-play-join').textContent = once ? '▶ Hear the ending' : '▶ Hear the join';
-    prepEl('prep-save').textContent = once ? 'Save sound as WAV' : 'Save loop as WAV';
+    prepEl('prep-save').textContent = 'Save as WAV file';
     prepBatchSummary();
 }
 
@@ -2719,7 +2719,7 @@ function prepSetupPage() {
         const open = document.body.classList.toggle('prep-intro-open');
         e.currentTarget.setAttribute('aria-expanded', open);
     });
-    // Inside the Project Hub's SOUND PREP tab (MS-245): links open new tabs instead of replacing the Hub's tab.
+    // Inside the Project Hub's STUDIO tab (MS-245): links open new tabs instead of replacing the Hub's tab.
     if (window.parent !== window && new URLSearchParams(location.search).has('hub')) {
         prepEl('prep-app-link').target = '_blank';
         const own = prepEl('prep-own-tab');

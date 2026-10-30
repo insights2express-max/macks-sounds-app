@@ -1,11 +1,11 @@
 // Service worker for the installed app (MS-163, v336): the app opens with no internet.
-// build.ps1 stamps the version in place of v336 and writes this file beside the published index.html.
+// build.ps1 stamps the version in place of v337 and writes this file beside the published index.html.
 // Published at …/macks-sounds-app/sw.js, so its scope is the whole site folder, including previous/, sound-prep/ and
 // pwa-probe/. It answers ONLY for the app's own files listed below; every other request (those pages, DEVBOARD.md,
 // tools/, anything else) goes to the network exactly as if there were no service worker.
 // Strategy: cache first. The files are stored on install; a new version installs beside the old one, then waits
 // until the page's "New version: reload" button asks it to take over.
-const APP_VERSION = 'v336';
+const APP_VERSION = 'v337';
 const CACHE_PREFIX = 'appShell.';           // the probe's caches start with pwaProbe., so neither deletes the other's
 const CACHE = CACHE_PREFIX + APP_VERSION;
 const PAGE = 'index.html';

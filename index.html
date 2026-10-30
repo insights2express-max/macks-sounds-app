@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-hkUNllI2uc35U9Hh18FMWlov7r5BFq5vHCcYXlD9e68=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-pkIh+S85ZUhQkR/nIGNe9QKO+IcdRZho3q9u0w45FNc=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-lPWvZb2wdQv/kcnOO9r0GxNwjFm5GcdI5rV/Z4huBUI=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v336</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-a2NrYTEK9HRXkdFsuiOqxTw6gFwyDM9znTYkyDza5WY=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QBA2t16Ib7tDDdBg39wShAKW5OXDuGeEEsOwznsFCh0=' 'sha256-GdMjpWvkYGqsG/NF2TlKO4UYQfW90CJzXUG5lPASt28=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v337</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -141,9 +141,14 @@ h1 { margin: 0; font-family: var(--font-family-title); font-size: calc(1.8rem * 
 .app-header-main-row .more-controls-btn { display: none; }
 .app-header.is-compact .app-header-main-row .more-controls-btn { display: inline-block; }
 
-.app-title-group { display: flex; align-items: center; flex-grow: 1; }
+.app-title-group { display: flex; flex-wrap: wrap; align-items: center; flex-grow: 1; }
 /* Version shown beside the title (placeholder until a permanent spot is chosen). */
 .app-version-badge { margin-left: 0.75rem; padding: 0.15rem 0.6rem; border: 1px solid var(--title-font-color); border-radius: 999px; color: var(--title-font-color); font-family: var(--font-family-main); font-size: 0.85rem; white-space: nowrap; opacity: 0.85; }
+/* v337 (MS-901): the tagline, a small line under the title (the title group wraps to put it on a line of its own); hidden
+   in the compact header. contain: inline-size keeps its length from widening the title group, so on a phone the
+   settings button stays beside the title and the tagline wraps instead. */
+.app-tagline { flex-basis: 100%; contain: inline-size; margin: 0.1rem 0 0; color: var(--title-font-color); font-family: var(--font-family-main); font-size: 0.85rem; opacity: 0.7; }
+.app-header.is-compact .app-tagline { display: none; }
 .app-header-controls { display: flex; align-items: center; gap: 1rem; }
 .app-header-main-actions { display: flex; align-items: center; gap: 0.5rem; }
 #settings-btn { font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer; padding: 0.5rem; margin-left: 0.5rem; }
@@ -705,7 +710,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v336</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v337</span>
+                    <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
+                    <p id="app-tagline" class="app-tagline">Layered sound for rest and sleep.</p>
                 </div>
                 <div class="app-header-controls">
                      <div class="control-group" id="master-volume-wrapper">
@@ -781,9 +788,9 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                 </fieldset>
 
                 <fieldset data-fold="sound-prep">
-                    <legend>Sound Prep</legend>
-                    <p class="bg-storage-note">A separate page that turns a long recording into a short loop that repeats without a gap or click: choose a stretch, let it find the best join, listen to it repeat, and save it as a new file. The original file is never changed.</p>
-                    <a id="sound-prep-link" class="button-like small-btn" href="sound-prep/" target="_blank" rel="noopener">Sound Prep: make short seamless loops</a>
+                    <legend>WeaveSoundz Studio</legend>
+                    <p class="bg-storage-note">A separate page that turns a long recording into a short sound: a loop that repeats without a gap or click, or a sound that plays once. Choose a stretch, let it find the best join, listen to it, and save it as a new file. The original file is never changed.</p>
+                    <a id="sound-prep-link" class="button-like small-btn" href="sound-prep/" target="_blank" rel="noopener">WeaveSoundz Studio: make sounds and seamless loops</a>
                 </fieldset>
 
                 <fieldset data-fold="fonts">
@@ -1019,13 +1026,16 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     
     <script>
 // --- js/state.js ---
-// --- Core Application Logic for Mack's Sounds ---
+// --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v336';
+const APP_VERSION = 'v337';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
+// The line under the title, also the start of the installed app's description (MS-901.08; a placeholder until the tagline
+// is chosen). build.ps1 stamps it into the page and the manifest; js/settings.js shows it on the source page.
+const APP_TAGLINE = `Layered sound for rest and sleep.`;
 const DEFAULT_APP_TITLE = APP_NAME; // the version is shown separately, in the badge beside the title
 let audioContext;
 let masterGain, masterLimiter, masterTrim;
@@ -4885,6 +4895,7 @@ function setupSettingsModal() {
         // the current default (APP_NAME); the version now shows in its own badge. Before v336 every page load saved the title
         // shown, so nearly everyone has "Mack's Sounds" saved without ever having typed it.
         document.getElementById('app-version').textContent = APP_VERSION;
+        document.getElementById('app-tagline').textContent = APP_TAGLINE;
         const savedTitle = localStorage.getItem('appTitle');
         const isOldDefaultTitle = /^Mack's Sounds( v\.?\d+)?$/.test(savedTitle || '');
         appTitleInput.value = (savedTitle && !isOldDefaultTitle) ? savedTitle : DEFAULT_APP_TITLE; updateAppTitle(appTitleInput.value);
@@ -5117,7 +5128,7 @@ async function handleMixImport(event) {
         if (file.size > IMPORT_MAX_ZIP_BYTES) throw new ImportRefused(`This file is ${gb(file.size)}; a mix ZIP can be up to ${gb(IMPORT_MAX_ZIP_BYTES)}.`);
         let zip;
         try { zip = await JSZip.loadAsync(file); }
-        catch (err) { console.error(err); throw new ImportRefused(`"${file.name}" isn't a ZIP file, or it is damaged.\n\nChoose a mix exported from Mack's Sounds (a .zip holding mix.json and its sounds).`); }
+        catch (err) { console.error(err); throw new ImportRefused(`"${file.name}" isn't a ZIP file, or it is damaged.\n\nChoose a mix exported from WeaveSoundz (or Mack's Sounds, its earlier name: a .zip holding mix.json and its sounds).`); }
         const entries = Object.values(zip.files).filter(f => !f.dir);
         if (entries.length > IMPORT_MAX_FILES) throw new ImportRefused(`This ZIP holds ${entries.length} files; a mix can hold up to ${IMPORT_MAX_FILES}.`);
         let total = 0;
@@ -5136,7 +5147,7 @@ async function handleMixImport(event) {
         if (!manifestFile) {
             const names = entries.map(f => f.name);
             const listing = names.slice(0, 12).join('\n') + (names.length > 12 ? `\n…and ${names.length - 12} more` : '');
-            throw new ImportRefused(`mix.json (the mix's settings file) was not found in this ZIP, so it isn't a Mack's Sounds mix.\n\nThe ZIP contains:\n${listing || '(no files)'}`);
+            throw new ImportRefused(`mix.json (the mix's settings file) was not found in this ZIP, so it isn't a WeaveSoundz mix.\n\nThe ZIP contains:\n${listing || '(no files)'}`);
         }
         const baseFolder = manifestFile.name.slice(0, manifestFile.name.length - 'mix.json'.length);
         const findAudioFile = name => zip.file(baseFolder + name)
