@@ -1,7 +1,7 @@
 {
   "name": "WeaveSoundz",
   "short_name": "WeaveSoundz",
-  "description": "Layered sound for rest and sleep. Ambient sound mixes of your own, with sync groups and random timing. Works with no internet once opened.",
+  "description": "Weave sounds of CALM. Ambient sound mixes of your own, with sync groups and random timing. Works with no internet once opened.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
