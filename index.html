@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-NmT/vuvdizAn7j7S6bmq7uPgrnQIodVR/ggpM6YyQN8=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-QPVEMC/hER5MQesf2v8iKs/GuPJOaDhlREmqWdk6VHo=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-0GORP6I7OYN2jC012KAFnt2UzhMfk3bX2HgW4Q5mGuE=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v342</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-GBiR7FsDQX+z4PphLV2ZrQFq6cIT6wLolPm0ZwSYisk=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-5RPrY8bPqaAQQZKWDrDMDqgfw+B2oQgWO4f8ltIW2mQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-bUFpjqCCDZtmLrh0M1q2p1QuyWyFj3MvbIxAdMh562g=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v343</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -453,6 +453,19 @@ body.sleep-mode-active #sleep-mode-overlay { opacity: 1; pointer-events: auto; }
 .sleep-control-group label { display: block; text-align: center; margin-bottom: 0.5rem; font-size: 0.9em; }
 .fullscreen-controls { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s;}
 .sleep-slider { width: 200px; }
+/* v343 (MS-260): below 1000 px the sleep-screen controls (about 950 px in one row) ran off the left edge; on a phone Clock Size
+   was fully hidden. Here they form a grid along the bottom (4 columns, 2 on a phone), and the Sleep Timer box moves to the
+   top left, opposite the full-screen buttons, so nothing overlaps. Wider screens are unchanged. */
+@media (max-width: 1000px) {
+    #sleep-controls-wrapper { left: 5%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+    #sleep-controls-wrapper .sleep-control-group { padding: 0.4rem 0.6rem; }
+    #sleep-controls-wrapper .sleep-slider { width: 100%; }
+    #clock-font-select { width: 100%; min-width: 0; }
+    #sleep-timer-display { top: 20px; bottom: auto; left: 20px; }
+}
+@media (max-width: 600px) { #sleep-controls-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Short screens (a phone on its side): the clock sits higher, so the controls along the bottom never reach it. */
+@media (max-height: 500px) { #sleep-mode-overlay { padding-top: 12vh; } }
 .global-timer-status { font-size: 0.9em; color: var(--accent-color); margin-left: 0.5rem; }
 
 /* Settings Modal Styles */
@@ -728,7 +741,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v342</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v343</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1079,7 +1092,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v342';
+const APP_VERSION = 'v343';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -4463,7 +4476,7 @@ async function clearLocalFonts() {
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
         { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Sankofa Display' }
+        { el: document.getElementById('clock-font-select'), default: 'Bruno Ace' }
     ];
     
     userLoadedFonts.forEach(font => {
@@ -4493,7 +4506,7 @@ function deleteUserFont(originalName) {
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
         { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Sankofa Display' }
+        { el: document.getElementById('clock-font-select'), default: 'Bruno Ace' }
     ];
     selectors.forEach(s => {
         if (s.el.value === originalName) {
@@ -4511,7 +4524,7 @@ function initFontSelectors() {
     const defaultFonts = {
         title: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Monoton', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Monoton' }, // v341 (MS-901.09): Monoton is the default
         main: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Bruno Ace' }, // no Monoton: hard to read as body text (JM, v341)
-        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: 'Sankofa Display' }
+        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: 'Bruno Ace' } // v343: Bruno Ace is the default clock font (JM; was Sankofa Display)
     };
     // v342 (MS-258): the tagline offers every font of the other lists except Monoton and Geostar Fill (JM); its default ('')
     // is "Same as Main Font", which is how the tagline looked before it had its own font.
@@ -5108,9 +5121,8 @@ function updateSleepDisplay() {
 }
 
 // v342 (MS-257): the clock's font and size are one saved setting with two sets of controls, on the sleep screen and in
-// Settings › Fonts › Clock Font; changing either updates the other. Until v342 neither was saved, and the clock showed the
-// main font although its list said Sankofa Display.
-const CLOCK_FONT_DEFAULT = 'Sankofa Display';
+// Settings › Fonts › Clock Font; changing either updates the other. Until v342 neither was saved.
+const CLOCK_FONT_DEFAULT = 'Bruno Ace'; // v343: JM (was Sankofa Display); a saved choice is kept
 function applyClockFont(font, save) {
     font = font || CLOCK_FONT_DEFAULT;
     document.getElementById('sleep-clock').style.fontFamily = `'${font}', sans-serif`;
@@ -5130,7 +5142,7 @@ function setupSleepModeControls() {
     document.getElementById('sleep-ui-brightness').addEventListener('input', updateSleepDisplay);
     ['clock-size', 'settings-clock-size-slider'].forEach(id => document.getElementById(id).addEventListener('input', e => applyClockSize(e.target.value, true)));
     ['clock-font-select', 'settings-clock-font-select'].forEach(id => document.getElementById(id).addEventListener('change', e => applyClockFont(e.target.value, true)));
-    applyClockFont(localStorage.getItem('customClockFont') || CLOCK_FONT_DEFAULT); // the lists are filled later (js/fonts.js) and show the same saved font
+    applyClockFont(localStorage.getItem('customClockFont')); // the lists are filled later (js/fonts.js) and show the same saved font
     const savedClockSize = localStorage.getItem('customClockSize'); if (savedClockSize) applyClockSize(savedClockSize);
     document.getElementById('enter-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); document.documentElement.requestFullscreen().catch(err => console.error(`Error: ${err.message}`)); });
     document.getElementById('exit-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); if (document.fullscreenElement) document.exitFullscreen(); });
