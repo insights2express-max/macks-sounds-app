@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-GBiR7FsDQX+z4PphLV2ZrQFq6cIT6wLolPm0ZwSYisk=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-5RPrY8bPqaAQQZKWDrDMDqgfw+B2oQgWO4f8ltIW2mQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-bUFpjqCCDZtmLrh0M1q2p1QuyWyFj3MvbIxAdMh562g=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v343</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-OJUS+SfCsQYIkRU+B+CxM9L7DlV6MWgBc1iIMQ3p9+c=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-7AFT6H/kShjwrFAUMVeGJjKBX0AJB5kKZfyiw48yXtg=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v344</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -440,32 +440,36 @@ input[type=range]::-moz-range-track { background: #444; height: 6px; border-radi
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; margin-top: -9px; height: 24px; width: 24px; background-color: #3498db; border-radius: 50%; }
 input[type=range]::-moz-range-thumb { height: 24px; width: 24px; background-color: #3498db; border-radius: 50%; border: none; }
 
-#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; padding-top: calc(10vh + 150px); background: transparent; }
+/* v344 (MS-260): the sleep screen is a grid of three bands, so its boxes can't collide (until v343 each was placed on its own
+   with position: absolute, and they overlapped): a top bar (Sleep Timer box left, the full-screen button right, moving below
+   the timer when both don't fit side by side), the clock in
+   the space between, and the controls along the bottom. The clock is scaled inside its own band, which clips it, so even a very
+   large Clock Size never covers the other boxes. */
+#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "clock" "controls"; gap: 1rem; padding: 20px 20px 5vh; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; background: transparent; }
+#sleep-top-bar { grid-area: top; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
 #sleep-dim-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.4s ease; }
 body.sleep-mode-active #sleep-mode-overlay { opacity: 1; pointer-events: auto; }
-#sleep-clock { font-size: 10vw; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+/* The clock's default size is 10% of the screen width, but at most half its band's height (cqh), so on a short screen
+   (a phone on its side) it still fits at 100% and 150%. */
+#sleep-clock { display: inline-block; font-size: min(10vw, 50cqh); color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); transform: scale(1); transition: transform 0.2s ease-out; }
 #sleep-clock .clock-hm { font-weight: 700; }
-#sleep-clock-wrapper { text-align: left; transform: scale(1); transition: transform 0.2s ease-out, opacity 0.4s; }
-#sleep-controls-wrapper { position: absolute; bottom: 5%; right: 5%; display: flex; align-items: center; gap: 1rem; transition: opacity 0.4s;}
-#sleep-timer-display { position: absolute; bottom: 5%; left: 5%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; font-size: 1.2em; transition: opacity 0.4s;}
+#sleep-clock-wrapper { grid-area: clock; container-type: size; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; overflow: hidden; transition: opacity 0.4s; }
+#sleep-controls-wrapper { grid-area: controls; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 1rem; transition: opacity 0.4s;}
+#sleep-timer-display { max-width: 100%; overflow-wrap: anywhere; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; font-size: 1.2em; transition: opacity 0.4s;}
 #sleep-timer-display-label { font-weight: bold; opacity: 0.8; font-size: 0.8em;}
 .sleep-control-group { color: #fff; background: rgba(0,0,0,0.5); padding: 0.5rem 1rem; border-radius: 8px; display:flex; flex-direction:column; align-items:center; box-shadow: 0 0 0 1px rgba(255,255,255,0.7), 0 0 0 2px rgba(0,0,0,0.7); }
 .sleep-control-group label { display: block; text-align: center; margin-bottom: 0.5rem; font-size: 0.9em; }
-.fullscreen-controls { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s;}
+.fullscreen-controls { margin-left: auto; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s;}
+.fullscreen-controls button[hidden] { display: none; } /* v344: only the button that applies is shown (updateFullscreenButtons, js/sleep.js) */
 .sleep-slider { width: 200px; }
-/* v343 (MS-260): below 1000 px the sleep-screen controls (about 950 px in one row) ran off the left edge; on a phone Clock Size
-   was fully hidden. Here they form a grid along the bottom (4 columns, 2 on a phone), and the Sleep Timer box moves to the
-   top left, opposite the full-screen buttons, so nothing overlaps. Wider screens are unchanged. */
+/* v343 (MS-260): below 1000 px the controls (about 950 px in one row) form a grid along the bottom: 4 columns, 2 on a phone. */
 @media (max-width: 1000px) {
-    #sleep-controls-wrapper { left: 5%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+    #sleep-controls-wrapper { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
     #sleep-controls-wrapper .sleep-control-group { padding: 0.4rem 0.6rem; }
     #sleep-controls-wrapper .sleep-slider { width: 100%; }
     #clock-font-select { width: 100%; min-width: 0; }
-    #sleep-timer-display { top: 20px; bottom: auto; left: 20px; }
 }
 @media (max-width: 600px) { #sleep-controls-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-/* Short screens (a phone on its side): the clock sits higher, so the controls along the bottom never reach it. */
-@media (max-height: 500px) { #sleep-mode-overlay { padding-top: 12vh; } }
 .global-timer-status { font-size: 0.9em; color: var(--accent-color); margin-left: 0.5rem; }
 
 /* Settings Modal Styles */
@@ -741,7 +745,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v343</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v344</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1062,13 +1066,16 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
         <div id="sleep-clock-wrapper">
              <span id="sleep-clock"><span class="clock-hm">00:00</span></span>
         </div>
-        <div id="sleep-timer-display" style="display: none;">
-            <div id="sleep-timer-display-label">Sleep Timer</div>
-            <span id="sleep-timer-countdown"></span>
-        </div>
-        <div class="fullscreen-controls">
-            <button id="enter-fullscreen-btn" class="small-btn">Enter Full Screen</button>
-            <button id="exit-fullscreen-btn" class="small-btn">Exit Full Screen</button>
+        <!-- v344 (MS-260): the top bar: the Sleep Timer box left, the full-screen button right (it wraps below when both don't fit) -->
+        <div id="sleep-top-bar">
+            <div id="sleep-timer-display" style="display: none;">
+                <div id="sleep-timer-display-label">Sleep Timer</div>
+                <span id="sleep-timer-countdown"></span>
+            </div>
+            <div class="fullscreen-controls">
+                <button id="enter-fullscreen-btn" class="small-btn">Enter Full Screen</button>
+                <button id="exit-fullscreen-btn" class="small-btn">Exit Full Screen</button>
+            </div>
         </div>
         <div id="sleep-controls-wrapper">
              <div class="sleep-control-group">
@@ -1092,7 +1099,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v343';
+const APP_VERSION = 'v344';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -4476,7 +4483,7 @@ async function clearLocalFonts() {
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
         { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Bruno Ace' }
+        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
     ];
     
     userLoadedFonts.forEach(font => {
@@ -4506,7 +4513,7 @@ function deleteUserFont(originalName) {
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
         { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Bruno Ace' }
+        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
     ];
     selectors.forEach(s => {
         if (s.el.value === originalName) {
@@ -4524,7 +4531,7 @@ function initFontSelectors() {
     const defaultFonts = {
         title: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Monoton', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Monoton' }, // v341 (MS-901.09): Monoton is the default
         main: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Bruno Ace' }, // no Monoton: hard to read as body text (JM, v341)
-        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: 'Bruno Ace' } // v343: Bruno Ace is the default clock font (JM; was Sankofa Display)
+        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: '' } // v344 (MS-257): '' = "Same as Main Font": the clock follows the main font until one is picked (JM)
     };
     // v342 (MS-258): the tagline offers every font of the other lists except Monoton and Geostar Fill (JM); its default ('')
     // is "Same as Main Font", which is how the tagline looked before it had its own font.
@@ -5121,19 +5128,25 @@ function updateSleepDisplay() {
 }
 
 // v342 (MS-257): the clock's font and size are one saved setting with two sets of controls, on the sleep screen and in
-// Settings › Fonts › Clock Font; changing either updates the other. Until v342 neither was saved.
-const CLOCK_FONT_DEFAULT = 'Bruno Ace'; // v343: JM (was Sankofa Display); a saved choice is kept
+// Settings › Fonts › Clock Font; changing either updates the other. Until v342 neither was saved. Font '' (the default,
+// "Same as Main Font") = the clock follows the main font, as it did before v342 when no font was picked (JM, v344).
 function applyClockFont(font, save) {
-    font = font || CLOCK_FONT_DEFAULT;
-    document.getElementById('sleep-clock').style.fontFamily = `'${font}', sans-serif`;
-    ['clock-font-select', 'settings-clock-font-select'].forEach(id => { document.getElementById(id).value = font; });
-    if (save) localStorage.setItem('customClockFont', font);
+    document.getElementById('sleep-clock').style.fontFamily = font ? `'${font}', sans-serif` : '';
+    ['clock-font-select', 'settings-clock-font-select'].forEach(id => { document.getElementById(id).value = font || ''; });
+    if (save) { if (font) localStorage.setItem('customClockFont', font); else localStorage.removeItem('customClockFont'); }
 }
 function applyClockSize(size, save) {
-    document.getElementById('sleep-clock-wrapper').style.transform = `scale(${size})`;
+    document.getElementById('sleep-clock').style.transform = `scale(${size})`; // v344: inside its own band, which clips it
     ['clock-size', 'settings-clock-size-slider'].forEach(id => { document.getElementById(id).value = size; });
     document.getElementById('settings-clock-size-display').textContent = `${Math.round(size * 100)}%`;
     if (save) localStorage.setItem('customClockSize', size);
+}
+// v344 (MS-260): only the full-screen button that applies is shown (Enter, or Exit while full screen), and neither where the
+// browser can't go full screen.
+function updateFullscreenButtons() {
+    const isFullscreen = !!document.fullscreenElement;
+    document.getElementById('enter-fullscreen-btn').hidden = isFullscreen || !document.fullscreenEnabled;
+    document.getElementById('exit-fullscreen-btn').hidden = !isFullscreen;
 }
 
 // Sleep-mode controls are wired up once at startup (not every time sleep mode opens).
@@ -5146,6 +5159,8 @@ function setupSleepModeControls() {
     const savedClockSize = localStorage.getItem('customClockSize'); if (savedClockSize) applyClockSize(savedClockSize);
     document.getElementById('enter-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); document.documentElement.requestFullscreen().catch(err => console.error(`Error: ${err.message}`)); });
     document.getElementById('exit-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); if (document.fullscreenElement) document.exitFullscreen(); });
+    document.addEventListener('fullscreenchange', updateFullscreenButtons);
+    updateFullscreenButtons();
 }
 
 function toggleSleepMode() {
