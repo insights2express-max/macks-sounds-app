@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-2Xq/XM5D92pRHBpYTm+MSJ+gKRFQEvqCHn/fw4lbVq0=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v345</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-zuLSTJ45USIbSqZmymPrxjMOLEY0c8tyDkAva+B/U9o=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-406U7FQVzSuI28IGVKpAt1Wi21rWKLmEY1eCGbqGZXU=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-mKINnamyNrLnuqzdWFY90OG/kh1LaZVo9mGGlnJKMco=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-jjaVuDQIvnSLQ0WZKGtbN8ks3H9do/HekY3xyJjOdaU=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-voLf6nHP+kfRE/u6Jq55xMWwzr/apOT36nmRnzfaFZU=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v346</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -335,6 +335,9 @@ input[type="checkbox"]:not(.select-checkbox):not(.switch > input):disabled { opa
 .sync-group { border: 1px solid var(--primary-color); border-radius: 8px; padding: 1rem; margin-top: 1rem; transition: opacity 0.3s; }
 .sync-group.is-disabled { opacity: 0.6; }
 .sync-group.drag-over { background-color: rgba(228, 63, 90, 0.3); }
+/* MS-241: another mix's header lights up when a dragged track or Sync Group would go to the top of that mix. */
+.mix-container.drag-over > .mix-header { background-color: rgba(228, 63, 90, 0.3); box-shadow: inset 0 0 0 2px rgb(228, 63, 90); }
+.move-to-mix-word { display: none; } /* "⇄ Move to mix" spelled out only in a phone track's actions row */
 .sync-group-header { display: flex; flex-direction: column; gap: 0.75rem; align-items: stretch; }
 .sync-group-header-top-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; } /* wraps on narrow screens so the buttons (incl. delete) stay visible */
 .sync-group-drag-handle { cursor: grab; flex-shrink: 0; padding-right: 0.5rem; }
@@ -647,6 +650,8 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     .track .track-actions-row label.track-select-label { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding-right: 0.5rem; font-size: 0.9em; cursor: pointer; }
     .track-actions-row .select-checkbox { width: 28px; height: 28px; transform: none; }
     .track-actions-row .track-drag-handle { width: 44px; height: 44px; justify-content: center; margin-right: 0; }
+    .track-actions-row .move-to-mix-btn { min-height: 44px; }
+    .track-actions-row .move-to-mix-word { display: inline; }
     .mode-box { padding: 0 0.6rem; }
     /* MS-220: the title bar flows as text, so a long summary wraps under the title at full width (not in a narrow column beside it). */
     .section-toggle { display: block; min-height: 44px; padding: 0.7rem 0; line-height: 1.35; }
@@ -704,7 +709,8 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     .sync-group-select-checkbox { order: 11; }
     .sync-group-drag-handle { order: 12; }
     .sync-group-header .move-up-btn { order: 13; } .sync-group-header .move-down-btn { order: 14; }
-    .delete-sync-group-btn { order: 15; margin-left: auto; }
+    .sync-group-header .move-to-mix-btn { order: 15; margin-left: auto; min-width: 44px; min-height: 44px; }
+    .delete-sync-group-btn { order: 15; }
     .sync-group-sort-select { order: 16; }
     .sync-group-counters { order: 17; font-size: 0.8em; white-space: normal; flex-wrap: wrap; justify-content: flex-end; min-width: 0; }
     .sync-group-loop-delay-counter { min-width: 0; }
@@ -754,7 +760,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v345</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v346</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1108,7 +1114,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v345';
+const APP_VERSION = 'v346';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -1472,6 +1478,7 @@ function createMixUI(mix) {
                 <button class="copy-mix-btn small-btn">Copy Mix</button>
                 <button class="copy-selected-btn small-btn">Copy Selected</button>
                 <button class="delete-selected-btn small-btn" disabled title="Delete the ticked tracks and Sync Groups">Delete Selected</button>
+                <button class="move-selected-btn small-btn" disabled title="Move the ticked tracks and Sync Groups to another mix">Move Selected…</button>
                 <input type="number" class="paste-count-input" value="1" min="1" max="99" style="width: 60px;" title="Number of copies to paste">
                 <button class="paste-items-btn small-btn" disabled>Paste Selected</button>
                 <label for="file-input-${mix.id}" class="button-like small-btn">➕ Add Local</label><input type="file" id="file-input-${mix.id}" accept="audio/*" multiple style="display:none;">
@@ -1545,6 +1552,7 @@ function createMixUI(mix) {
     mixContainer.querySelector('.copy-selected-btn').addEventListener('click', () => copySelectedItems(mix.id));
     mixContainer.querySelector('.paste-items-btn').addEventListener('click', () => pasteSelectedItems(mix.id));
     mixContainer.querySelector('.delete-selected-btn').addEventListener('click', () => deleteSelectedItems(mix.id));
+    mixContainer.querySelector('.move-selected-btn').addEventListener('click', () => moveSelectedToMix(mix.id)); // MS-241
     mixContainer.addEventListener('change', e => { if (e.target.classList.contains('select-checkbox')) updateDeleteSelectedButton(mix.id); });
 
     // MS-217: "..." folds the rows of mix buttons away at every screen width (before v323: phones and the compact
@@ -1657,15 +1665,16 @@ function placeTrackHeaderItems(trackElement) {
     const header = trackElement.querySelector('.track-header'), row = trackElement.querySelector('.track-actions-row');
     const handle = trackElement.querySelector('.track-drag-handle'), select = trackElement.querySelector('.track-select-checkbox'), remove = trackElement.querySelector('.remove-track-btn');
     const endJump = trackElement.querySelector('.end-jump-btn'); // MS-213: beside the timer on a wide screen, in this row on a phone
+    const moveToMix = trackElement.querySelector('.move-to-mix-btn'); // MS-241: beside the delete button
     if (!header || !row) return;
     if (phoneLayout.matches) {
         row.querySelector('.track-select-label').prepend(select);
         row.querySelector('.track-actions-spacer').before(handle);
-        row.append(endJump, remove);
+        row.append(endJump, moveToMix, remove);
     } else {
         header.prepend(handle, select);
         header.querySelector('.track-header-counters').append(endJump);
-        header.append(remove);
+        header.append(moveToMix, remove);
     }
 }
 // Also checked on resize: not every browser (or a test viewport) reports the width change as a 'change' event.
@@ -1731,6 +1740,7 @@ function addTrackToMixUI(mix, trackData, placeAfter) {
                     <span class="tt-wrap"><code class="track-play-counter">--m--s | --m--s</code>${SEEK_BAR_HTML}</span>${END_JUMP_HTML}
                 </div>
             </div>
+             <button class="move-to-mix-btn small-btn" title="Move this track to another mix">⇄<span class="move-to-mix-word"> Move to mix</span></button>
              <button class="remove-track-btn small-btn" title="Delete this track">❌</button>
         </div>
         <div class="track-details"><div class="track-details-inner"><div class="track-controls-grid">
@@ -1904,6 +1914,7 @@ function addTrackToMixUI(mix, trackData, placeAfter) {
     placeTrackHeaderItems(trackElement);
     refreshLevelControls(document.getElementById(mix.id));
     trackElement.querySelector('.remove-track-btn').addEventListener('click', async () => { if (await askConfirm(`Delete the track "${trackData.name}"?`)) deleteItems(mix, { trackIds: [trackData.id] }); });
+    trackElement.querySelector('.move-to-mix-btn').addEventListener('click', () => moveOneToMix(mix.id, trackData.id, 'track')); // MS-241
     trackElement.querySelector('.copy-settings-btn').addEventListener('click', () => { copiedTrackSettings = JSON.parse(JSON.stringify(trackData.settings)); showMessage('Settings copied!'); });
     trackElement.querySelector('.paste-settings-btn').addEventListener('click', () => pasteTrackSettings(track.data.id));
     trackElement.querySelector('.track-name-display').addEventListener('click', (e) => { const span = e.target; if (span.isContentEditable) return; const input = document.createElement('input'); input.type = 'text'; input.value = trackData.name; input.className = 'track-name-display'; input.style.width = '100%'; span.replaceWith(input); input.focus(); input.addEventListener('blur', () => { trackData.name = input.value; span.textContent = input.value; input.replaceWith(span); }); input.addEventListener('keydown', (ev) => { if(ev.key === 'Enter') ev.target.blur(); }); });
@@ -2019,6 +2030,7 @@ function createSyncGroupUI(mix, groupData) {
                 <div class="sync-group-actions">
                     <button class="play-stop-sync-group-btn small-btn">▶</button>
                     ${MOVE_BUTTONS}
+                    <button class="move-to-mix-btn small-btn" title="Move this Sync Group (with its tracks) to another mix">⇄</button>
                     <button class="delete-sync-group-btn small-btn" title="Delete this Sync Group">❌</button>
                 </div>
             </div>
@@ -2109,6 +2121,7 @@ function createSyncGroupUI(mix, groupData) {
     });
 
     groupContainer.querySelector('.delete-sync-group-btn').addEventListener('click', () => deleteSyncGroup(mix.id, groupData.id));
+    groupContainer.querySelector('.move-to-mix-btn').addEventListener('click', () => moveOneToMix(mix.id, groupData.id, 'group')); // MS-241
     setupSecondsInputs(groupContainer.querySelector('.sync-group-controls') || groupContainer);
     setupLevelControl(groupContainer.querySelector('.level-control'),
         () => viewLevel([groupContainer], [...groupContainer.querySelectorAll('.track')]),
@@ -4087,13 +4100,22 @@ function setupGlobalDragDropListeners() {
         return y > bottom - edge ? 'below' : null;
     }
 
-    // Where the item would land for the point under the pointer: { className, parent, before, intoGroup }, or null.
-    // The same rules as the browser drag-and-drop before v325.
+    // MS-241: over another mix's header (open or closed), a track or Sync Group goes to the top of that mix's list.
+    function mixTopSpot(mixEl, className) {
+        const list = mixEl.querySelector('.tracks-container');
+        return { className, parent: list, before: list.firstElementChild, intoMix: mixEl };
+    }
+
+    // Where the item would land for the point under the pointer: { className, parent, before, intoGroup, intoMix }, or
+    // null. The same rules as the browser drag-and-drop before v325; since v346 (MS-241) in any mix, not only its own.
     function dropSpotAt(hit) {
         const { el: draggedElement, type, movingEls, y } = drag;
         const ownMix = draggedElement.closest('.mix-container');
+        const hitMix = hit.closest('.mix-container');
+        if (type !== 'mix' && hitMix && hitMix !== ownMix && hit.closest('.mix-header')) {
+            return mixTopSpot(hitMix, type === 'track' ? 'drag-over-indicator-track' : 'drag-over-indicator-group');
+        }
         if (type === 'track') {
-            if (hit.closest('.mix-container') !== ownMix) return null; // tracks stay in their own mix (their audio lives there)
             const targetTrack = hit.closest('.track');
             const targetSyncGroup = hit.closest('.sync-group');
             if (targetTrack && movingEls.includes(targetTrack)) return null; // over the dragged track itself: it stays put
@@ -4124,7 +4146,12 @@ function setupGlobalDragDropListeners() {
         const targetGroup = hit.closest('.sync-group');
         const targetTrack = hit.closest('.track');
         const target = targetGroup || (targetTrack?.parentElement?.classList.contains('tracks-container') ? targetTrack : null);
-        if (!target || movingEls.includes(target) || target.closest('.mix-container') !== ownMix) return null;
+        if (!target) {
+            // MS-241: an empty mix takes a group too.
+            const list = hit.closest('.tracks-container');
+            return list && hitMix !== ownMix && !list.querySelector('.track, .sync-group') ? { className: 'drag-over-indicator-group', parent: list, before: null } : null;
+        }
+        if (movingEls.includes(target)) return null;
         return { className: 'drag-over-indicator-group', parent: target.parentNode, before: isBelowMiddle(target, y) ? target.nextSibling : target };
     }
 
@@ -4158,8 +4185,9 @@ function setupGlobalDragDropListeners() {
                 spot.parent.insertBefore(indicator, anchor);
             }
         }
-        document.querySelectorAll('.sync-group.drag-over').forEach(g => { if (g !== spot?.intoGroup) g.classList.remove('drag-over'); });
+        document.querySelectorAll('.sync-group.drag-over, .mix-container.drag-over').forEach(g => { if (g !== spot?.intoGroup && g !== spot?.intoMix) g.classList.remove('drag-over'); });
         spot?.intoGroup?.classList.add('drag-over');
+        spot?.intoMix?.classList.add('drag-over');
     }
 
     function moveLabel() {
@@ -4222,22 +4250,32 @@ function setupGlobalDragDropListeners() {
         drag = null;
         cancelAnimationFrame(d.frame);
         try { d.handle.releasePointerCapture(d.pointerId); } catch (err) {}
-        if (commit) dropDragged(d);
+        const movedTo = commit ? dropDragged(d) : null; // a move to another mix rebuilds the items there (MS-241)
         d.movingEls.forEach(el => el.classList.remove('dragging'));
         d.label.remove();
         clearIndicators();
-        unfoldAfterDrag(d.folded, d.el);
+        unfoldAfterDrag(d.folded, movedTo || d.el);
         document.documentElement.classList.remove('is-dragging-item');
         swallowClickUntil = performance.now() + 400; // the click that ends a mouse drag doesn't also tap the header
         if (commit && typeof scheduleSave === 'function') scheduleSave(); // Autosave
         if (commit && !d.fromName) showHoldToMoveHint();
     }
 
-    // Puts the dragged item (or block) where the marker is.
+    // Puts the dragged item (or block) where the marker is. Returns the first moved element when it went to another mix.
     function dropDragged({ el: draggedElement, type: draggedElementType, movingEls }) {
         const mixContainer = draggedElement.closest('.mix-container');
         const mix = mixes.find(m => m.id === mixContainer.id);
-        if (!mix) return;
+        if (!mix) return null;
+
+        // MS-241: dropped in another mix, the items move there (js/move-to-mix.js), with one Undo.
+        if (draggedElementType !== 'mix') {
+            const indicator = document.querySelector(draggedElementType === 'track' ? '.drag-over-indicator-track' : '.drag-over-indicator-group');
+            const targetMix = mixes.find(m => m.id === indicator?.closest('.mix-container')?.id);
+            if (targetMix && targetMix !== mix) {
+                const ids = movingEls.map(el => el.id);
+                return moveItemsToMix(mix, targetMix, draggedElementType === 'track' ? { trackIds: ids } : { groupIds: ids }, { place: { parent: indicator.parentElement, before: indicator } });
+            }
+        }
 
         const isBlock = movingEls.length > 1;
         const layoutBefore = isBlock ? mixLayout(mix) : null;
@@ -4252,7 +4290,6 @@ function setupGlobalDragDropListeners() {
             const indicator = document.querySelector('.drag-over-indicator-track');
             const dropContainer = indicator?.parentElement;
 
-            // Tracks can only move within their own mix (their audio lives in that mix).
             if (dropContainer && dropContainer.closest('.mix-container') === mixContainer) {
                 const newGroupId = dropContainer.closest('.sync-group')?.dataset.groupId || null;
                 const groupOfBefore = groupOfTracks(mix);
@@ -6375,10 +6412,10 @@ async function deleteSelectedItems(mixId) {
     deleteItems(mix, { trackIds: tracks.map(t => t.id), groupIds: groups.map(g => g.id), groupTracks });
 }
 
-// Grayed out until something in the mix is ticked.
+// Grayed out until something in the mix is ticked (Delete Selected, and Move Selected since v346).
 function updateDeleteSelectedButton(mixId) {
-    const btn = document.querySelector(`#${CSS.escape(mixId)} .delete-selected-btn`);
-    if (btn) btn.disabled = !document.querySelector(`#${CSS.escape(mixId)} .select-checkbox:checked`);
+    const ticked = !!document.querySelector(`#${CSS.escape(mixId)} .select-checkbox:checked`);
+    document.querySelectorAll(`#${CSS.escape(mixId)} .delete-selected-btn, #${CSS.escape(mixId)} .move-selected-btn`).forEach(btn => { btn.disabled = !ticked; });
 }
 
 function deleteMixWithUndo(mixId) {
@@ -6428,8 +6465,8 @@ async function undoLastDelete() {
     if (!entry) { showMessage('Nothing to undo.'); return; }
     undoBusy = true;
     try {
-        if (entry.kind === 'move') undoMove(entry); else if (entry.kind === 'mix') await restoreMix(entry); else await restoreItems(entry);
-        showMessage(entry.kind === 'move' ? `Moved ${entry.what} back.` : `Restored ${entry.what}.`);
+        if (entry.kind === 'move') undoMove(entry); else if (entry.kind === 'mixmove') undoMoveToMix(entry); else if (entry.kind === 'mix') await restoreMix(entry); else await restoreItems(entry);
+        showMessage(entry.undoneText || (entry.kind === 'move' ? `Moved ${entry.what} back.` : `Restored ${entry.what}.`));
     } catch (err) {
         console.error(err);
         showMessage(`Could not restore ${entry.what}: ${err.message}`);
@@ -6494,6 +6531,174 @@ function setupUndo() {
         undoLastDelete();
     });
     updateUndoButton();
+}
+    </script>
+    <script>
+// --- js/move-to-mix.js ---
+// --- MOVING TRACKS AND SYNC GROUPS BETWEEN MIXES (v346, MS-241) ---
+// Since MS-130 each sound is saved once for the whole app and tracks point at it (soundId), so a move never copies or
+// saves audio again: the track is rebuilt in the target mix with the same id, settings and decoded sound (as Paste and
+// Undo do), and taken out of the source mix. A moved Sync Group keeps its id and settings and takes its tracks along.
+// While playing (MS-241.04): the moved items stop in the source mix. In a playing target they start under their own
+// timing rules (a track that joins a playing group, from the group's re-planned cycle); in a stopped or paused target
+// they wait, like the rest of that mix. One Undo puts everything back: the same mix, place and Sync Group (MS-241.05).
+
+// What a move snapshot needs to rebuild a track: its data, its decoded sound (if unpacked) and its known length.
+function moveSnapshot(mix, trackData) {
+    const engine = mix.audioEngine[trackData.id];
+    return { ...trackSnapshot(mix, trackData), soundDuration: engine?.audio.soundDuration ?? null, soundMissing: !!engine?.audio.soundMissing };
+}
+
+// Moves tracks and Sync Groups of sourceMix into targetMix. Tracks inside a moved group go with it.
+// place: { parent, before } where the moved items go on screen (a drop spot); a parent inside one of the target's Sync
+// Groups makes the moved tracks join that group. Without it they go to the top of the target's list, as individual
+// tracks. groupOf (Undo only): { trackId: groupId } of the target's groups to put tracks back into.
+// Returns the first moved element (for the drag to keep in view), or null when nothing moved.
+function moveItemsToMix(sourceMix, targetMix, { trackIds = [], groupIds = [] }, { place = null, groupOf = null, undo = true } = {}) {
+    if (!sourceMix || !targetMix || sourceMix === targetMix) return null;
+    const layout = mixLayout(sourceMix);
+    const groupSet = new Set(groupIds.filter(id => sourceMix.syncGroups.some(g => g.id === id)));
+    const trackSet = new Set(trackIds.filter(id => sourceMix.audioEngine[id] && !groupSet.has(sourceMix.tracks.find(t => t.id === id)?.syncInfo.groupId)));
+    if (!groupSet.size && !trackSet.size) return null;
+
+    // In the source's screen order: each moved group with its tracks, and each moved individual track.
+    const byId = new Map(sourceMix.tracks.map(t => [t.id, t]));
+    const items = [];
+    layout.top.forEach(id => {
+        const group = sourceMix.syncGroups.find(g => g.id === id);
+        const snap = trackId => moveSnapshot(sourceMix, byId.get(trackId));
+        if (group && groupSet.has(id)) items.push({ group: cloneGroupData(group), tracks: (layout.groups[id] || []).filter(t => byId.has(t)).map(snap) });
+        else if (group) (layout.groups[id] || []).filter(t => trackSet.has(t)).forEach(t => items.push({ track: snap(t) }));
+        else if (trackSet.has(id)) items.push({ track: snap(id) });
+    });
+    // Anything not on screen (e.g. a mix still being built) comes last.
+    const listed = new Set(items.flatMap(i => i.track ? [i.track.data.id] : i.tracks.map(t => t.data.id)));
+    sourceMix.tracks.filter(t => trackSet.has(t.id) && !listed.has(t.id)).forEach(t => items.push({ track: moveSnapshot(sourceMix, t) }));
+
+    const movedGroups = sourceMix.syncGroups.filter(g => groupSet.has(g.id));
+    const movedTracks = items.filter(i => i.track).map(i => byId.get(i.track.data.id));
+    const entry = {
+        kind: 'mixmove', sourceId: sourceMix.id, targetId: targetMix.id, layout, groupOf: groupOfTracks(sourceMix),
+        trackIds: movedTracks.map(t => t.id), groupIds: movedGroups.map(g => g.id),
+        what: `${describeItems(movedGroups, movedTracks)} to "${targetMix.name}"`,
+        undoneText: `Moved ${describeItems(movedGroups, movedTracks)} back to "${sourceMix.name}".`
+    };
+
+    // Out of the source mix: the moved items stop there; groups that lose a track re-plan their cycle.
+    const leftGroups = new Set(movedTracks.map(t => t.syncInfo.groupId).filter(Boolean));
+    movedGroups.forEach(g => stopSyncGroup(sourceMix.id, g.id));
+    items.forEach(i => (i.track ? [i.track] : i.tracks).forEach(t => removeTrack(sourceMix, t.data.id)));
+    movedGroups.forEach(g => removeSyncGroup(sourceMix, g.id));
+    leftGroups.forEach(id => { const g = sourceMix.syncGroups.find(x => x.id === id); if (g?.isPlaying) rescheduleGroup(sourceMix, g); });
+    updateMixMuteStates(sourceMix);
+    settleMixState(sourceMix); // nothing left playing: the source shows stopped (or paused)
+    updateDeleteSelectedButton(sourceMix.id);
+
+    // Into the target mix, at the drop spot (or the top of its list).
+    const list = document.querySelector(`#${CSS.escape(targetMix.id)} .tracks-container`);
+    const spot = place?.parent?.isConnected ? place : { parent: list, before: list.firstElementChild };
+    const joinEl = spot.parent.closest('.sync-group');
+    const joinGroup = joinEl && targetMix.syncGroups.find(g => g.id === joinEl.id) || null;
+    // Sync Groups always sit in the mix's own list: a group dropped among a group's tracks goes just above that group.
+    const groupSpot = joinEl ? { parent: joinEl.parentNode, before: joinEl } : spot;
+    const pending = [], joined = new Set(), startGroups = [];
+    let first = null;
+    const rebuild = (snap, groupId) => {
+        const data = JSON.parse(JSON.stringify(snap.data));
+        data.syncInfo.groupId = groupId;
+        pending.push(processNewTrack(targetMix, snap.buffer, data.name, data)); // its element is drawn at once
+        const engine = targetMix.audioEngine[data.id];
+        if (engine && !snap.buffer) {
+            engine.audio.soundDuration ??= snap.soundDuration; // the Track Timer still knows its length
+            if (snap.soundMissing) engine.audio.soundMissing = true;
+        }
+        return document.getElementById(data.id);
+    };
+    items.forEach(item => {
+        if (item.group) {
+            targetMix.syncGroups.push(item.group);
+            createSyncGroupUI(targetMix, item.group);
+            const el = document.getElementById(item.group.id);
+            groupSpot.parent.insertBefore(el, groupSpot.before);
+            item.tracks.forEach(t => rebuild(t, item.group.id));
+            startGroups.push(item.group);
+            first ??= el;
+        } else {
+            let groupId = joinGroup?.id || null;
+            if (groupOf) groupId = targetMix.syncGroups.some(g => g.id === groupOf[item.track.data.id]) ? groupOf[item.track.data.id] : null;
+            const el = rebuild(item.track, groupId);
+            if (groupId) joined.add(groupId);
+            if (!groupOf && el) spot.parent.insertBefore(el, spot.before);
+            first ??= el;
+        }
+    });
+    syncGroupOrderToScreen(targetMix);
+    updateMixMuteStates(targetMix);
+    [sourceMix, targetMix].forEach(m => refreshLevelControls(document.getElementById(m.id)));
+    if (undo) pushUndo(entry, 'Moved');
+
+    // Once the sounds are attached: a moved group starts in a playing target; a group that took a track in re-plans.
+    // (Individual tracks start by themselves when their sound is attached, if the target plays: attachTrackBuffer.)
+    Promise.all(pending).then(() => {
+        if (!mixes.includes(targetMix)) return;
+        startGroups.forEach(g => { if (targetMix.syncGroups.includes(g) && targetMix.isPlaying && g.isEnabled && !g.isPlaying) startGroup(targetMix, g); });
+        joined.forEach(id => { const g = targetMix.syncGroups.find(x => x.id === id); if (g?.isPlaying) rescheduleGroup(targetMix, g); });
+        updateMixMuteStates(targetMix);
+        scheduleSave();
+    });
+    scheduleSave();
+    return first;
+}
+
+// Undo of a move between mixes: everything comes back to the source mix, in its Sync Groups and places.
+function undoMoveToMix(entry) {
+    const source = mixes.find(m => m.id === entry.sourceId), target = mixes.find(m => m.id === entry.targetId);
+    if (!source) throw new Error('the mix it came from has been deleted.');
+    if (!target) throw new Error('the mix it was moved to has been deleted.');
+    const groupIds = entry.groupIds.filter(id => target.syncGroups.some(g => g.id === id));
+    const trackIds = entry.trackIds.filter(id => target.audioEngine[id]);
+    if (!groupIds.length && !trackIds.length) throw new Error(`they are no longer in "${target.name}".`);
+    moveItemsToMix(target, source, { trackIds, groupIds }, { groupOf: entry.groupOf, undo: false });
+    applyLayout(source, entry.layout, new Set([...groupIds, ...trackIds]));
+    refreshLevelControls(document.getElementById(source.id));
+}
+
+// "Move to mix…": asks which mix, then moves. Returns false when cancelled.
+async function chooseMixAndMove(sourceMix, items, what) {
+    const others = mixes.filter(m => m !== sourceMix);
+    if (!others.length) { showMessage('There is no other mix to move to. Add a mix first (+ New Mix, or Paste Mix).'); return false; }
+    const groups = items.groupIds?.length || 0, tracks = items.trackIds?.length || 0;
+    const how = groups && tracks ? 'Sync Groups arrive as groups, with their tracks; the other tracks as individual tracks.'
+        : groups ? (groups > 1 ? 'They arrive as Sync Groups, with their tracks.' : 'It arrives as a Sync Group, with its tracks.')
+        : tracks > 1 ? 'They arrive as individual tracks.' : 'It arrives as an individual track.';
+    const targetId = await askChoice(`Move ${what} to which mix?\n\n${how} Everything goes to the top of that mix and keeps its settings; Undo puts it back.`,
+        [...others.map(m => ({ value: m.id, label: m.name || 'Untitled mix' })), { value: null, label: 'Cancel' }], { title: 'Move to mix' });
+    const target = mixes.find(m => m.id === targetId);
+    if (!target || !mixes.includes(sourceMix)) return false;
+    moveItemsToMix(sourceMix, target, items);
+    return true;
+}
+
+// A track's or a Sync Group's own ⇄ button.
+function moveOneToMix(mixId, itemId, type) {
+    const mix = mixes.find(m => m.id === mixId);
+    if (!mix) return;
+    const group = type === 'group' && mix.syncGroups.find(g => g.id === itemId);
+    const track = type === 'track' && mix.tracks.find(t => t.id === itemId);
+    if (group) chooseMixAndMove(mix, { groupIds: [group.id] }, `the Sync Group "${group.name}" and its tracks`);
+    else if (track) chooseMixAndMove(mix, { trackIds: [track.id] }, `the track "${track.name}"`);
+}
+
+// The mix's Move Selected button: every ticked Sync Group (with its tracks) and every other ticked track.
+function moveSelectedToMix(mixId) {
+    const mix = mixes.find(m => m.id === mixId);
+    if (!mix) return;
+    const ticked = cls => Array.from(document.querySelectorAll(`#${CSS.escape(mixId)} .${cls}:checked`));
+    const groups = ticked('sync-group-select-checkbox').map(cb => mix.syncGroups.find(g => g.id === cb.closest('.sync-group')?.id)).filter(Boolean);
+    const tracks = ticked('track-select-checkbox').map(cb => mix.tracks.find(t => t.id === cb.closest('.track')?.id)).filter(Boolean)
+        .filter(t => !groups.some(g => g.id === t.syncInfo.groupId));
+    if (!groups.length && !tracks.length) { showMessage('Nothing is ticked.'); return; }
+    chooseMixAndMove(mix, { trackIds: tracks.map(t => t.id), groupIds: groups.map(g => g.id) }, describeItems(groups, tracks));
 }
     </script>
     <script>
