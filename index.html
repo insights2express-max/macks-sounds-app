@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-OJUS+SfCsQYIkRU+B+CxM9L7DlV6MWgBc1iIMQ3p9+c=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-7AFT6H/kShjwrFAUMVeGJjKBX0AJB5kKZfyiw48yXtg=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v344</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-2Xq/XM5D92pRHBpYTm+MSJ+gKRFQEvqCHn/fw4lbVq0=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v345</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -445,7 +445,7 @@ input[type=range]::-moz-range-thumb { height: 24px; width: 24px; background-colo
    the timer when both don't fit side by side), the clock in
    the space between, and the controls along the bottom. The clock is scaled inside its own band, which clips it, so even a very
    large Clock Size never covers the other boxes. */
-#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "clock" "controls"; gap: 1rem; padding: 20px 20px 5vh; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; background: transparent; }
+#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "clock" "controls"; gap: 1rem; padding: 20px 20px 5vh; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; background: transparent; -webkit-tap-highlight-color: transparent; } /* v345: no tap highlight (Android showed it as a bright flash) */
 #sleep-top-bar { grid-area: top; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
 #sleep-dim-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.4s ease; }
 body.sleep-mode-active #sleep-mode-overlay { opacity: 1; pointer-events: auto; }
@@ -470,6 +470,15 @@ body.sleep-mode-active #sleep-mode-overlay { opacity: 1; pointer-events: auto; }
     #clock-font-select { width: 100%; min-width: 0; }
 }
 @media (max-width: 600px) { #sleep-controls-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* v345 (MS-260, JM's design): a phone on its side (wide and at most 500 px tall). The Sleep Timer box and the full-screen
+   button stack in a narrow column on the left (the full height, so large text never runs into the controls), and the clock
+   gets the area to their right, with the controls under it, so it can grow much larger before its band cuts it off.
+   Upright phones and computers keep the layout above. */
+@media (orientation: landscape) and (max-height: 500px) {
+    #sleep-mode-overlay { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "top clock" "top controls"; }
+    #sleep-top-bar { flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; max-width: 11rem; } /* the button right under the timer */
+    .fullscreen-controls { margin-left: 0; }
+}
 .global-timer-status { font-size: 0.9em; color: var(--accent-color); margin-left: 0.5rem; }
 
 /* Settings Modal Styles */
@@ -745,7 +754,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v344</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v345</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1099,7 +1108,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v344';
+const APP_VERSION = 'v345';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -1117,6 +1126,7 @@ let activeBgImageId = 'default';
 let sleepTimer = { timeoutId: null, intervalId: null, endsAt: null }; // endsAt: wall-clock ms when the timer runs out
 let clockIntervalId = null;
 let sleepModeAwakenListener = null;
+let sleepBackEntry = false, sleepBackSkips = 0; // v345: the sleep screen's history entry (the phone's Back closes it; js/sleep.js)
 let copiedItems = { type: null, data: [], lastSelectedId: null };
 let copiedTrackSettings = null;
 let compactHeaderObserver;
@@ -5161,6 +5171,18 @@ function setupSleepModeControls() {
     document.getElementById('exit-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); if (document.fullscreenElement) document.exitFullscreen(); });
     document.addEventListener('fullscreenchange', updateFullscreenButtons);
     updateFullscreenButtons();
+    // v345: the phone's Back button closes the sleep screen (its history entry is added in toggleSleepMode).
+    window.addEventListener('popstate', () => {
+        if (sleepBackSkips > 0) { // our own history.back() after closing it another way
+            sleepBackSkips--;
+            // Reopened before that step back arrived: Chrome then undoes the new entry too, so add it again (measured).
+            if (sleepBackSkips === 0 && sleepBackEntry && !(history.state && history.state.weaveSleepScreen)) history.pushState({ weaveSleepScreen: true }, '');
+            return;
+        }
+        if (sleepBackEntry) { sleepBackEntry = false; if (document.body.classList.contains('sleep-mode-active')) toggleSleepMode(); }
+    });
+    // A reload while the sleep screen was open leaves its entry behind; step back over it so one Back still leaves the app.
+    if (history.state && history.state.weaveSleepScreen) { sleepBackSkips++; history.back(); }
 }
 
 function toggleSleepMode() {
@@ -5169,6 +5191,9 @@ function toggleSleepMode() {
 
     // (The playback engine pauses on-screen counters by itself while sleep mode is on.)
     if (isSleeping) {
+        // v345: one history entry while the sleep screen is open, so the phone's Back button closes it (popstate, set up in
+        // setupSleepModeControls) instead of leaving the app. Same address: no #hash, nothing for the offline guard to see.
+        if (!sleepBackEntry) { history.pushState({ weaveSleepScreen: true }, ''); sleepBackEntry = true; }
         const updateClock = () => { const now = new Date(); document.querySelector('#sleep-clock .clock-hm').textContent = now.toTimeString().substring(0, 5); }; updateClock();
         clearInterval(clockIntervalId);
         clockIntervalId = setInterval(updateClock, 1000);
@@ -5176,7 +5201,10 @@ function toggleSleepMode() {
 
         if (sleepModeAwakenListener) return;
         sleepModeAwakenListener = (e) => {
-            const ignoredElements = [...getSleepUiElements(), ...document.querySelectorAll('.sleep-slider, #clock-font-select')];
+            // A tap anywhere leaves sleep mode, except on the clock digits, the Sleep Timer box, the full-screen button and the
+            // controls themselves (as in v341). v345: the elements, not their bands; since v344 the clock's and the controls'
+            // containers fill whole bands of the screen, so checking those made nearly every tap count as "on a control".
+            const ignoredElements = [document.getElementById('sleep-clock'), document.getElementById('sleep-timer-display'), ...document.querySelectorAll('.fullscreen-controls button, .sleep-control-group, #clock-font-select')];
             if (e.key === 'Escape') return;
             if (!ignoredElements.some(el => el.contains(e.target))) { toggleSleepMode(); }
         };
@@ -5186,6 +5214,9 @@ function toggleSleepMode() {
         if (document.fullscreenElement) document.exitFullscreen();
         if (sleepModeAwakenListener) { document.removeEventListener('keydown', sleepModeAwakenListener); overlay.removeEventListener('click', sleepModeAwakenListener); sleepModeAwakenListener = null; }
         clearInterval(clockIntervalId);
+        // Closed another way (a tap, a key): remove its history entry, so one Back on the main screen leaves the app as before.
+        // The popstate this causes is skipped (sleepBackSkips), even if the sleep screen is opened again before it arrives.
+        if (sleepBackEntry) { sleepBackEntry = false; sleepBackSkips++; history.back(); }
     }
 }
 
