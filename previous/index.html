@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-XSnSpQq95hWXlzvfXMeFs3anLMTMJOVVueOTjvT6HGM=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-koxrJD3zOzmgWbVTL3TnIpew2JRGvTzh1x24G5TsOuM=' 'sha256-UNaL8EJeEgVD7M0tfNpqtgd//hOHyyFCuf3HXwaaVP8=' 'sha256-ywd5gtqNsm96l/Bw3cIbK+Us3DBgq6YLHRvE2xgKT10=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v341</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-2Xq/XM5D92pRHBpYTm+MSJ+gKRFQEvqCHn/fw4lbVq0=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-nh1GVEsvws2a3IZKYzykRyTQY/ZJLH/N4zjvLIyvmmc=' 'sha256-9+k2xD2h25CudLy8ajhuKnb4NxgCpCn6aD7i2RJx2gk=' 'sha256-0POCqutyzdeI7r6pmoDaaAr2iDhwhI4xZKQa+s7pbiI=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-SiOHT8FzzJJ3Z7x+NO/M8rk+n2M4MCEmqUVu56uCTeg=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-qdV7ZEs/UB/3KjFESkmZNRvgVoXQBdXdiSTP0hK8WSQ=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v345</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -143,16 +143,19 @@ h1 { margin: 0; font-family: var(--font-family-title); font-size: calc(1.8rem * 
 .app-header-main-row .more-controls-btn { display: none; }
 .app-header.is-compact .app-header-main-row .more-controls-btn { display: inline-block; }
 
-.app-title-group { display: flex; flex-wrap: wrap; align-items: center; flex-grow: 1; min-width: 0; }
+/* v340 (phones), v341 (every width): room under the title, so a badge that wraps below it never touches the letters. */
+.app-title-group { display: flex; flex-wrap: wrap; align-items: center; flex-grow: 1; min-width: 0; row-gap: 0.35rem; }
 /* v341 (MS-901.09): the title stays on one line and never breaks inside the word; when it doesn't fit the space beside
    the other header controls, fitAppTitle (js/settings.js) shrinks its font size just enough (never above the size chosen in Settings). */
-#app-title { white-space: nowrap; min-width: 0; max-width: 100%; }
+#app-title { white-space: nowrap; min-width: 0; max-width: 100%; line-height: 1.3; }
 /* Version shown beside the title (placeholder until a permanent spot is chosen). */
 .app-version-badge { margin-left: 0.75rem; padding: 0.15rem 0.6rem; border: 1px solid var(--title-font-color); border-radius: 999px; color: var(--title-font-color); font-family: var(--font-family-main); font-size: 0.85rem; white-space: nowrap; opacity: 0.85; }
 /* v337 (MS-901): the tagline, a small line under the title (the title group wraps to put it on a line of its own); hidden
    in the compact header. contain: inline-size keeps its length from widening the title group, so on a phone the
    settings button stays beside the title and the tagline wraps instead. */
-.app-tagline { flex-basis: 100%; contain: inline-size; margin: 0.1rem 0 0; color: var(--title-font-color); font-family: var(--font-family-main); font-size: 0.85rem; opacity: 0.7; }
+/* v342 (MS-258): its font, color and size can be set in Settings › Fonts › Tagline Font; until then it follows the main font
+   and the title color at 70% (a picked color shows at full strength). A large size wraps it to a second line. */
+.app-tagline { flex-basis: 100%; contain: inline-size; margin: 0.1rem 0 0; color: var(--tagline-color, var(--title-font-color)); font-family: var(--font-family-tagline, var(--font-family-main)); font-size: calc(0.85rem * var(--font-size-tagline-multiplier, 1)); opacity: var(--tagline-opacity, 0.7); }
 .app-header.is-compact .app-tagline { display: none; }
 .app-header-controls { display: flex; align-items: center; gap: 1rem; }
 .app-header-main-actions { display: flex; align-items: center; gap: 0.5rem; }
@@ -437,19 +440,45 @@ input[type=range]::-moz-range-track { background: #444; height: 6px; border-radi
 input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; margin-top: -9px; height: 24px; width: 24px; background-color: #3498db; border-radius: 50%; }
 input[type=range]::-moz-range-thumb { height: 24px; width: 24px; background-color: #3498db; border-radius: 50%; border: none; }
 
-#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; padding-top: calc(10vh + 150px); background: transparent; }
+/* v344 (MS-260): the sleep screen is a grid of three bands, so its boxes can't collide (until v343 each was placed on its own
+   with position: absolute, and they overlapped): a top bar (Sleep Timer box left, the full-screen button right, moving below
+   the timer when both don't fit side by side), the clock in
+   the space between, and the controls along the bottom. The clock is scaled inside its own band, which clips it, so even a very
+   large Clock Size never covers the other boxes. */
+#sleep-mode-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "clock" "controls"; gap: 1rem; padding: 20px 20px 5vh; opacity: 0; pointer-events: none; transition: opacity 0.5s; cursor: pointer; background: transparent; -webkit-tap-highlight-color: transparent; } /* v345: no tap highlight (Android showed it as a bright flash) */
+#sleep-top-bar { grid-area: top; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
 #sleep-dim-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; opacity: 0; z-index: -1; pointer-events: none; transition: opacity 0.4s ease; }
 body.sleep-mode-active #sleep-mode-overlay { opacity: 1; pointer-events: auto; }
-#sleep-clock { font-size: 10vw; color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+/* The clock's default size is 10% of the screen width, but at most half its band's height (cqh), so on a short screen
+   (a phone on its side) it still fits at 100% and 150%. */
+#sleep-clock { display: inline-block; font-size: min(10vw, 50cqh); color: #fff; text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); transform: scale(1); transition: transform 0.2s ease-out; }
 #sleep-clock .clock-hm { font-weight: 700; }
-#sleep-clock-wrapper { text-align: left; transform: scale(1); transition: transform 0.2s ease-out, opacity 0.4s; }
-#sleep-controls-wrapper { position: absolute; bottom: 5%; right: 5%; display: flex; align-items: center; gap: 1rem; transition: opacity 0.4s;}
-#sleep-timer-display { position: absolute; bottom: 5%; left: 5%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; font-size: 1.2em; transition: opacity 0.4s;}
+#sleep-clock-wrapper { grid-area: clock; container-type: size; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; overflow: hidden; transition: opacity 0.4s; }
+#sleep-controls-wrapper { grid-area: controls; display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 1rem; transition: opacity 0.4s;}
+#sleep-timer-display { max-width: 100%; overflow-wrap: anywhere; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 0.5rem 1rem; color: #fff; font-size: 1.2em; transition: opacity 0.4s;}
 #sleep-timer-display-label { font-weight: bold; opacity: 0.8; font-size: 0.8em;}
 .sleep-control-group { color: #fff; background: rgba(0,0,0,0.5); padding: 0.5rem 1rem; border-radius: 8px; display:flex; flex-direction:column; align-items:center; box-shadow: 0 0 0 1px rgba(255,255,255,0.7), 0 0 0 2px rgba(0,0,0,0.7); }
 .sleep-control-group label { display: block; text-align: center; margin-bottom: 0.5rem; font-size: 0.9em; }
-.fullscreen-controls { position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s;}
+.fullscreen-controls { margin-left: auto; display: flex; flex-direction: column; gap: 0.5rem; transition: opacity 0.4s;}
+.fullscreen-controls button[hidden] { display: none; } /* v344: only the button that applies is shown (updateFullscreenButtons, js/sleep.js) */
 .sleep-slider { width: 200px; }
+/* v343 (MS-260): below 1000 px the controls (about 950 px in one row) form a grid along the bottom: 4 columns, 2 on a phone. */
+@media (max-width: 1000px) {
+    #sleep-controls-wrapper { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.5rem; }
+    #sleep-controls-wrapper .sleep-control-group { padding: 0.4rem 0.6rem; }
+    #sleep-controls-wrapper .sleep-slider { width: 100%; }
+    #clock-font-select { width: 100%; min-width: 0; }
+}
+@media (max-width: 600px) { #sleep-controls-wrapper { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* v345 (MS-260, JM's design): a phone on its side (wide and at most 500 px tall). The Sleep Timer box and the full-screen
+   button stack in a narrow column on the left (the full height, so large text never runs into the controls), and the clock
+   gets the area to their right, with the controls under it, so it can grow much larger before its band cuts it off.
+   Upright phones and computers keep the layout above. */
+@media (orientation: landscape) and (max-height: 500px) {
+    #sleep-mode-overlay { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "top clock" "top controls"; }
+    #sleep-top-bar { flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; max-width: 11rem; } /* the button right under the timer */
+    .fullscreen-controls { margin-left: 0; }
+}
 .global-timer-status { font-size: 0.9em; color: var(--accent-color); margin-left: 0.5rem; }
 
 /* Settings Modal Styles */
@@ -552,23 +581,29 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 .tone-primer dt { font-weight: bold; margin-top: 0.5rem; }
 .tone-primer dd { margin: 0.1rem 0 0; }
 
+/* --- v341: up to 1000 px wide the header is arranged as on a phone: the title with ⚙️ beside it, Master Vol on its own
+   full-width row. On one row with Master Vol the title had too little room below 1000 px and shrank (measured: every title
+   font at sizes ×1 and ×1.2 fits beside Master Vol from 1000 px up). Only the arrangement; the title stays full size here. --- */
+@media (max-width: 1000px) {
+    .app-header-main-row { flex-wrap: wrap; row-gap: 0.25rem; }
+    /* v338: the title group takes only the space left beside ⚙️, so a wide title font never pushes ⚙️ to its own row
+       (the badge moves under the title instead; v341: a title too wide for the space shrinks to fit, see #app-title above). */
+    .app-title-group { flex: 1 1 0; }
+    .app-header-controls { display: contents; }
+    /* v342 (MS-258): ⚙️ lines up with the title row, so a tall title group (a large tagline on 2 lines) never pushes it down. */
+    .app-header-main-actions { flex: none; align-self: flex-start; }
+    #master-volume-wrapper { order: 3; flex-basis: 100%; }
+    #master-volume { width: 100%; }
+}
+
 /* --- MS-104: phone layout, below 600 px wide (the same width as phoneLayout in js/tracks.js) --- */
 @media (max-width: 600px) {
     body { padding: 0.5rem; }
     .glass-container { padding: 0.75rem; margin-bottom: 1rem; }
-    /* (a) Header: a smaller title with the version and ⚙️ beside it; Master Vol on its own full-width row. */
+    /* (a) Header: a smaller title with the version and ⚙️ beside it; Master Vol on its own full-width row (arranged in the 1000 px block above). */
     h1 { font-size: calc(1.8rem * var(--font-size-title-multiplier, 1)); }
     .app-header { padding: 0.75rem; gap: 0.75rem; }
-    .app-header-main-row { flex-wrap: wrap; row-gap: 0.25rem; }
-    /* v338: the title group takes only the space left beside ⚙️, so a wide title font never pushes ⚙️ to its own row
-       (the badge moves under the title instead; v341: a title too wide for the space shrinks to fit, see #app-title above). */
-    /* v340: more room under the title, so a badge that wraps below it never touches the letters (JM saw it overlap in Opera). */
-    .app-title-group { flex: 1 1 0; min-width: 0; row-gap: 0.35rem; }
-    #app-title { line-height: 1.3; }
-    .app-header-controls { display: contents; }
-    .app-header-main-actions { gap: 0.25rem; flex: none; }
-    #master-volume-wrapper { order: 3; flex-basis: 100%; }
-    #master-volume { width: 100%; }
+    .app-header-main-actions { gap: 0.25rem; }
     #master-volume-label, #master-volume-display { font-size: 1.1em; }
     #settings-btn { margin-left: 0; }
     .app-header-secondary-row { gap: 0.75rem; }
@@ -719,7 +754,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v341</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v345</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -818,6 +853,26 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                             </div>
                         </div>
                     </div>
+                    <!-- v342 (MS-258): the tagline's own font, color and size, and a switch that hides it (setupSettingsModal, js/settings.js) -->
+                    <div data-fold="fonts-tagline" data-title="Tagline Font">
+                        <div class="control-group">
+                            <div class="control-group-row">
+                                <label for="tagline-show-toggle" style="margin-bottom: 0;">Show tagline</label>
+                                <input type="checkbox" id="tagline-show-toggle" checked>
+                            </div>
+                            <label for="tagline-font-select" style="margin-top: 0.75rem;">Font</label>
+                            <select id="tagline-font-select" style="width: 100%;"></select>
+                            <div class="control-group-row" style="margin-top: 0.75rem;">
+                                <label for="tagline-font-color-picker" style="flex-shrink: 0; min-width: 4rem;">Color</label>
+                                <input type="color" id="tagline-font-color-picker" title="Tagline color" style="flex-grow: 1;">
+                                <button id="tagline-color-reset-btn" class="small-btn" type="button" title="Use the title color again (at 70% strength, the default)">Same as title</button>
+                            </div>
+                            <div class="control-group-row" style="margin-top: 0.5rem;">
+                                <input type="range" id="tagline-font-size-slider" min="0.5" max="2" step="0.05" value="1">
+                                <span id="tagline-font-size-display" class="font-size-display">100%</span>
+                            </div>
+                        </div>
+                    </div>
                     <div data-fold="fonts-main" data-title="Main Font">
                         <div class="control-group">
                             <label for="main-font-select">Font</label>
@@ -830,6 +885,18 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
                                 <input type="range" id="main-font-size-slider" min="0.5" max="2" step="0.05" value="1">
                                 <span id="main-font-size-display" class="font-size-display">100%</span>
                             </div>
+                        </div>
+                    </div>
+                    <!-- v342 (MS-257): the sleep-screen clock's font and size, the same setting as the controls on the sleep screen (js/sleep.js) -->
+                    <div data-fold="fonts-clock" data-title="Clock Font">
+                        <div class="control-group">
+                            <label for="settings-clock-font-select">Font</label>
+                            <select id="settings-clock-font-select" style="width: 100%;"></select>
+                            <div class="control-group-row" style="margin-top: 0.5rem;">
+                                <input type="range" id="settings-clock-size-slider" min="0.5" max="8" step="0.05" value="1" title="Clock size">
+                                <span id="settings-clock-size-display" class="font-size-display">100%</span>
+                            </div>
+                            <p class="bg-storage-note">The clock on the sleep screen (🌙 Sleep). Its Clock Size and font controls there change the same setting. The clock is always white (no color setting).</p>
                         </div>
                     </div>
                     <div data-fold="fonts-own" data-title="Your Own Fonts">
@@ -1008,13 +1075,16 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
         <div id="sleep-clock-wrapper">
              <span id="sleep-clock"><span class="clock-hm">00:00</span></span>
         </div>
-        <div id="sleep-timer-display" style="display: none;">
-            <div id="sleep-timer-display-label">Sleep Timer</div>
-            <span id="sleep-timer-countdown"></span>
-        </div>
-        <div class="fullscreen-controls">
-            <button id="enter-fullscreen-btn" class="small-btn">Enter Full Screen</button>
-            <button id="exit-fullscreen-btn" class="small-btn">Exit Full Screen</button>
+        <!-- v344 (MS-260): the top bar: the Sleep Timer box left, the full-screen button right (it wraps below when both don't fit) -->
+        <div id="sleep-top-bar">
+            <div id="sleep-timer-display" style="display: none;">
+                <div id="sleep-timer-display-label">Sleep Timer</div>
+                <span id="sleep-timer-countdown"></span>
+            </div>
+            <div class="fullscreen-controls">
+                <button id="enter-fullscreen-btn" class="small-btn">Enter Full Screen</button>
+                <button id="exit-fullscreen-btn" class="small-btn">Exit Full Screen</button>
+            </div>
         </div>
         <div id="sleep-controls-wrapper">
              <div class="sleep-control-group">
@@ -1038,7 +1108,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v341';
+const APP_VERSION = 'v345';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -1056,6 +1126,7 @@ let activeBgImageId = 'default';
 let sleepTimer = { timeoutId: null, intervalId: null, endsAt: null }; // endsAt: wall-clock ms when the timer runs out
 let clockIntervalId = null;
 let sleepModeAwakenListener = null;
+let sleepBackEntry = false, sleepBackSkips = 0; // v345: the sleep screen's history entry (the phone's Back closes it; js/sleep.js)
 let copiedItems = { type: null, data: [], lastSelectedId: null };
 let copiedTrackSettings = null;
 let compactHeaderObserver;
@@ -4420,8 +4491,9 @@ async function clearLocalFonts() {
     
     const selectors = [
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
+        { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Sankofa Display' }
+        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
     ];
     
     userLoadedFonts.forEach(font => {
@@ -4449,8 +4521,9 @@ function deleteUserFont(originalName) {
 
     const selectors = [
         { el: document.getElementById('title-font-select'), default: 'Monoton' },
+        { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
         { el: document.getElementById('main-font-select'), default: 'Bruno Ace' },
-        { el: document.getElementById('clock-font-select'), default: 'Sankofa Display' }
+        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
     ];
     selectors.forEach(s => {
         if (s.el.value === originalName) {
@@ -4468,8 +4541,12 @@ function initFontSelectors() {
     const defaultFonts = {
         title: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Monoton', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Monoton' }, // v341 (MS-901.09): Monoton is the default
         main: { list: ['Agu Display', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Graduate', 'Limelight', 'Orbitron', 'Original Surfer', 'Poppins', 'Revalia', 'Sankofa Display', 'Shojumaru'].sort(), default: 'Bruno Ace' }, // no Monoton: hard to read as body text (JM, v341)
-        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: 'Sankofa Display' }
+        clock: { list: ['Poppins', 'Agu Display', 'Bagel Fat One', 'Bruno Ace', 'Caesar Dressing', 'Chokokutai', 'Geostar Fill', 'Graduate', 'Kablammo', 'Kenia', 'Limelight', 'Monoton', 'Revalia', 'Sankofa Display', 'Shojumaru', 'Spicy Rice', 'Unlock'].sort(), default: '' } // v344 (MS-257): '' = "Same as Main Font": the clock follows the main font until one is picked (JM)
     };
+    // v342 (MS-258): the tagline offers every font of the other lists except Monoton and Geostar Fill (JM); its default ('')
+    // is "Same as Main Font", which is how the tagline looked before it had its own font.
+    const excludedTaglineFonts = ['Monoton', 'Geostar Fill'];
+    defaultFonts.tagline = { list: [...new Set([...defaultFonts.title.list, ...defaultFonts.main.list, ...defaultFonts.clock.list])].filter(f => !excludedTaglineFonts.includes(f)).sort(), default: '' };
     
     // v341: the list shows the font chosen earlier (saved in this browser) when it is in the list; until then it always showed
     // the default, so with a saved font the list didn't match the title, and picking the default did nothing.
@@ -4477,6 +4554,7 @@ function initFontSelectors() {
         selector.innerHTML = '';
         const optgroup = document.createElement('optgroup');
         optgroup.label = 'Default Fonts';
+        if (defaultFont === '') optgroup.appendChild(new Option('Same as Main Font [def]', ''));
         fonts.forEach(font => {
             const optionText = font === defaultFont ? `${font} [def]` : font;
             optgroup.appendChild(new Option(optionText, font));
@@ -4487,8 +4565,11 @@ function initFontSelectors() {
     };
 
     populate(document.getElementById('title-font-select'), defaultFonts.title.list, defaultFonts.title.default, 'customTitleFont');
+    populate(document.getElementById('tagline-font-select'), defaultFonts.tagline.list, defaultFonts.tagline.default, 'customTaglineFont');
     populate(document.getElementById('main-font-select'), defaultFonts.main.list, defaultFonts.main.default, 'customMainFont');
-    populate(document.getElementById('clock-font-select'), defaultFonts.clock.list, defaultFonts.clock.default);
+    // v342 (MS-257): the clock's font is saved; the sleep screen and Settings › Fonts › Clock Font show the same one (js/sleep.js)
+    populate(document.getElementById('clock-font-select'), defaultFonts.clock.list, defaultFonts.clock.default, 'customClockFont');
+    populate(document.getElementById('settings-clock-font-select'), defaultFonts.clock.list, defaultFonts.clock.default, 'customClockFont');
 }
 
 function updateFontManagementUI() {
@@ -4546,8 +4627,10 @@ function updateFontManagementUI() {
     // Update all select dropdowns
     const selectors = [
         document.getElementById('title-font-select'),
+        document.getElementById('tagline-font-select'),
         document.getElementById('main-font-select'),
-        document.getElementById('clock-font-select')
+        document.getElementById('clock-font-select'),
+        document.getElementById('settings-clock-font-select')
     ];
     
     selectors.forEach(selector => {
@@ -4622,6 +4705,13 @@ function setupSettingsModal() {
     const mainFontSizeDisplay = document.getElementById('main-font-size-display');
     const titleFontColorPicker = document.getElementById('title-font-color-picker');
     const mainFontColorPicker = document.getElementById('main-font-color-picker');
+    const appTagline = document.getElementById('app-tagline');
+    const taglineShowToggle = document.getElementById('tagline-show-toggle');
+    const taglineFontSelect = document.getElementById('tagline-font-select');
+    const taglineFontColorPicker = document.getElementById('tagline-font-color-picker');
+    const taglineColorResetBtn = document.getElementById('tagline-color-reset-btn');
+    const taglineFontSizeSlider = document.getElementById('tagline-font-size-slider');
+    const taglineFontSizeDisplay = document.getElementById('tagline-font-size-display');
     const bgOverlayColorStart = document.getElementById('bg-overlay-color-start');
     const bgOverlayColorEnd = document.getElementById('bg-overlay-color-end');
     const bgOverlayGradientDir = document.getElementById('bg-overlay-gradient-direction');
@@ -4674,6 +4764,12 @@ function setupSettingsModal() {
     
     titleFontColorPicker.addEventListener('input', (e) => updateTitleLook(e.target.value));
     mainFontColorPicker.addEventListener('input', (e) => updateCSSVar('--main-font-color', e.target.value, false, 'customMainFontColor'));
+    // v342 (MS-258): the tagline's own look, saved like the title's.
+    taglineShowToggle.addEventListener('change', (e) => { appTagline.hidden = !e.target.checked; localStorage.setItem('showTagline', e.target.checked ? '1' : '0'); });
+    taglineFontSelect.addEventListener('change', (e) => applyTaglineFont(e.target.value, true));
+    taglineFontColorPicker.addEventListener('input', (e) => applyTaglineColor(e.target.value, true));
+    taglineColorResetBtn.addEventListener('click', () => applyTaglineColor('', true));
+    taglineFontSizeSlider.addEventListener('input', (e) => { updateCSSVar('--font-size-tagline-multiplier', e.target.value, false, 'customTaglineFontSize'); taglineFontSizeDisplay.textContent = `${Math.round(e.target.value * 100)}%`; });
 
     [bgOverlayColorStart, bgOverlayColorEnd, bgOverlayGradientDir, overlayOpacitySlider].forEach(el => el.addEventListener('input', updateBackgroundOverlay));
 
@@ -4797,6 +4893,20 @@ function setupSettingsModal() {
         if (appTitleH1) {
             appTitleH1.style.textShadow = `-1px -1px 0 ${shadowColor}, 1px -1px 0 ${shadowColor}, -1px 1px 0 ${shadowColor}, 1px 1px 0 ${shadowColor}`;
         }
+        if (!localStorage.getItem('customTaglineFontColor')) taglineFontColorPicker.value = color; // the tagline follows the title color
+    }
+    // v342 (MS-258): '' = follow the main font / the title color (at 70%, as before v342); a picked color shows at full strength.
+    function applyTaglineFont(font, save) {
+        if (font) document.documentElement.style.setProperty('--font-family-tagline', `'${font}', sans-serif`);
+        else document.documentElement.style.removeProperty('--font-family-tagline');
+        if (save) { if (font) localStorage.setItem('customTaglineFont', font); else localStorage.removeItem('customTaglineFont'); }
+    }
+    function applyTaglineColor(color, save) {
+        const rootStyle = document.documentElement.style;
+        if (color) { rootStyle.setProperty('--tagline-color', color); rootStyle.setProperty('--tagline-opacity', '1'); }
+        else { rootStyle.removeProperty('--tagline-color'); rootStyle.removeProperty('--tagline-opacity'); }
+        if (save) { if (color) localStorage.setItem('customTaglineFontColor', color); else localStorage.removeItem('customTaglineFontColor'); }
+        if (!color) taglineFontColorPicker.value = getComputedStyle(document.documentElement).getPropertyValue('--title-font-color').trim();
     }
 
     function updateAppTitle(newTitle) { const titleToSet = newTitle || DEFAULT_APP_TITLE; appTitleH1.textContent = titleToSet; document.title = `${titleToSet} ${APP_VERSION}`;
@@ -4943,6 +5053,12 @@ function setupSettingsModal() {
 
         const customMainFontColor = localStorage.getItem('customMainFontColor'); if (customMainFontColor) { mainFontColorPicker.value = customMainFontColor; updateCSSVar('--main-font-color', customMainFontColor); }
 
+        // v342 (MS-258): the tagline's saved look (after the title color, which it follows until a color is picked)
+        taglineShowToggle.checked = localStorage.getItem('showTagline') !== '0'; appTagline.hidden = !taglineShowToggle.checked;
+        const customTaglineFont = localStorage.getItem('customTaglineFont'); if (customTaglineFont) applyTaglineFont(customTaglineFont);
+        const customTaglineFontColor = localStorage.getItem('customTaglineFontColor'); if (customTaglineFontColor) { taglineFontColorPicker.value = customTaglineFontColor; applyTaglineColor(customTaglineFontColor); }
+        const customTaglineSize = localStorage.getItem('customTaglineFontSize'); if (customTaglineSize) { taglineFontSizeSlider.value = customTaglineSize; updateCSSVar('--font-size-tagline-multiplier', customTaglineSize); taglineFontSizeDisplay.textContent = `${Math.round(customTaglineSize * 100)}%`; }
+
         const customGlowColor = localStorage.getItem('customGlowColor'); if (customGlowColor) glowColorPicker.value = customGlowColor;
         const customGlowIntensity = localStorage.getItem('customGlowIntensity'); if(customGlowIntensity) glowIntensitySlider.value = customGlowIntensity;
         updateGlow();
@@ -5021,15 +5137,52 @@ function updateSleepDisplay() {
     getSleepUiElements().forEach(el => el.style.opacity = brightness);
 }
 
+// v342 (MS-257): the clock's font and size are one saved setting with two sets of controls, on the sleep screen and in
+// Settings › Fonts › Clock Font; changing either updates the other. Until v342 neither was saved. Font '' (the default,
+// "Same as Main Font") = the clock follows the main font, as it did before v342 when no font was picked (JM, v344).
+function applyClockFont(font, save) {
+    document.getElementById('sleep-clock').style.fontFamily = font ? `'${font}', sans-serif` : '';
+    ['clock-font-select', 'settings-clock-font-select'].forEach(id => { document.getElementById(id).value = font || ''; });
+    if (save) { if (font) localStorage.setItem('customClockFont', font); else localStorage.removeItem('customClockFont'); }
+}
+function applyClockSize(size, save) {
+    document.getElementById('sleep-clock').style.transform = `scale(${size})`; // v344: inside its own band, which clips it
+    ['clock-size', 'settings-clock-size-slider'].forEach(id => { document.getElementById(id).value = size; });
+    document.getElementById('settings-clock-size-display').textContent = `${Math.round(size * 100)}%`;
+    if (save) localStorage.setItem('customClockSize', size);
+}
+// v344 (MS-260): only the full-screen button that applies is shown (Enter, or Exit while full screen), and neither where the
+// browser can't go full screen.
+function updateFullscreenButtons() {
+    const isFullscreen = !!document.fullscreenElement;
+    document.getElementById('enter-fullscreen-btn').hidden = isFullscreen || !document.fullscreenEnabled;
+    document.getElementById('exit-fullscreen-btn').hidden = !isFullscreen;
+}
+
 // Sleep-mode controls are wired up once at startup (not every time sleep mode opens).
 function setupSleepModeControls() {
     document.getElementById('sleep-bg-opacity').addEventListener('input', updateSleepDisplay);
     document.getElementById('sleep-ui-brightness').addEventListener('input', updateSleepDisplay);
-    document.getElementById('clock-size').addEventListener('input', e => { document.getElementById('sleep-clock-wrapper').style.transform = `scale(${e.target.value})`; });
-    const clockEl = document.getElementById('sleep-clock');
-    document.getElementById('clock-font-select').addEventListener('change', e => { clockEl.style.fontFamily = `'${e.target.value}', sans-serif`; });
+    ['clock-size', 'settings-clock-size-slider'].forEach(id => document.getElementById(id).addEventListener('input', e => applyClockSize(e.target.value, true)));
+    ['clock-font-select', 'settings-clock-font-select'].forEach(id => document.getElementById(id).addEventListener('change', e => applyClockFont(e.target.value, true)));
+    applyClockFont(localStorage.getItem('customClockFont')); // the lists are filled later (js/fonts.js) and show the same saved font
+    const savedClockSize = localStorage.getItem('customClockSize'); if (savedClockSize) applyClockSize(savedClockSize);
     document.getElementById('enter-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); document.documentElement.requestFullscreen().catch(err => console.error(`Error: ${err.message}`)); });
     document.getElementById('exit-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); if (document.fullscreenElement) document.exitFullscreen(); });
+    document.addEventListener('fullscreenchange', updateFullscreenButtons);
+    updateFullscreenButtons();
+    // v345: the phone's Back button closes the sleep screen (its history entry is added in toggleSleepMode).
+    window.addEventListener('popstate', () => {
+        if (sleepBackSkips > 0) { // our own history.back() after closing it another way
+            sleepBackSkips--;
+            // Reopened before that step back arrived: Chrome then undoes the new entry too, so add it again (measured).
+            if (sleepBackSkips === 0 && sleepBackEntry && !(history.state && history.state.weaveSleepScreen)) history.pushState({ weaveSleepScreen: true }, '');
+            return;
+        }
+        if (sleepBackEntry) { sleepBackEntry = false; if (document.body.classList.contains('sleep-mode-active')) toggleSleepMode(); }
+    });
+    // A reload while the sleep screen was open leaves its entry behind; step back over it so one Back still leaves the app.
+    if (history.state && history.state.weaveSleepScreen) { sleepBackSkips++; history.back(); }
 }
 
 function toggleSleepMode() {
@@ -5038,6 +5191,9 @@ function toggleSleepMode() {
 
     // (The playback engine pauses on-screen counters by itself while sleep mode is on.)
     if (isSleeping) {
+        // v345: one history entry while the sleep screen is open, so the phone's Back button closes it (popstate, set up in
+        // setupSleepModeControls) instead of leaving the app. Same address: no #hash, nothing for the offline guard to see.
+        if (!sleepBackEntry) { history.pushState({ weaveSleepScreen: true }, ''); sleepBackEntry = true; }
         const updateClock = () => { const now = new Date(); document.querySelector('#sleep-clock .clock-hm').textContent = now.toTimeString().substring(0, 5); }; updateClock();
         clearInterval(clockIntervalId);
         clockIntervalId = setInterval(updateClock, 1000);
@@ -5045,7 +5201,10 @@ function toggleSleepMode() {
 
         if (sleepModeAwakenListener) return;
         sleepModeAwakenListener = (e) => {
-            const ignoredElements = [...getSleepUiElements(), ...document.querySelectorAll('.sleep-slider, #clock-font-select')];
+            // A tap anywhere leaves sleep mode, except on the clock digits, the Sleep Timer box, the full-screen button and the
+            // controls themselves (as in v341). v345: the elements, not their bands; since v344 the clock's and the controls'
+            // containers fill whole bands of the screen, so checking those made nearly every tap count as "on a control".
+            const ignoredElements = [document.getElementById('sleep-clock'), document.getElementById('sleep-timer-display'), ...document.querySelectorAll('.fullscreen-controls button, .sleep-control-group, #clock-font-select')];
             if (e.key === 'Escape') return;
             if (!ignoredElements.some(el => el.contains(e.target))) { toggleSleepMode(); }
         };
@@ -5055,6 +5214,9 @@ function toggleSleepMode() {
         if (document.fullscreenElement) document.exitFullscreen();
         if (sleepModeAwakenListener) { document.removeEventListener('keydown', sleepModeAwakenListener); overlay.removeEventListener('click', sleepModeAwakenListener); sleepModeAwakenListener = null; }
         clearInterval(clockIntervalId);
+        // Closed another way (a tap, a key): remove its history entry, so one Back on the main screen leaves the app as before.
+        // The popstate this causes is skipped (sleepBackSkips), even if the sleep screen is opened again before it arrives.
+        if (sleepBackEntry) { sleepBackEntry = false; sleepBackSkips++; history.back(); }
     }
 }
 
