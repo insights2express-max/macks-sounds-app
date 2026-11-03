@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-JhTtlMTfvykT1eIA6jZaIk52B0sWAy0vexhaMoQs0Xw=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-JotJrbTkEzNA+3dBkxFDXtx0hm+JJktButSJzWJGyRo=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-c9UUsotVrFvlZUYjVYueKSbGuitdOSM7DcCkOgeh0SM=' 'sha256-TWd0A+R4W2WECefjruozBZJmZXze1YBI60spSJMFdsc=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-VmdspT3gbtYB9a8wMviOmrBgh+T15+7cgI/2yuPWBUw=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v351</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-H/6rXk7y+78ifxRst2bENPpBBZ79629GPRgraEZXutI=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-JotJrbTkEzNA+3dBkxFDXtx0hm+JJktButSJzWJGyRo=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-c9UUsotVrFvlZUYjVYueKSbGuitdOSM7DcCkOgeh0SM=' 'sha256-TWd0A+R4W2WECefjruozBZJmZXze1YBI60spSJMFdsc=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-52ia7yMIPEakjprqIhYvz5pYPkjslff0jK6x64fHRaw=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v352</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -811,6 +811,7 @@ body.view-player .app-header.is-compact .app-tagline { display: block; }
 .player-tile-volume { display: flex; align-items: center; gap: 0.5rem; }
 .player-tile-volume label { font-size: 0.8em; opacity: 0.7; cursor: pointer; }
 .player-tile-volume input[type="range"] { flex: 1 1 auto; min-width: 0; height: 44px; }
+.player-tile-state { display: none; } /* MOBILE only (v352, below) */
 #player-empty { text-align: center; }
 #player-empty p { margin: 0 0 1rem; opacity: 0.85; }
 
@@ -839,6 +840,14 @@ body.view-player .app-header.is-compact .app-tagline { display: block; }
     .player-tile-top { line-height: 1.2; padding-top: 0.2rem; }
     .player-tile-name { font-size: 1rem; }
     .player-tile-volume, body.view-player #master-volume-wrapper { height: 44px; }
+    /* v352 (MS-160.06, JM): row 1 is the mix's name at full width (no "N sounds"); row 2 is "Vol", the slider, a smaller %
+       and, only when one applies, the state word ("paused", "muted", "loading… 2 / 5"), which narrows the slider. */
+    .player-tile-info, .player-vol-rest { display: none; }
+    .player-tile-volume { gap: 0.4rem; }
+    .player-tile-volume .volume-display { font-size: 0.75em; min-width: 3.6ch; }
+    /* A long state ("loading… 2 / 5", "paused · muted") wraps onto two short lines, so the slider keeps about 100 px at 360 px. */
+    .player-tile-state { display: block; flex: none; max-width: 60px; font-size: 0.7rem; line-height: 1.15; text-align: right; opacity: 0.6; overflow-wrap: anywhere; }
+    .player-tile-state:empty { display: none; }
 }
 @media (max-width: 1000px) {
     /* With ⚙️ hidden, the title group takes its whole row (otherwise Master Vol's full-width row fits beside a 0-wide title). */
@@ -864,7 +873,7 @@ body.view-player .app-header.is-compact .app-tagline { display: block; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v351</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v352</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1226,7 +1235,7 @@ body.view-player .app-header.is-compact .app-tagline { display: block; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v351';
+const APP_VERSION = 'v352';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -7177,9 +7186,10 @@ function renderPlayerTiles() {
                     <span class="player-tile-info"></span>
                 </div>
                 <div class="player-tile-volume">
-                    <label for="player-vol-${mix.id}">Volume</label>
+                    <label for="player-vol-${mix.id}">Vol<span class="player-vol-rest">ume</span></label>
                     <input type="range" id="player-vol-${mix.id}" min="0" max="2" step="0.01">
                     <span class="volume-display"></span>
+                    <span class="player-tile-state"></span>
                 </div>
             </div>`;
         const builderEl = () => document.getElementById(mix.id);
@@ -7204,11 +7214,14 @@ function fillPlayerTile(tile, mix) {
     tile.querySelector('.player-tile-name').textContent = mix.name || 'Untitled mix';
     const count = mix.tracks.length;
     const loading = document.querySelector(`#${CSS.escape(mix.id)} .mix-sounds-status`);
-    const parts = [count ? `${count} sound${count === 1 ? '' : 's'}` : 'No sounds yet'];
-    if (loading && !loading.hidden && loading.textContent) parts.push(loading.textContent.replace(/^Loading sounds…\s*/, 'loading… '));
-    else if (mix.isPaused) parts.push('paused');
-    if (mix.isMuted) parts.push('muted');
-    tile.querySelector('.player-tile-info').textContent = parts.join(' · ');
+    const states = [];
+    if (loading && !loading.hidden && loading.textContent) states.push(loading.textContent.replace(/^Loading sounds…\s*/, 'loading… '));
+    else if (mix.isPaused) states.push('paused');
+    if (mix.isMuted) states.push('muted');
+    // DESKTOP: the count and any state on the name's row. v352 (MS-160.06): on MOBILE the name has its row to itself, and
+    // the state word alone (only when one applies) sits at the end of the Vol row (css/styles.css shows one or the other).
+    tile.querySelector('.player-tile-info').textContent = [count ? `${count} sound${count === 1 ? '' : 's'}` : 'No sounds yet', ...states].join(' · ');
+    tile.querySelector('.player-tile-state').textContent = states.join(' · ');
     const btn = tile.querySelector('.player-play-btn');
     btn.textContent = mix.isPlaying ? '❚❚' : '▶';
     btn.setAttribute('aria-label', mix.isPlaying ? `Pause ${mix.name}` : `Play ${mix.name}`);
