@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-zuLSTJ45USIbSqZmymPrxjMOLEY0c8tyDkAva+B/U9o=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-406U7FQVzSuI28IGVKpAt1Wi21rWKLmEY1eCGbqGZXU=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-mKINnamyNrLnuqzdWFY90OG/kh1LaZVo9mGGlnJKMco=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-jjaVuDQIvnSLQ0WZKGtbN8ks3H9do/HekY3xyJjOdaU=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-voLf6nHP+kfRE/u6Jq55xMWwzr/apOT36nmRnzfaFZU=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v346</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-Cud3d7PRDtsjMfBAY8rt/T9dhsgVGZm4ynFh9NQIZZY=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-406U7FQVzSuI28IGVKpAt1Wi21rWKLmEY1eCGbqGZXU=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-mKINnamyNrLnuqzdWFY90OG/kh1LaZVo9mGGlnJKMco=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-Ibo+IzR/uNbzDrJQ5bDmpKJ8iZi7/9mIT4JqYo2kPGo=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-TdBw1vdZsFD5QJ1QpgEloC08ttcQQPTc11E4V3wahTI=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v347</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -760,7 +760,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v346</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v347</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1114,7 +1114,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v346';
+const APP_VERSION = 'v347';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -4031,6 +4031,21 @@ const HOLD_NAME_SELECTOR = '.track-name-display, .sync-group-title, .mix-title';
 const HOLD_LIFT_TIME = 500;      // ms a name is held still before the item lifts
 const HOLD_MOVE_TOLERANCE = 8;   // px the pointer may drift during the hold; more is a scroll (or a text selection)
 const HOLD_HINT_KEY = 'holdToMoveHintShown';
+// v347: on a touch screen a hold on the Track Timer or its seek bar, right under the name, lifts the item too. On a
+// phone the name is a 16 px strip with the 28 px seek bar just below it, and while the mix plays the phone moves a
+// finger aimed at the name onto the (then active) seek bar, so the hold never started (JM's v346 test). A tap or a
+// sideways drag on the bar still seeks: the finger moves more than HOLD_MOVE_TOLERANCE before the hold time is up.
+const HOLD_TIMER_SELECTOR = '.track-header-counters, .sync-group-counters';
+
+// The name whose item a press holds: the name itself, or (touch only) the name above the pressed timer or seek bar.
+function holdNameOf(target, pointerType) {
+    const name = target.closest?.(HOLD_NAME_SELECTOR);
+    if (name || pointerType === 'mouse') return name || null;
+    const timer = target.closest?.(HOLD_TIMER_SELECTOR);
+    if (!timer || target.closest('button')) return null;
+    const track = timer.closest('.track');
+    return track ? track.querySelector('.track-name-display') : timer.closest('.sync-group')?.querySelector('.sync-group-title') || null;
+}
 // MS-238: the top and bottom edges of a Sync Group's title bar that place a dragged track above or below the group
 // (the rest of the group takes it in): a fifth of the bar's height, at least 12 px and at most 24 px.
 const GROUP_EDGE_SHARE = 0.2;
@@ -4330,6 +4345,7 @@ function setupGlobalDragDropListeners() {
         hold = null;
         clearTimeout(h.timer);
         if (document.activeElement === h.name) h.name.blur(); // the mix's name (a text box) isn't being renamed
+        if (seekDrag) endSeekDrag(false); // held on the seek bar (v347): no seek when the finger lets go
         window.getSelection?.()?.removeAllRanges();
         try { h.name.setPointerCapture(h.pointerId); } catch (err) {}
         startDrag(h.name, { pointerId: h.pointerId, pointerType: h.pointerType, clientX: h.lastX, clientY: h.lastY }, h.y, true);
@@ -4340,7 +4356,7 @@ function setupGlobalDragDropListeners() {
 
     document.addEventListener('pointerdown', e => {
         if (drag || hold || (e.pointerType === 'mouse' && e.button !== 0)) return;
-        const name = e.target.closest?.(HOLD_NAME_SELECTOR);
+        const name = holdNameOf(e.target, e.pointerType);
         // A name being renamed (a text box with the cursor in it) is left to the typing.
         if (name && e.isPrimary && document.activeElement !== name && dragItemOf(name)) {
             hold = { name, pointerId: e.pointerId, pointerType: e.pointerType, x: e.clientX, y: e.clientY, lastX: e.clientX, lastY: e.clientY, timer: setTimeout(liftHeld, HOLD_LIFT_TIME) };
@@ -4396,7 +4412,7 @@ function setupGlobalDragDropListeners() {
     // No browser long-press menu on a handle or a held name, nor anywhere while dragging. The phone's own long press
     // during a hold on a name (Android: about 0.4 s) lifts the item at once, rather than selecting the name's text.
     document.addEventListener('contextmenu', e => {
-        if (hold && e.target.closest?.(HOLD_NAME_SELECTOR) === hold.name) { e.preventDefault(); liftHeld(); return; }
+        if (hold && holdNameOf(e.target, hold.pointerType) === hold.name) { e.preventDefault(); liftHeld(); return; }
         if (drag || press || e.target.closest?.(DRAG_HANDLE_SELECTOR)) e.preventDefault();
     });
     // Nor the browser's own drag of the handle's icon.
@@ -6591,7 +6607,9 @@ function moveItemsToMix(sourceMix, targetMix, { trackIds = [], groupIds = [] }, 
     movedGroups.forEach(g => removeSyncGroup(sourceMix, g.id));
     leftGroups.forEach(id => { const g = sourceMix.syncGroups.find(x => x.id === id); if (g?.isPlaying) rescheduleGroup(sourceMix, g); });
     updateMixMuteStates(sourceMix);
+    const wasPlaying = sourceMix.isPlaying;
     settleMixState(sourceMix); // nothing left playing: the source shows stopped (or paused)
+    entry.stoppedSource = wasPlaying && !sourceMix.isPlaying && !sourceMix.isPaused; // v347: Undo starts it again
     updateDeleteSelectedButton(sourceMix.id);
 
     // Into the target mix, at the drop spot (or the top of its list).
@@ -6661,6 +6679,8 @@ function undoMoveToMix(entry) {
     moveItemsToMix(target, source, { trackIds, groupIds }, { groupOf: entry.groupOf, undo: false });
     applyLayout(source, entry.layout, new Set([...groupIds, ...trackIds]));
     refreshLevelControls(document.getElementById(source.id));
+    // v347: a mix the move stopped (its last playing items left) plays again, unless it was started or paused since.
+    if (entry.stoppedSource && !source.isPlaying && !source.isPaused) ensureMixSounds(source).then(() => { if (!source.isPlaying && !source.isPaused) playMix(source.id); });
 }
 
 // "Move to mix…": asks which mix, then moves. Returns false when cancelled.
