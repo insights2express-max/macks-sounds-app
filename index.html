@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-Jq0hd1qrg1Q5F1T8Sy3MEDWvP1MhLmiFmaCNSP8LJvY=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-JotJrbTkEzNA+3dBkxFDXtx0hm+JJktButSJzWJGyRo=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-c9UUsotVrFvlZUYjVYueKSbGuitdOSM7DcCkOgeh0SM=' 'sha256-8tFxMDefXyik+35fzgkAsKlae1QORddpfD9S63g5fJY=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-sijUQdlXAVyCX4Yh1HiSvWiznchzlU0D/0Qwc040YoA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-c+aJl+uIx3wkiQRR/8A+zjk0HnmJMxRtyKQ4J9oYVxQ='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v350</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-JhTtlMTfvykT1eIA6jZaIk52B0sWAy0vexhaMoQs0Xw=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-JotJrbTkEzNA+3dBkxFDXtx0hm+JJktButSJzWJGyRo=' 'sha256-+1yOfij+iLrADQRMpRnQLRQnXMvHTpmzzU5vGGUd1xY=' 'sha256-c9UUsotVrFvlZUYjVYueKSbGuitdOSM7DcCkOgeh0SM=' 'sha256-TWd0A+R4W2WECefjruozBZJmZXze1YBI60spSJMFdsc=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-tjVh3xPLUB50v093kkTnmJuP2t7yBUOkgSCnoxF+D+8=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-mKNLV+tz+RLqcjG9JNlil3FBje1UPeLQ+SHaq/itfiQ=' 'sha256-HI0YMPN7ekmIHAJBy5yczKV/2qPXxoeZ5cLG5iCqDfg=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-x8m1b8u3lcXTrTUZdH0/vBNDmxNpQE0cxLaozt5AzKU=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-VmdspT3gbtYB9a8wMviOmrBgh+T15+7cgI/2yuPWBUw=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v351</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#000000">
@@ -775,6 +775,75 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 .app-notice[hidden] { display: none; }
 #update-notice { background: var(--pause-color); color: #111; }
 #sound-stopped-notice { background: var(--primary-color); color: #fff; }
+
+/* --- v351 (MS-160): the Player | Builder switch and the Player view (js/player-view.js). Its own block, so the design
+   pass (MS-265) can restyle it in one place. In the Player view (body.view-player) the page shows the header's title,
+   tagline, Master Vol, Sleep Timer and 🌙 Sleep, then one tile per mix; everything for building is hidden, not removed,
+   so nothing about the sound changes when the view does. --- */
+.view-switch { display: flex; align-self: center; width: min(100%, 360px); border-radius: 999px; padding: 3px; gap: 3px; background: rgba(0, 0, 0, 0.35); box-shadow: inset 0 0 0 1px var(--input-border-color); }
+.view-switch-btn { flex: 1 1 0; min-height: 44px; border-radius: 999px; background: transparent; box-shadow: none; opacity: 0.55; padding: 0.4rem 1rem; }
+.view-switch-btn:hover { background-color: rgba(255, 255, 255, 0.08); opacity: 1; }
+.view-switch-btn.is-active, .view-switch-btn.is-active:hover { background-color: var(--secondary-color); opacity: 1; font-weight: bold; box-shadow: 0 0 0 1px var(--accent-color); }
+html[data-theme='light'] .view-switch { background: rgba(255, 255, 255, 0.4); }
+
+/* What the Player view hides: the mixes' full boxes, ⚙️ and the header's "...", the theme switch, New / Import / Paste Mix and Undo. */
+body.view-player #mixes-area,
+body.view-player .app-header-main-actions,
+body.view-player .theme-switch,
+body.view-player .mix-creation-controls { display: none; }
+#player-view[hidden] { display: none; }
+/* The header stays whole in the Player view (no compact header while the tiles scroll, and no sticky header). */
+body.view-player .app-header.is-sticky { position: relative; }
+body.view-player .app-header.is-compact .app-header-secondary-row { display: flex; }
+body.view-player .app-header.is-compact .app-tagline { display: block; }
+/* A natural place for the MASTER mute (MS-262, not built yet): it will sit at the right end of Master Vol's top line. */
+
+/* The tiles: one column on a phone; on a computer a grid (as many 340 px columns as fit, so 3 at 1280 px). */
+#player-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 1rem; }
+.player-tile { display: flex; align-items: center; gap: 1rem; margin: 0; padding: 1rem; transition: box-shadow 0.4s; }
+.player-tile.is-playing { box-shadow: 0 0 18px 4px rgba(40, 167, 69, 0.25); }
+.player-play-btn { flex: none; width: 64px; height: 64px; min-width: 64px; padding: 0; border-radius: 50%; font-size: 1.6rem; line-height: 1; background-color: var(--secondary-color); box-shadow: 0 0 0 2px var(--input-border-color); }
+.player-play-btn.is-playing { box-shadow: 0 0 0 2px var(--play-color), 0 0 14px rgba(40, 167, 69, 0.45); font-size: 1.3rem; }
+.player-tile-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.player-tile-top { display: flex; align-items: baseline; gap: 0.6rem; min-width: 0; }
+.player-tile-name { flex: 1 1 auto; min-width: 0; font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-tile-info { flex: none; max-width: 55%; font-size: 0.75rem; opacity: 0.6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-tile-volume { display: flex; align-items: center; gap: 0.5rem; }
+.player-tile-volume label { font-size: 0.8em; opacity: 0.7; cursor: pointer; }
+.player-tile-volume input[type="range"] { flex: 1 1 auto; min-width: 0; height: 44px; }
+#player-empty { text-align: center; }
+#player-empty p { margin: 0 0 1rem; opacity: 0.85; }
+
+@media (max-width: 600px) {
+    /* Phone: the header in four short rows (switch; title and tagline; Master Vol on one line; Sleep Timer and 🌙 Sleep). */
+    body.view-player .app-header { gap: 0.5rem; }
+    body.view-player #master-volume-wrapper { flex-direction: row; align-items: center; gap: 0.5rem; }
+    body.view-player #master-volume-wrapper .control-group-row { flex: none; }
+    body.view-player #master-volume { flex: 1 1 auto; min-width: 0; width: auto; }
+    body.view-player .app-header-secondary-row { flex-wrap: nowrap; gap: 0.5rem; }
+    body.view-player .app-header-secondary-row > .control-group { flex: 1 1 auto; min-width: 0; flex-direction: row; align-items: center; gap: 0.5rem; }
+    body.view-player .app-header-secondary-row > .control-group .control-group-row { flex-direction: column; align-items: flex-start; gap: 0; line-height: 1.1; }
+    body.view-player .app-header-secondary-row > .control-group label { margin: 0; }
+    /* While the timer runs, its countdown ("Off in 44m50s", two short lines) takes the label's place, so the row stays 44 px. */
+    body.view-player #global-timer-status { font-size: 0.8em; opacity: 0.8; width: 5.5em; }
+    body.view-player #global-timer-status:empty { display: none; }
+    body.view-player .app-header-secondary-row .control-group-row:has(#global-timer-status:not(:empty)) label { display: none; }
+    body.view-player #sleep-timer { flex: 1 1 auto; min-width: 0; }
+    body.view-player #sleep-mode-btn { flex: none; }
+    body.view-player .app-header { margin-bottom: 0.5rem; }
+    /* Each tile 80 px high (the ▶ 60 px, the Volume slider's 44 px tap height), so 4 tiles fit a 360 × 640 screen. */
+    #player-tiles { gap: 0.4rem; }
+    .player-tile { gap: 0.75rem; padding: 0.35rem 0.75rem; }
+    .player-play-btn { width: 60px; height: 60px; min-width: 60px; }
+    .player-tile-body { gap: 0; }
+    .player-tile-top { line-height: 1.2; padding-top: 0.2rem; }
+    .player-tile-name { font-size: 1rem; }
+    .player-tile-volume, body.view-player #master-volume-wrapper { height: 44px; }
+}
+@media (max-width: 1000px) {
+    /* With ⚙️ hidden, the title group takes its whole row (otherwise Master Vol's full-width row fits beside a 0-wide title). */
+    body.view-player .app-title-group { flex-basis: 100%; }
+}
     </style>
 </head>
 <body>
@@ -787,10 +856,15 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
     </div>
     <div class="app-container">
         <header class="app-header glass-container">
+             <!-- v351 (MS-160): the Player | Builder switch, in both views (js/player-view.js) -->
+             <div class="view-switch" role="group" aria-label="View">
+                 <button type="button" class="view-switch-btn" data-view="player" aria-pressed="false">Player</button>
+                 <button type="button" class="view-switch-btn is-active" data-view="builder" aria-pressed="true">Builder</button>
+             </div>
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v350</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v351</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -830,6 +904,14 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
         </header>
         <div id="scroll-observer-trigger"></div>
         <main id="mixes-area"></main>
+        <!-- v351 (MS-160): the Player view, one tile per mix (js/player-view.js); shown instead of #mixes-area -->
+        <section id="player-view" aria-label="Player" hidden>
+            <div id="player-tiles"></div>
+            <div id="player-empty" class="glass-container" hidden>
+                <p>No mixes yet. Make or import one in the Builder view.</p>
+                <button type="button" id="player-empty-btn">Go to Builder</button>
+            </div>
+        </section>
     </div>
 
     <div id="settings-modal-overlay" class="hidden">
@@ -1144,7 +1226,7 @@ html.is-dragging-item #message-area { pointer-events: none; opacity: 0.35; }
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v350';
+const APP_VERSION = 'v351';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -3393,10 +3475,12 @@ function stopMix(mixId) {
 
 function updateMixButtonUI(mixId, state) {
     const btn = document.querySelector(`#${CSS.escape(mixId)} .play-pause-mix`);
-    if (!btn) return;
-    btn.textContent = state === 'playing' ? '❚❚' : '▶';
-    btn.classList.toggle('is-playing', state === 'playing');
-    btn.classList.toggle('is-paused', state === 'paused');
+    if (btn) {
+        btn.textContent = state === 'playing' ? '❚❚' : '▶';
+        btn.classList.toggle('is-playing', state === 'playing');
+        btn.classList.toggle('is-paused', state === 'paused');
+    }
+    refreshPlayerTile(mixId); // v351 (MS-160): the mix's tile in the Player view shows the same (js/player-view.js)
 }
 
 // --- On/off switches (v313, MS-197) ---
@@ -7020,6 +7104,131 @@ function applyWaitingUpdate() {
 }
     </script>
     <script>
+// --- js/player-view.js ---
+// --- PLAYER VIEW AND BUILDER VIEW (v351, MS-160) ---
+// Two views of the same mixes. The Builder view is the full screen (every mix, IT and SG with all its controls). The
+// Player view is for listening: the header's Master Vol, Sleep Timer and 🌙 Sleep, then one tile per mix with its name,
+// a big ▶ / ❚❚, its Volume and a quiet line ("5 sounds"). The "Player | Builder" switch at the top changes view.
+// A tile drives the Builder's own controls (its ▶ is a click on the mix's ▶, its Volume moves the mix's Volume slider),
+// so both views always show the same playback, and a view change touches no sound: it only shows and hides parts of the
+// page (body class view-player). The view in use is saved (localStorage 'appView') and the app opens in it; with nothing
+// saved yet, the app opens in the Player view if there are mixes, otherwise in the Builder view (a new user).
+const VIEW_STORAGE_KEY = 'appView';
+const playerViewEl = document.getElementById('player-view');
+const playerTilesEl = document.getElementById('player-tiles');
+let currentView = 'builder';
+let playerWorkspaceReady = false; // the saved mixes are back (restoreWorkspace, js/storage.js); until then no "no mixes" line
+
+function setupPlayerView() {
+    document.querySelectorAll('.view-switch-btn').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view, true)));
+    document.getElementById('player-empty-btn').addEventListener('click', () => setView('builder', true));
+    // The Builder's Volume slider moved by hand: the tile follows.
+    mixesArea.addEventListener('input', e => {
+        const mixEl = e.target.closest('.mix-container');
+        if (mixEl && e.target.id === `mix-vol-${mixEl.id}`) refreshPlayerTile(mixEl.id);
+    });
+    let saved = null;
+    try { saved = localStorage.getItem(VIEW_STORAGE_KEY); } catch (e) { }
+    // A saved view is shown at once (no flash of the other view while the mixes come back); otherwise the Builder view
+    // shows until the mixes are back, then playerWorkspaceRestored picks.
+    setView(saved === 'player' ? 'player' : 'builder', false);
+}
+
+// save: the user chose it (the switch, or the "no mixes" button), so the app opens in it next time.
+function setView(view, save) {
+    currentView = view === 'player' ? 'player' : 'builder';
+    document.body.classList.toggle('view-player', currentView === 'player');
+    playerViewEl.hidden = currentView !== 'player';
+    document.querySelectorAll('.view-switch-btn').forEach(btn => {
+        const on = btn.dataset.view === currentView;
+        btn.classList.toggle('is-active', on);
+        btn.setAttribute('aria-pressed', String(on));
+    });
+    if (save) { try { localStorage.setItem(VIEW_STORAGE_KEY, currentView); } catch (e) { } }
+    if (currentView === 'player') renderPlayerTiles();
+}
+
+// Called once the saved mixes are back (or failed to come back).
+function playerWorkspaceRestored() {
+    playerWorkspaceReady = true;
+    let saved = null;
+    try { saved = localStorage.getItem(VIEW_STORAGE_KEY); } catch (e) { }
+    if (!saved && mixes.length) setView('player', false); // never chosen yet (e.g. right after the update to v351)
+    else if (currentView === 'player') renderPlayerTiles();
+}
+
+// The mixes in the Builder's order (top to bottom), which is the order of their boxes on the page.
+function playerMixesInOrder() {
+    return [...mixesArea.querySelectorAll(':scope > .mix-container')].map(el => mixes.find(m => m.id === el.id)).filter(Boolean);
+}
+
+function renderPlayerTiles() {
+    const list = playerMixesInOrder();
+    document.getElementById('player-empty').hidden = !playerWorkspaceReady || list.length > 0;
+    playerTilesEl.replaceChildren(...list.map(mix => {
+        const tile = document.createElement('div');
+        tile.className = 'player-tile glass-container';
+        tile.dataset.mixId = mix.id;
+        tile.innerHTML = `
+            <button type="button" class="player-play-btn" aria-label="Play"></button>
+            <div class="player-tile-body">
+                <div class="player-tile-top">
+                    <span class="player-tile-name"></span>
+                    <span class="player-tile-info"></span>
+                </div>
+                <div class="player-tile-volume">
+                    <label for="player-vol-${mix.id}">Volume</label>
+                    <input type="range" id="player-vol-${mix.id}" min="0" max="2" step="0.01">
+                    <span class="volume-display"></span>
+                </div>
+            </div>`;
+        const builderEl = () => document.getElementById(mix.id);
+        // Exactly what the mix's own ▶ does, including unpacking the sounds of a mix restored from storage.
+        tile.querySelector('.player-play-btn').addEventListener('click', () => builderEl()?.querySelector('.play-pause-mix')?.click());
+        const slider = tile.querySelector('input[type="range"]');
+        const moveBuilderVolume = value => {
+            const builderSlider = document.getElementById(`mix-vol-${mix.id}`);
+            if (!builderSlider) return;
+            builderSlider.value = value;
+            builderSlider.dispatchEvent(new Event('input', { bubbles: true })); // the Builder's own handler sets the sound
+        };
+        slider.addEventListener('input', () => moveBuilderVolume(slider.value));
+        // As on the Builder's Volume label (MS-187): a double-click on the word resets it to 100%.
+        tile.querySelector('label').addEventListener('dblclick', () => moveBuilderVolume(1));
+        fillPlayerTile(tile, mix);
+        return tile;
+    }));
+}
+
+function fillPlayerTile(tile, mix) {
+    tile.querySelector('.player-tile-name').textContent = mix.name || 'Untitled mix';
+    const count = mix.tracks.length;
+    const loading = document.querySelector(`#${CSS.escape(mix.id)} .mix-sounds-status`);
+    const parts = [count ? `${count} sound${count === 1 ? '' : 's'}` : 'No sounds yet'];
+    if (loading && !loading.hidden && loading.textContent) parts.push(loading.textContent.replace(/^Loading sounds…\s*/, 'loading… '));
+    else if (mix.isPaused) parts.push('paused');
+    if (mix.isMuted) parts.push('muted');
+    tile.querySelector('.player-tile-info').textContent = parts.join(' · ');
+    const btn = tile.querySelector('.player-play-btn');
+    btn.textContent = mix.isPlaying ? '❚❚' : '▶';
+    btn.setAttribute('aria-label', mix.isPlaying ? `Pause ${mix.name}` : `Play ${mix.name}`);
+    btn.classList.toggle('is-playing', !!mix.isPlaying);
+    tile.classList.toggle('is-playing', !!mix.isPlaying);
+    const volume = Number(mix.volume);
+    const slider = tile.querySelector('input[type="range"]');
+    if (document.activeElement !== slider || Math.abs(slider.value - volume) > 0.001) slider.value = volume;
+    tile.querySelector('.volume-display').textContent = `${Math.round(volume * 100)}%`;
+}
+
+// Called whenever a mix's playing state, loading line or volume changes (in either view).
+function refreshPlayerTile(mixId) {
+    if (currentView !== 'player') return; // the Player view is redrawn whenever it is opened
+    const tile = playerTilesEl.querySelector(`.player-tile[data-mix-id="${CSS.escape(mixId)}"]`);
+    const mix = mixes.find(m => m.id === mixId);
+    if (tile && mix) fillPlayerTile(tile, mix);
+}
+    </script>
+    <script>
 // --- js/storage.js ---
 // --- AUTOSAVE (v318, MS-130) ---
 // Everything open is kept in the browser's own storage for this address (IndexedDB), so it survives a reload and a
@@ -7165,6 +7374,7 @@ function ensureMixSounds(mix) {
 function setMixSoundsStatus(mix, text) {
     const el = document.querySelector(`#${CSS.escape(mix.id)} .mix-sounds-status`);
     if (el) { el.textContent = text; el.hidden = !text; }
+    refreshPlayerTile(mix.id); // v351: the tile shows "loading…" too (js/player-view.js)
 }
 
 // --- Letting go of the sounds of a stopped mix (v322, MS-228) ---
@@ -7277,9 +7487,11 @@ async function restoreWorkspace() {
         storageError = err;
         // Saving stays off, so whatever is saved isn't overwritten by an empty screen.
         showMessage(`Saved mixes could not be loaded in this browser window (${err.message || err.name}). Changes made now won't be saved.`);
+        playerWorkspaceRestored();
         return;
     }
     autosaveReady = true;
+    playerWorkspaceRestored(); // v351 (MS-160): the app opens in the view used last (js/player-view.js)
 }
 
 function restoreSavedMix(saved) {
@@ -7803,6 +8015,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupUndo();
     setupTonePrimers(); // the ⓘ guides beside TONE and MIX EQ (js/tone.js, MS-240)
     setupTrackDefaultsPanel(); // Settings > New track defaults (MS-223)
+    setupPlayerView(); // v351 (MS-160): the Player | Builder switch, before the mixes come back (js/player-view.js)
     setupAutosave(); // brings back the saved mixes (js/storage.js, MS-130)
     setupSoundResume(); // resume after an alarm or call, or say the sound stopped (js/sound-resume.js, MS-163)
     setupServiceWorker(); // opens with no internet; "New version" notice (js/pwa.js, MS-163)
