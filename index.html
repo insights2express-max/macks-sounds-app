@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-fTNhzCbFFuelB8EstK9/4Jyqnhn098w5EWqpCBFZchI=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-V/x/DCUy5nWF/StbiIymezxxuLaZaKWK9aVZp7jcRDs=' 'sha256-KaPEd7hfGkyU/EVfKdLt8PpeMd8F1ieqSr1H1roQrr4=' 'sha256-mQ3psnKZk1rJ53obDn+ET7aBN9DOS68QqhW0BF1gNg0=' 'sha256-XGcDQ9Px3mYl2T9rjtaM2VKqd89uusCt29wr5GK/XZ4=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-xxBg7EmAtu9t6NlwQ/uJYnZj/G6+LFAgqnLPBVJ9HMQ=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-GjsFyaFs84MUgZJJOr9yWlaNP4M3c6PRyYonUdyRhtA=' 'sha256-zu2CM76CW35FMyt1K1cGStmHCaSWGjZqftMpyWSO9dI=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-+q1/66S+M7mvzxP34Kmm45hv/2zMfKdFtoeVzW9/04I=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-xiga/uTfl5orNaSLyB6eatJ5/h49Xa6BHgQn/nlaVU8=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v353</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-g9bKrLIpeWJCLFZ7rTCiYvL5ZEZSGc6etr59Iuq9woo=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-V/x/DCUy5nWF/StbiIymezxxuLaZaKWK9aVZp7jcRDs=' 'sha256-KaPEd7hfGkyU/EVfKdLt8PpeMd8F1ieqSr1H1roQrr4=' 'sha256-mQ3psnKZk1rJ53obDn+ET7aBN9DOS68QqhW0BF1gNg0=' 'sha256-Uu/y5ObwhU9usXRrUv244qhfN99eSf3LHLjXB7HDh8I=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-xxBg7EmAtu9t6NlwQ/uJYnZj/G6+LFAgqnLPBVJ9HMQ=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-GjsFyaFs84MUgZJJOr9yWlaNP4M3c6PRyYonUdyRhtA=' 'sha256-zu2CM76CW35FMyt1K1cGStmHCaSWGjZqftMpyWSO9dI=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-+q1/66S+M7mvzxP34Kmm45hv/2zMfKdFtoeVzW9/04I=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-xiga/uTfl5orNaSLyB6eatJ5/h49Xa6BHgQn/nlaVU8=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v354</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#0b0b14">
@@ -968,7 +968,7 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v353</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v354</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1343,7 +1343,7 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v353';
+const APP_VERSION = 'v354';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -2947,6 +2947,12 @@ function blockTime(t) { const sr = audioContext.sampleRate; return Math.ceil(t *
 // point are left exactly as planned, and changes are heard from it.
 const REPLAN_AHEAD = 0.1;
 function replanTime() { return blockTime(audioContext.currentTime + REPLAN_AHEAD); }
+// v354 (MS-266): starting plays (Play, Resume, a late top-up) uses the same point. A play asked to start at currentTime
+// sometimes really began a block or more later (the audio thread had already rendered past it), while the engine
+// planned the next play on its exact end: the two overlapped at the first loop join (a bump, then a dip while the
+// master limiter recovered; the playback check's rare "4,125 off-level samples"). From a block just ahead, every
+// play starts exactly when planned.
+const startTime = replanTime;
 
 // --- Ungrouped track chains ---
 // elapsed: listening seconds of this play already heard (resuming a paused play).
@@ -2964,8 +2970,9 @@ function startTrackChain(track, { offset, when, elapsed } = {}) {
     track.audio.wave = null;
     track.audio.speedWave = null;
     track.audio.waveStart = true;
+    const earliest = startTime();
     track.audio.chain = {
-        nextStart: Math.max(when ?? now, now),
+        nextStart: Math.max(when ?? earliest, earliest),
         nextOffset: offset ?? num(track.data.settings.startAt),
         nextDelayBefore: when != null ? Math.max(0, when - now) : 0,
         nextElapsed: elapsed || 0,
@@ -2995,7 +3002,8 @@ function topUpTrack(track) {
         const pending = track.audio.voices.filter(v => v.end > now).length;
         if (pending >= SCHEDULE_MIN_AHEAD && chain.nextStart > now + SCHEDULE_HORIZON) break;
         const speedShare = pickSpeedShare(track);
-        const when = Math.max(chain.nextStart, now);
+        // A play already overdue (a top-up that came too late) starts a block ahead, so it too starts when planned.
+        const when = chain.nextStart >= now ? chain.nextStart : startTime();
         const voice = createVoice(track, when, chain.nextOffset, trackRate(track, null, speedShare), {
             speedShare, speedChoice: speedChoice(track), varying: speedChoice(track) === 'varying', delayBefore: chain.nextDelayBefore, joinedIn: chain.joinedIn,
             playStart: when - (chain.nextElapsed || 0)
@@ -3154,9 +3162,10 @@ function topUpGroup(mix, group) {
     while (r.nextCycleStart != null && guard++ < 50) {
         const pending = r.cycles.filter(c => c.end > now).length;
         if (pending >= SCHEDULE_MIN_AHEAD && r.nextCycleStart > now + SCHEDULE_HORIZON) break;
-        // A cycle resumed after a pause starts in the past (v311: before, the clamp to `now` restarted it from the top).
-        const start = r.resumePast ? r.nextCycleStart : Math.max(r.nextCycleStart, now);
-        const { end, plan } = scheduleGroupCycle(mix, group, start, r.nextDelayBefore, r.keepPlan);
+        // A cycle resumed after a pause starts in the past (v311: before, the clamp to `now` restarted it from the top);
+        // its members join at r.resumeFrom, a block just ahead (v354, MS-266). An overdue cycle starts a block ahead too.
+        const start = r.resumePast ? r.nextCycleStart : r.nextCycleStart >= now ? r.nextCycleStart : startTime();
+        const { end, plan } = scheduleGroupCycle(mix, group, start, r.nextDelayBefore, r.keepPlan, r.resumePast ? { from: r.resumeFrom } : {});
         r.keepPlan = null;
         r.resumePast = false;
         r.cycles.push({ start, end, delayBefore: r.nextDelayBefore, plan });
@@ -3174,7 +3183,8 @@ function topUpGroup(mix, group) {
 }
 
 // keepPlan: the choices of a cycle being rebuilt after a pause (who sits out, Random speeds).
-function startGroup(mix, group, { cycleStart, delayBefore = 0, keepPlan = null } = {}) {
+// from: where a resumed cycle's members join (resumeGroup); by default a block just ahead (v354, MS-266).
+function startGroup(mix, group, { cycleStart, delayBefore = 0, keepPlan = null, from } = {}) {
     initializeAudioContext();
     if (audioContext.state === 'suspended') audioContext.resume();
     const r = getGroupRuntime(group);
@@ -3185,8 +3195,10 @@ function startGroup(mix, group, { cycleStart, delayBefore = 0, keepPlan = null }
     r.frozenCounter = null;
     r.keepPlan = keepPlan;
     r.cycles = [];
-    r.nextCycleStart = cycleStart ?? audioContext.currentTime;
-    r.resumePast = keepPlan != null && r.nextCycleStart < audioContext.currentTime;
+    const earliest = from ?? startTime();
+    r.nextCycleStart = cycleStart ?? earliest;
+    r.resumePast = keepPlan != null && r.nextCycleStart < earliest;
+    r.resumeFrom = earliest;
     r.nextDelayBefore = delayBefore;
     updateSyncGroupButtonUI(group.id, 'playing');
     topUpGroup(mix, group);
@@ -3216,12 +3228,12 @@ function pauseGroup(mix, group) {
 function resumeGroup(mix, group) {
     const r = getGroupRuntime(group);
     const paused = r.paused;
-    const now = audioContext.currentTime;
+    const now = audioContext.currentTime, t = startTime();
     if (paused?.elapsed != null) {
-        // Rebuild the interrupted cycle as if it had started `elapsed` seconds ago.
-        startGroup(mix, group, { cycleStart: now - paused.elapsed, keepPlan: paused.plan });
+        // Rebuild the interrupted cycle as if it had started `elapsed` seconds before t, where it carries on (a block ahead).
+        startGroup(mix, group, { cycleStart: t - paused.elapsed, keepPlan: paused.plan, from: t });
     } else if (paused?.delayRemaining != null) {
-        startGroup(mix, group, { cycleStart: now + paused.delayRemaining, delayBefore: paused.delayBefore });
+        startGroup(mix, group, { cycleStart: Math.max(t, now + paused.delayRemaining), delayBefore: paused.delayBefore });
     } else {
         startGroup(mix, group);
     }
