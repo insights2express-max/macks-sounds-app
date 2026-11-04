@@ -6,8 +6,8 @@
     <!-- The browser lock (Content Security Policy, MS-232, v324): the page may load code, fonts, images and sounds only from
          itself (and from blob: / data: URLs it makes from your own files), and may not connect to any other website.
          build.ps1 swaps script-src 'self' for the SHA-256 hashes of the built page's own scripts, so no other script runs. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-g9bKrLIpeWJCLFZ7rTCiYvL5ZEZSGc6etr59Iuq9woo=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-V/x/DCUy5nWF/StbiIymezxxuLaZaKWK9aVZp7jcRDs=' 'sha256-KaPEd7hfGkyU/EVfKdLt8PpeMd8F1ieqSr1H1roQrr4=' 'sha256-mQ3psnKZk1rJ53obDn+ET7aBN9DOS68QqhW0BF1gNg0=' 'sha256-Uu/y5ObwhU9usXRrUv244qhfN99eSf3LHLjXB7HDh8I=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-xxBg7EmAtu9t6NlwQ/uJYnZj/G6+LFAgqnLPBVJ9HMQ=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-GjsFyaFs84MUgZJJOr9yWlaNP4M3c6PRyYonUdyRhtA=' 'sha256-zu2CM76CW35FMyt1K1cGStmHCaSWGjZqftMpyWSO9dI=' 'sha256-txpo5LyE4MR6uZTnbcrLqQZykubR4fFugvLZY5JFLrI=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-+q1/66S+M7mvzxP34Kmm45hv/2zMfKdFtoeVzW9/04I=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-xiga/uTfl5orNaSLyB6eatJ5/h49Xa6BHgQn/nlaVU8=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-TstvGDztbPdLsGIs9RQpTIPLmFoJ71gvC+iBbtbonyM='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
-    <title>WeaveSoundz v354</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YaKqrUDq8u0lHnW+1QBtXNklVuyiUU4hitA1dxQoNdA=' 'sha256-w9iJYfGGfHZDmIgBO68mIuEbhliqAvEHW4UMJ1S7bU8=' 'sha256-p6We0FmXkoIcKyOyVfKPpz41SqprovoJrJwF4Vrh60s=' 'sha256-3yUHa1OHiFhm2Wcuv+5/SHYmNgyk00vItVP5meEycpA=' 'sha256-V/x/DCUy5nWF/StbiIymezxxuLaZaKWK9aVZp7jcRDs=' 'sha256-KaPEd7hfGkyU/EVfKdLt8PpeMd8F1ieqSr1H1roQrr4=' 'sha256-mQ3psnKZk1rJ53obDn+ET7aBN9DOS68QqhW0BF1gNg0=' 'sha256-Uu/y5ObwhU9usXRrUv244qhfN99eSf3LHLjXB7HDh8I=' 'sha256-jCLganlFDao85Yqm0LSKeSnLKmacVYoXIvEGmkxyGYg=' 'sha256-xxBg7EmAtu9t6NlwQ/uJYnZj/G6+LFAgqnLPBVJ9HMQ=' 'sha256-WIuB9kiguFhyhCD6ypXO1rP/puKSFXdAAJJt0QA7gyE=' 'sha256-ZH6Ed3m6hnT2fNsRYjY+m48/sp/fYTiPhNSuG+cErms=' 'sha256-EULoChaO7tAm4gGVqcTMMdFRGeygNQUh0qrbxBIqk08=' 'sha256-rLyDbMrWjwkfWjF2roO4Wz91lOcOUfUZh/IkovbPupE=' 'sha256-rWen3BWH20ZEeDSHypIdRqq8YnfJ+MR+i6j2u18wTck=' 'sha256-08Wqj23tP2lVeJXnx9JaskIGu+jM3HIPDRyzd/NRR58=' 'sha256-21sm+yz+E4fbyEQ/C5E8LbBrrETTDpwIMcO7mZgMtas=' 'sha256-RVRt/6lV57E9V+Fucw5qRo3nH8nDwWmoUm/kLt37/Is=' 'sha256-JY7OqHm3g7hB+mXR62uO3BCXLfW28hVtsBbMjmq8LPE=' 'sha256-+q1/66S+M7mvzxP34Kmm45hv/2zMfKdFtoeVzW9/04I=' 'sha256-LGG0wTrAD5jzc2dKyRHbvsysK4bDrEA54MbZvXnHwJw=' 'sha256-KNEGR50nUfpz6I6gVCAGrR1pGjtIKR5eMQg75+oOZ3o=' 'sha256-tnxtxSD7h/msGI/CdJLBVVFv94kaqacl+JrRaRA7Tr0=' 'sha256-kSQxZ4pWdUDpZev4wJX5L2S3Du0T/Ey8FRS2OnN8Efo=' 'sha256-nJLFl8fJGpZkoY+2NK62ObD6/nLwV/KsXhA4Ws2XB7c=' 'sha256-xiga/uTfl5orNaSLyB6eatJ5/h49Xa6BHgQn/nlaVU8=' 'sha256-KRmsDKOlZQFGJ5ngTSY8OO9CJnBF99b6JhRhFVA4UeA=' 'sha256-LT01ShD52Esqo4YQqkmhGnYZpx3ECwkR5cQEyI/1gBM=' 'sha256-jOYm85Fz/W+lv5NEJj9BizGBLynsWYbDzZRJPPR2pq8=' 'sha256-2qok0NG07ZHwTaDqXgv8toC4CWf0ZjvEUhyW/1BOeP4='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' data: blob:; worker-src 'self' blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <title>WeaveSoundz v355</title>
     <!-- Installed app (MS-163): manifest, icons and phone settings; sw.js and these files sit beside the published index.html -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="theme-color" content="#0b0b14">
@@ -636,7 +636,8 @@ input[type="color"] { width: 100%; height: 38px; padding: 0.2rem; }
 
 /* BG Slideshow Styles */
 #bg-slideshow-playlist { max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; padding: 0.5rem; border: 1px solid var(--input-border-color); border-radius: 4px; }
-.bg-slideshow-item { display: flex; align-items: center; gap: 0.75rem; }
+.bg-slideshow-item { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; } /* v355: never squeezed below its height (it then spilled out of the list) */
+.bg-slideshow-item label:has(> input[type="checkbox"]) { font-size: 1em; } /* v355: the image names at text size (the 2em of the big tick boxes made them spill out of this list) */
 
 /* --- On-screen messages and confirm box (js/dialogs.js) --- */
 #message-area { position: fixed; right: 1rem; bottom: 1rem; z-index: 3000; display: flex; flex-direction: column; gap: 0.5rem; max-width: min(420px, calc(100vw - 2rem)); }
@@ -941,13 +942,40 @@ body.view-player .app-header.is-compact .app-tagline { display: block; }
 .theme-choice:hover { color: var(--text-color); }
 .theme-choice.is-active, .theme-choice.is-active:hover { background-color: var(--secondary-color); color: var(--text-color); box-shadow: inset 0 0 0 1px var(--primary-color); font-weight: 600; }
 html[data-theme='light'] .theme-switch { background: rgba(255, 255, 255, 0.5); }
-/* The Settings reset (MS-265): a primary button on its own line. */
-#use-default-look-btn { margin-top: 0.25rem; }
+/* --- v355 (MS-161): Settings › Look: the theme picker (js/themes.js). Each swatch is a small picture of the theme in its own
+   colors: the page, the title "Aa" in its title font, a panel with the accent (Play) and the playing / paused / muted /
+   soloed colors. The one in use has an accent ring and a check mark. --- */
+.theme-group-label { margin: 0.4rem 0 0.35rem; font-size: 0.85em; color: var(--muted-color); }
+.theme-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 0.5rem; } /* 2 per row on a phone, 4 on a computer */
+.theme-swatch { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 0.3rem; min-width: 0; padding: 0.3rem; border-radius: 10px; background: transparent; color: var(--text-color); box-shadow: inset 0 0 0 1px var(--input-border-color); }
+.theme-swatch:hover { background: var(--secondary-color); }
+.theme-swatch.is-active, .theme-swatch.is-active:hover { box-shadow: inset 0 0 0 2px var(--primary-color); background: var(--secondary-color); }
+.theme-swatch.is-active::after { content: '✓'; position: absolute; top: 2px; right: 4px; width: 1.3em; height: 1.3em; line-height: 1.3em; border-radius: 50%; background: var(--primary-color); color: var(--on-primary); font-size: 0.75em; font-weight: 700; text-align: center; }
+.theme-swatch.is-new { animation: theme-new 1.2s ease-out 2; }
+@keyframes theme-new { 50% { box-shadow: inset 0 0 0 3px var(--primary-color); } }
+.theme-swatch-preview { display: flex; flex-direction: column; justify-content: space-between; height: 56px; padding: 5px 6px; border-radius: 7px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(128, 128, 128, 0.35); }
+.theme-swatch-title { font-size: 15px; line-height: 1; font-weight: normal; text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; }
+.theme-swatch-panel { display: flex; align-items: center; gap: 3px; padding: 4px; border-radius: 5px; border: 1px solid; }
+.theme-swatch-play { width: 16px; height: 10px; border-radius: 3px; margin-right: auto; }
+.theme-swatch-dot { width: 7px; height: 7px; border-radius: 50%; }
+.theme-swatch-name { font-size: 0.8em; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.theme-status { margin: 0.6rem 0 0.4rem; font-weight: 600; }
+.theme-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.theme-color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.4rem 0.8rem; }
+.theme-color-grid label { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9em; margin: 0; min-width: 0; }
+.theme-color-grid input[type="color"] { flex: none; width: 2.6rem; height: 2rem; padding: 2px; }
+.theme-details { display: flex; flex-direction: column; gap: 0.75rem; }
+.theme-details .confirm-text { margin: 0; }
+.theme-details-label { display: flex; flex-direction: column; gap: 0.3rem; }
+.theme-details-label input { width: 100%; }
+.theme-details-check, label.theme-details-check:has(> input[type="checkbox"]) { display: flex; align-items: center; gap: 0.5rem; font-size: 1em; } /* not the 2em of the big tick boxes */
+.theme-details-check input { width: 1.4em; height: 1.4em; flex: none; }
 @media (max-width: 600px) {
+    .theme-swatch, .theme-actions .small-btn { min-height: 44px; } /* the 44 px touch target */
     .theme-choice { min-height: 44px; padding: 0 0.7rem; } /* the 44 px touch target */
 }
 /* v353: in the Light look the rows and boxes are tinted with the palette, not darkened (stacked dark tints turned gray). */
-html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync-group-tracks, html[data-theme='light'] .sync-group-controls, html[data-theme='light'] .track-details { background: rgba(122, 74, 140, 0.05); }
+html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync-group-tracks, html[data-theme='light'] .sync-group-controls, html[data-theme='light'] .track-details { background: rgba(122, 74, 140, 0.05); background: color-mix(in srgb, var(--primary-color) 5%, transparent); } /* v355: the theme's own hue */
     </style>
 </head>
 <body>
@@ -968,7 +996,7 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
              <div class="app-header-main-row">
                  <div class="app-title-group">
                     <h1 id="app-title">WeaveSoundz</h1>
-                    <span id="app-version" class="app-version-badge" title="App version">v354</span>
+                    <span id="app-version" class="app-version-badge" title="App version">v355</span>
                     <!-- v337 (MS-901): the tagline under the title; its text is APP_TAGLINE in js/state.js (stamped here by build.ps1) -->
                     <p id="app-tagline" class="app-tagline">Weave sounds of CALM.</p>
                 </div>
@@ -1065,15 +1093,24 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                     <a id="sound-prep-link" class="button-like small-btn" href="sound-prep/" target="_blank" rel="noopener">WeaveSoundz Studio: make sounds and seamless loops</a>
                 </fieldset>
 
-                <!-- v353 (MS-265): back to the app's own look in one step (resetLookToDefaults, js/settings.js), with Undo -->
+                <!-- v355 (MS-161): themes. The picker (js/themes.js) on top; Customize below it holds the font, color, panel and
+                     background controls (v353's "Use the WeaveSoundz look" is now the Night Orchid theme). -->
                 <fieldset data-fold="look">
                     <legend>Look</legend>
-                    <p class="bg-storage-note">Puts every font and color back to the WeaveSoundz look: Outfit for the text, Monoton for the title, the Night Orchid colors, and the panels and glow that go with them. Your mixes, sounds and background images are not touched, and neither is the Light / Dark / Night choice. You can undo it right after.</p>
-                    <button id="use-default-look-btn" type="button" class="btn-primary">Use the WeaveSoundz look</button>
-                </fieldset>
+                    <div id="theme-picker" role="group" aria-label="Themes"></div>
+                    <p id="theme-status" class="theme-status" aria-live="polite"></p>
+                    <div class="theme-actions">
+                        <button id="theme-save-btn" type="button" class="small-btn">Save as my theme</button>
+                        <button id="theme-rename-btn" type="button" class="small-btn" hidden>Rename</button>
+                        <button id="theme-delete-btn" type="button" class="small-btn" hidden>Delete</button>
+                        <button id="theme-export-btn" type="button" class="small-btn">Export</button>
+                        <label for="theme-import-input" class="button-like small-btn">Import</label>
+                        <input type="file" id="theme-import-input" accept=".json,.zip,application/json,application/zip" hidden>
+                    </div>
+                    <p class="bg-storage-note">A theme is the look only (colors, fonts, panels, glow, and a background picture if you include one); your mixes and sounds never change. Tap a theme to use it (Undo shows for 10 seconds); Light / Dark / Night still apply on top. A change in Customize shows "(changed)" until you save it. Export makes a small file of the look in use; Import adds a theme file to Your themes.</p>
 
-                <fieldset data-fold="fonts">
-                    <legend>Fonts</legend>
+                    <div id="theme-customize" data-fold="customize" data-title="Customize">
+                <div data-fold="fonts" data-title="Fonts">
                     <div data-fold="fonts-title" data-title="Title Font">
                         <div class="control-group">
                             <label for="title-font-select">Font</label>
@@ -1131,7 +1168,11 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                                 <input type="range" id="settings-clock-size-slider" min="0.5" max="8" step="0.05" value="1" title="Clock size">
                                 <span id="settings-clock-size-display" class="font-size-display">100%</span>
                             </div>
-                            <p class="bg-storage-note">The clock on the sleep screen (Sleep button). Its Clock Size and font controls there change the same setting. The clock is white, and warm amber in the Night look (no color setting).</p>
+                            <div class="control-group-row" style="margin-top: 0.75rem;">
+                                <label for="settings-clock-color-picker" style="flex-shrink: 0; min-width: 4rem;">Color</label>
+                                <input type="color" id="settings-clock-color-picker" data-theme-color="clock" title="Clock color" style="flex-grow: 1;">
+                            </div>
+                            <p class="bg-storage-note">The clock on the sleep screen (Sleep button). Its Clock Size and font controls there change the same setting. Its color is part of the theme (warm amber in the Night look, whatever it is set to). The size is not part of a theme: it depends on the screen.</p>
                         </div>
                     </div>
                     <div data-fold="fonts-own" data-title="Your Own Fonts">
@@ -1148,10 +1189,25 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                         <div id="user-font-list"></div>
                     </div>
                     </div>
-                </fieldset>
+                </div>
 
-                <fieldset data-fold="colors">
-                    <legend>Color Scheme</legend>
+                <div data-fold="colors" data-title="Colors">
+                    <!-- v355 (MS-161): the theme's own colors (js/themes.js themeColorPicked); the Dark values, Light is made from them -->
+                    <div data-fold="colors-theme" data-title="Theme Colors">
+                        <div class="theme-color-grid">
+                            <label><input type="color" data-theme-color="bg"> Page</label>
+                            <label><input type="color" data-theme-color="primary"> Accent (Play, switches)</label>
+                            <label><input type="color" data-theme-color="onPrimary"> Text on accent</label>
+                            <label><input type="color" data-theme-color="muted"> Quiet text</label>
+                            <label><input type="color" data-theme-color="outline"> Outlines</label>
+                            <label><input type="color" data-theme-color="playing"> Playing</label>
+                            <label><input type="color" data-theme-color="paused"> Paused</label>
+                            <label><input type="color" data-theme-color="mute"> Muted</label>
+                            <label><input type="color" data-theme-color="solo"> Soloed</label>
+                            <label><input type="color" data-theme-color="off"> Off</label>
+                        </div>
+                        <p class="bg-storage-note">These are the Dark colors; Light uses a daylight version made from them, and Night turns them warm. The text and title colors are under Fonts.</p>
+                    </div>
                     <div data-fold="colors-overlay" data-title="Background Overlay">
                         <div class="gradient-control">
                             <div class="gradient-control-row"><label>Start</label><input type="color" id="bg-overlay-color-start" value="#000000"></div>
@@ -1176,11 +1232,10 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                             </div>
                         </div>
                     </div>
-                    <button id="reset-color-scheme-btn" class="small-btn" style="margin-top: 1rem;">Reset Color Scheme</button>
-                </fieldset>
+                    <button id="reset-color-scheme-btn" class="small-btn" style="margin-top: 1rem;">Back to the theme's colors</button>
+                </div>
 
-                <fieldset data-fold="glow">
-                    <legend>Glow Settings</legend>
+                <div data-fold="glow" data-title="Glow Settings">
                     <div class="settings-grid">
                         <div class="control-group">
                             <div class="control-group-row"><label for="glow-intensity" id="glow-intensity-label">Intensity</label><span id="glow-intensity-display" class="glow-display">15%</span></div>
@@ -1191,10 +1246,9 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                             <input type="color" id="glow-color-picker" value="#c99ad6">
                         </div>
                     </div>
-                </fieldset>
+                </div>
 
-                <fieldset data-fold="background">
-                    <legend>Background</legend>
+                <div data-fold="background" data-title="Background">
                     <div data-fold="bg-library" data-title="Image Library">
                     <div class="control-group-row">
                         <label for="bg-image-input" class="button-like">Load From Device</label>
@@ -1289,6 +1343,8 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
                     </div>
                     <button id="toggle-slideshow-btn" class="small-btn" style="margin-top: 1rem;">Start Slideshow</button>
                     </div>
+                </div>
+                    </div><!-- /Customize -->
                 </fieldset>
 
                 <fieldset id="saved-panel" data-fold="saved">
@@ -1343,7 +1399,7 @@ html[data-theme='light'] .track:not(.is-playing), html[data-theme='light'] .sync
 // --- Core Application Logic for WeaveSoundz ---
 
 // --- GLOBAL STATE & CONSTANTS ---
-const APP_VERSION = 'v354';
+const APP_VERSION = 'v355';
 // The app's name, kept in this one place (MS-163): build.ps1 stamps it into the page title and the installed app's manifest.
 // A rename (MS-901) = this line plus new icons (tools/make-icons.ps1).
 const APP_NAME = `WeaveSoundz`;
@@ -4837,10 +4893,10 @@ async function clearLocalFonts() {
     document.querySelectorAll('.user-added-font-style').forEach(el => el.remove());
     
     const selectors = [
-        { el: document.getElementById('title-font-select'), default: 'Monoton' },
-        { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
-        { el: document.getElementById('main-font-select'), default: 'Outfit' }, // v353 (MS-265.01)
-        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
+        { el: document.getElementById('title-font-select'), default: themeBase().fonts.title.family }, // v355: the theme's fonts
+        { el: document.getElementById('tagline-font-select'), default: themeBase().fonts.tagline.family }, // v342: '' = same as the main font
+        { el: document.getElementById('main-font-select'), default: themeBase().fonts.main.family }, // v353 (MS-265.01)
+        { el: document.getElementById('clock-font-select'), default: themeBase().fonts.clock.family } // v344: '' = same as the main font
     ];
     
     userLoadedFonts.forEach(font => {
@@ -4867,10 +4923,10 @@ function deleteUserFont(originalName) {
     }
 
     const selectors = [
-        { el: document.getElementById('title-font-select'), default: 'Monoton' },
-        { el: document.getElementById('tagline-font-select'), default: '' }, // v342: '' = same as the main font
-        { el: document.getElementById('main-font-select'), default: 'Outfit' }, // v353 (MS-265.01)
-        { el: document.getElementById('clock-font-select'), default: '' } // v344: '' = same as the main font
+        { el: document.getElementById('title-font-select'), default: themeBase().fonts.title.family }, // v355: the theme's fonts
+        { el: document.getElementById('tagline-font-select'), default: themeBase().fonts.tagline.family }, // v342: '' = same as the main font
+        { el: document.getElementById('main-font-select'), default: themeBase().fonts.main.family }, // v353 (MS-265.01)
+        { el: document.getElementById('clock-font-select'), default: themeBase().fonts.clock.family } // v344: '' = same as the main font
     ];
     selectors.forEach(s => {
         if (s.el.value === originalName) {
@@ -4897,26 +4953,30 @@ function initFontSelectors() {
     
     // v341: the list shows the font chosen earlier (saved in this browser) when it is in the list; until then it always showed
     // the default, so with a saved font the list didn't match the title, and picking the default did nothing.
-    const populate = (selector, fonts, defaultFont, storageKey) => {
+    // v355 (MS-161): "[def]" marks the theme's font, and the list shows the font in use (the theme's, or one picked in Customize).
+    const base = themeBase().fonts, inUse = themeCurrentLook().fonts;
+    const populate = (selector, fonts, defaultFont, value, allowSame) => {
         selector.innerHTML = '';
         const optgroup = document.createElement('optgroup');
         optgroup.label = 'Default Fonts';
-        if (defaultFont === '') optgroup.appendChild(new Option('Same as Main Font [def]', ''));
+        if (allowSame) optgroup.appendChild(new Option(defaultFont === '' ? 'Same as Main Font [def]' : 'Same as Main Font', ''));
         fonts.forEach(font => {
             const optionText = font === defaultFont ? `${font} [def]` : font;
             optgroup.appendChild(new Option(optionText, font));
         });
         selector.appendChild(optgroup);
-        const saved = storageKey && localStorage.getItem(storageKey);
-        selector.value = (saved && fonts.includes(saved)) ? saved : defaultFont;
+        selector.value = (fonts.includes(value) || (allowSame && value === '')) ? value : defaultFont;
     };
+    [['title', base.title.family], ['main', base.main.family], ['tagline', base.tagline.family], ['clock', base.clock.family]].forEach(([key, font]) => {
+        if (font && !defaultFonts[key].list.includes(font)) defaultFonts[key].list.push(font);
+    });
 
-    populate(document.getElementById('title-font-select'), defaultFonts.title.list, defaultFonts.title.default, 'customTitleFont');
-    populate(document.getElementById('tagline-font-select'), defaultFonts.tagline.list, defaultFonts.tagline.default, 'customTaglineFont');
-    populate(document.getElementById('main-font-select'), defaultFonts.main.list, defaultFonts.main.default, 'customMainFont');
+    populate(document.getElementById('title-font-select'), defaultFonts.title.list, base.title.family, inUse.title.family, false);
+    populate(document.getElementById('tagline-font-select'), defaultFonts.tagline.list, base.tagline.family, inUse.tagline.family, true);
+    populate(document.getElementById('main-font-select'), defaultFonts.main.list, base.main.family, inUse.main.family, false);
     // v342 (MS-257): the clock's font is saved; the sleep screen and Settings › Fonts › Clock Font show the same one (js/sleep.js)
-    populate(document.getElementById('clock-font-select'), defaultFonts.clock.list, defaultFonts.clock.default, 'customClockFont');
-    populate(document.getElementById('settings-clock-font-select'), defaultFonts.clock.list, defaultFonts.clock.default, 'customClockFont');
+    populate(document.getElementById('clock-font-select'), defaultFonts.clock.list, base.clock.family, inUse.clock.family, true);
+    populate(document.getElementById('settings-clock-font-select'), defaultFonts.clock.list, base.clock.family, inUse.clock.family, true);
 }
 
 function updateFontManagementUI() {
@@ -5002,6 +5062,619 @@ function updateFontManagementUI() {
 
     </script>
     <script>
+// --- js/themes.js ---
+// --- THEMES (v355, MS-161; JM's decisions MS-161.01–.05) ---
+// A theme is the look only: colors (the state colors included), the four fonts (title, tagline, main, clock) with their
+// sizes and colors, the panel style (glass color and opacity, glow, background overlay) and, optionally, a background
+// picture. Mixes, sounds and every other setting are never part of a theme, so applying one can't change what plays.
+//
+// How it is put together:
+// - The theme in use is the BASE: one generated stylesheet (#theme-style) with its Dark values (html:root) and a daylight
+//   version for Light (html[data-theme='light']:root). The Night look (css/styles.css) is set on body, so it still turns
+//   any theme warm and dim.
+// - Settings › Look › Customize keeps the v353 controls and their saved keys (LOOK_KEYS, js/settings.js): a change there
+//   is a CHANGE on top of the base, and the picker shows the theme as "(changed)" until it is saved as a theme.
+//   v353 users with their own picks therefore see "Night Orchid (changed)".
+// - Light for a theme: the Dark colors turned into a daylight version (themeLightPalette): a near-white page tinted with
+//   the theme's hue, white panels, near-black text in the text color's hue, and the accent, title and state colors
+//   darkened just enough to read at 4.5:1 or better. Night Orchid and Classic keep their own hand-picked Light values
+//   (v353's and v352's) wherever their colors are unchanged.
+const THEME_FILE_KIND = 'weavesoundz-theme';
+const THEME_USER_KEY = 'userThemes';          // [{ id, name, look }]
+const THEME_ACTIVE_KEY = 'activeTheme';       // 'builtin:<id>' or 'user:<id>' (or 'custom' after its theme was deleted)
+const THEME_BASE_KEY = 'activeThemeData';     // the applied user theme's look, so deleting or renaming it never changes the look
+const THEME_COLORS_KEY = 'customThemeColors'; // Customize › Colors › Theme Colors (and the clock color): changes to the base colors
+const THEME_MAX_JSON = 100 * 1024;            // a theme file without a picture is about 2 KB
+const THEME_MAX_ZIP = 20 * 1024 * 1024;       // with a picture
+const THEME_MAX_PICTURE = 15 * 1024 * 1024;
+const THEME_NAME_MAX = 40;
+const THEME_HEX = /^#[0-9a-f]{6}$/i;
+const THEME_DIRS = ['to bottom', 'to top', 'to right', 'to left', 'to bottom right', 'to bottom left', 'to top right', 'to top left'];
+const THEME_COLOR_FIELDS = ['bg', 'surface', 'text', 'muted', 'primary', 'onPrimary', 'secondary', 'outline', 'title', 'playing', 'paused', 'mute', 'solo', 'off', 'clock'];
+const THEME_STATE_DARK = { playing: '#7fd6a4', paused: '#e8c46a', mute: '#e98a8a', solo: '#9db8ff', off: '#5c566a' };
+// Night Orchid is v353's look exactly (css/styles.css holds the same values). Deep Indigo and Ember Dusk: the MS-265
+// preview page's values; the rest is derived from them (themeComplete). Classic: v352's look (red title, blue buttons,
+// black, Bruno Ace), with v352's Light page and text.
+const BUILTIN_THEMES = [
+    { id: 'night-orchid', name: 'Night Orchid',
+      colors: { bg: '#0b0b14', surface: '#16131f', text: '#ece6f2', muted: '#958ca6', primary: '#c99ad6', onPrimary: '#1a1022', secondary: '#2a2238', outline: '#6e5a80', title: '#f0c9f3', ...THEME_STATE_DARK, clock: '#ece6f2' },
+      light: { bg: '#f6f2f8', surface: '#ffffff', text: '#241a2c', muted: '#625870', primary: '#7a4a8c', onPrimary: '#ffffff', secondary: '#ece4f1', outline: '#9a86aa', title: '#7a3d8a', playing: '#1e8a50', paused: '#9a6c00', mute: '#b8372b', solo: '#3556c4', off: '#a39caf' },
+      panel: { glow: '#c99ad6' } },
+    { id: 'deep-indigo', name: 'Deep Indigo', colors: { bg: '#090c17', surface: '#111628', primary: '#8f9cff', text: '#e4e8f5', title: '#b8c0ff' } },
+    { id: 'ember-dusk', name: 'Ember Dusk', colors: { bg: '#100b09', surface: '#1b1411', primary: '#e2a06c', text: '#f1e7df', title: '#f2b88d' } },
+    { id: 'classic', name: 'Classic',
+      colors: { bg: '#000000', surface: '#000000', text: '#e0e0e0', muted: '#a0a0a0', primary: '#1f4068', onPrimary: '#e0e0e0', secondary: '#1f4068', outline: '#4a6f9e', title: '#ff0000', playing: '#28a745', paused: '#ffc107', mute: '#ff8c00', solo: '#fff200', off: '#555555', clock: '#ffffff' },
+      light: { bg: '#f0f2f5', text: '#333333' },
+      fonts: { main: { family: 'Bruno Ace' } },
+      panel: { opacity: 0.3, glow: '#ffffff' } }
+];
+const themeHooks = {}; // set by js/settings.js: reapplyLook, renderBgPlaylist
+
+// --- Colors ---
+function themeRgb(hex) { return [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)); }
+function themeHexOf(rgb) { return '#' + rgb.map(v => Math.round(Math.min(255, Math.max(0, v))).toString(16).padStart(2, '0')).join(''); }
+function themeMix(a, b, t) { const x = themeRgb(a), y = themeRgb(b); return themeHexOf(x.map((v, i) => v + (y[i] - v) * t)); }
+function themeRgba(hex, alpha) { return `rgba(${themeRgb(hex).join(', ')}, ${alpha})`; }
+function themeLuminance(hex) { return themeRgb(hex).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }).reduce((s, v, i) => s + v * [0.2126, 0.7152, 0.0722][i], 0); }
+function themeContrast(a, b) { const x = themeLuminance(a), y = themeLuminance(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+function themeToHsl(hex) {
+    const [r, g, b] = themeRgb(hex).map(v => v / 255), max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+    if (max === min) return [0, 0, l];
+    const d = max - min, s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    const h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    return [h * 60, s, l];
+}
+function themeFromHsl(h, s, l) {
+    const k = n => (n + h / 30) % 12, a = s * Math.min(l, 1 - l);
+    return themeHexOf([0, 8, 4].map(n => 255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1)))));
+}
+// The same hue and saturation, darkened just enough to reach the contrast ratio against the given color.
+function themeDarkenTo(hex, against, ratio) {
+    let [h, s, l] = themeToHsl(hex), out = hex;
+    while (themeContrast(out, against) < ratio && l > 0) { l = Math.max(0, l - 0.01); out = themeFromHsl(h, s, l); }
+    return out;
+}
+
+// --- Theme data ---
+const themeClone = obj => JSON.parse(JSON.stringify(obj));
+// Every field filled in: what a theme leaves out is derived from its page, panel, accent and text colors.
+function themeComplete(t) {
+    const c = { ...t.colors };
+    c.muted = c.muted || themeMix(c.bg, c.text, 0.6);
+    c.onPrimary = c.onPrimary || (themeContrast('#ffffff', c.primary) >= 4.5 ? '#ffffff' : themeFromHsl(themeToHsl(c.primary)[0], 0.4, 0.08));
+    c.secondary = c.secondary || themeMix(c.surface, c.primary, 0.14);
+    c.outline = c.outline || themeMix(c.surface, c.primary, 0.45);
+    Object.entries(THEME_STATE_DARK).forEach(([k, v]) => { c[k] = c[k] || v; });
+    c.clock = c.clock || c.text;
+    const f = t.fonts || {}, p = t.panel || {}, o = t.overlay || {};
+    const look = {
+        colors: c,
+        light: { ...(t.light || {}) },
+        fonts: {
+            title: { family: f.title?.family ?? 'Monoton', size: f.title?.size ?? 1 },
+            main: { family: f.main?.family ?? 'Outfit', size: f.main?.size ?? 1 },
+            tagline: { family: f.tagline?.family ?? '', size: f.tagline?.size ?? 1, color: f.tagline?.color ?? '' },
+            clock: { family: f.clock?.family ?? '' }
+        },
+        panel: { start: p.start || c.surface, end: p.end || p.start || c.surface, dir: p.dir || 'to bottom', opacity: p.opacity ?? 0.8, glow: p.glow || c.primary, glowIntensity: p.glowIntensity ?? 0.15 },
+        overlay: { start: o.start || '#000000', end: o.end || '#000000', dir: o.dir || 'to bottom', opacity: o.opacity ?? 0 },
+        background: t.background || null
+    };
+    look.stylesheet = themeLookKey(look, true) === themeNightOrchidKey(); // the stylesheet already holds these values
+    return look;
+}
+let themeNightKeyCache = null;
+function themeNightOrchidKey() {
+    if (themeNightKeyCache === null) { themeNightKeyCache = ''; themeNightKeyCache = themeLookKey(themeComplete(BUILTIN_THEMES[0]), true); }
+    return themeNightKeyCache;
+}
+// A comparable summary of a look (rounded numbers; an invisible overlay is just "none"). colorsOnly: what the stylesheet holds.
+function themeLookKey(look, colorsOnly) {
+    const r = v => Math.round(Number(v) * 1000) / 1000;
+    const o = look.overlay, p = look.panel;
+    const parts = {
+        colors: THEME_COLOR_FIELDS.map(k => String(look.colors[k]).toLowerCase()),
+        panel: [p.start, p.end, p.dir, r(p.opacity), p.glow, r(p.glowIntensity)].map(String).map(s => s.toLowerCase()),
+        overlay: r(o.opacity) === 0 ? 'none' : [o.start, o.end, o.dir, r(o.opacity)].map(String).map(s => s.toLowerCase())
+    };
+    if (!colorsOnly) { const f = look.fonts; parts.fonts = [f.title.family, r(f.title.size), f.main.family, r(f.main.size), f.tagline.family, r(f.tagline.size), String(f.tagline.color).toLowerCase(), f.clock.family]; }
+    return JSON.stringify(parts);
+}
+
+// Checks a theme read from a file or from this browser: every color must be a valid #rrggbb, numbers are kept in range,
+// unknown fonts become Outfit (noted), unknown fields are ignored. Throws with a plain-language reason when it can't be used.
+function themeSanitize(raw, notes = [], strict = false) {
+    const fail = reason => { throw new Error(reason); };
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) fail('it is not a theme file.');
+    if (strict && raw.kind !== THEME_FILE_KIND) fail('it is not a WeaveSoundz theme file.');
+    if (strict && !(Number(raw.version) >= 1 && Number(raw.version) <= 1)) fail('it was made by a newer version of WeaveSoundz.');
+    const obj = v => (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+    const hex = (v, what, required) => {
+        if (v === undefined || v === null || v === '') { if (required) fail(`its ${what} color is missing.`); return undefined; }
+        if (typeof v !== 'string' || !THEME_HEX.test(v)) fail(`its ${what} color ("${String(v).slice(0, 20)}") is not a valid color.`);
+        return v.toLowerCase();
+    };
+    const num = (v, lo, hi, dflt) => { const n = Number(v); return (v === undefined || v === null || v === '' || !Number.isFinite(n)) ? dflt : Math.min(hi, Math.max(lo, n)); };
+    const fontLists = strict ? themeFontLists() : null; // a theme saved here keeps its fonts (the lists fill in later at start-up)
+    const font = (v, which, allowSame) => {
+        if (v === undefined || v === null) return undefined;
+        if (typeof v !== 'string') fail(`its ${which} font is not valid.`);
+        if (v === '' && allowSame) return '';
+        if (!strict) return v.slice(0, 100) || undefined;
+        if (fontLists[which].includes(v)) return v;
+        notes.push(`The ${which} font "${v.slice(0, 40)}" isn't available here, so Outfit is used instead.`);
+        return 'Outfit';
+    };
+    const colorsIn = obj(raw.colors), lightIn = obj(raw.light), colors = {}, light = {};
+    const required = ['bg', 'surface', 'primary', 'text', 'title'];
+    THEME_COLOR_FIELDS.forEach(k => { const v = hex(colorsIn[k], k, required.includes(k)); if (v) colors[k] = v; });
+    THEME_COLOR_FIELDS.forEach(k => { const v = hex(lightIn[k], `Light ${k}`, false); if (v) light[k] = v; });
+    const f = obj(raw.fonts), p = obj(raw.panel), o = obj(raw.overlay), bg = obj(raw.background);
+    const tagColor = obj(f.tagline).color;
+    const t = {
+        colors, light,
+        fonts: {
+            title: { family: font(obj(f.title).family, 'title', false), size: num(obj(f.title).size, 0.5, 2, 1) },
+            main: { family: font(obj(f.main).family, 'main', false), size: num(obj(f.main).size, 0.5, 2, 1) },
+            tagline: { family: font(obj(f.tagline).family, 'tagline', true), size: num(obj(f.tagline).size, 0.5, 2, 1), color: tagColor === '' ? '' : hex(tagColor, 'tagline', false) },
+            clock: { family: font(obj(f.clock).family, 'clock', true) }
+        },
+        panel: { start: hex(p.start, 'panel', false), end: hex(p.end, 'panel', false), dir: THEME_DIRS.includes(p.dir) ? p.dir : undefined,
+                 opacity: num(p.opacity, 0, 1, undefined), glow: hex(p.glow, 'glow', false), glowIntensity: num(p.glowIntensity, 0, 1, undefined) },
+        overlay: { start: hex(o.start, 'overlay', false), end: hex(o.end, 'overlay', false), dir: THEME_DIRS.includes(o.dir) ? o.dir : undefined, opacity: num(o.opacity, 0, 1, undefined) },
+        background: null
+    };
+    if (typeof bg.imageId === 'string' && bg.imageId.length < 100) t.background = { imageId: bg.imageId, name: themeCleanName(bg.name, 'Theme picture') };
+    else if (typeof bg.file === 'string' && bg.file.length < 200) t.background = { file: bg.file, name: themeCleanName(bg.name, 'Theme picture') };
+    return themeComplete(t);
+}
+function themeCleanName(name, fallback) {
+    const clean = (typeof name === 'string' ? name : '').replace(/[\x00-\x1f\x7f-\x9f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, THEME_NAME_MAX);
+    return clean || fallback;
+}
+// The fonts each list offers (read from Settings' own lists; '' = Same as Main Font).
+function themeFontLists() {
+    const read = id => [...(document.getElementById(id)?.options || [])].map(o => o.value).filter(Boolean);
+    const lists = { title: read('title-font-select'), main: read('main-font-select'), tagline: read('tagline-font-select'), clock: read('settings-clock-font-select') };
+    Object.values(lists).forEach(list => { if (!list.includes('Outfit')) list.push('Outfit'); });
+    BUILTIN_THEMES.forEach(b => { if (b.fonts?.main?.family && !lists.main.includes(b.fonts.main.family)) lists.main.push(b.fonts.main.family); });
+    return lists;
+}
+
+// --- What is in use ---
+function themeStore(key, value) { try { if (value === null) localStorage.removeItem(key); else localStorage.setItem(key, value); } catch (e) {} }
+function themeRead(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+function themeActiveRef() { return themeRead(THEME_ACTIVE_KEY) || 'builtin:night-orchid'; }
+function themeBuiltinById(id) { return BUILTIN_THEMES.find(b => b.id === id); }
+// The base look: a built-in theme as this version defines it, or the applied user theme's saved look.
+function themeBase() {
+    const ref = themeActiveRef();
+    if (ref.startsWith('builtin:')) { const b = themeBuiltinById(ref.slice(8)); if (b) return themeComplete(b); }
+    else { try { return themeSanitize(JSON.parse(themeRead(THEME_BASE_KEY))); } catch (e) {} }
+    return themeComplete(BUILTIN_THEMES[0]);
+}
+function themeUserList() {
+    let list = [];
+    try { list = JSON.parse(themeRead(THEME_USER_KEY)) || []; } catch (e) {}
+    if (!Array.isArray(list)) return [];
+    return list.flatMap(item => {
+        try { return [{ id: String(item.id), name: themeCleanName(item.name, 'My theme'), look: themeSanitize(item.look) }]; } catch (e) { return []; }
+    });
+}
+function themeSaveUserList(list) {
+    try { localStorage.setItem(THEME_USER_KEY, JSON.stringify(list.map(t => ({ id: t.id, name: t.name, look: themeForStorage(t.look) })))); return true; }
+    catch (e) { showMessage(`This browser could not save your themes (${e.message || e.name}).`); return false; }
+}
+function themeForStorage(look) {
+    const out = themeClone(look);
+    delete out.stylesheet;
+    return out;
+}
+function themeColorOverrides() {
+    let raw = {};
+    try { raw = JSON.parse(themeRead(THEME_COLORS_KEY)) || {}; } catch (e) {}
+    const out = {};
+    THEME_COLOR_FIELDS.forEach(k => { if (typeof raw[k] === 'string' && THEME_HEX.test(raw[k])) out[k] = raw[k].toLowerCase(); });
+    return out;
+}
+// The look as it is now: the base plus every change made in Customize (the keys js/settings.js saves).
+function themeCurrentLook() {
+    const look = themeClone(themeBase());
+    const get = themeRead, hex = v => (v && THEME_HEX.test(v)) ? v.toLowerCase() : null;
+    const num = (v, lo, hi) => { const n = Number(v); return (v === null || v === '' || !Number.isFinite(n)) ? null : Math.min(hi, Math.max(lo, n)); };
+    let v;
+    if ((v = get('customTitleFont'))) look.fonts.title.family = v;
+    if ((v = num(get('customTitleFontSize'), 0.5, 2)) !== null) look.fonts.title.size = v;
+    if ((v = hex(get('customTitleFontColor')))) look.colors.title = v;
+    if ((v = get('customMainFont'))) look.fonts.main.family = v;
+    if ((v = num(get('customMainFontSize'), 0.5, 2)) !== null) look.fonts.main.size = v;
+    if ((v = hex(get('customMainFontColor')))) look.colors.text = v;
+    if ((v = get('customTaglineFont')) !== null) look.fonts.tagline.family = v;
+    if ((v = get('customTaglineFontColor')) !== null) look.fonts.tagline.color = hex(v) || '';
+    if ((v = num(get('customTaglineFontSize'), 0.5, 2)) !== null) look.fonts.tagline.size = v;
+    if ((v = get('customClockFont')) !== null) look.fonts.clock.family = v;
+    const uiStart = hex(get('customUiStart')), uiEnd = hex(get('customUiEnd'));
+    if (uiStart && uiEnd) {
+        Object.assign(look.panel, { start: uiStart, end: uiEnd, dir: THEME_DIRS.includes(get('customUiDir')) ? get('customUiDir') : 'to bottom' });
+        look.panel.opacity = num(get('customUiOpacity'), 0, 1) ?? 0.3;
+    }
+    if ((v = hex(get('customGlowColor')))) look.panel.glow = v;
+    if ((v = num(get('customGlowIntensity'), 0, 1)) !== null) look.panel.glowIntensity = v;
+    if ((v = hex(get('customBgOverlayStart')))) look.overlay.start = v;
+    if ((v = hex(get('customBgOverlayEnd')))) look.overlay.end = v;
+    if (THEME_DIRS.includes(get('customBgOverlayDir'))) look.overlay.dir = get('customBgOverlayDir');
+    if ((v = num(get('customBgOverlayOpacity'), 0, 1)) !== null) look.overlay.opacity = v;
+    Object.assign(look.colors, themeColorOverrides());
+    return look;
+}
+function themeIsChanged() { return themeLookKey(themeCurrentLook()) !== themeLookKey(themeBase()); }
+
+// --- The generated stylesheet ---
+// Light: Night Orchid's and Classic's own values where their colors are unchanged, the rest derived (see the top).
+function themeLightPalette(c, base) {
+    const own = k => (base.light[k] && c[k] === base.colors[k]) ? base.light[k] : null;
+    const [hp, sp] = themeToHsl(c.primary), [ht, st] = themeToHsl(c.text);
+    const L = {};
+    L.bg = own('bg') || themeFromHsl(hp, Math.min(sp, 0.35), 0.965);
+    L.surface = own('surface') || '#ffffff';
+    L.text = own('text') || themeFromHsl(ht, Math.min(st, 0.3), 0.13);
+    L.muted = own('muted') || themeDarkenTo(themeFromHsl(ht, 0.1, 0.45), L.bg, 4.6);
+    L.primary = own('primary') || themeDarkenTo(c.primary, '#ffffff', 4.6);
+    L.onPrimary = own('onPrimary') || '#ffffff';
+    L.secondary = own('secondary') || themeFromHsl(hp, 0.3, 0.92);
+    L.outline = own('outline') || themeFromHsl(hp, 0.2, 0.6);
+    L.title = own('title') || themeDarkenTo(c.title, L.bg, 4.6);
+    ['playing', 'paused', 'mute', 'solo'].forEach(k => { L[k] = own(k) || themeDarkenTo(c[k], L.bg, 4.6); });
+    L.off = own('off') || themeFromHsl(themeToHsl(c.off)[0], 0.08, 0.66);
+    L.clock = c.clock;
+    return L;
+}
+function themePaletteVars(p, light) {
+    const rgb = hex => themeRgb(hex).join(', ');
+    return [
+        ['--bg-color', p.bg], ['--surface-color', p.surface], ['--text-color', p.text], ['--main-font-color', p.text], ['--muted-color', p.muted],
+        ['--primary-color', p.primary], ['--on-primary', p.onPrimary], ['--secondary-color', p.secondary], ['--outline-color', p.outline],
+        ['--accent-color', p.title], ['--title-font-color', p.title],
+        ['--mute-color', p.mute], ['--danger-color', p.mute], ['--on-danger', light ? '#ffffff' : themeFromHsl(themeToHsl(p.mute)[0], 0.5, 0.08)],
+        ['--solo-color', p.solo], ['--solo-glow', themeRgba(p.solo, light ? 0.6 : 0.85)], ['--solo-glow-dim', themeRgba(p.solo, light ? 0.2 : 0.3)],
+        ['--play-color', p.playing], ['--pause-color', p.paused], ['--off-color', p.off], ['--disabled-color', p.off],
+        ['--tt-color', p.text], ['--dt-color', p.paused], ['--drag-color', p.primary],
+        ['--switch-off', light ? themeMix(p.secondary, p.outline, 0.4) : themeMix(p.surface, p.muted, 0.3)], ['--switch-knob', light ? '#ffffff' : p.text],
+        ['--slider-track', themeRgba(p.muted, light ? 0.3 : 0.35)], ['--input-border-color', themeRgba(p.muted, light ? 0.45 : 0.5)],
+        ['--input-bg', light ? 'rgba(255, 255, 255, 0.7)' : themeRgba(p.bg, 0.6)],
+        ['--title-outline', light ? themeFromHsl(themeToHsl(p.title)[0], 0.5, 0.1) : '#000'],
+        ['--glow-color-base', rgb(light ? p.primary : p.primary)]
+    ].map(([k, v]) => `${k}: ${v};`).join(' ');
+}
+function themeFontVar(family, fallback) { return family ? `${cssString(family)}, ${fallback}` : null; }
+function themeRefreshStyle() {
+    const base = themeBase(), extra = themeColorOverrides();
+    const parts = [];
+    const f = base.fonts;
+    // Fonts (both looks): set here too, so the page shows the theme's fonts before js/settings.js runs.
+    const fontVars = [['--font-family-title', themeFontVar(f.title.family, 'cursive')], ['--font-weight-title', f.title.family === 'Monoton' ? 'normal' : 'bold'],
+        ['--font-family-main', themeFontVar(f.main.family, '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif')],
+        ['--font-size-title-multiplier', f.title.size], ['--font-size-main-multiplier', f.main.size]].filter(([, v]) => v !== null);
+    if (!base.stylesheet || Object.keys(extra).length) {
+        const c = { ...base.colors, ...extra }, p = base.panel, o = base.overlay;
+        const L = themeLightPalette(c, base);
+        const dark = themePaletteVars(c, false) + ` --glass-bg: linear-gradient(${p.dir}, ${themeRgba(p.start, p.opacity)}, ${themeRgba(p.end, p.opacity)});`
+            + ` --glow-color-base: ${themeRgb(p.glow).join(', ')}; --glow-opacity: ${p.glowIntensity};`
+            + ` --bg-overlay-gradient: linear-gradient(${o.dir}, ${o.start}, ${o.end}); --bg-overlay-opacity: ${o.opacity};`
+            + ` --clock-color: ${c.clock}; --clock-glow: ${themeRgba(c.clock, 0.35)};`;
+        const light = themePaletteVars(L, true) + ' --glass-bg: rgba(255, 255, 255, 0.82); --glow-opacity: 0.12; --tagline-opacity: 1;'
+            + ` --bg-overlay-gradient: linear-gradient(to bottom, ${L.bg}, ${L.bg}); --bg-overlay-opacity: 0;`;
+        parts.push(`html:root { ${fontVars.map(([k, v]) => `${k}: ${v};`).join(' ')} ${dark} }`, `html[data-theme='light']:root { ${light} }`);
+    } else if (fontVars.length) parts.push(`html:root { ${fontVars.map(([k, v]) => `${k}: ${v};`).join(' ')} }`);
+    let el = document.getElementById('theme-style');
+    if (!el) { el = document.createElement('style'); el.id = 'theme-style'; document.head.appendChild(el); }
+    el.textContent = parts.join('\n');
+    // The phone's status bar and the installed app's window follow the page color.
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', base.colors.bg);
+}
+themeRefreshStyle(); // as early as possible, so the page doesn't show Night Orchid first
+
+// --- Applying, saving, renaming, deleting ---
+const THEME_UNDO_KEYS = () => [...LOOK_KEYS, THEME_ACTIVE_KEY, THEME_BASE_KEY, 'activeBgImageId'];
+function themeSnapshot() { const snap = {}; THEME_UNDO_KEYS().forEach(k => { snap[k] = themeRead(k); }); return snap; }
+function themeRestore(snap) {
+    Object.entries(snap).forEach(([k, v]) => { if (k !== 'activeBgImageId') themeStore(k, v); });
+    const bgId = snap.activeBgImageId || 'default';
+    if (bgId !== activeBgImageId) setActiveBgImage(bgId);
+    themeLookChanged(true);
+}
+// After the base or the changes moved: the stylesheet, Customize's controls and the picker show what is in use now.
+function themeLookChanged(reapply) {
+    themeRefreshStyle();
+    if (reapply) themeHooks.reapplyLook?.();
+    themeSyncColorPickers();
+    themeRenderPicker();
+}
+function themeClearChanges() { [...LOOK_KEYS].forEach(k => themeStore(k, null)); }
+function themeApply(ref) {
+    const before = themeSnapshot();
+    let look, name;
+    if (ref.startsWith('builtin:')) { const b = themeBuiltinById(ref.slice(8)); if (!b) return; name = b.name; themeStore(THEME_BASE_KEY, null); }
+    else {
+        const t = themeUserList().find(u => `user:${u.id}` === ref); if (!t) return;
+        name = t.name; look = t.look;
+        themeStore(THEME_BASE_KEY, JSON.stringify(themeForStorage(look)));
+    }
+    themeClearChanges();
+    themeStore(THEME_ACTIVE_KEY, ref);
+    let note = '';
+    if (look?.background?.imageId) {
+        if (bgImages.some(img => img.id === look.background.imageId)) setActiveBgImage(look.background.imageId);
+        else note = ' (its background picture is no longer in your Image Library)';
+    }
+    themeLookChanged(true);
+    showUndoMessage(`Theme: ${name}${note}.`, () => { themeRestore(before); showMessage('Your earlier look is back.'); });
+}
+function themeActiveUser() { const ref = themeActiveRef(); return ref.startsWith('user:') ? themeUserList().find(u => `user:${u.id}` === ref) || null : null; }
+function themeActiveName() {
+    const ref = themeActiveRef();
+    if (ref.startsWith('builtin:')) return themeBuiltinById(ref.slice(8))?.name || 'Night Orchid';
+    return themeActiveUser()?.name || 'Your own look';
+}
+function themeUniqueName(name, exceptId) {
+    const taken = new Set([...BUILTIN_THEMES.map(b => b.name.toLowerCase()), ...themeUserList().filter(u => u.id !== exceptId).map(u => u.name.toLowerCase())]);
+    if (!taken.has(name.toLowerCase())) return name;
+    for (let i = 2; ; i++) { const next = `${name.slice(0, THEME_NAME_MAX - 5)} (${i})`; if (!taken.has(next.toLowerCase())) return next; }
+}
+// The current look, ready to keep as a theme: Light keeps the base's own values only where the color is unchanged.
+function themeLookToKeep(includePicture) {
+    const look = themeCurrentLook(), base = themeBase();
+    look.light = Object.fromEntries(Object.entries(base.light).filter(([k]) => look.colors[k] === base.colors[k]));
+    const img = includePicture ? bgImages.find(i => i.id === activeBgImageId) : null;
+    look.background = img ? { imageId: img.id, name: img.name } : null;
+    return themeSanitize(themeForStorage(look));
+}
+async function themeSaveFlow() {
+    const user = themeActiveUser(), changed = themeIsChanged();
+    const picture = bgImages.find(i => i.id === activeBgImageId && i.blob);
+    const answer = await askThemeDetails({
+        title: 'Save as my theme',
+        text: 'Keeps the look you see now (fonts, colors, panels and glow) under a name. Your mixes and sounds are not part of it.',
+        name: user && changed ? user.name : themeUniqueName(changed ? `${themeActiveName()} (mine)` : `My ${themeActiveName()}`),
+        picture: picture ? picture.name : null, pictureOn: !!themeBase().background,
+        overwriteName: user && changed ? user.name : null
+    });
+    if (!answer) return;
+    const list = themeUserList();
+    const look = themeLookToKeep(answer.includePicture);
+    let entry;
+    if (answer.action === 'over' && user) {
+        entry = list.find(u => u.id === user.id); if (!entry) return;
+        entry.look = look; entry.name = themeUniqueName(answer.name, user.id);
+    } else {
+        entry = { id: uniqueId('theme'), name: themeUniqueName(answer.name), look };
+        list.push(entry);
+    }
+    if (!themeSaveUserList(list)) return;
+    themeClearChanges();
+    themeStore(THEME_ACTIVE_KEY, `user:${entry.id}`);
+    themeStore(THEME_BASE_KEY, JSON.stringify(themeForStorage(look)));
+    themeLookChanged(true);
+    showMessage(answer.action === 'over' ? `Saved over "${entry.name}".` : `Saved as your theme "${entry.name}".`);
+}
+async function themeRenameFlow() {
+    const user = themeActiveUser(); if (!user) return;
+    const answer = await askThemeDetails({ title: 'Rename theme', name: user.name, saveLabel: 'Rename' });
+    if (!answer) return;
+    const list = themeUserList(), entry = list.find(u => u.id === user.id); if (!entry) return;
+    entry.name = themeUniqueName(answer.name, user.id);
+    if (themeSaveUserList(list)) { themeRenderPicker(); showMessage(`Renamed to "${entry.name}".`); }
+}
+async function themeDeleteFlow() {
+    const user = themeActiveUser(); if (!user) return;
+    if (!(await askConfirm(`Delete your theme "${user.name}"? The look stays as it is now; only the saved theme goes. You can undo it right after.`))) return;
+    const before = themeUserList(), list = before.filter(u => u.id !== user.id);
+    if (!themeSaveUserList(list)) return;
+    themeStore(THEME_ACTIVE_KEY, 'custom'); // the base stays (activeThemeData), so nothing on screen changes
+    themeRenderPicker();
+    showUndoMessage(`Theme "${user.name}" deleted.`, () => { themeSaveUserList(before); themeStore(THEME_ACTIVE_KEY, `user:${user.id}`); themeRenderPicker(); });
+}
+
+// --- Share as a file ---
+function themeFileName(name, ext) { return `${(name.replace(/[^a-z0-9 _-]/gi, '').trim().replace(/\s+/g, '_') || 'theme')}.weavesoundz-theme.${ext}`; }
+function themeDownload(blob, fileName) {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob); link.download = fileName;
+    document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href), 10000);
+}
+function themePictureType(bytes) {
+    const b = bytes;
+    if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) return ['image/png', 'png'];
+    if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return ['image/jpeg', 'jpg'];
+    if (b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46) return ['image/gif', 'gif'];
+    if (b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 && b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50) return ['image/webp', 'webp'];
+    return null;
+}
+async function themeExport() {
+    const changed = themeIsChanged(), base = themeBase(), look = themeCurrentLook();
+    const name = changed ? `${themeActiveName()} (changed)` : themeActiveName();
+    look.light = Object.fromEntries(Object.entries(base.light).filter(([k]) => look.colors[k] === base.colors[k]));
+    const data = { kind: THEME_FILE_KIND, version: 1, app: APP_NAME, appVersion: APP_VERSION, name, colors: look.colors, light: look.light, fonts: look.fonts, panel: look.panel, overlay: look.overlay };
+    const picture = base.background?.imageId && bgImages.find(i => i.id === base.background.imageId && i.blob);
+    try {
+        if (picture) {
+            const type = themePictureType(new Uint8Array(await picture.blob.slice(0, 12).arrayBuffer()));
+            if (type) {
+                data.background = { file: `picture.${type[1]}`, name: picture.name };
+                const zip = new JSZip();
+                zip.file('theme.json', JSON.stringify(data, null, 2));
+                zip.file(data.background.file, picture.blob);
+                themeDownload(await zip.generateAsync({ type: 'blob' }), themeFileName(name, 'zip'));
+                showMessage(`Exported "${name}" with its background picture (a ZIP file).`);
+                return;
+            }
+        }
+        themeDownload(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), themeFileName(name, 'json'));
+        showMessage(`Exported "${name}".`);
+    } catch (err) { showMessage(`Couldn't export the theme (${err.message || err.name}).`); }
+}
+// Import: only ever adds a theme to "Your themes" (under a new name if it is taken). It never applies it, never replaces
+// one, and never touches mixes or sounds. Anything wrong with the file stops it with a message, and nothing is changed.
+async function themeImportFile(file) {
+    const mb = n => `${(n / 1024 / 1024).toFixed(1)} MB`;
+    try {
+        if (!file) return;
+        if (file.size > THEME_MAX_ZIP) throw new Error(`it is too big for a theme (${mb(file.size)}; the limit is 20 MB).`);
+        const head = new Uint8Array(await file.slice(0, 4).arrayBuffer());
+        let text, pictureBlob = null, zip = null;
+        if (head[0] === 0x50 && head[1] === 0x4b) {
+            try { zip = await JSZip.loadAsync(file); } catch (e) { throw new Error('the ZIP file is damaged.'); }
+            const entries = Object.values(zip.files).filter(e => !e.dir);
+            const json = entries.find(e => /(^|\/)theme\.json$/i.test(e.name)) || entries.find(e => /\.json$/i.test(e.name));
+            if (!json) throw new Error('there is no theme in this ZIP file.');
+            if ((json._data?.uncompressedSize ?? 0) > THEME_MAX_JSON) throw new Error('its theme description is far too big to be a theme.');
+            text = await json.async('string');
+        } else {
+            if (file.size > THEME_MAX_JSON) throw new Error(`it is too big for a theme file (${Math.round(file.size / 1024)} KB; a theme is a few KB).`);
+            text = await file.text();
+        }
+        if (text.length > THEME_MAX_JSON) throw new Error('it is too big for a theme file.');
+        let raw;
+        try { raw = JSON.parse(text); } catch (e) { throw new Error('it is damaged or not a theme file (it could not be read).'); }
+        const notes = [];
+        const look = themeSanitize(raw, notes, true);
+        const name = themeUniqueName(themeCleanName(raw.name, 'Imported theme'));
+        if (look.background?.file) {
+            const entry = zip && zip.file(look.background.file);
+            if (!entry) { notes.push('Its background picture was not in the file, so it comes without one.'); look.background = null; }
+            else if ((entry._data?.uncompressedSize ?? 0) > THEME_MAX_PICTURE) { notes.push('Its background picture is over 15 MB, so it was left out.'); look.background = null; }
+            else {
+                const bytes = await entry.async('uint8array');
+                const type = bytes.length <= THEME_MAX_PICTURE && themePictureType(bytes);
+                if (!type) { notes.push('Its background picture is not a PNG, JPEG, GIF or WebP image, so it was left out.'); look.background = null; }
+                else pictureBlob = new Blob([bytes], { type: type[0] });
+            }
+        } else look.background = null;
+        if (pictureBlob) { // into the Image Library, where the theme finds it
+            const img = { id: uniqueId('bgimg'), name: `${name} (theme picture)`, dataUrl: URL.createObjectURL(pictureBlob), blob: pictureBlob };
+            bgImages.unshift(img);
+            await saveStoredBgImages(bgImages);
+            themeHooks.renderBgPlaylist?.();
+            look.background = { imageId: img.id, name: img.name };
+        }
+        const list = themeUserList();
+        const entry = { id: uniqueId('theme'), name, look: themeSanitize(themeForStorage(look)) };
+        list.push(entry);
+        if (!themeSaveUserList(list)) return;
+        themeRenderPicker(entry.id);
+        showMessage(`Added "${name}" to your themes. Tap it to use it.${notes.length ? '\n' + notes.join('\n') : ''}`);
+    } catch (err) {
+        showMessage(`Couldn't import "${themeCleanName(file?.name, 'the file')}": ${err.message || 'it could not be read.'} Nothing was changed.`);
+    }
+}
+
+// --- Settings › Look: the picker, its buttons and the Theme Colors ---
+function themeSwatch(ref, name, look, active, fresh) {
+    const c = look.colors;
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'theme-swatch' + (active ? ' is-active' : '') + (fresh ? ' is-new' : '');
+    btn.dataset.ref = ref;
+    btn.setAttribute('aria-pressed', String(active));
+    btn.title = active ? `${name} (in use)` : `Use ${name}`;
+    const preview = document.createElement('span'); preview.className = 'theme-swatch-preview'; preview.style.background = c.bg;
+    const title = document.createElement('span'); title.className = 'theme-swatch-title'; title.textContent = 'Aa';
+    title.style.color = c.title; title.style.fontFamily = `${cssString(look.fonts.title.family)}, cursive`;
+    const panel = document.createElement('span'); panel.className = 'theme-swatch-panel';
+    panel.style.background = themeRgba(look.panel.start, Math.max(look.panel.opacity, 0.5)); panel.style.borderColor = c.outline;
+    const play = document.createElement('span'); play.className = 'theme-swatch-play'; play.style.background = c.primary;
+    panel.append(play, ...['playing', 'paused', 'mute', 'solo'].map(k => { const dot = document.createElement('span'); dot.className = 'theme-swatch-dot'; dot.style.background = c[k]; return dot; }));
+    preview.append(title, panel);
+    const label = document.createElement('span'); label.className = 'theme-swatch-name'; label.textContent = name;
+    btn.append(preview, label);
+    btn.addEventListener('click', () => { if (!active || themeIsChanged()) themeApply(ref); });
+    return btn;
+}
+function themeRenderPicker(freshId) {
+    const picker = document.getElementById('theme-picker'); if (!picker) return;
+    const ref = themeActiveRef(), users = themeUserList(), changed = themeIsChanged();
+    picker.innerHTML = '';
+    const group = (label, items) => {
+        const head = document.createElement('p'); head.className = 'theme-group-label'; head.textContent = label;
+        const grid = document.createElement('div'); grid.className = 'theme-grid'; grid.append(...items);
+        picker.append(head, grid);
+    };
+    group('Built-in', BUILTIN_THEMES.map(b => themeSwatch(`builtin:${b.id}`, b.name, themeComplete(b), ref === `builtin:${b.id}`)));
+    if (users.length) group('Your themes', users.map(u => themeSwatch(`user:${u.id}`, u.name, u.look, ref === `user:${u.id}`, u.id === freshId)));
+    const status = document.getElementById('theme-status');
+    if (status) status.textContent = `In use: ${themeActiveName()}${changed ? ' (changed)' : ''}`;
+    const user = themeActiveUser();
+    document.getElementById('theme-rename-btn').hidden = !user;
+    document.getElementById('theme-delete-btn').hidden = !user;
+    document.getElementById('theme-save-btn').textContent = user && changed ? 'Save…' : 'Save as my theme';
+}
+// Customize › Colors › Theme Colors (and Clock Font › Color): each picker shows the Dark value in use.
+function themeSyncColorPickers() {
+    const c = themeCurrentLook().colors;
+    document.querySelectorAll('[data-theme-color]').forEach(input => { input.value = c[input.dataset.themeColor] || '#000000'; });
+}
+function themeColorPicked(field, value) {
+    if (!THEME_COLOR_FIELDS.includes(field) || !THEME_HEX.test(value)) return;
+    const overrides = themeColorOverrides(), base = themeBase();
+    if (value.toLowerCase() === base.colors[field]) delete overrides[field]; else overrides[field] = value.toLowerCase();
+    themeStore(THEME_COLORS_KEY, Object.keys(overrides).length ? JSON.stringify(overrides) : null);
+    themeRefreshStyle();
+    themeRenderPicker();
+}
+// A name box (and, when offered, "Include the background picture") for Save and Rename. Resolves
+// { action: 'new' | 'over', name, includePicture } or null.
+function askThemeDetails({ title, text, name, picture, pictureOn, overwriteName, saveLabel }) {
+    return new Promise(resolve => {
+        const overlay = document.createElement('div');
+        overlay.className = 'confirm-overlay';
+        overlay.innerHTML = `<form class="confirm-box theme-details" role="dialog" aria-modal="true">
+            <h3 class="confirm-title"></h3>
+            ${text ? '<p class="confirm-text"></p>' : ''}
+            <label class="theme-details-label">Name<input type="text" class="theme-name-input" maxlength="${THEME_NAME_MAX}" required></label>
+            ${picture ? '<label class="theme-details-check"><input type="checkbox" class="theme-picture-check"> <span></span></label>' : ''}
+            <div class="confirm-buttons">
+                <button type="button" class="confirm-cancel-btn">Cancel</button>
+                ${overwriteName ? '<button type="button" class="confirm-choice-btn theme-over-btn"></button>' : ''}
+                <button type="submit" class="btn-primary theme-new-btn"></button>
+            </div></form>`;
+        overlay.querySelector('.confirm-title').textContent = title;
+        if (text) overlay.querySelector('.confirm-text').textContent = text;
+        const input = overlay.querySelector('.theme-name-input'); input.value = name;
+        const check = overlay.querySelector('.theme-picture-check');
+        if (check) { check.checked = !!pictureOn; overlay.querySelector('.theme-details-check span').textContent = `Include the background picture ("${picture}")`; }
+        overlay.querySelector('.theme-new-btn').textContent = saveLabel || (overwriteName ? 'Save as new' : 'Save');
+        const overBtn = overlay.querySelector('.theme-over-btn'); if (overBtn) overBtn.textContent = `Save over "${overwriteName}"`;
+        const finish = answer => { document.removeEventListener('keydown', onKey); overlay.remove(); resolve(answer); };
+        const onKey = e => { if (e.key === 'Escape') finish(null); };
+        const answer = action => { const clean = themeCleanName(input.value, ''); if (!clean) { input.focus(); return; } finish({ action, name: clean, includePicture: !!check?.checked }); };
+        overlay.addEventListener('click', e => { if (e.target === overlay) finish(null); });
+        overlay.querySelector('.confirm-cancel-btn').addEventListener('click', () => finish(null));
+        overBtn?.addEventListener('click', () => answer('over'));
+        overlay.querySelector('form').addEventListener('submit', e => { e.preventDefault(); answer('new'); });
+        document.addEventListener('keydown', onKey);
+        document.body.appendChild(overlay);
+        input.focus(); input.select();
+    });
+}
+function setupThemes() {
+    document.getElementById('theme-save-btn').addEventListener('click', themeSaveFlow);
+    document.getElementById('theme-rename-btn').addEventListener('click', themeRenameFlow);
+    document.getElementById('theme-delete-btn').addEventListener('click', themeDeleteFlow);
+    document.getElementById('theme-export-btn').addEventListener('click', themeExport);
+    const importInput = document.getElementById('theme-import-input');
+    importInput.addEventListener('change', async e => { const file = e.target.files[0]; e.target.value = ''; await themeImportFile(file); });
+    document.querySelectorAll('[data-theme-color]').forEach(input => input.addEventListener('input', e => themeColorPicked(input.dataset.themeColor, e.target.value)));
+    // Any change in Customize (or the sleep screen's clock font) updates "(changed)" at once.
+    let pending = false;
+    const later = () => { if (pending) return; pending = true; setTimeout(() => { pending = false; themeRenderPicker(); }, 50); }; // not requestAnimationFrame: it never runs in a hidden page
+    ['input', 'change', 'click'].forEach(type => document.getElementById('theme-customize')?.addEventListener(type, later));
+    document.getElementById('clock-font-select')?.addEventListener('change', later);
+    document.getElementById('settings-btn').addEventListener('click', () => themeRenderPicker());
+    themeSyncColorPickers();
+    themeRenderPicker();
+}
+    </script> <!-- v355 (MS-161), before settings.js (LOOK_KEYS uses it) -->
+    <script>
 // --- js/settings.js ---
 // --- SETTINGS SECTIONS FOLD (MS-242, v331) ---
 // Each fieldset of the Settings panel, and each [data-fold] block inside one, gets the main panel's title bar with a
@@ -5033,15 +5706,15 @@ function makeSettingsFold(el) {
 function setupSettingsFolds() { document.querySelectorAll('#settings-modal-content [data-fold]').forEach(makeSettingsFold); }
 
 // --- THE LOOK (v353, MS-265) ---
-// The defaults of the controls that have no stylesheet variable of their own (the rest come from css/styles.css :root).
-const LOOK_DEFAULTS = { uiColor: '#16131f', uiOpacity: 0.8, glowColor: '#c99ad6', glowIntensity: 0.15 };
+// v355 (MS-161): the defaults of the controls come from the theme in use (themeBase, js/themes.js), not fixed values.
 // Values that every start saved until v352 whether or not they were picked (the old defaults): treated as not picked.
 const OLD_AUTO_SAVED = { titleColor: '#ff0000', glowColor: '#ffffff', glowIntensity: 0.15 };
 const COLOR_SCHEME_KEYS = ['customUiStart', 'customUiEnd', 'customUiDir', 'customUiOpacity', 'customBgOverlayStart', 'customBgOverlayEnd', 'customBgOverlayDir', 'customBgOverlayOpacity', 'customBgOverlayGradient'];
-// Everything "Use the WeaveSoundz look" puts back: fonts (title, tagline, main, clock: family, size, color) and colors
-// (panels, overlay, glow). Not the clock's size, the Light / Dark / Night choice, the tagline's on/off or the background images.
+// The changes Customize makes on top of the theme in use (v355, MS-161; until v354 what "Use the WeaveSoundz look" put
+// back): fonts (title, tagline, main, clock: family, size, color) and colors (theme colors, panels, overlay, glow). Applying
+// or saving a theme clears them. Not the clock's size, the Light / Dark / Night choice, the tagline's on/off or the background images.
 const LOOK_KEYS = ['customTitleFont', 'customTitleFontSize', 'customTitleFontColor', 'customMainFont', 'customMainFontSize', 'customMainFontColor',
-    'customTaglineFont', 'customTaglineFontColor', 'customTaglineFontSize', 'customClockFont', 'customGlowColor', 'customGlowIntensity', ...COLOR_SCHEME_KEYS];
+    'customTaglineFont', 'customTaglineFontColor', 'customTaglineFontSize', 'customClockFont', 'customGlowColor', 'customGlowIntensity', THEME_COLORS_KEY, ...COLOR_SCHEME_KEYS];
 const LOOK_CSS_VARS = ['--font-family-title', '--font-weight-title', '--font-family-main', '--font-size-title-multiplier', '--font-size-main-multiplier',
     '--title-font-color', '--main-font-color', '--font-family-tagline', '--tagline-color', '--tagline-opacity', '--font-size-tagline-multiplier',
     '--glass-bg', '--glow-color-base', '--glow-opacity', '--bg-overlay-gradient', '--bg-overlay-opacity'];
@@ -5176,8 +5849,8 @@ function setupSettingsModal() {
 
     document.getElementById('overlay-opacity-label').addEventListener('dblclick', () => { overlayOpacitySlider.value = 0; overlayOpacitySlider.dispatchEvent(new Event('input')); });
     document.getElementById('bg-opacity-label').addEventListener('dblclick', () => { bgOpacitySlider.value = 1; bgOpacitySlider.dispatchEvent(new Event('input')); });
-    document.getElementById('ui-container-opacity-label').addEventListener('dblclick', () => { uiContainerOpacitySlider.value = LOOK_DEFAULTS.uiOpacity; uiContainerOpacitySlider.dispatchEvent(new Event('input')); });
-    document.getElementById('glow-intensity-label').addEventListener('dblclick', () => { glowIntensitySlider.value = LOOK_DEFAULTS.glowIntensity; glowIntensitySlider.dispatchEvent(new Event('input')); });
+    document.getElementById('ui-container-opacity-label').addEventListener('dblclick', () => { uiContainerOpacitySlider.value = themeBase().panel.opacity; uiContainerOpacitySlider.dispatchEvent(new Event('input')); });
+    document.getElementById('glow-intensity-label').addEventListener('dblclick', () => { glowIntensitySlider.value = themeBase().panel.glowIntensity; glowIntensitySlider.dispatchEvent(new Event('input')); });
 
     bgImageInput.addEventListener('change', handleBgImageUpload);
     bgImageUrlLoadBtn.addEventListener('click', handleBgImageUrlLoad);
@@ -5185,49 +5858,39 @@ function setupSettingsModal() {
     bgSortZaBtn.addEventListener('click', () => { bgImages.sort((a,b) => b.name.localeCompare(a.name)); renderBgPlaylist(); saveBgImages(); });
 
     // v353: back to the stylesheet's own panels and overlay (nothing set on the page, nothing saved), so the Light theme and
-    // the Night look show theirs; until v352 this saved black panels at 30%.
+    // the Night look show theirs; until v352 this saved black panels at 30%. v355: the theme's own, and the Theme Colors go back too.
     function resetColorScheme() {
-        COLOR_SCHEME_KEYS.forEach(key => localStorage.removeItem(key));
+        [...COLOR_SCHEME_KEYS, THEME_COLORS_KEY].forEach(key => localStorage.removeItem(key));
         showDefaultColorScheme();
+        themeLookChanged(false);
     }
     function showDefaultColorScheme() {
         ['--glass-bg', '--bg-overlay-gradient', '--bg-overlay-opacity'].forEach(v => document.documentElement.style.removeProperty(v));
-        uiColorStart.value = LOOK_DEFAULTS.uiColor; uiColorEnd.value = LOOK_DEFAULTS.uiColor; uiGradientDir.value = 'to bottom'; uiContainerOpacitySlider.value = LOOK_DEFAULTS.uiOpacity;
-        uiContainerOpacityDisplay.textContent = `${Math.round(LOOK_DEFAULTS.uiOpacity * 100)}%`;
-        bgOverlayColorStart.value = '#000000'; bgOverlayColorEnd.value = '#000000'; bgOverlayGradientDir.value = 'to bottom'; overlayOpacitySlider.value = 0;
-        overlayOpacityDisplay.textContent = '0%';
+        const { panel, overlay } = themeBase();
+        uiColorStart.value = panel.start; uiColorEnd.value = panel.end; uiGradientDir.value = panel.dir; uiContainerOpacitySlider.value = panel.opacity;
+        uiContainerOpacityDisplay.textContent = `${Math.round(panel.opacity * 100)}%`;
+        bgOverlayColorStart.value = overlay.start; bgOverlayColorEnd.value = overlay.end; bgOverlayGradientDir.value = overlay.dir; overlayOpacitySlider.value = overlay.opacity;
+        overlayOpacityDisplay.textContent = `${Math.round(overlay.opacity * 100)}%`;
     }
     resetColorSchemeBtn.addEventListener('click', resetColorScheme);
 
-    // v353 (MS-265): "Use the WeaveSoundz look": every font and color setting back to the defaults (Outfit, Monoton, Night
-    // Orchid), in place (a playing mix keeps playing). Mixes, sounds, background images, the Light / Dark / Night choice
-    // and the clock's size are not touched. Undo puts the saved settings back as they were.
-    async function resetLookToDefaults() {
-        if (!(await askConfirm('Put every font and color back to the WeaveSoundz look? Your mixes, sounds and background images stay as they are. You can undo it right after.', { confirmLabel: 'Use the WeaveSoundz look' }))) return;
-        const before = {};
-        LOOK_KEYS.forEach(key => { const value = localStorage.getItem(key); if (value !== null) before[key] = value; });
-        LOOK_KEYS.forEach(key => localStorage.removeItem(key));
-        reapplyLook();
-        showUndoMessage('The WeaveSoundz look is back.', () => {
-            Object.entries(before).forEach(([key, value]) => localStorage.setItem(key, value));
-            reapplyLook();
-            showMessage('Your earlier look is back.');
-        });
-    }
-    // Shows what is saved now, from scratch: page settings cleared, every control at its default, then the saved values.
+    // v355 (MS-161): v353's "Use the WeaveSoundz look" became the Night Orchid theme in Settings › Look (js/themes.js), which
+    // applies any theme in place (a playing mix keeps playing), with Undo, through reapplyLook.
+    // Shows what is saved now, from scratch: page settings cleared, every control at the theme's default, then the saved values.
     function reapplyLook() {
         LOOK_CSS_VARS.forEach(v => document.documentElement.style.removeProperty(v));
         appTitleH1.style.textShadow = '';
-        [[titleFontSizeSlider, titleFontSizeDisplay], [mainFontSizeSlider, mainFontSizeDisplay], [taglineFontSizeSlider, taglineFontSizeDisplay]]
-            .forEach(([slider, display]) => { slider.value = 1; display.textContent = '100%'; });
+        const base = themeBase();
+        [[titleFontSizeSlider, titleFontSizeDisplay, base.fonts.title.size], [mainFontSizeSlider, mainFontSizeDisplay, base.fonts.main.size], [taglineFontSizeSlider, taglineFontSizeDisplay, base.fonts.tagline.size]]
+            .forEach(([slider, display, size]) => { slider.value = size; display.textContent = `${Math.round(size * 100)}%`; });
         mainFontColorPicker.value = cssDefault('--main-font-color');
-        glowColorPicker.value = LOOK_DEFAULTS.glowColor; glowIntensitySlider.value = LOOK_DEFAULTS.glowIntensity;
+        glowColorPicker.value = base.panel.glow; glowIntensitySlider.value = base.panel.glowIntensity;
         showDefaultColorScheme();
         initFontSelectors(); updateFontManagementUI();
-        applyClockFont(localStorage.getItem('customClockFont'));
         loadCustomizations();
     }
-    document.getElementById('use-default-look-btn').addEventListener('click', resetLookToDefaults);
+    themeHooks.reapplyLook = reapplyLook;
+    themeHooks.renderBgPlaylist = renderBgPlaylist;
 
     resetBgImageBtn.addEventListener('click', () => {
         const keysToRemove = ['activeBgImageId', 'customBgImageOpacity', 'customBgImageFilter'];
@@ -5312,13 +5975,13 @@ function setupSettingsModal() {
     function applyTaglineFont(font, save) {
         if (font) document.documentElement.style.setProperty('--font-family-tagline', `'${font}', sans-serif`);
         else document.documentElement.style.removeProperty('--font-family-tagline');
-        if (save) { if (font) localStorage.setItem('customTaglineFont', font); else localStorage.removeItem('customTaglineFont'); }
+        if (save) localStorage.setItem('customTaglineFont', font || ''); // v355: '' is kept too (a theme may have a tagline font of its own)
     }
     function applyTaglineColor(color, save) {
         const rootStyle = document.documentElement.style;
         if (color) { rootStyle.setProperty('--tagline-color', color); rootStyle.setProperty('--tagline-opacity', '1'); }
         else { rootStyle.removeProperty('--tagline-color'); rootStyle.removeProperty('--tagline-opacity'); }
-        if (save) { if (color) localStorage.setItem('customTaglineFontColor', color); else localStorage.removeItem('customTaglineFontColor'); }
+        if (save) localStorage.setItem('customTaglineFontColor', color || ''); // v355: '' is kept too (see applyTaglineFont)
         if (!color) taglineFontColorPicker.value = getComputedStyle(document.documentElement).getPropertyValue('--title-font-color').trim();
     }
 
@@ -5451,10 +6114,12 @@ function setupSettingsModal() {
         stickyHeadersSelect.value = savedStickyMode;
         applyStickyHeaders(savedStickyMode);
 
-        const customTitleFont = localStorage.getItem('customTitleFont'); if(customTitleFont) { titleFontSelect.value = customTitleFont; updateCSSVar('--font-family-title', customTitleFont, true); applyTitleFontWeight(customTitleFont); }
-        const customMainFont = localStorage.getItem('customMainFont'); if(customMainFont) { mainFontSelect.value = customMainFont; updateCSSVar('--font-family-main', customMainFont, true); }
-        const customTitleSize = localStorage.getItem('customTitleFontSize'); if (customTitleSize) { titleFontSizeSlider.value = customTitleSize; updateCSSVar('--font-size-title-multiplier', customTitleSize); titleFontSizeDisplay.textContent = `${Math.round(customTitleSize * 100)}%`; }
-        const customMainSize = localStorage.getItem('customMainFontSize'); if (customMainSize) { mainFontSizeSlider.value = customMainSize; updateCSSVar('--font-size-main-multiplier', customMainSize); mainFontSizeDisplay.textContent = `${Math.round(customMainSize * 100)}%`; }
+        // v355 (MS-161): the fonts in use = the theme's, with any change made in Customize (themeCurrentLook, js/themes.js).
+        const look = themeCurrentLook(), lookFonts = look.fonts;
+        titleFontSelect.value = lookFonts.title.family; updateCSSVar('--font-family-title', lookFonts.title.family, true); applyTitleFontWeight(lookFonts.title.family);
+        mainFontSelect.value = lookFonts.main.family; updateCSSVar('--font-family-main', lookFonts.main.family, true);
+        titleFontSizeSlider.value = lookFonts.title.size; updateCSSVar('--font-size-title-multiplier', lookFonts.title.size); titleFontSizeDisplay.textContent = `${Math.round(lookFonts.title.size * 100)}%`;
+        mainFontSizeSlider.value = lookFonts.main.size; updateCSSVar('--font-size-main-multiplier', lookFonts.main.size); mainFontSizeDisplay.textContent = `${Math.round(lookFonts.main.size * 100)}%`;
         
         // v353 (MS-265): until v352 every start saved the title color shown, so a saved "#ff0000" (the old default red) is
         // almost always one nobody picked: it is forgotten, and the new default (orchid) shows. Any other saved color is kept.
@@ -5474,9 +6139,11 @@ function setupSettingsModal() {
 
         // v342 (MS-258): the tagline's saved look (after the title color, which it follows until a color is picked)
         taglineShowToggle.checked = localStorage.getItem('showTagline') !== '0'; appTagline.hidden = !taglineShowToggle.checked;
-        const customTaglineFont = localStorage.getItem('customTaglineFont'); if (customTaglineFont) applyTaglineFont(customTaglineFont);
-        const customTaglineFontColor = localStorage.getItem('customTaglineFontColor'); if (customTaglineFontColor) { taglineFontColorPicker.value = customTaglineFontColor; applyTaglineColor(customTaglineFontColor); }
-        const customTaglineSize = localStorage.getItem('customTaglineFontSize'); if (customTaglineSize) { taglineFontSizeSlider.value = customTaglineSize; updateCSSVar('--font-size-tagline-multiplier', customTaglineSize); taglineFontSizeDisplay.textContent = `${Math.round(customTaglineSize * 100)}%`; }
+        taglineFontSelect.value = lookFonts.tagline.family; applyTaglineFont(lookFonts.tagline.family);
+        if (lookFonts.tagline.color) taglineFontColorPicker.value = lookFonts.tagline.color;
+        applyTaglineColor(lookFonts.tagline.color);
+        taglineFontSizeSlider.value = lookFonts.tagline.size; updateCSSVar('--font-size-tagline-multiplier', lookFonts.tagline.size); taglineFontSizeDisplay.textContent = `${Math.round(lookFonts.tagline.size * 100)}%`;
+        applyClockFont(lookFonts.clock.family);
 
         // v353: the same for the glow: white at 15% was saved on every start until v352, so that pair is forgotten.
         const savedGlowColor = (localStorage.getItem('customGlowColor') || '').toLowerCase(), savedGlowIntensity = localStorage.getItem('customGlowIntensity');
@@ -5484,7 +6151,10 @@ function setupSettingsModal() {
             localStorage.removeItem('customGlowColor'); localStorage.removeItem('customGlowIntensity');
         }
         applySavedGlow();
-        if (!localStorage.getItem('customUiStart')) { uiColorStart.value = LOOK_DEFAULTS.uiColor; uiColorEnd.value = LOOK_DEFAULTS.uiColor; }
+        if (!localStorage.getItem('customUiStart')) {
+            uiColorStart.value = look.panel.start; uiColorEnd.value = look.panel.end; uiGradientDir.value = look.panel.dir;
+            uiContainerOpacitySlider.value = look.panel.opacity; uiContainerOpacityDisplay.textContent = `${Math.round(look.panel.opacity * 100)}%`;
+        }
         
         // BG Display Settings
         const customBgImageOpacity = localStorage.getItem('customBgImageOpacity'); 
@@ -5504,10 +6174,8 @@ function setupSettingsModal() {
         
         bgRotateSlider.dispatchEvent(new Event('input')); // This will trigger applyBgSizing
 
-        const customBgOverlayStart = localStorage.getItem('customBgOverlayStart'); if(customBgOverlayStart) bgOverlayColorStart.value = customBgOverlayStart;
-        const customBgOverlayEnd = localStorage.getItem('customBgOverlayEnd'); if(customBgOverlayEnd) bgOverlayColorEnd.value = customBgOverlayEnd;
-        const customBgOverlayDir = localStorage.getItem('customBgOverlayDir'); if(customBgOverlayDir) bgOverlayGradientDir.value = customBgOverlayDir;
-        const customBgOverlayOpacity = localStorage.getItem('customBgOverlayOpacity'); if (customBgOverlayOpacity) { overlayOpacitySlider.value = customBgOverlayOpacity; }
+        // v355: the overlay in use (the theme's, or one picked here); shown and saved on every start, as before.
+        bgOverlayColorStart.value = look.overlay.start; bgOverlayColorEnd.value = look.overlay.end; bgOverlayGradientDir.value = look.overlay.dir; overlayOpacitySlider.value = look.overlay.opacity;
         updateBackgroundOverlay();
 
         const customUiStart = localStorage.getItem('customUiStart'); const customUiEnd = localStorage.getItem('customUiEnd'); const customUiDir = localStorage.getItem('customUiDir'); const customUiOpacity = localStorage.getItem('customUiOpacity');
@@ -5566,7 +6234,7 @@ function updateSleepDisplay() {
 function applyClockFont(font, save) {
     document.getElementById('sleep-clock').style.fontFamily = font ? `'${font}', sans-serif` : '';
     ['clock-font-select', 'settings-clock-font-select'].forEach(id => { document.getElementById(id).value = font || ''; });
-    if (save) { if (font) localStorage.setItem('customClockFont', font); else localStorage.removeItem('customClockFont'); }
+    if (save) localStorage.setItem('customClockFont', font || ''); // v355: '' is kept too (a theme may have a clock font of its own)
 }
 function applyClockSize(size, save) {
     document.getElementById('sleep-clock').style.transform = `scale(${size})`; // v344: inside its own band, which clips it
@@ -5588,7 +6256,7 @@ function setupSleepModeControls() {
     document.getElementById('sleep-ui-brightness').addEventListener('input', updateSleepDisplay);
     ['clock-size', 'settings-clock-size-slider'].forEach(id => document.getElementById(id).addEventListener('input', e => applyClockSize(e.target.value, true)));
     ['clock-font-select', 'settings-clock-font-select'].forEach(id => document.getElementById(id).addEventListener('change', e => applyClockFont(e.target.value, true)));
-    applyClockFont(localStorage.getItem('customClockFont')); // the lists are filled later (js/fonts.js) and show the same saved font
+    applyClockFont(themeCurrentLook().fonts.clock.family); // the theme's, or one picked (v355); the lists are filled later (js/fonts.js)
     const savedClockSize = localStorage.getItem('customClockSize'); if (savedClockSize) applyClockSize(savedClockSize);
     document.getElementById('enter-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); document.documentElement.requestFullscreen().catch(err => console.error(`Error: ${err.message}`)); });
     document.getElementById('exit-fullscreen-btn').addEventListener('click', (e) => { e.stopPropagation(); if (document.fullscreenElement) document.exitFullscreen(); });
@@ -8263,6 +8931,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTouchSliders(); // sliders move only along a sideways finger (js/touch-sliders.js, MS-233)
     setupSettingsModal();
     setupFontManagement();
+    setupThemes(); // Settings › Look: the theme picker (js/themes.js, MS-161), once the font lists are filled
     setupCompactHeaderObserver();
     setupUndo();
     setupTonePrimers(); // the ⓘ guides beside TONE and MIX EQ (js/tone.js, MS-240)
